@@ -873,6 +873,25 @@ theorem choose_two_add_le_choose_two_sum (a b : ℕ) :
     linarith
   exact_mod_cast hq
 
+theorem cast_choose_two_add_eq (a b : ℕ) :
+    (((a + b).choose 2 : ℕ) : ℝ) =
+      ((a.choose 2 : ℕ) : ℝ) + (a : ℝ) * b + ((b.choose 2 : ℕ) : ℝ) := by
+  rw [Nat.cast_choose_two, Nat.cast_choose_two, Nat.cast_choose_two, Nat.cast_add]
+  ring
+
+theorem cast_choose_two_add_le_one_add_mul_choose_two {a b : ℕ} {ε : ℝ}
+    (herr :
+      (a : ℝ) * b + ((b.choose 2 : ℕ) : ℝ) ≤ ε * (((a.choose 2 : ℕ) : ℝ))) :
+    (((a + b).choose 2 : ℕ) : ℝ) ≤ (1 + ε) * (((a.choose 2 : ℕ) : ℝ)) := by
+  calc
+    (((a + b).choose 2 : ℕ) : ℝ)
+        = ((a.choose 2 : ℕ) : ℝ) + ((a : ℝ) * b + ((b.choose 2 : ℕ) : ℝ)) := by
+            simpa [add_assoc, add_left_comm, add_comm] using cast_choose_two_add_eq a b
+    _ ≤ ((a.choose 2 : ℕ) : ℝ) + ε * (((a.choose 2 : ℕ) : ℝ)) := by
+      gcongr
+    _ = (1 + ε) * (((a.choose 2 : ℕ) : ℝ)) := by
+      ring
+
 theorem sum_choose_two_le_choose_two_sum {α : Type*} (A : Finset α) (f : α → ℕ) :
     ∑ x ∈ A, (f x).choose 2 ≤ (∑ x ∈ A, f x).choose 2 := by
   classical
@@ -909,6 +928,68 @@ theorem choose_two_add_le_choose_two_cap_add_choose_two_sub {a b cap : ℕ}
         ((cap.choose 2 + (a + b - cap).choose 2 : ℕ) : ℚ) := by
     linarith
   exact_mod_cast hq
+
+theorem cast_choose_two_cap_add_choose_two_sub_add_eq {a b cap : ℕ} (hcap : cap ≤ a) :
+    ((cap.choose 2 + (a + b - cap).choose 2 : ℕ) : ℝ) =
+      ((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ) +
+        ((a - cap : ℕ) : ℝ) * b + ((b.choose 2 : ℕ) : ℝ) := by
+  have hsub : a + b - cap = (a - cap) + b := by
+    omega
+  rw [hsub, Nat.cast_add]
+  rw [cast_choose_two_add_eq (a - cap) b]
+  simp [Nat.cast_add, add_left_comm, add_comm]
+
+theorem cast_choose_two_cap_add_choose_two_sub_add_le_one_add_mul {a b cap : ℕ} {ε : ℝ}
+    (hcap : cap ≤ a)
+    (herr :
+      ((a - cap : ℕ) : ℝ) * b + ((b.choose 2 : ℕ) : ℝ) ≤
+        ε * (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ))) :
+    ((cap.choose 2 + (a + b - cap).choose 2 : ℕ) : ℝ) ≤
+      (1 + ε) * (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ)) := by
+  calc
+    ((cap.choose 2 + (a + b - cap).choose 2 : ℕ) : ℝ)
+        = ((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ) +
+            (((a - cap : ℕ) : ℝ) * b + ((b.choose 2 : ℕ) : ℝ)) := by
+              simpa [add_assoc, add_left_comm, add_comm] using
+                cast_choose_two_cap_add_choose_two_sub_add_eq (a := a) (b := b) (cap := cap) hcap
+    _ ≤ ((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ) +
+        ε * (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ)) := by
+          gcongr
+    _ = (1 + ε) * (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ)) := by
+      ring
+
+theorem cast_min_choose_two_add_le_one_add_mul_min {a b cap : ℕ} {ε : ℝ}
+    (hε : 0 ≤ ε) (hcap : cap ≤ a)
+    (hleft :
+      (a : ℝ) * b + ((b.choose 2 : ℕ) : ℝ) ≤ ε * (((a.choose 2 : ℕ) : ℝ)))
+    (hright :
+      ((a - cap : ℕ) : ℝ) * b + ((b.choose 2 : ℕ) : ℝ) ≤
+        ε * (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ))) :
+    ((min ((a + b).choose 2) (cap.choose 2 + (a + b - cap).choose 2) : ℕ) : ℝ) ≤
+      (1 + ε) * ((min (a.choose 2) (cap.choose 2 + (a - cap).choose 2) : ℕ) : ℝ) := by
+  have hfac : 0 ≤ 1 + ε := by linarith
+  rw [Nat.cast_min, Nat.cast_min]
+  calc
+    min (((a + b).choose 2 : ℕ) : ℝ) (((cap.choose 2 + (a + b - cap).choose 2 : ℕ) : ℝ))
+        ≤ min
+            ((1 + ε) * (((a.choose 2 : ℕ) : ℝ)))
+            ((1 + ε) * (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ))) := by
+              apply min_le_min
+              · exact cast_choose_two_add_le_one_add_mul_choose_two hleft
+              · exact cast_choose_two_cap_add_choose_two_sub_add_le_one_add_mul hcap hright
+    _ = (1 + ε) *
+        min (((a.choose 2 : ℕ) : ℝ)) (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ)) := by
+          symm
+          simpa using
+            (mul_min_of_nonneg
+              (((a.choose 2 : ℕ) : ℝ))
+              (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ))
+              hfac : (1 + ε) *
+                  min (((a.choose 2 : ℕ) : ℝ))
+                    (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ)) =
+                min
+                  ((1 + ε) * (((a.choose 2 : ℕ) : ℝ)))
+                  ((1 + ε) * (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ))))
 
 theorem sum_choose_two_le_choose_two_cap_add_choose_two_sub_of_le {α : Type*} (A : Finset α)
     (f : α → ℕ) {cap : ℕ} (hcap : ∀ x ∈ A, f x ≤ cap) (hsum : cap ≤ ∑ x ∈ A, f x) :
@@ -1892,39 +1973,63 @@ theorem cast_hugeBlueContribution_filter_isRight_le_eps_mul_paperKSq_of_goodEven
 
 /-- The current natural-number upper bound for the `H_I ∩ V_R` cross-projection term, before the
 final paper asymptotic simplifications are applied. -/
+def paperHugeBlueCrossErrorNat (C : ConstructionData n m) (I : Finset (Fin n))
+    (witnessSize degreeBound projCodegreeBound : ℕ) : ℕ :=
+  witnessSize * degreeBound +
+    ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound
+
+/-- The paper's capped right-hand branch for the `H_I ∩ V_R` cross-projection term. -/
+def paperHugeBlueCrossRightTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
+    (cap : ℕ) : ℕ :=
+  cap.choose 2 + ((Twobites.paperKNat κ n - (C.redImage I).card) - cap).choose 2
+
+/-- The current natural-number upper bound for the `H_I ∩ V_R` cross-projection term, before the
+final paper asymptotic simplifications are applied. -/
 def paperHugeBlueCrossConcreteBoundNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
     (witnessSize degreeBound projCodegreeBound cap : ℕ) : ℕ :=
   min
-    ((Twobites.paperKNat κ n - (C.redImage I).card + witnessSize * degreeBound +
-      ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+    ((Twobites.paperKNat κ n - (C.redImage I).card +
+      C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2)
     (cap.choose 2 +
-      ((Twobites.paperKNat κ n - (C.redImage I).card + witnessSize * degreeBound +
-        ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2)
+      ((Twobites.paperKNat κ n - (C.redImage I).card +
+        C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound) - cap).choose 2)
 
 /-- The paper's target natural-number expression for the `H_I ∩ V_R` cross-projection term. -/
 def paperHugeBlueCrossTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
     (cap : ℕ) : ℕ :=
   min
     ((Twobites.paperKNat κ n - (C.redImage I).card).choose 2)
-    (cap.choose 2 + ((Twobites.paperKNat κ n - (C.redImage I).card) - cap).choose 2)
+    (C.paperHugeBlueCrossRightTargetNat I κ cap)
+
+/-- The current natural-number upper bound for the `H_I ∩ V_B` cross-projection term, before the
+final paper asymptotic simplifications are applied. -/
+def paperHugeRedCrossErrorNat (C : ConstructionData n m) (I : Finset (Fin n))
+    (witnessSize degreeBound projCodegreeBound : ℕ) : ℕ :=
+  witnessSize * degreeBound +
+    ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound
+
+/-- The paper's capped right-hand branch for the `H_I ∩ V_B` cross-projection term. -/
+def paperHugeRedCrossRightTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
+    (cap : ℕ) : ℕ :=
+  cap.choose 2 + ((Twobites.paperKNat κ n - (C.blueImage I).card) - cap).choose 2
 
 /-- The current natural-number upper bound for the `H_I ∩ V_B` cross-projection term, before the
 final paper asymptotic simplifications are applied. -/
 def paperHugeRedCrossConcreteBoundNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
     (witnessSize degreeBound projCodegreeBound cap : ℕ) : ℕ :=
   min
-    ((Twobites.paperKNat κ n - (C.blueImage I).card + witnessSize * degreeBound +
-      ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+    ((Twobites.paperKNat κ n - (C.blueImage I).card +
+      C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2)
     (cap.choose 2 +
-      ((Twobites.paperKNat κ n - (C.blueImage I).card + witnessSize * degreeBound +
-        ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2)
+      ((Twobites.paperKNat κ n - (C.blueImage I).card +
+        C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound) - cap).choose 2)
 
 /-- The paper's target natural-number expression for the `H_I ∩ V_B` cross-projection term. -/
 def paperHugeRedCrossTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
     (cap : ℕ) : ℕ :=
   min
     ((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2)
-    (cap.choose 2 + ((Twobites.paperKNat κ n - (C.blueImage I).card) - cap).choose 2)
+    (C.paperHugeRedCrossRightTargetNat I κ cap)
 
 /-- The `H_I ∩ V_R` cross-projection term from Paper Lemma `lem:huge`, reduced to the remaining
 paper-witness arithmetic and cap/min-expression estimates. -/
@@ -1945,7 +2050,7 @@ theorem paper_huge_blue_cross_concrete_of_paperWitness
   have hA : ((C.HPart I).filter IsRedBaseVertex).card ≤ witnessSize := by
     exact (card_filter_IsRedBaseVertex_le (C.HPart I)).trans <|
       Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
-  simpa [paperHugeBlueCrossConcreteBoundNat] using
+  simpa [paperHugeBlueCrossConcreteBoundNat, paperHugeBlueCrossErrorNat, add_assoc] using
     (C.blueProjectionPairCount_filter_isLeft_le_min_choose_concrete_of_goodEventD_of_paperBound
       hD I (C.HPart I) hI hA hcap hcapWeight)
 
@@ -1968,7 +2073,7 @@ theorem paper_huge_red_cross_concrete_of_paperWitness
   have hA : ((C.HPart I).filter IsBlueBaseVertex).card ≤ witnessSize := by
     exact (card_filter_IsBlueBaseVertex_le (C.HPart I)).trans <|
       Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
-  simpa [paperHugeRedCrossConcreteBoundNat] using
+  simpa [paperHugeRedCrossConcreteBoundNat, paperHugeRedCrossErrorNat, add_assoc] using
     (C.redProjectionPairCount_filter_isRight_le_min_choose_concrete_of_goodEventD_of_paperBound
       hD I (C.HPart I) hI hA hcap hcapWeight)
 
@@ -2000,6 +2105,69 @@ theorem paper_huge_blue_cross_deterministic
     exact_mod_cast hnat
   exact hcast.trans hbound
 
+theorem paperHugeBlueCrossConcreteBoundNat_le_target_of_error_bounds
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ ε1 : ℝ}
+    {witnessSize degreeBound projCodegreeBound cap : ℕ} (hε1 : 0 ≤ ε1)
+    (hcap : cap ≤ Twobites.paperKNat κ n - (C.redImage I).card)
+    (hleft :
+      ((Twobites.paperKNat κ n - (C.redImage I).card : ℕ) : ℝ) *
+          C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound +
+        (((C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ)))
+    (hright :
+      (((Twobites.paperKNat κ n - (C.redImage I).card - cap : ℕ) : ℝ) *
+          C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound) +
+        (((C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((C.paperHugeBlueCrossRightTargetNat I κ cap : ℕ) : ℝ)) :
+    ((C.paperHugeBlueCrossConcreteBoundNat I κ witnessSize degreeBound projCodegreeBound cap :
+      ℕ) : ℝ) ≤
+      (1 + ε1) * ((C.paperHugeBlueCrossTargetNat I κ cap : ℕ) : ℝ) := by
+  let a := Twobites.paperKNat κ n - (C.redImage I).card
+  let b := C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound
+  have hbase :
+      ((min ((a + b).choose 2) (cap.choose 2 + (a + b - cap).choose 2) : ℕ) : ℝ) ≤
+        (1 + ε1) * ((min (a.choose 2) (cap.choose 2 + (a - cap).choose 2) : ℕ) : ℝ) := by
+    apply cast_min_choose_two_add_le_one_add_mul_min (ε := ε1) hε1
+    · simpa [a] using hcap
+    · simpa [a, b, mul_comm, mul_left_comm, mul_assoc] using hleft
+    · simpa [a, b, paperHugeBlueCrossRightTargetNat, mul_comm, mul_left_comm, mul_assoc] using
+        hright
+  simpa [paperHugeBlueCrossConcreteBoundNat, paperHugeBlueCrossTargetNat,
+    paperHugeBlueCrossRightTargetNat, paperHugeBlueCrossErrorNat, a, b] using hbase
+
+theorem paper_huge_blue_cross_deterministic_of_error_bounds
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε1 : ℝ} {witnessSize cap : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex, (C.blueProjectionImage I x).card ≤ cap)
+    (hcapWeight :
+      cap ≤ C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hε1 : 0 ≤ ε1)
+    (hcapBase : cap ≤ Twobites.paperKNat κ n - (C.redImage I).card)
+    (hleft :
+      ((Twobites.paperKNat κ n - (C.redImage I).card : ℕ) : ℝ) *
+          C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound +
+        (((C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ)))
+    (hright :
+      (((Twobites.paperKNat κ n - (C.redImage I).card - cap : ℕ) : ℝ) *
+          C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound) +
+        (((C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((C.paperHugeBlueCrossRightTargetNat I κ cap : ℕ) : ℝ)) :
+    ((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+      (1 + ε1) * ((C.paperHugeBlueCrossTargetNat I κ cap : ℕ) : ℝ) := by
+  apply C.paper_huge_blue_cross_deterministic hD I hI hwitness hcap hcapWeight
+  exact C.paperHugeBlueCrossConcreteBoundNat_le_target_of_error_bounds I hε1 hcapBase hleft hright
+
 /-- The `H_I ∩ V_B` cross-projection term from Paper Lemma `lem:huge`, reduced to a final
 comparison between the current concrete bound and the paper's target min-expression. -/
 theorem paper_huge_red_cross_deterministic
@@ -2027,6 +2195,70 @@ theorem paper_huge_red_cross_deterministic
           ℕ) : ℝ) := by
     exact_mod_cast hnat
   exact hcast.trans hbound
+
+theorem paperHugeRedCrossConcreteBoundNat_le_target_of_error_bounds
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ ε1 : ℝ}
+    {witnessSize degreeBound projCodegreeBound cap : ℕ} (hε1 : 0 ≤ ε1)
+    (hcap : cap ≤ Twobites.paperKNat κ n - (C.blueImage I).card)
+    (hleft :
+      ((Twobites.paperKNat κ n - (C.blueImage I).card : ℕ) : ℝ) *
+          C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound +
+        (((C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ)))
+    (hright :
+      (((Twobites.paperKNat κ n - (C.blueImage I).card - cap : ℕ) : ℝ) *
+          C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound) +
+        (((C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((C.paperHugeRedCrossRightTargetNat I κ cap : ℕ) : ℝ)) :
+    ((C.paperHugeRedCrossConcreteBoundNat I κ witnessSize degreeBound projCodegreeBound cap :
+      ℕ) : ℝ) ≤
+      (1 + ε1) * ((C.paperHugeRedCrossTargetNat I κ cap : ℕ) : ℝ) := by
+  let a := Twobites.paperKNat κ n - (C.blueImage I).card
+  let b := C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound
+  have hbase :
+      ((min ((a + b).choose 2) (cap.choose 2 + (a + b - cap).choose 2) : ℕ) : ℝ) ≤
+        (1 + ε1) * ((min (a.choose 2) (cap.choose 2 + (a - cap).choose 2) : ℕ) : ℝ) := by
+    apply cast_min_choose_two_add_le_one_add_mul_min (ε := ε1) hε1
+    · simpa [a] using hcap
+    · simpa [a, b, mul_comm, mul_left_comm, mul_assoc] using hleft
+    · simpa [a, b, paperHugeRedCrossRightTargetNat, mul_comm, mul_left_comm, mul_assoc] using
+        hright
+  simpa [paperHugeRedCrossConcreteBoundNat, paperHugeRedCrossTargetNat,
+    paperHugeRedCrossRightTargetNat, paperHugeRedCrossErrorNat, a, b] using hbase
+
+theorem paper_huge_red_cross_deterministic_of_error_bounds
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε1 : ℝ} {witnessSize cap : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex, (C.redProjectionImage I x).card ≤ cap)
+    (hcapWeight :
+      cap ≤ C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hε1 : 0 ≤ ε1)
+    (hcapBase : cap ≤ Twobites.paperKNat κ n - (C.blueImage I).card)
+    (hleft :
+      ((Twobites.paperKNat κ n - (C.blueImage I).card : ℕ) : ℝ) *
+          C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound +
+        (((C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ)))
+    (hright :
+      (((Twobites.paperKNat κ n - (C.blueImage I).card - cap : ℕ) : ℝ) *
+          C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound) +
+        (((C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((C.paperHugeRedCrossRightTargetNat I κ cap : ℕ) : ℝ)) :
+    ((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+      (1 + ε1) * ((C.paperHugeRedCrossTargetNat I κ cap : ℕ) : ℝ) := by
+  apply C.paper_huge_red_cross_deterministic hD I hI hwitness hcap hcapWeight
+  exact C.paperHugeRedCrossConcreteBoundNat_le_target_of_error_bounds I hε1 hcapBase hleft
+    hright
 
 /-- The diagonal red part of Paper Lemma `lem:huge`, reduced to the remaining Section 3 witness
 arithmetic. -/

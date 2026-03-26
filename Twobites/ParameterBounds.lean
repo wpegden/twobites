@@ -232,6 +232,30 @@ theorem ceil_paperT2_le_ceil_paperT1_of_loglog_le {ε : ℝ} {n : ℕ} (hn : 0 <
   apply Nat.ceil_le.2
   exact (paperT2_le_paperT1_of_loglog_le hn hlog hloglog hbound).trans (Nat.le_ceil _)
 
+theorem ceil_paperT1_lt_paperT1_add_one {n : ℕ} (hT1 : 0 ≤ paperT1 n) :
+    (⌈paperT1 n⌉₊ : ℝ) < paperT1 n + 1 := by
+  exact Nat.ceil_lt_add_one hT1
+
+theorem ceil_paperT1_le_paperT1_add_one {n : ℕ} (hT1 : 0 ≤ paperT1 n) :
+    (⌈paperT1 n⌉₊ : ℝ) ≤ paperT1 n + 1 := by
+  exact (ceil_paperT1_lt_paperT1_add_one hT1).le
+
+theorem ceil_paperT2_lt_paperT2_add_one (ε : ℝ) (n : ℕ) :
+    (⌈paperT2 ε n⌉₊ : ℝ) < paperT2 ε n + 1 := by
+  exact Nat.ceil_lt_add_one (paperT2_nonneg ε n)
+
+theorem ceil_paperT2_le_paperT2_add_one (ε : ℝ) (n : ℕ) :
+    (⌈paperT2 ε n⌉₊ : ℝ) ≤ paperT2 ε n + 1 := by
+  exact (ceil_paperT2_lt_paperT2_add_one ε n).le
+
+theorem ceil_paperT3_lt_paperT3_add_one (ε : ℝ) (n : ℕ) :
+    (⌈paperT3 ε n⌉₊ : ℝ) < paperT3 ε n + 1 := by
+  exact Nat.ceil_lt_add_one (paperT3_nonneg ε n)
+
+theorem ceil_paperT3_le_paperT3_add_one (ε : ℝ) (n : ℕ) :
+    (⌈paperT3 ε n⌉₊ : ℝ) ≤ paperT3 ε n + 1 := by
+  exact (ceil_paperT3_lt_paperT3_add_one ε n).le
+
 theorem paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_iff
     {κ : ℝ} {n witnessSize codegreeBound : ℕ} :
     paperKNat κ n < witnessSize * ⌈paperT1 n⌉₊ - witnessSize.choose 2 * codegreeBound ↔
@@ -283,6 +307,15 @@ theorem paperMNat_le_paperM {n : ℕ} (hn : 1 < n) : (paperMNat n : ℝ) ≤ pap
 theorem paperK_le_paperKNat (κ : ℝ) (n : ℕ) : paperK κ n ≤ paperKNat κ n := by
   unfold paperKNat
   exact Nat.le_ceil (paperK κ n)
+
+theorem paperKNat_lt_paperK_add_one {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) :
+    (paperKNat κ n : ℝ) < paperK κ n + 1 := by
+  unfold paperKNat
+  exact Nat.ceil_lt_add_one (paperK_nonneg hκ n)
+
+theorem paperKNat_le_paperK_add_one {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) :
+    (paperKNat κ n : ℝ) ≤ paperK κ n + 1 := by
+  exact (paperKNat_lt_paperK_add_one hκ n).le
 
 theorem one_le_paperKNat {κ : ℝ} (hκ : 0 < κ) {n : ℕ} (hn : 1 < n) :
     1 ≤ paperKNat κ n := by
