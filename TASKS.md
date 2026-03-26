@@ -10,12 +10,15 @@
 <!-- SUPERVISOR_TASKS:END -->
 
 ## Worker Tasks
-- [ ] Upgrade the new `GoodEventD` cardinality and contribution lemmas in `repo/Twobites/IndependentSets.lean` to the paper's `\varepsilon_1 k^2` deterministic results by proving the remaining threshold arithmetic that instantiates the new witness-size hypotheses for `L_I`, `M_I`, `S_I`, and `H_I`.
+- [ ] Finish the parameter-only Section 3 witness arithmetic in `repo/Twobites/ParameterBounds.lean` so the new `|I| \le \lceil k \rceil` witness wrappers in `repo/Twobites/IndependentSets.lean` specialize to the paper's deterministic `\varepsilon_1 k^2` bounds for `L_I`, `M_I`, and the diagonal `H_I` contributions.
 - [ ] Extend the huge-case bookkeeping in `repo/Twobites/IndependentSets.lean` from the current diagonal same-color projection bounds to the paper's cross-projection inequalities and the min-expression bounds in Lemma `lem:huge`.
 - [ ] Strengthen `repo/Twobites/ParameterBounds.lean` from the current threshold-order lemmas and the reduction lemma for `t_2 ≤ t_1` to an actual large-`n` proof of that comparison and the related asymptotic bounds used later in Sections 3-4.
 - [ ] Connect the new `finalGraph.CliqueFree 3` theorem and the part-restricted closed-pair bookkeeping to the eventual independence-number proofs in `repo/PaperTheorems.lean`.
 
 ## Completed
+- [x] Add `|I| \le \lceil k \rceil` witness wrappers in `repo/Twobites/IndependentSets.lean`: the large, medium, and diagonal huge `GoodEventD` lemmas now accept a parameter-only witness inequality on `\lceil k \rceil` and package direct `\varepsilon_1 k^2` conclusions once the remaining Section 3 arithmetic bounds are supplied.
+- [x] Add the first witness-inequality-to-contribution lemmas in `repo/Twobites/IndependentSets.lean`: `GoodEventD` now gives large/medium and diagonal-huge bounds once a Section 3 witness-size inequality is supplied, plus the filter-cardinality helper lemmas needed for `H_I ∩ V_R` and `H_I ∩ V_B`.
+- [x] Extend `repo/Twobites/ParameterBounds.lean` with ceiling-level threshold arithmetic (`ceil_paperT1_le_paperKNat`, `ceil_paperT2_le_paperKNat`, `ceil_paperT3_le_ceil_paperT2`, `ceil_paperT2_le_ceil_paperT1_of_loglog_le`) so the new witness/cardinality lemmas have the right natural-number interfaces.
 - [x] Add the witness-subset/cardinality infrastructure in `repo/Twobites/IndependentSets.lean`: lower-bound the `partWeight` of a family from a natural lower bound on every `|X_v(I)|`, extract fixed-size witness subsets with `Finset.exists_subset_card_eq`, and deduce `L_I`, `M_I`, and `H_I` cardinality bounds from `GoodEventD` once the corresponding threshold inequalities are supplied.
 - [x] Clean the current `repo/Twobites/IndependentSets.lean` linter warnings while extending the `GoodEventD` machinery.
 - [x] Encode the deterministic good event `𝒟` in `repo/Twobites/IndependentSets.lean` as `GoodEventD`, and derive from it the inherited `X_v(I)` codegree bounds, projected codegree bounds, and `partWeight` / projection-weight upper bounds needed by the counting lemmas.

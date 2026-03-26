@@ -770,6 +770,14 @@ theorem blueProjectionWeight_filter_isRight_le_of_goodEventD_of_card_le
   (C.blueProjectionWeight_filter_isRight_le_of_goodEventD hD I A).trans
     (Nat.mul_le_mul_right _ hA)
 
+theorem card_filter_IsRedBaseVertex_le (A : Finset (BaseVertex m)) :
+    (A.filter IsRedBaseVertex).card ≤ A.card :=
+  Finset.card_le_card (Finset.filter_subset _ _)
+
+theorem card_filter_IsBlueBaseVertex_le (A : Finset (BaseVertex m)) :
+    (A.filter IsBlueBaseVertex).card ≤ A.card :=
+  Finset.card_le_card (Finset.filter_subset _ _)
+
 theorem cast_partPairCount_le_half_threshold_mul_partWeight (C : ConstructionData n m)
     (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {T : ℝ}
     (hA : ∀ x ∈ A, (C.xCard I x : ℝ) ≤ T) :
@@ -916,6 +924,112 @@ theorem cast_smallContribution_le_of_goodEventD_of_card_le (C : ConstructionData
   exact_mod_cast C.partWeight_le_card_I_add_choose_mul_of_goodEventD_of_card_le hD I
     (C.SPart I ε) hA
 
+theorem cast_largeContribution_le_of_goodEventD_of_witness (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ε : ℝ} {witnessSize : ℕ} (hT1 : 0 ≤ Twobites.paperT1 n)
+    (hwitness :
+      I.card < witnessSize * ⌈Twobites.paperT2 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT1 n / 2) * (I.card + witnessSize.choose 2 * codegreeBound : ℕ) := by
+  apply C.cast_largeContribution_le_of_goodEventD_of_card_le hD I hT1
+  exact Nat.le_of_lt (C.LPart_card_lt_of_goodEventD_of_lt hD I hwitness)
+
+theorem cast_largeContribution_le_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε : ℝ} {witnessSize : ℕ} (hT1 : 0 ≤ Twobites.paperT1 n)
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT2 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT1 n / 2) *
+        (Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound : ℕ) := by
+  have hbase := C.cast_largeContribution_le_of_goodEventD_of_witness hD I hT1
+    (lt_of_le_of_lt hI hwitness)
+  have hfac : 0 ≤ Twobites.paperT1 n / 2 := by
+    linarith
+  have hnat :
+      I.card + witnessSize.choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound :=
+    Nat.add_le_add_right hI _
+  have hmul :
+      (Twobites.paperT1 n / 2) * (I.card + witnessSize.choose 2 * codegreeBound : ℕ) ≤
+        (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound : ℕ) := by
+    exact mul_le_mul_of_nonneg_left (by exact_mod_cast hnat) hfac
+  exact hbase.trans hmul
+
+theorem cast_mediumContribution_le_of_goodEventD_of_witness (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ε : ℝ} {witnessSize : ℕ}
+    (hwitness :
+      I.card < witnessSize * ⌈Twobites.paperT3 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT2 ε n / 2) * (I.card + witnessSize.choose 2 * codegreeBound : ℕ) := by
+  apply C.cast_mediumContribution_le_of_goodEventD_of_card_le hD I
+  exact Nat.le_of_lt (C.MPart_card_lt_of_goodEventD_of_lt hD I hwitness)
+
+theorem cast_mediumContribution_le_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT3 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT2 ε n / 2) *
+        (Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound : ℕ) := by
+  have hbase := C.cast_mediumContribution_le_of_goodEventD_of_witness hD I
+    (lt_of_le_of_lt hI hwitness)
+  have hfac : 0 ≤ Twobites.paperT2 ε n / 2 := by
+    nlinarith [Twobites.paperT2_nonneg ε n]
+  have hnat :
+      I.card + witnessSize.choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound :=
+    Nat.add_le_add_right hI _
+  have hmul :
+      (Twobites.paperT2 ε n / 2) * (I.card + witnessSize.choose 2 * codegreeBound : ℕ) ≤
+        (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound : ℕ) := by
+    exact mul_le_mul_of_nonneg_left (by exact_mod_cast hnat) hfac
+  exact hbase.trans hmul
+
+theorem cast_largeContribution_le_eps_mul_paperKSq_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε ε1 : ℝ} {witnessSize : ℕ}
+    (hT1 : 0 ≤ Twobites.paperT1 n) (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT2 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hbound :
+      (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤ ε1 * Twobites.paperK κ n ^ 2 :=
+  (C.cast_largeContribution_le_of_goodEventD_of_paperWitness hD I hT1 hI hwitness).trans hbound
+
+theorem cast_mediumContribution_le_eps_mul_paperKSq_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε ε1 : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT3 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hbound :
+      (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤ ε1 * Twobites.paperK κ n ^ 2 :=
+  (C.cast_mediumContribution_le_of_goodEventD_of_paperWitness hD I hI hwitness).trans hbound
+
 theorem cast_redProjectionPairCount_le_half_card_mul_redProjectionWeight
     (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
     ((C.redProjectionPairCount I A : ℕ) : ℝ) ≤
@@ -1017,6 +1131,108 @@ theorem cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_card_le
   apply C.cast_blueProjectionContribution_le_of_weight_le I ((C.HPart I).filter IsBlueBaseVertex)
   exact_mod_cast C.blueProjectionWeight_filter_isRight_le_of_goodEventD_of_card_le hD I
     (C.HPart I) hA
+
+theorem cast_hugeRedContribution_filter_isLeft_le_of_goodEventD_of_HPart_witness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {witnessSize : ℕ}
+    (hwitness :
+      I.card < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+      ((I.card : ℝ) / 2) * (witnessSize * degreeBound : ℕ) := by
+  apply C.cast_hugeRedContribution_filter_isLeft_le_of_goodEventD_of_card_le hD I
+  exact (card_filter_IsRedBaseVertex_le (C.HPart I)).trans
+    (Nat.le_of_lt (C.HPart_card_lt_of_goodEventD_of_lt hD I hwitness))
+
+theorem cast_hugeRedContribution_filter_isLeft_le_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+      ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) := by
+  have hbase := C.cast_hugeRedContribution_filter_isLeft_le_of_goodEventD_of_HPart_witness hD I
+    (lt_of_le_of_lt hI hwitness)
+  have hfac : 0 ≤ (witnessSize * degreeBound : ℕ) := by
+    positivity
+  have hI' : (I.card : ℝ) ≤ Twobites.paperKNat κ n := by
+    exact_mod_cast hI
+  have hmul :
+      ((I.card : ℝ) / 2) * (witnessSize * degreeBound : ℕ) ≤
+        ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) := by
+    nlinarith
+  exact hbase.trans hmul
+
+theorem cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_HPart_witness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {witnessSize : ℕ}
+    (hwitness :
+      I.card < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+      ((I.card : ℝ) / 2) * (witnessSize * degreeBound : ℕ) := by
+  apply C.cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_card_le hD I
+  exact (card_filter_IsBlueBaseVertex_le (C.HPart I)).trans
+    (Nat.le_of_lt (C.HPart_card_lt_of_goodEventD_of_lt hD I hwitness))
+
+theorem cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+      ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) := by
+  have hbase := C.cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_HPart_witness hD I
+    (lt_of_le_of_lt hI hwitness)
+  have hfac : 0 ≤ (witnessSize * degreeBound : ℕ) := by
+    positivity
+  have hI' : (I.card : ℝ) ≤ Twobites.paperKNat κ n := by
+    exact_mod_cast hI
+  have hmul :
+      ((I.card : ℝ) / 2) * (witnessSize * degreeBound : ℕ) ≤
+        ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) := by
+    nlinarith
+  exact hbase.trans hmul
+
+theorem cast_hugeRedContribution_filter_isLeft_le_eps_mul_paperKSq_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε1 : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hbound :
+      ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+      ε1 * Twobites.paperK κ n ^ 2 :=
+  (C.cast_hugeRedContribution_filter_isLeft_le_of_goodEventD_of_paperWitness hD I hI hwitness).trans
+    hbound
+
+theorem cast_hugeBlueContribution_filter_isRight_le_eps_mul_paperKSq_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε1 : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hbound :
+      ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+      ε1 * Twobites.paperK κ n ^ 2 :=
+  (C.cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_paperWitness
+    hD I hI hwitness).trans hbound
 
 theorem closedPair_comm (C : ConstructionData n m) {I : Finset (Fin n)} {v w : Fin n} :
     C.ClosedPair I v w ↔ C.ClosedPair I w v := by

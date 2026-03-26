@@ -174,6 +174,21 @@ theorem paperT2_le_paperK {ε κ : ℝ} {n : ℕ} (hn : 1 ≤ n)
     _ = paperK κ n := by
       rw [paperK]
 
+theorem ceil_paperT1_le_paperKNat {κ : ℝ} {n : ℕ}
+    (hloglog : 1 ≤ Real.log (Real.log (n : ℝ))) (hκ : 1 ≤ κ) :
+    ⌈paperT1 n⌉₊ ≤ paperKNat κ n := by
+  exact (Nat.ceil_le).2 <| (paperT1_le_paperK hloglog hκ).trans (Nat.le_ceil (paperK κ n))
+
+theorem ceil_paperT2_le_paperKNat {ε κ : ℝ} {n : ℕ} (hn : 1 ≤ n)
+    (hlog : 1 ≤ Real.log (n : ℝ)) (hε : ε ≤ (1 / 4 : ℝ)) (hκ : 1 ≤ κ) :
+    ⌈paperT2 ε n⌉₊ ≤ paperKNat κ n := by
+  exact (Nat.ceil_le).2 <| (paperT2_le_paperK hn hlog hε hκ).trans (Nat.le_ceil (paperK κ n))
+
+theorem ceil_paperT3_le_ceil_paperT2 {ε : ℝ} {n : ℕ} (hn : 1 ≤ n)
+    (hε : ε ≤ (1 / 4 : ℝ)) : ⌈paperT3 ε n⌉₊ ≤ ⌈paperT2 ε n⌉₊ := by
+  apply Nat.ceil_le.2
+  exact (paperT3_le_paperT2 hn hε).trans (Nat.le_ceil _)
+
 theorem paperT2_le_paperT1_of_loglog_le {ε : ℝ} {n : ℕ} (hn : 0 < n)
     (hlog : 0 ≤ Real.log (n : ℝ)) (hloglog : 0 < Real.log (Real.log (n : ℝ)))
     (hbound :
@@ -202,6 +217,15 @@ theorem paperT2_le_paperT1_of_loglog_le {ε : ℝ} {n : ℕ} (hn : 0 < n)
           ← Real.mul_rpow (Nat.cast_nonneg n) hlog]
   unfold paperT1
   exact (le_div_iff₀ hloglog).2 hmul
+
+theorem ceil_paperT2_le_ceil_paperT1_of_loglog_le {ε : ℝ} {n : ℕ} (hn : 0 < n)
+    (hlog : 0 ≤ Real.log (n : ℝ)) (hloglog : 0 < Real.log (Real.log (n : ℝ)))
+    (hbound :
+      Real.log (Real.log (n : ℝ)) ≤
+        (n : ℝ) ^ ((1 / 4 : ℝ) - ε) * Real.sqrt (Real.log (n : ℝ))) :
+    ⌈paperT2 ε n⌉₊ ≤ ⌈paperT1 n⌉₊ := by
+  apply Nat.ceil_le.2
+  exact (paperT2_le_paperT1_of_loglog_le hn hlog hloglog hbound).trans (Nat.le_ceil _)
 
 theorem one_le_paperSNat (n : ℕ) : 1 ≤ paperSNat n := by
   unfold paperSNat
