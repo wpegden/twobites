@@ -2511,6 +2511,82 @@ theorem blueImage_card_add_paperCapNat_le_paperKNat_add_one_of_card_le
     _ ≤ Twobites.paperKNat (ρ + (1 + ε2) * β) n + 1 := by
       exact Twobites.paperKNat_add_paperCapNat_le_paperKNat_add_one hn hρ hβ hε2
 
+theorem redImage_card_add_paperCapNat_le_paperKNat_of_card_le_of_one_le_gap
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ : ℝ}
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρ n)
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgap : 1 ≤ Twobites.paperK δ n) :
+    (C.redImage I).card + Twobites.paperCapNat β ε2 n ≤
+      Twobites.paperKNat (ρ + (1 + ε2) * β + δ) n := by
+  calc
+    (C.redImage I).card + Twobites.paperCapNat β ε2 n ≤
+        Twobites.paperKNat (ρ + (1 + ε2) * β) n + 1 := by
+      exact C.redImage_card_add_paperCapNat_le_paperKNat_add_one_of_card_le I hred hn hρ hβ hε2
+    _ ≤ Twobites.paperKNat (ρ + (1 + ε2) * β + δ) n := by
+      exact Twobites.paperKNat_add_one_le_paperKNat_of_one_le_gap
+        (by
+          have hfac : 0 ≤ 1 + ε2 := by linarith
+          have hcap : 0 ≤ (1 + ε2) * β := by exact mul_nonneg hfac hβ
+          linarith)
+        hgap
+
+theorem blueImage_card_add_paperCapNat_le_paperKNat_of_card_le_of_one_le_gap
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ : ℝ}
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρ n)
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgap : 1 ≤ Twobites.paperK δ n) :
+    (C.blueImage I).card + Twobites.paperCapNat β ε2 n ≤
+      Twobites.paperKNat (ρ + (1 + ε2) * β + δ) n := by
+  calc
+    (C.blueImage I).card + Twobites.paperCapNat β ε2 n ≤
+        Twobites.paperKNat (ρ + (1 + ε2) * β) n + 1 := by
+      exact C.blueImage_card_add_paperCapNat_le_paperKNat_add_one_of_card_le I hblue hn hρ hβ hε2
+    _ ≤ Twobites.paperKNat (ρ + (1 + ε2) * β + δ) n := by
+      exact Twobites.paperKNat_add_one_le_paperKNat_of_one_le_gap
+        (by
+          have hfac : 0 ≤ 1 + ε2 := by linarith
+          have hcap : 0 ≤ (1 + ε2) * β := by exact mul_nonneg hfac hβ
+          linarith)
+        hgap
+
+theorem redImage_card_add_paperCapNat_le_paperKNat_of_card_le_of_one_le_gap_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ κ : ℝ}
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρ n)
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgap : 1 ≤ Twobites.paperK δ n) (hκ : ρ + (1 + ε2) * β + δ ≤ κ) :
+    (C.redImage I).card + Twobites.paperCapNat β ε2 n ≤ Twobites.paperKNat κ n := by
+  calc
+    (C.redImage I).card + Twobites.paperCapNat β ε2 n ≤
+        Twobites.paperKNat ρ n + Twobites.paperCapNat β ε2 n := by
+      exact Nat.add_le_add_right hred _
+    _ ≤ Twobites.paperKNat κ n := by
+      exact Twobites.paperKNat_add_paperCapNat_le_paperKNat_of_one_le_gap_of_le
+        hn hρ hβ hε2 hgap hκ
+
+theorem blueImage_card_add_paperCapNat_le_paperKNat_of_card_le_of_one_le_gap_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ κ : ℝ}
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρ n)
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgap : 1 ≤ Twobites.paperK δ n) (hκ : ρ + (1 + ε2) * β + δ ≤ κ) :
+    (C.blueImage I).card + Twobites.paperCapNat β ε2 n ≤ Twobites.paperKNat κ n := by
+  calc
+    (C.blueImage I).card + Twobites.paperCapNat β ε2 n ≤
+        Twobites.paperKNat ρ n + Twobites.paperCapNat β ε2 n := by
+      exact Nat.add_le_add_right hblue _
+    _ ≤ Twobites.paperKNat κ n := by
+      exact Twobites.paperKNat_add_paperCapNat_le_paperKNat_of_one_le_gap_of_le
+        hn hρ hβ hε2 hgap hκ
+
+theorem redImage_card_le_card (C : ConstructionData n m) (I : Finset (Fin n)) :
+    (C.redImage I).card ≤ I.card := by
+  simpa [ConstructionData.redImage] using
+    (Finset.card_image_le (s := I) (f := C.redProj))
+
+theorem blueImage_card_le_card (C : ConstructionData n m) (I : Finset (Fin n)) :
+    (C.blueImage I).card ≤ I.card := by
+  simpa [ConstructionData.blueImage] using
+    (Finset.card_image_le (s := I) (f := C.blueProj))
+
 theorem paper_huge_blue_cross_deterministic_of_paperCapNat_of_witnessErrorBounds_of_additiveCapBase
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
@@ -2542,12 +2618,7 @@ theorem paper_huge_blue_cross_deterministic_of_paperCapNat_of_witnessErrorBounds
         ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) := by
   apply C.paper_huge_blue_cross_deterministic_of_paperCapNat_of_witnessErrorBounds hD I
     hI hwitness hcap hcapWeight hε1
-  · have hred : (C.redImage I).card ≤ Twobites.paperKNat κ n := by
-      calc
-        (C.redImage I).card ≤ I.card := by
-          simpa [ConstructionData.redImage] using
-            (Finset.card_image_le (s := I) (f := C.redProj))
-        _ ≤ Twobites.paperKNat κ n := hI
+  · have hred : (C.redImage I).card ≤ Twobites.paperKNat κ n := (C.redImage_card_le_card I).trans hI
     exact (Nat.le_sub_iff_add_le hred).2 <| by simpa [Nat.add_comm] using hcapBase
   · exact hleft
   · exact hright
@@ -2583,13 +2654,85 @@ theorem paper_huge_red_cross_deterministic_of_paperCapNat_of_witnessErrorBounds_
         ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) := by
   apply C.paper_huge_red_cross_deterministic_of_paperCapNat_of_witnessErrorBounds hD I
     hI hwitness hcap hcapWeight hε1
-  · have hblue : (C.blueImage I).card ≤ Twobites.paperKNat κ n := by
-      calc
-        (C.blueImage I).card ≤ I.card := by
-          simpa [ConstructionData.blueImage] using
-            (Finset.card_image_le (s := I) (f := C.blueProj))
-        _ ≤ Twobites.paperKNat κ n := hI
+  · have hblue : (C.blueImage I).card ≤ Twobites.paperKNat κ n :=
+      (C.blueImage_card_le_card I).trans hI
     exact (Nat.le_sub_iff_add_le hblue).2 <| by simpa [Nat.add_comm] using hcapBase
+  · exact hleft
+  · exact hright
+
+theorem paper_huge_blue_cross_deterministic_of_card_le_of_one_le_gap_of_witnessErrorBounds
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ρ β κ ε1 ε2 δ : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρ n)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hcapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgap : 1 ≤ Twobites.paperK δ n) (hκ : ρ + (1 + ε2) * β + δ ≤ κ)
+    (hε1 : 0 ≤ ε1)
+    (hleft :
+      ((Twobites.paperKNat κ n - (C.redImage I).card : ℕ) : ℝ) *
+          (witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound) +
+        ((((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound).choose 2 :
+          ℕ) : ℝ)) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ)))
+    (hright :
+      C.paperHugeBlueCrossWitnessRightErrorProp I κ ε1 witnessSize degreeBound
+        projCodegreeBound (Twobites.paperCapNat β ε2 n)) :
+    ((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+      (1 + ε1) *
+        ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) := by
+  apply
+    C.paper_huge_blue_cross_deterministic_of_paperCapNat_of_witnessErrorBounds_of_additiveCapBase
+      hD I hI hwitness hcap hcapWeight hε1
+  · exact C.redImage_card_add_paperCapNat_le_paperKNat_of_card_le_of_one_le_gap_of_le I
+      hred hn hρ hβ hε2 hgap hκ
+  · exact hleft
+  · exact hright
+
+theorem paper_huge_red_cross_deterministic_of_card_le_of_one_le_gap_of_witnessErrorBounds
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ρ β κ ε1 ε2 δ : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρ n)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hcapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgap : 1 ≤ Twobites.paperK δ n) (hκ : ρ + (1 + ε2) * β + δ ≤ κ)
+    (hε1 : 0 ≤ ε1)
+    (hleft :
+      ((Twobites.paperKNat κ n - (C.blueImage I).card : ℕ) : ℝ) *
+          (witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound) +
+        ((((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound).choose 2 :
+          ℕ) : ℝ)) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ)))
+    (hright :
+      C.paperHugeRedCrossWitnessRightErrorProp I κ ε1 witnessSize degreeBound
+        projCodegreeBound (Twobites.paperCapNat β ε2 n)) :
+    ((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+      (1 + ε1) *
+        ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) := by
+  apply
+    C.paper_huge_red_cross_deterministic_of_paperCapNat_of_witnessErrorBounds_of_additiveCapBase
+      hD I hI hwitness hcap hcapWeight hε1
+  · exact C.blueImage_card_add_paperCapNat_le_paperKNat_of_card_le_of_one_le_gap_of_le I
+      hblue hn hρ hβ hε2 hgap hκ
   · exact hleft
   · exact hright
 
