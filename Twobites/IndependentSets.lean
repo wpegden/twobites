@@ -401,6 +401,130 @@ theorem card_biUnion_X_le_card_I (C : ConstructionData n m) (I : Finset (Fin n))
   rcases Finset.mem_biUnion.1 hv with ⟨x, -, hvX⟩
   exact C.mem_I_of_mem_X hvX
 
+theorem redProjectionUnion_eq_redImage_biUnion_X (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) :
+    C.redProjectionUnion I A = C.redImage (A.biUnion fun x => C.X I x) := by
+  ext r
+  constructor
+  · intro hr
+    rcases Finset.mem_biUnion.1 hr with ⟨x, hxA, hrx⟩
+    rcases Finset.mem_image.1 hrx with ⟨v, hvX, hvr⟩
+    exact (C.mem_redImage).2 ⟨v, Finset.mem_biUnion.2 ⟨x, hxA, hvX⟩, hvr⟩
+  · intro hr
+    rcases (C.mem_redImage).1 hr with ⟨v, hvUnion, hvr⟩
+    rcases Finset.mem_biUnion.1 hvUnion with ⟨x, hxA, hvX⟩
+    exact Finset.mem_biUnion.2 ⟨x, hxA, Finset.mem_image.2 ⟨v, hvX, hvr⟩⟩
+
+theorem blueProjectionUnion_eq_blueImage_biUnion_X (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    C.blueProjectionUnion I A = C.blueImage (A.biUnion fun x => C.X I x) := by
+  ext b
+  constructor
+  · intro hb
+    rcases Finset.mem_biUnion.1 hb with ⟨x, hxA, hbx⟩
+    rcases Finset.mem_image.1 hbx with ⟨v, hvX, hvb⟩
+    exact (C.mem_blueImage).2 ⟨v, Finset.mem_biUnion.2 ⟨x, hxA, hvX⟩, hvb⟩
+  · intro hb
+    rcases (C.mem_blueImage).1 hb with ⟨v, hvUnion, hvb⟩
+    rcases Finset.mem_biUnion.1 hvUnion with ⟨x, hxA, hvX⟩
+    exact Finset.mem_biUnion.2 ⟨x, hxA, Finset.mem_image.2 ⟨v, hvX, hvb⟩⟩
+
+theorem card_redProjectionUnion_le_card_biUnion_X (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.redProjectionUnion I A).card ≤ (A.biUnion fun x => C.X I x).card := by
+  rw [C.redProjectionUnion_eq_redImage_biUnion_X I A]
+  simpa [ConstructionData.redImage] using
+    (Finset.card_image_le (s := A.biUnion fun x => C.X I x) (f := C.redProj))
+
+theorem card_blueProjectionUnion_le_card_biUnion_X (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.blueProjectionUnion I A).card ≤ (A.biUnion fun x => C.X I x).card := by
+  rw [C.blueProjectionUnion_eq_blueImage_biUnion_X I A]
+  simpa [ConstructionData.blueImage] using
+    (Finset.card_image_le (s := A.biUnion fun x => C.X I x) (f := C.blueProj))
+
+theorem card_redImage_le_card_redImage_of_subset_add_card_sdiff (C : ConstructionData n m)
+    {I U : Finset (Fin n)} (hU : U ⊆ I) :
+    (C.redImage I).card ≤ (C.redImage U).card + (I \ U).card := by
+  calc
+    (C.redImage I).card = (C.redImage (U ∪ (I \ U))).card := by
+      rw [Finset.union_sdiff_of_subset hU]
+    _ ≤ (C.redImage U).card + (C.redImage (I \ U)).card := by
+      rw [ConstructionData.redImage, Finset.image_union]
+      exact Finset.card_union_le _ _
+    _ ≤ (C.redImage U).card + (I \ U).card := by
+      gcongr
+      exact Finset.card_image_le
+
+theorem card_blueImage_le_card_blueImage_of_subset_add_card_sdiff (C : ConstructionData n m)
+    {I U : Finset (Fin n)} (hU : U ⊆ I) :
+    (C.blueImage I).card ≤ (C.blueImage U).card + (I \ U).card := by
+  calc
+    (C.blueImage I).card = (C.blueImage (U ∪ (I \ U))).card := by
+      rw [Finset.union_sdiff_of_subset hU]
+    _ ≤ (C.blueImage U).card + (C.blueImage (I \ U)).card := by
+      rw [ConstructionData.blueImage, Finset.image_union]
+      exact Finset.card_union_le _ _
+    _ ≤ (C.blueImage U).card + (I \ U).card := by
+      gcongr
+      exact Finset.card_image_le
+
+theorem card_subset_le_card_sub_card_redImage_add_card_redImage (C : ConstructionData n m)
+    {I U : Finset (Fin n)} (hU : U ⊆ I) :
+    U.card ≤ I.card - (C.redImage I).card + (C.redImage U).card := by
+  have hImage := C.card_redImage_le_card_redImage_of_subset_add_card_sdiff hU
+  have hCard : (I \ U).card + U.card = I.card := Finset.card_sdiff_add_card_eq_card hU
+  omega
+
+theorem card_subset_le_card_sub_card_blueImage_add_card_blueImage (C : ConstructionData n m)
+    {I U : Finset (Fin n)} (hU : U ⊆ I) :
+    U.card ≤ I.card - (C.blueImage I).card + (C.blueImage U).card := by
+  have hImage := C.card_blueImage_le_card_blueImage_of_subset_add_card_sdiff hU
+  have hCard : (I \ U).card + U.card = I.card := Finset.card_sdiff_add_card_eq_card hU
+  omega
+
+theorem card_biUnion_X_le_card_I_sub_card_redImage_add_redProjectionUnion
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (A.biUnion fun x => C.X I x).card ≤
+      I.card - (C.redImage I).card + (C.redProjectionUnion I A).card := by
+  have hSubset : (A.biUnion fun x => C.X I x) ⊆ I := by
+    intro v hv
+    rcases Finset.mem_biUnion.1 hv with ⟨x, -, hvX⟩
+    exact C.mem_I_of_mem_X hvX
+  simpa [C.redProjectionUnion_eq_redImage_biUnion_X I A] using
+    (C.card_subset_le_card_sub_card_redImage_add_card_redImage hSubset)
+
+theorem card_biUnion_X_le_card_I_sub_card_blueImage_add_blueProjectionUnion
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (A.biUnion fun x => C.X I x).card ≤
+      I.card - (C.blueImage I).card + (C.blueProjectionUnion I A).card := by
+  have hSubset : (A.biUnion fun x => C.X I x) ⊆ I := by
+    intro v hv
+    rcases Finset.mem_biUnion.1 hv with ⟨x, -, hvX⟩
+    exact C.mem_I_of_mem_X hvX
+  simpa [C.blueProjectionUnion_eq_blueImage_biUnion_X I A] using
+    (C.card_subset_le_card_sub_card_blueImage_add_card_blueImage hSubset)
+
+theorem card_blueProjectionUnion_le_card_I_sub_card_redImage_add_redProjectionUnion
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.blueProjectionUnion I A).card ≤
+      I.card - (C.redImage I).card + (C.redProjectionUnion I A).card := by
+  calc
+    (C.blueProjectionUnion I A).card ≤ (A.biUnion fun x => C.X I x).card :=
+      C.card_blueProjectionUnion_le_card_biUnion_X I A
+    _ ≤ I.card - (C.redImage I).card + (C.redProjectionUnion I A).card :=
+      C.card_biUnion_X_le_card_I_sub_card_redImage_add_redProjectionUnion I A
+
+theorem card_redProjectionUnion_le_card_I_sub_card_blueImage_add_blueProjectionUnion
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.redProjectionUnion I A).card ≤
+      I.card - (C.blueImage I).card + (C.blueProjectionUnion I A).card := by
+  calc
+    (C.redProjectionUnion I A).card ≤ (A.biUnion fun x => C.X I x).card :=
+      C.card_redProjectionUnion_le_card_biUnion_X I A
+    _ ≤ I.card - (C.blueImage I).card + (C.blueProjectionUnion I A).card :=
+      C.card_biUnion_X_le_card_I_sub_card_blueImage_add_blueProjectionUnion I A
+
 theorem partWeight_le_card_I_add_choose_mul_of_pairwise_inter_bound (C : ConstructionData n m)
     (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {D : ℕ}
     (hinter : ∀ x ∈ A, ∀ y ∈ A, x ≠ y → (C.X I x ∩ C.X I y).card ≤ D) :
@@ -1082,6 +1206,114 @@ theorem redProjectionPairCount_filter_isRight_le_min_choose_union_error_of_goodE
     (A.filter IsBlueBaseVertex) hcap hcapWeight
   exact redProjectionWeight_filter_isRight_le_card_redProjectionUnion_add_choose_mul_of_goodEventD
     C hD I A
+
+theorem
+    blueProjectionWeight_filter_isLeft_le_concrete_of_goodEventD_of_card_le
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {bound : ℕ}
+    (hA : (A.filter IsRedBaseVertex).card ≤ bound) :
+    C.blueProjectionWeight I (A.filter IsRedBaseVertex) ≤
+      I.card - (C.redImage I).card + bound * degreeBound +
+        (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound := by
+  have hUnion :
+      (C.blueProjectionUnion I (A.filter IsRedBaseVertex)).card ≤
+        I.card - (C.redImage I).card + bound * degreeBound := by
+    calc
+      (C.blueProjectionUnion I (A.filter IsRedBaseVertex)).card ≤
+          I.card - (C.redImage I).card +
+            (C.redProjectionUnion I (A.filter IsRedBaseVertex)).card := by
+        exact C.card_blueProjectionUnion_le_card_I_sub_card_redImage_add_redProjectionUnion I
+          (A.filter IsRedBaseVertex)
+      _ ≤ I.card - (C.redImage I).card + bound * degreeBound := by
+        gcongr
+        calc
+          (C.redProjectionUnion I (A.filter IsRedBaseVertex)).card ≤
+              C.redProjectionWeight I (A.filter IsRedBaseVertex) := by
+            exact C.card_redProjectionUnion_le_redProjectionWeight I (A.filter IsRedBaseVertex)
+          _ ≤ bound * degreeBound := by
+            exact C.redProjectionWeight_filter_isLeft_le_of_goodEventD_of_card_le hD I A hA
+  have hbase :=
+    C.blueProjectionWeight_filter_isLeft_le_card_blueProjectionUnion_add_choose_mul_of_goodEventD
+      hD I A
+  exact hbase.trans <| by
+    simpa [add_assoc, add_left_comm, add_comm] using Nat.add_le_add_right hUnion
+      ((A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound)
+
+theorem
+    redProjectionWeight_filter_isRight_le_concrete_of_goodEventD_of_card_le
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {bound : ℕ}
+    (hA : (A.filter IsBlueBaseVertex).card ≤ bound) :
+    C.redProjectionWeight I (A.filter IsBlueBaseVertex) ≤
+      I.card - (C.blueImage I).card + bound * degreeBound +
+        (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound := by
+  have hUnion :
+      (C.redProjectionUnion I (A.filter IsBlueBaseVertex)).card ≤
+        I.card - (C.blueImage I).card + bound * degreeBound := by
+    calc
+      (C.redProjectionUnion I (A.filter IsBlueBaseVertex)).card ≤
+          I.card - (C.blueImage I).card +
+            (C.blueProjectionUnion I (A.filter IsBlueBaseVertex)).card := by
+        exact C.card_redProjectionUnion_le_card_I_sub_card_blueImage_add_blueProjectionUnion I
+          (A.filter IsBlueBaseVertex)
+      _ ≤ I.card - (C.blueImage I).card + bound * degreeBound := by
+        gcongr
+        calc
+          (C.blueProjectionUnion I (A.filter IsBlueBaseVertex)).card ≤
+              C.blueProjectionWeight I (A.filter IsBlueBaseVertex) := by
+            exact C.card_blueProjectionUnion_le_blueProjectionWeight I (A.filter IsBlueBaseVertex)
+          _ ≤ bound * degreeBound := by
+            exact C.blueProjectionWeight_filter_isRight_le_of_goodEventD_of_card_le hD I A hA
+  have hbase :=
+    C.redProjectionWeight_filter_isRight_le_card_redProjectionUnion_add_choose_mul_of_goodEventD
+      hD I A
+  exact hbase.trans <| by
+    simpa [add_assoc, add_left_comm, add_comm] using Nat.add_le_add_right hUnion
+      ((A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound)
+
+theorem
+    blueProjectionPairCount_filter_isLeft_le_min_choose_concrete_of_goodEventD_of_card_le
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {bound cap : ℕ}
+    (hA : (A.filter IsRedBaseVertex).card ≤ bound)
+    (hcap : ∀ x ∈ A.filter IsRedBaseVertex, (C.blueProjectionImage I x).card ≤ cap)
+    (hcapWeight : cap ≤ C.blueProjectionWeight I (A.filter IsRedBaseVertex)) :
+    C.blueProjectionPairCount I (A.filter IsRedBaseVertex) ≤
+      min
+        ((I.card - (C.redImage I).card + bound * degreeBound +
+          (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+        (cap.choose 2 +
+          ((I.card - (C.redImage I).card + bound * degreeBound +
+            (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2) := by
+  apply C.blueProjectionPairCount_le_min_choose_of_weight_bounds I
+    (A.filter IsRedBaseVertex) hcap hcapWeight
+  exact
+    C.blueProjectionWeight_filter_isLeft_le_concrete_of_goodEventD_of_card_le
+      hD I A hA
+
+theorem
+    redProjectionPairCount_filter_isRight_le_min_choose_concrete_of_goodEventD_of_card_le
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {bound cap : ℕ}
+    (hA : (A.filter IsBlueBaseVertex).card ≤ bound)
+    (hcap : ∀ x ∈ A.filter IsBlueBaseVertex, (C.redProjectionImage I x).card ≤ cap)
+    (hcapWeight : cap ≤ C.redProjectionWeight I (A.filter IsBlueBaseVertex)) :
+    C.redProjectionPairCount I (A.filter IsBlueBaseVertex) ≤
+      min
+        ((I.card - (C.blueImage I).card + bound * degreeBound +
+          (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+        (cap.choose 2 +
+          ((I.card - (C.blueImage I).card + bound * degreeBound +
+            (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2) := by
+  apply C.redProjectionPairCount_le_min_choose_of_weight_bounds I
+    (A.filter IsBlueBaseVertex) hcap hcapWeight
+  exact
+    C.redProjectionWeight_filter_isRight_le_concrete_of_goodEventD_of_card_le
+      hD I A hA
 
 theorem card_filter_IsRedBaseVertex_le (A : Finset (BaseVertex m)) :
     (A.filter IsRedBaseVertex).card ≤ A.card :=
