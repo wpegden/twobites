@@ -21,6 +21,10 @@ def paperM (n : ℕ) : ℝ :=
 def paperP (β : ℝ) (n : ℕ) : ℝ :=
   β * Real.sqrt (Real.log (n : ℝ) / (n : ℝ))
 
+/-- The huge-case projection cap `(1 + ε₂)pn` appearing in Lemma `lem:huge`. -/
+def paperCap (β ε2 : ℝ) (n : ℕ) : ℝ :=
+  (1 + ε2) * paperP β n * n
+
 /-- The paper's target independent-set scale `k = κ * sqrt(n log n)`. -/
 def paperK (κ : ℝ) (n : ℕ) : ℝ :=
   κ * Real.sqrt ((n : ℝ) * Real.log (n : ℝ))
@@ -49,6 +53,10 @@ def paperMNat (n : ℕ) : ℕ :=
 /-- A natural-number version of the paper's target independent-set scale. -/
 def paperKNat (κ : ℝ) (n : ℕ) : ℕ :=
   ⌈paperK κ n⌉₊
+
+/-- A natural-number version of the huge-case cap `(1 + ε₂)pn`. -/
+def paperCapNat (β ε2 : ℝ) (n : ℕ) : ℕ :=
+  ⌈paperCap β ε2 n⌉₊
 
 theorem paperS_nonneg (n : ℕ) : 0 ≤ paperS n := by
   unfold paperS
@@ -84,6 +92,13 @@ theorem paperM_mul_paperS {n : ℕ} (hS : paperS n ≠ 0) :
 theorem paperP_nonneg {β : ℝ} (hβ : 0 ≤ β) (n : ℕ) : 0 ≤ paperP β n := by
   unfold paperP
   exact mul_nonneg hβ (Real.sqrt_nonneg _)
+
+theorem paperCap_nonneg {β ε2 : ℝ} (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (n : ℕ) :
+    0 ≤ paperCap β ε2 n := by
+  unfold paperCap
+  have hfac : 0 ≤ 1 + ε2 := by
+    linarith
+  exact mul_nonneg (mul_nonneg hfac (paperP_nonneg hβ n)) (Nat.cast_nonneg n)
 
 theorem paperP_pos {β : ℝ} (hβ : 0 < β) {n : ℕ} (hn : 1 < n) : 0 < paperP β n := by
   unfold paperP
@@ -307,6 +322,21 @@ theorem paperMNat_le_paperM {n : ℕ} (hn : 1 < n) : (paperMNat n : ℝ) ≤ pap
 theorem paperK_le_paperKNat (κ : ℝ) (n : ℕ) : paperK κ n ≤ paperKNat κ n := by
   unfold paperKNat
   exact Nat.le_ceil (paperK κ n)
+
+theorem paperCap_le_paperCapNat (β ε2 : ℝ) (n : ℕ) : paperCap β ε2 n ≤ paperCapNat β ε2 n := by
+  unfold paperCapNat
+  exact Nat.le_ceil (paperCap β ε2 n)
+
+theorem paperCapNat_lt_paperCap_add_one {β ε2 : ℝ}
+    (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (n : ℕ) :
+    (paperCapNat β ε2 n : ℝ) < paperCap β ε2 n + 1 := by
+  unfold paperCapNat
+  exact Nat.ceil_lt_add_one (paperCap_nonneg hβ hε2 n)
+
+theorem paperCapNat_le_paperCap_add_one {β ε2 : ℝ}
+    (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (n : ℕ) :
+    (paperCapNat β ε2 n : ℝ) ≤ paperCap β ε2 n + 1 := by
+  exact (paperCapNat_lt_paperCap_add_one hβ hε2 n).le
 
 theorem paperKNat_lt_paperK_add_one {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) :
     (paperKNat κ n : ℝ) < paperK κ n + 1 := by

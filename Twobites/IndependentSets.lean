@@ -991,6 +991,17 @@ theorem cast_min_choose_two_add_le_one_add_mul_min {a b cap : ℕ} {ε : ℝ}
                   ((1 + ε) * (((a.choose 2 : ℕ) : ℝ)))
                   ((1 + ε) * (((cap.choose 2 + (a - cap).choose 2 : ℕ) : ℝ))))
 
+theorem cast_choose_two_le_of_le {a b : ℕ} (h : a ≤ b) :
+    ((a.choose 2 : ℕ) : ℝ) ≤ ((b.choose 2 : ℕ) : ℝ) := by
+  exact_mod_cast Nat.choose_le_choose 2 h
+
+theorem cast_mul_add_choose_two_le_of_le {a b B : ℕ} (hb : b ≤ B) :
+    (a : ℝ) * b + ((b.choose 2 : ℕ) : ℝ) ≤ (a : ℝ) * B + ((B.choose 2 : ℕ) : ℝ) := by
+  have hb' : (b : ℝ) ≤ B := by
+    exact_mod_cast hb
+  have hchoose := cast_choose_two_le_of_le hb
+  nlinarith
+
 theorem sum_choose_two_le_choose_two_cap_add_choose_two_sub_of_le {α : Type*} (A : Finset α)
     (f : α → ℕ) {cap : ℕ} (hcap : ∀ x ∈ A, f x ≤ cap) (hsum : cap ≤ ∑ x ∈ A, f x) :
     ∑ x ∈ A, (f x).choose 2 ≤ cap.choose 2 + ((∑ x ∈ A, f x) - cap).choose 2 := by
@@ -1983,6 +1994,20 @@ def paperHugeBlueCrossRightTargetNat (C : ConstructionData n m) (I : Finset (Fin
     (cap : ℕ) : ℕ :=
   cap.choose 2 + ((Twobites.paperKNat κ n - (C.redImage I).card) - cap).choose 2
 
+/-- The real-valued coercion of the capped right-hand branch for the `H_I ∩ V_R` cross term. -/
+def paperHugeBlueCrossRightTarget (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
+    (cap : ℕ) : ℝ :=
+  (C.paperHugeBlueCrossRightTargetNat I κ cap : ℕ)
+
+/-- The witness-size right-branch error condition for the `H_I ∩ V_R` cross term. -/
+def paperHugeBlueCrossWitnessRightErrorProp (C : ConstructionData n m) (I : Finset (Fin n))
+    (κ ε1 : ℝ) (witnessSize degreeBound projCodegreeBound cap : ℕ) : Prop :=
+  (((Twobites.paperKNat κ n - (C.redImage I).card - cap : ℕ) : ℝ) *
+      (witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound) +
+    (((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound).choose 2 :
+      ℕ) : ℝ) ≤
+    ε1 * C.paperHugeBlueCrossRightTarget I κ cap)
+
 /-- The current natural-number upper bound for the `H_I ∩ V_R` cross-projection term, before the
 final paper asymptotic simplifications are applied. -/
 def paperHugeBlueCrossConcreteBoundNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
@@ -2012,6 +2037,20 @@ def paperHugeRedCrossErrorNat (C : ConstructionData n m) (I : Finset (Fin n))
 def paperHugeRedCrossRightTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
     (cap : ℕ) : ℕ :=
   cap.choose 2 + ((Twobites.paperKNat κ n - (C.blueImage I).card) - cap).choose 2
+
+/-- The real-valued coercion of the capped right-hand branch for the `H_I ∩ V_B` cross term. -/
+def paperHugeRedCrossRightTarget (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
+    (cap : ℕ) : ℝ :=
+  (C.paperHugeRedCrossRightTargetNat I κ cap : ℕ)
+
+/-- The witness-size right-branch error condition for the `H_I ∩ V_B` cross term. -/
+def paperHugeRedCrossWitnessRightErrorProp (C : ConstructionData n m) (I : Finset (Fin n))
+    (κ ε1 : ℝ) (witnessSize degreeBound projCodegreeBound cap : ℕ) : Prop :=
+  (((Twobites.paperKNat κ n - (C.blueImage I).card - cap : ℕ) : ℝ) *
+      (witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound) +
+    (((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound).choose 2 :
+      ℕ) : ℝ) ≤
+    ε1 * C.paperHugeRedCrossRightTarget I κ cap)
 
 /-- The current natural-number upper bound for the `H_I ∩ V_B` cross-projection term, before the
 final paper asymptotic simplifications are applied. -/
@@ -2076,6 +2115,38 @@ theorem paper_huge_red_cross_concrete_of_paperWitness
   simpa [paperHugeRedCrossConcreteBoundNat, paperHugeRedCrossErrorNat, add_assoc] using
     (C.redProjectionPairCount_filter_isRight_le_min_choose_concrete_of_goodEventD_of_paperBound
       hD I (C.HPart I) hI hA hcap hcapWeight)
+
+theorem paperHugeBlueCrossErrorNat_le_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound ≤
+      witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound := by
+  unfold paperHugeBlueCrossErrorNat
+  have hcard : ((C.HPart I).filter IsRedBaseVertex).card ≤ witnessSize := by
+    exact (card_filter_IsRedBaseVertex_le (C.HPart I)).trans <|
+      Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
+  gcongr
+
+theorem paperHugeRedCrossErrorNat_le_of_goodEventD_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound ≤
+      witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound := by
+  unfold paperHugeRedCrossErrorNat
+  have hcard : ((C.HPart I).filter IsBlueBaseVertex).card ≤ witnessSize := by
+    exact (card_filter_IsBlueBaseVertex_le (C.HPart I)).trans <|
+      Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
+  gcongr
 
 /-- The `H_I ∩ V_R` cross-projection term from Paper Lemma `lem:huge`, reduced to a final
 comparison between the current concrete bound and the paper's target min-expression. -/
