@@ -2,18 +2,20 @@
 
 <!-- SUPERVISOR_TASKS:START -->
 ## Supervisor Tasks
-- [ ] Use `repo/paper/reference.tex`, `PAPERNOTES.md`, and the current repo state to build `PLAN.md`.
-- [ ] Produce a comprehensive roadmap for definitions, theorem statements, and proof dependencies.
-- [ ] Identify what can come from mathlib versus what must be formalized here.
-- [ ] Use `NEED_INPUT` for external-result or design-choice questions that need a human decision.
+- [ ] Create `PaperDefinitions.lean` with the definitions needed to state the paper results.
+- [ ] Create `PaperTheorems.lean` with theorem statements as close to the paper as Lean allows.
+- [ ] Keep the files easy for a human to compare against the paper.
+- [ ] Make both files syntactically valid Lean.
 <!-- SUPERVISOR_TASKS:END -->
 
 ## Worker Tasks
-- [ ] Create `repo/Twobites/PaperDefinitions.lean` with the public definitions identified in `repo/PLAN.md`.
-- [ ] Create `repo/Twobites/PaperTheorems.lean` with statement skeletons for Theorem `main` and the Ramsey lower-bound corollary/witness theorem.
-- [ ] Start the helper-module implementation from `repo/PLAN.md`, beginning with the deterministic construction data and parameter-arithmetic layer.
+- [ ] Implement `repo/Twobites/Construction.lean` with the two-color lift, projection maps, fibers, and final simple-graph interface from `repo/PLAN.md`.
+- [ ] Implement `repo/Twobites/ParameterBounds.lean` with the large-`n` inequalities for `s`, `m`, `p`, and `k`.
+- [ ] Revisit the proposition signatures in `PaperDefinitions.lean` and `PaperTheorems.lean` only if the helper modules force a better public interface.
 
 ## Completed
+- [x] Create `repo/Twobites/PaperDefinitions.lean`, `repo/Twobites/PaperTheorems.lean`, and the root wrapper files `repo/PaperDefinitions.lean`, `repo/PaperTheorems.lean`.
+- [x] State the paper-facing main theorem, Ramsey lower-bound theorem, and witness-form Ramsey corollary as Lean propositions with no axioms or `sorry`s.
 - [x] Write `repo/PLAN.md` for the main-results formalization, including statement choices, imports, reusable definitions, and dependency order.
 - [x] Read `repo/paper/reference.tex` end to end, with the paper-check focused on the main-result sections.
 - [x] Check the proof chain for Theorem `main`, including Lemmas `lem:fiber_and_degree`, `lem:large`, `lem:med`, `lem:small`, `lem:huge`, `lem:RISI`, and `lem:RI`.
