@@ -14,7 +14,7 @@
 - [ ] Revisit the proposition signatures in `PaperDefinitions.lean` and `PaperTheorems.lean` only if the helper modules force a better public interface.
 
 ## Completed
-- [x] Create `repo/Twobites/PaperDefinitions.lean`, `repo/Twobites/PaperTheorems.lean`, and the root wrapper files `repo/PaperDefinitions.lean`, `repo/PaperTheorems.lean`.
+- [x] Put the substantive paper-facing definitions and theorem statements directly in `repo/PaperDefinitions.lean` and `repo/PaperTheorems.lean`, while keeping the `repo/Twobites/` files buildable.
 - [x] State the paper-facing main theorem, Ramsey lower-bound theorem, and witness-form Ramsey corollary as Lean propositions with no axioms or `sorry`s.
 - [x] Write `repo/PLAN.md` for the main-results formalization, including statement choices, imports, reusable definitions, and dependency order.
 - [x] Read `repo/paper/reference.tex` end to end, with the paper-check focused on the main-result sections.
