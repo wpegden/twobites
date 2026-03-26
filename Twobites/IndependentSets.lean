@@ -735,6 +735,69 @@ theorem cast_sum_choose_two_card_le_half_threshold_mul_sum_card {α : Type*}
       intro x hx
       ring
 
+theorem choose_two_add_le_choose_two_sum (a b : ℕ) :
+    a.choose 2 + b.choose 2 ≤ (a + b).choose 2 := by
+  have hdiff :
+      (((a + b).choose 2 : ℕ) : ℚ) - ((a.choose 2 + b.choose 2 : ℕ) : ℚ) = a * b := by
+    rw [Nat.cast_add]
+    rw [Nat.cast_choose_two, Nat.cast_choose_two, Nat.cast_choose_two]
+    rw [Nat.cast_add]
+    ring_nf
+  have hab : (0 : ℚ) ≤ a * b := by
+    positivity
+  have hq : ((a.choose 2 + b.choose 2 : ℕ) : ℚ) ≤ ((a + b).choose 2 : ℕ) := by
+    linarith
+  exact_mod_cast hq
+
+theorem sum_choose_two_le_choose_two_sum {α : Type*} (A : Finset α) (f : α → ℕ) :
+    ∑ x ∈ A, (f x).choose 2 ≤ (∑ x ∈ A, f x).choose 2 := by
+  classical
+  induction A using Finset.induction_on with
+  | empty =>
+      simp
+  | @insert a s ha ih =>
+      calc
+        ∑ x ∈ insert a s, (f x).choose 2 = (f a).choose 2 + ∑ x ∈ s, (f x).choose 2 := by
+          simp [ha]
+        _ ≤ (f a).choose 2 + (∑ x ∈ s, f x).choose 2 := by
+          gcongr
+        _ ≤ ((f a) + ∑ x ∈ s, f x).choose 2 := choose_two_add_le_choose_two_sum _ _
+        _ = (∑ x ∈ insert a s, f x).choose 2 := by
+          simp [ha]
+
+theorem partPairCount_le_partWeight_choose_two (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : C.partPairCount I A ≤ (C.partWeight I A).choose 2 := by
+  unfold partPairCount partWeight
+  simpa using sum_choose_two_le_choose_two_sum A (fun x => C.xCard I x)
+
+theorem redProjectionPairCount_le_redProjectionWeight_choose_two (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    C.redProjectionPairCount I A ≤ (C.redProjectionWeight I A).choose 2 := by
+  unfold redProjectionPairCount redProjectionWeight
+  simpa using sum_choose_two_le_choose_two_sum A
+    (fun x => (C.redProjectionImage I x).card)
+
+theorem blueProjectionPairCount_le_blueProjectionWeight_choose_two (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    C.blueProjectionPairCount I A ≤ (C.blueProjectionWeight I A).choose 2 := by
+  unfold blueProjectionPairCount blueProjectionWeight
+  simpa using sum_choose_two_le_choose_two_sum A
+    (fun x => (C.blueProjectionImage I x).card)
+
+theorem redProjectionPairCount_le_choose_of_weight_le (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {W : ℕ}
+    (hW : C.redProjectionWeight I A ≤ W) :
+    C.redProjectionPairCount I A ≤ W.choose 2 := by
+  exact (C.redProjectionPairCount_le_redProjectionWeight_choose_two I A).trans
+    (Nat.choose_le_choose 2 hW)
+
+theorem blueProjectionPairCount_le_choose_of_weight_le (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {W : ℕ}
+    (hW : C.blueProjectionWeight I A ≤ W) :
+    C.blueProjectionPairCount I A ≤ W.choose 2 := by
+  exact (C.blueProjectionPairCount_le_blueProjectionWeight_choose_two I A).trans
+    (Nat.choose_le_choose 2 hW)
+
 theorem redProjectionWeight_le_partWeight (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : C.redProjectionWeight I A ≤ C.partWeight I A := by
   unfold redProjectionWeight partWeight
@@ -853,6 +916,28 @@ theorem redProjectionWeight_filter_isRight_le_card_redProjectionUnion_add_choose
         intro hbb'
         apply hxy
         simp [hbb'])
+
+theorem blueProjectionPairCount_filter_isLeft_le_choose_of_goodEventD
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    C.blueProjectionPairCount I (A.filter IsRedBaseVertex) ≤
+      ((C.blueProjectionUnion I (A.filter IsRedBaseVertex)).card +
+        (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound).choose 2 := by
+  apply C.blueProjectionPairCount_le_choose_of_weight_le I
+  exact blueProjectionWeight_filter_isLeft_le_card_blueProjectionUnion_add_choose_mul_of_goodEventD
+    C hD I A
+
+theorem redProjectionPairCount_filter_isRight_le_choose_of_goodEventD
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    C.redProjectionPairCount I (A.filter IsBlueBaseVertex) ≤
+      ((C.redProjectionUnion I (A.filter IsBlueBaseVertex)).card +
+        (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound).choose 2 := by
+  apply C.redProjectionPairCount_le_choose_of_weight_le I
+  exact redProjectionWeight_filter_isRight_le_card_redProjectionUnion_add_choose_mul_of_goodEventD
+    C hD I A
 
 theorem card_filter_IsRedBaseVertex_le (A : Finset (BaseVertex m)) :
     (A.filter IsRedBaseVertex).card ≤ A.card :=
