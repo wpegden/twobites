@@ -2,18 +2,21 @@
 
 <!-- SUPERVISOR_TASKS:START -->
 ## Supervisor Tasks
-- [ ] Create `PaperDefinitions.lean` with the definitions needed to state the paper results.
-- [ ] Create `PaperTheorems.lean` with theorem statements as close to the paper as Lean allows.
-- [ ] Keep the files easy for a human to compare against the paper.
-- [ ] Make both files syntactically valid Lean.
+- [ ] Prove the target statements presented in `PaperTheorems.lean`.
+- [ ] Keep reusable proof infrastructure in separate support files when that yields a cleaner project structure.
+- [ ] Maintain `TASKS.md` and `PLAN.md` as the proof frontier moves.
+- [ ] Keep sorrys within the configured policy.
+- [ ] Do not introduce unapproved axioms.
 <!-- SUPERVISOR_TASKS:END -->
 
 ## Worker Tasks
-- [ ] Implement `repo/Twobites/Construction.lean` with the two-color lift, projection maps, fibers, and final simple-graph interface from `repo/PLAN.md`.
-- [ ] Implement `repo/Twobites/ParameterBounds.lean` with the large-`n` inequalities for `s`, `m`, `p`, and `k`.
-- [ ] Revisit the proposition signatures in `PaperDefinitions.lean` and `PaperTheorems.lean` only if the helper modules force a better public interface.
+- [ ] Extend `repo/Twobites/Construction.lean` from the raw two-color lift to the triangle-deletion bookkeeping and retained-edge simple graph from `repo/PLAN.md`.
+- [ ] Extend `repo/Twobites/ParameterBounds.lean` from the basic parameter identities to the actual large-`n` and small-`ε` inequalities used later in Sections 3-4.
+- [ ] Start the deterministic independent-set/open-pair layer that bridges the construction API to the proofs of `lem:huge`, `lem:RISI`, and `lem:RI`.
 
 ## Completed
+- [x] Add the first deterministic support layer in `repo/Twobites/Construction.lean`: construction data, projections, finite-set images, fibers, and the raw red/blue/simple lifted graphs.
+- [x] Add the first parameter support layer in `repo/Twobites/ParameterBounds.lean`: paper-style definitions of `s`, `m`, `p`, `k` together with basic positivity and squaring lemmas.
 - [x] Put the substantive paper-facing definitions and theorem statements directly in `repo/PaperDefinitions.lean` and `repo/PaperTheorems.lean`, while keeping the `repo/Twobites/` files buildable.
 - [x] State the paper-facing main theorem, Ramsey lower-bound theorem, and witness-form Ramsey corollary as Lean propositions with no axioms or `sorry`s.
 - [x] Write `repo/PLAN.md` for the main-results formalization, including statement choices, imports, reusable definitions, and dependency order.
