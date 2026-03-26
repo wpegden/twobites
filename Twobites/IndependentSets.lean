@@ -765,6 +765,72 @@ theorem sum_choose_two_le_choose_two_sum {α : Type*} (A : Finset α) (f : α �
         _ = (∑ x ∈ insert a s, f x).choose 2 := by
           simp [ha]
 
+theorem choose_two_add_le_choose_two_cap_add_choose_two_sub {a b cap : ℕ}
+    (ha : a ≤ cap) (hb : b ≤ cap) (hcap : cap ≤ a + b) :
+    a.choose 2 + b.choose 2 ≤ cap.choose 2 + (a + b - cap).choose 2 := by
+  have hdiff :
+      ((cap.choose 2 + (a + b - cap).choose 2 : ℕ) : ℚ) -
+        ((a.choose 2 + b.choose 2 : ℕ) : ℚ) = ((cap : ℚ) - a) * ((cap : ℚ) - b) := by
+    rw [Nat.cast_add, Nat.cast_add]
+    rw [Nat.cast_choose_two, Nat.cast_choose_two, Nat.cast_choose_two, Nat.cast_choose_two]
+    rw [Nat.cast_sub hcap]
+    repeat rw [Nat.cast_add]
+    ring_nf
+  have hnonneg : (0 : ℚ) ≤ ((cap : ℚ) - a) * ((cap : ℚ) - b) := by
+    apply mul_nonneg
+    · exact sub_nonneg.mpr (by exact_mod_cast ha)
+    · exact sub_nonneg.mpr (by exact_mod_cast hb)
+  have hq :
+      ((a.choose 2 + b.choose 2 : ℕ) : ℚ) ≤
+        ((cap.choose 2 + (a + b - cap).choose 2 : ℕ) : ℚ) := by
+    linarith
+  exact_mod_cast hq
+
+theorem sum_choose_two_le_choose_two_cap_add_choose_two_sub_of_le {α : Type*} (A : Finset α)
+    (f : α → ℕ) {cap : ℕ} (hcap : ∀ x ∈ A, f x ≤ cap) (hsum : cap ≤ ∑ x ∈ A, f x) :
+    ∑ x ∈ A, (f x).choose 2 ≤ cap.choose 2 + ((∑ x ∈ A, f x) - cap).choose 2 := by
+  classical
+  induction A using Finset.induction_on with
+  | empty =>
+      have hcap_le : cap ≤ 0 := by
+        simpa using hsum
+      have hcap0 : cap = 0 := Nat.eq_zero_of_le_zero hcap_le
+      simp [hcap0]
+  | @insert a s ha ih =>
+      have haCap : f a ≤ cap := hcap a (by simp [ha])
+      by_cases hs : cap ≤ ∑ x ∈ s, f x
+      · have hsCap : ∀ x ∈ s, f x ≤ cap := by
+          intro x hx
+          exact hcap x (Finset.mem_insert_of_mem hx)
+        calc
+          ∑ x ∈ insert a s, (f x).choose 2 = (f a).choose 2 + ∑ x ∈ s, (f x).choose 2 := by
+            simp [ha]
+          _ ≤ (f a).choose 2 + (cap.choose 2 + ((∑ x ∈ s, f x) - cap).choose 2) := by
+            gcongr
+            exact ih hsCap hs
+          _ = cap.choose 2 + ((f a).choose 2 + ((∑ x ∈ s, f x) - cap).choose 2) := by
+            ac_rfl
+          _ ≤ cap.choose 2 + (f a + ((∑ x ∈ s, f x) - cap)).choose 2 := by
+            gcongr
+            exact choose_two_add_le_choose_two_sum _ _
+          _ = cap.choose 2 + ((∑ x ∈ insert a s, f x) - cap).choose 2 := by
+            rw [Finset.sum_insert ha]
+            rw [Nat.add_sub_assoc hs]
+      · have hslt : ∑ x ∈ s, f x < cap := Nat.lt_of_not_ge hs
+        have hs' : ∑ x ∈ s, f x ≤ cap := le_of_lt hslt
+        have hsumInsert : cap ≤ f a + ∑ x ∈ s, f x := by
+          simpa [Finset.sum_insert, ha] using hsum
+        calc
+          ∑ x ∈ insert a s, (f x).choose 2 = (f a).choose 2 + ∑ x ∈ s, (f x).choose 2 := by
+            simp [ha]
+          _ ≤ (f a).choose 2 + (∑ x ∈ s, f x).choose 2 := by
+            gcongr
+            exact sum_choose_two_le_choose_two_sum s f
+          _ ≤ cap.choose 2 + (f a + ∑ x ∈ s, f x - cap).choose 2 := by
+            exact choose_two_add_le_choose_two_cap_add_choose_two_sub haCap hs' hsumInsert
+          _ = cap.choose 2 + ((∑ x ∈ insert a s, f x) - cap).choose 2 := by
+            rw [Finset.sum_insert ha]
+
 theorem partPairCount_le_partWeight_choose_two (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : C.partPairCount I A ≤ (C.partWeight I A).choose 2 := by
   unfold partPairCount partWeight
@@ -797,6 +863,24 @@ theorem blueProjectionPairCount_le_choose_of_weight_le (C : ConstructionData n m
     C.blueProjectionPairCount I A ≤ W.choose 2 := by
   exact (C.blueProjectionPairCount_le_blueProjectionWeight_choose_two I A).trans
     (Nat.choose_le_choose 2 hW)
+
+theorem redProjectionPairCount_le_choose_two_cap_add_choose_two_sub_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {cap : ℕ}
+    (hcap : ∀ x ∈ A, (C.redProjectionImage I x).card ≤ cap)
+    (hsum : cap ≤ C.redProjectionWeight I A) :
+    C.redProjectionPairCount I A ≤ cap.choose 2 + (C.redProjectionWeight I A - cap).choose 2 := by
+  unfold redProjectionPairCount redProjectionWeight
+  exact sum_choose_two_le_choose_two_cap_add_choose_two_sub_of_le A
+    (fun x => (C.redProjectionImage I x).card) hcap hsum
+
+theorem blueProjectionPairCount_le_choose_two_cap_add_choose_two_sub_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {cap : ℕ}
+    (hcap : ∀ x ∈ A, (C.blueProjectionImage I x).card ≤ cap)
+    (hsum : cap ≤ C.blueProjectionWeight I A) :
+    C.blueProjectionPairCount I A ≤ cap.choose 2 + (C.blueProjectionWeight I A - cap).choose 2 := by
+  unfold blueProjectionPairCount blueProjectionWeight
+  exact sum_choose_two_le_choose_two_cap_add_choose_two_sub_of_le A
+    (fun x => (C.blueProjectionImage I x).card) hcap hsum
 
 theorem redProjectionWeight_le_partWeight (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : C.redProjectionWeight I A ≤ C.partWeight I A := by
