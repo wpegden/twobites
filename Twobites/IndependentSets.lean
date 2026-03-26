@@ -882,6 +882,30 @@ theorem blueProjectionPairCount_le_choose_two_cap_add_choose_two_sub_of_le
   exact sum_choose_two_le_choose_two_cap_add_choose_two_sub_of_le A
     (fun x => (C.blueProjectionImage I x).card) hcap hsum
 
+theorem redProjectionPairCount_le_min_choose_of_weight_bounds (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {cap W : ℕ}
+    (hcap : ∀ x ∈ A, (C.redProjectionImage I x).card ≤ cap)
+    (hcapWeight : cap ≤ C.redProjectionWeight I A) (hweight : C.redProjectionWeight I A ≤ W) :
+    C.redProjectionPairCount I A ≤ min (W.choose 2) (cap.choose 2 + (W - cap).choose 2) := by
+  refine le_min ?_ ?_
+  · exact C.redProjectionPairCount_le_choose_of_weight_le I A hweight
+  · have hbase := C.redProjectionPairCount_le_choose_two_cap_add_choose_two_sub_of_le
+      I A hcap hcapWeight
+    have hsub : C.redProjectionWeight I A - cap ≤ W - cap := Nat.sub_le_sub_right hweight _
+    exact hbase.trans (Nat.add_le_add_left (Nat.choose_le_choose 2 hsub) _)
+
+theorem blueProjectionPairCount_le_min_choose_of_weight_bounds (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {cap W : ℕ}
+    (hcap : ∀ x ∈ A, (C.blueProjectionImage I x).card ≤ cap)
+    (hcapWeight : cap ≤ C.blueProjectionWeight I A) (hweight : C.blueProjectionWeight I A ≤ W) :
+    C.blueProjectionPairCount I A ≤ min (W.choose 2) (cap.choose 2 + (W - cap).choose 2) := by
+  refine le_min ?_ ?_
+  · exact C.blueProjectionPairCount_le_choose_of_weight_le I A hweight
+  · have hbase := C.blueProjectionPairCount_le_choose_two_cap_add_choose_two_sub_of_le
+      I A hcap hcapWeight
+    have hsub : C.blueProjectionWeight I A - cap ≤ W - cap := Nat.sub_le_sub_right hweight _
+    exact hbase.trans (Nat.add_le_add_left (Nat.choose_le_choose 2 hsub) _)
+
 theorem redProjectionWeight_le_partWeight (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : C.redProjectionWeight I A ≤ C.partWeight I A := by
   unfold redProjectionWeight partWeight
@@ -1020,6 +1044,42 @@ theorem redProjectionPairCount_filter_isRight_le_choose_of_goodEventD
       ((C.redProjectionUnion I (A.filter IsBlueBaseVertex)).card +
         (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound).choose 2 := by
   apply C.redProjectionPairCount_le_choose_of_weight_le I
+  exact redProjectionWeight_filter_isRight_le_card_redProjectionUnion_add_choose_mul_of_goodEventD
+    C hD I A
+
+theorem blueProjectionPairCount_filter_isLeft_le_min_choose_union_error_of_goodEventD
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {cap : ℕ}
+    (hcap : ∀ x ∈ A.filter IsRedBaseVertex, (C.blueProjectionImage I x).card ≤ cap)
+    (hcapWeight : cap ≤ C.blueProjectionWeight I (A.filter IsRedBaseVertex)) :
+    C.blueProjectionPairCount I (A.filter IsRedBaseVertex) ≤
+      min
+        (((C.blueProjectionUnion I (A.filter IsRedBaseVertex)).card +
+          (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+        (cap.choose 2 +
+          (((C.blueProjectionUnion I (A.filter IsRedBaseVertex)).card +
+            (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2) := by
+  apply C.blueProjectionPairCount_le_min_choose_of_weight_bounds I
+    (A.filter IsRedBaseVertex) hcap hcapWeight
+  exact blueProjectionWeight_filter_isLeft_le_card_blueProjectionUnion_add_choose_mul_of_goodEventD
+    C hD I A
+
+theorem redProjectionPairCount_filter_isRight_le_min_choose_union_error_of_goodEventD
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {cap : ℕ}
+    (hcap : ∀ x ∈ A.filter IsBlueBaseVertex, (C.redProjectionImage I x).card ≤ cap)
+    (hcapWeight : cap ≤ C.redProjectionWeight I (A.filter IsBlueBaseVertex)) :
+    C.redProjectionPairCount I (A.filter IsBlueBaseVertex) ≤
+      min
+        (((C.redProjectionUnion I (A.filter IsBlueBaseVertex)).card +
+          (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+        (cap.choose 2 +
+          (((C.redProjectionUnion I (A.filter IsBlueBaseVertex)).card +
+            (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2) := by
+  apply C.redProjectionPairCount_le_min_choose_of_weight_bounds I
+    (A.filter IsBlueBaseVertex) hcap hcapWeight
   exact redProjectionWeight_filter_isRight_le_card_redProjectionUnion_add_choose_mul_of_goodEventD
     C hD I A
 
