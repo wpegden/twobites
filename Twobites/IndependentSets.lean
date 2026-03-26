@@ -1315,6 +1315,82 @@ theorem
     C.redProjectionWeight_filter_isRight_le_concrete_of_goodEventD_of_card_le
       hD I A hA
 
+theorem blueProjectionWeight_filter_isLeft_le_concrete_of_goodEventD_of_paperBound
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {κ : ℝ} {bound : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hA : (A.filter IsRedBaseVertex).card ≤ bound) :
+    C.blueProjectionWeight I (A.filter IsRedBaseVertex) ≤
+      Twobites.paperKNat κ n - (C.redImage I).card + bound * degreeBound +
+        (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound := by
+  have hbase :=
+    C.blueProjectionWeight_filter_isLeft_le_concrete_of_goodEventD_of_card_le hD I A hA
+  have hsub :
+      I.card - (C.redImage I).card ≤
+        Twobites.paperKNat κ n - (C.redImage I).card := by
+    exact Nat.sub_le_sub_right hI _
+  exact hbase.trans <| by
+    gcongr
+
+theorem redProjectionWeight_filter_isRight_le_concrete_of_goodEventD_of_paperBound
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {κ : ℝ} {bound : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hA : (A.filter IsBlueBaseVertex).card ≤ bound) :
+    C.redProjectionWeight I (A.filter IsBlueBaseVertex) ≤
+      Twobites.paperKNat κ n - (C.blueImage I).card + bound * degreeBound +
+        (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound := by
+  have hbase :=
+    C.redProjectionWeight_filter_isRight_le_concrete_of_goodEventD_of_card_le hD I A hA
+  have hsub :
+      I.card - (C.blueImage I).card ≤
+        Twobites.paperKNat κ n - (C.blueImage I).card := by
+    exact Nat.sub_le_sub_right hI _
+  exact hbase.trans <| by
+    gcongr
+
+theorem blueProjectionPairCount_filter_isLeft_le_min_choose_concrete_of_goodEventD_of_paperBound
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {κ : ℝ} {bound cap : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hA : (A.filter IsRedBaseVertex).card ≤ bound)
+    (hcap : ∀ x ∈ A.filter IsRedBaseVertex, (C.blueProjectionImage I x).card ≤ cap)
+    (hcapWeight : cap ≤ C.blueProjectionWeight I (A.filter IsRedBaseVertex)) :
+    C.blueProjectionPairCount I (A.filter IsRedBaseVertex) ≤
+      min
+        ((Twobites.paperKNat κ n - (C.redImage I).card + bound * degreeBound +
+          (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+        (cap.choose 2 +
+          ((Twobites.paperKNat κ n - (C.redImage I).card + bound * degreeBound +
+            (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2) := by
+  apply C.blueProjectionPairCount_le_min_choose_of_weight_bounds I
+    (A.filter IsRedBaseVertex) hcap hcapWeight
+  exact C.blueProjectionWeight_filter_isLeft_le_concrete_of_goodEventD_of_paperBound
+    hD I A hI hA
+
+theorem redProjectionPairCount_filter_isRight_le_min_choose_concrete_of_goodEventD_of_paperBound
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {κ : ℝ} {bound cap : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hA : (A.filter IsBlueBaseVertex).card ≤ bound)
+    (hcap : ∀ x ∈ A.filter IsBlueBaseVertex, (C.redProjectionImage I x).card ≤ cap)
+    (hcapWeight : cap ≤ C.redProjectionWeight I (A.filter IsBlueBaseVertex)) :
+    C.redProjectionPairCount I (A.filter IsBlueBaseVertex) ≤
+      min
+        ((Twobites.paperKNat κ n - (C.blueImage I).card + bound * degreeBound +
+          (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+        (cap.choose 2 +
+          ((Twobites.paperKNat κ n - (C.blueImage I).card + bound * degreeBound +
+            (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2) := by
+  apply C.redProjectionPairCount_le_min_choose_of_weight_bounds I
+    (A.filter IsBlueBaseVertex) hcap hcapWeight
+  exact C.redProjectionWeight_filter_isRight_le_concrete_of_goodEventD_of_paperBound
+    hD I A hI hA
+
 theorem card_filter_IsRedBaseVertex_le (A : Finset (BaseVertex m)) :
     (A.filter IsRedBaseVertex).card ≤ A.card :=
   Finset.card_le_card (Finset.filter_subset _ _)
@@ -1813,6 +1889,62 @@ theorem cast_hugeBlueContribution_filter_isRight_le_eps_mul_paperKSq_of_goodEven
       ε1 * Twobites.paperK κ n ^ 2 :=
   (C.cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_paperWitness
     hD I hI hwitness).trans hbound
+
+/-- The `H_I ∩ V_R` cross-projection term from Paper Lemma `lem:huge`, reduced to the remaining
+paper-witness arithmetic and cap/min-expression estimates. -/
+theorem paper_huge_blue_cross_concrete_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ : ℝ} {witnessSize cap : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex, (C.blueProjectionImage I x).card ≤ cap)
+    (hcapWeight :
+      cap ≤ C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex)) :
+    C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) ≤
+      min
+        ((Twobites.paperKNat κ n - (C.redImage I).card + witnessSize * degreeBound +
+          ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+        (cap.choose 2 +
+          ((Twobites.paperKNat κ n - (C.redImage I).card + witnessSize * degreeBound +
+            ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound) -
+            cap).choose 2) := by
+  have hA : ((C.HPart I).filter IsRedBaseVertex).card ≤ witnessSize := by
+    exact (card_filter_IsRedBaseVertex_le (C.HPart I)).trans <|
+      Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
+  exact C.blueProjectionPairCount_filter_isLeft_le_min_choose_concrete_of_goodEventD_of_paperBound
+    hD I (C.HPart I) hI hA hcap hcapWeight
+
+/-- The `H_I ∩ V_B` cross-projection term from Paper Lemma `lem:huge`, reduced to the remaining
+paper-witness arithmetic and cap/min-expression estimates. -/
+theorem paper_huge_red_cross_concrete_of_paperWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ : ℝ} {witnessSize cap : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex, (C.redProjectionImage I x).card ≤ cap)
+    (hcapWeight :
+      cap ≤ C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex)) :
+    C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+      min
+        ((Twobites.paperKNat κ n - (C.blueImage I).card + witnessSize * degreeBound +
+          ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+        (cap.choose 2 +
+          ((Twobites.paperKNat κ n - (C.blueImage I).card + witnessSize * degreeBound +
+            ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound) -
+            cap).choose 2) := by
+  have hA : ((C.HPart I).filter IsBlueBaseVertex).card ≤ witnessSize := by
+    exact (card_filter_IsBlueBaseVertex_le (C.HPart I)).trans <|
+      Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
+  exact C.redProjectionPairCount_filter_isRight_le_min_choose_concrete_of_goodEventD_of_paperBound
+    hD I (C.HPart I) hI hA hcap hcapWeight
 
 /-- The diagonal red part of Paper Lemma `lem:huge`, reduced to the remaining Section 3 witness
 arithmetic. -/

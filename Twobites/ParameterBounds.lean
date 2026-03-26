@@ -227,6 +227,24 @@ theorem ceil_paperT2_le_ceil_paperT1_of_loglog_le {ε : ℝ} {n : ℕ} (hn : 0 <
   apply Nat.ceil_le.2
   exact (paperT2_le_paperT1_of_loglog_le hn hlog hloglog hbound).trans (Nat.le_ceil _)
 
+theorem paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_iff
+    {κ : ℝ} {n witnessSize codegreeBound : ℕ} :
+    paperKNat κ n < witnessSize * ⌈paperT1 n⌉₊ - witnessSize.choose 2 * codegreeBound ↔
+      paperKNat κ n + witnessSize.choose 2 * codegreeBound < witnessSize * ⌈paperT1 n⌉₊ :=
+  Nat.lt_sub_iff_add_lt
+
+theorem paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_iff
+    {κ ε : ℝ} {n witnessSize codegreeBound : ℕ} :
+    paperKNat κ n < witnessSize * ⌈paperT2 ε n⌉₊ - witnessSize.choose 2 * codegreeBound ↔
+      paperKNat κ n + witnessSize.choose 2 * codegreeBound < witnessSize * ⌈paperT2 ε n⌉₊ :=
+  Nat.lt_sub_iff_add_lt
+
+theorem paperKNat_lt_mul_ceil_paperT3_sub_choose_mul_iff
+    {κ ε : ℝ} {n witnessSize codegreeBound : ℕ} :
+    paperKNat κ n < witnessSize * ⌈paperT3 ε n⌉₊ - witnessSize.choose 2 * codegreeBound ↔
+      paperKNat κ n + witnessSize.choose 2 * codegreeBound < witnessSize * ⌈paperT3 ε n⌉₊ :=
+  Nat.lt_sub_iff_add_lt
+
 theorem one_le_paperSNat (n : ℕ) : 1 ≤ paperSNat n := by
   unfold paperSNat
   exact Nat.le_max_left _ _
