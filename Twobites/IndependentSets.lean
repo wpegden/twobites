@@ -154,6 +154,16 @@ def blueProjectionPairCount (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : ℕ :=
   ∑ x ∈ A, ((C.blueProjectionImage I x).card).choose 2
 
+/-- The union `⋃_{v ∈ A} π_R(X_v(I))` that appears in the huge-case projection bounds. -/
+def redProjectionUnion (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (Fin m) :=
+  A.biUnion fun x => C.redProjectionImage I x
+
+/-- The union `⋃_{v ∈ A} π_B(X_v(I))` that appears in the huge-case projection bounds. -/
+def blueProjectionUnion (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (Fin m) :=
+  A.biUnion fun x => C.blueProjectionImage I x
+
 /-- The paper's closed-pair predicate `C(I)`, expressed on ordered pairs of distinct vertices of
 `I`. -/
 def ClosedPair (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) : Prop :=
@@ -441,6 +451,40 @@ theorem partWeight_le_card_I_add_choose_mul_of_goodEventD (C : ConstructionData 
   apply C.partWeight_le_card_I_add_choose_mul_of_pairwise_inter_bound I A
   intro x hx y hy hxy
   exact C.xInter_card_le_of_goodEventD hD I hxy
+
+theorem card_redProjectionUnion_le_redProjectionWeight (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.redProjectionUnion I A).card ≤ C.redProjectionWeight I A := by
+  unfold redProjectionUnion redProjectionWeight
+  exact Finset.card_biUnion_le
+
+theorem card_blueProjectionUnion_le_blueProjectionWeight (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.blueProjectionUnion I A).card ≤ C.blueProjectionWeight I A := by
+  unfold blueProjectionUnion blueProjectionWeight
+  exact Finset.card_biUnion_le
+
+theorem redProjectionWeight_le_card_redProjectionUnion_add_choose_mul_of_pairwise_inter_bound
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {D : ℕ}
+    (hinter :
+      ∀ x ∈ A, ∀ y ∈ A, x ≠ y →
+        (C.redProjectionImage I x ∩ C.redProjectionImage I y).card ≤ D) :
+    C.redProjectionWeight I A ≤
+      (C.redProjectionUnion I A).card + A.card.choose 2 * D := by
+  unfold redProjectionWeight redProjectionUnion
+  exact sum_card_le_card_biUnion_add_choose_mul_of_inter_bound A
+    (fun x => C.redProjectionImage I x) hinter
+
+theorem blueProjectionWeight_le_card_blueProjectionUnion_add_choose_mul_of_pairwise_inter_bound
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {D : ℕ}
+    (hinter :
+      ∀ x ∈ A, ∀ y ∈ A, x ≠ y →
+        (C.blueProjectionImage I x ∩ C.blueProjectionImage I y).card ≤ D) :
+    C.blueProjectionWeight I A ≤
+      (C.blueProjectionUnion I A).card + A.card.choose 2 * D := by
+  unfold blueProjectionWeight blueProjectionUnion
+  exact sum_card_le_card_biUnion_add_choose_mul_of_inter_bound A
+    (fun x => C.blueProjectionImage I x) hinter
 
 theorem lowerNat_mul_card_le_partWeight_of_le_xCard (C : ConstructionData n m)
     (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {lower : ℕ}
@@ -770,6 +814,46 @@ theorem blueProjectionWeight_filter_isRight_le_of_goodEventD_of_card_le
   (C.blueProjectionWeight_filter_isRight_le_of_goodEventD hD I A).trans
     (Nat.mul_le_mul_right _ hA)
 
+theorem blueProjectionWeight_filter_isLeft_le_card_blueProjectionUnion_add_choose_mul_of_goodEventD
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    C.blueProjectionWeight I (A.filter IsRedBaseVertex) ≤
+      (C.blueProjectionUnion I (A.filter IsRedBaseVertex)).card +
+        (A.filter IsRedBaseVertex).card.choose 2 * projCodegreeBound := by
+  apply C.blueProjectionWeight_le_card_blueProjectionUnion_add_choose_mul_of_pairwise_inter_bound I
+  intro x hx y hy hxy
+  rcases x with r | b
+  · rcases y with r' | b'
+    · exact C.blueProjectionInter_card_le_of_goodEventD hD I (by
+        intro hrr'
+        apply hxy
+        simp [hrr'])
+    · exfalso
+      simpa using (Finset.mem_filter.1 hy).2
+  · exfalso
+    simpa using (Finset.mem_filter.1 hx).2
+
+theorem redProjectionWeight_filter_isRight_le_card_redProjectionUnion_add_choose_mul_of_goodEventD
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    C.redProjectionWeight I (A.filter IsBlueBaseVertex) ≤
+      (C.redProjectionUnion I (A.filter IsBlueBaseVertex)).card +
+        (A.filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound := by
+  apply C.redProjectionWeight_le_card_redProjectionUnion_add_choose_mul_of_pairwise_inter_bound I
+  intro x hx y hy hxy
+  rcases x with r | b
+  · exfalso
+    simpa using (Finset.mem_filter.1 hx).2
+  · rcases y with r' | b'
+    · exfalso
+      simpa using (Finset.mem_filter.1 hy).2
+    · exact C.redProjectionInter_card_le_of_goodEventD hD I (by
+        intro hbb'
+        apply hxy
+        simp [hbb'])
+
 theorem card_filter_IsRedBaseVertex_le (A : Finset (BaseVertex m)) :
     (A.filter IsRedBaseVertex).card ≤ A.card :=
   Finset.card_le_card (Finset.filter_subset _ _)
@@ -1030,6 +1114,41 @@ theorem cast_mediumContribution_le_eps_mul_paperKSq_of_goodEventD_of_paperWitnes
     ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤ ε1 * Twobites.paperK κ n ^ 2 :=
   (C.cast_mediumContribution_le_of_goodEventD_of_paperWitness hD I hI hwitness).trans hbound
 
+/-- Paper Lemma `lem:large`, reduced to the remaining Section 3 witness arithmetic. -/
+theorem paper_large_deterministic
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε ε1 : ℝ} {witnessSize : ℕ}
+    (hT1 : 0 ≤ Twobites.paperT1 n) (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT2 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hbound :
+      (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤ ε1 * Twobites.paperK κ n ^ 2 :=
+  C.cast_largeContribution_le_eps_mul_paperKSq_of_goodEventD_of_paperWitness
+    hD I hT1 hI hwitness hbound
+
+/-- Paper Lemma `lem:med`, reduced to the remaining witness arithmetic coming from the medium
+event analysis. -/
+theorem paper_medium_deterministic
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε ε1 : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT3 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hbound :
+      (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat κ n + witnessSize.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤ ε1 * Twobites.paperK κ n ^ 2 :=
+  C.cast_mediumContribution_le_eps_mul_paperKSq_of_goodEventD_of_paperWitness
+    hD I hI hwitness hbound
+
 theorem cast_redProjectionPairCount_le_half_card_mul_redProjectionWeight
     (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
     ((C.redProjectionPairCount I A : ℕ) : ℝ) ≤
@@ -1233,6 +1352,42 @@ theorem cast_hugeBlueContribution_filter_isRight_le_eps_mul_paperKSq_of_goodEven
       ε1 * Twobites.paperK κ n ^ 2 :=
   (C.cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_paperWitness
     hD I hI hwitness).trans hbound
+
+/-- The diagonal red part of Paper Lemma `lem:huge`, reduced to the remaining Section 3 witness
+arithmetic. -/
+theorem paper_huge_red_diagonal_deterministic
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε1 : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hbound :
+      ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+      ε1 * Twobites.paperK κ n ^ 2 :=
+  C.cast_hugeRedContribution_filter_isLeft_le_eps_mul_paperKSq_of_goodEventD_of_paperWitness
+    hD I hI hwitness hbound
+
+/-- The diagonal blue part of Paper Lemma `lem:huge`, reduced to the remaining Section 3 witness
+arithmetic. -/
+theorem paper_huge_blue_diagonal_deterministic
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε1 : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hbound :
+      ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+      ε1 * Twobites.paperK κ n ^ 2 :=
+  C.cast_hugeBlueContribution_filter_isRight_le_eps_mul_paperKSq_of_goodEventD_of_paperWitness
+    hD I hI hwitness hbound
 
 theorem closedPair_comm (C : ConstructionData n m) {I : Finset (Fin n)} {v w : Fin n} :
     C.ClosedPair I v w ↔ C.ClosedPair I w v := by

@@ -11,11 +11,13 @@
 
 ## Worker Tasks
 - [ ] Finish the parameter-only Section 3 witness arithmetic in `repo/Twobites/ParameterBounds.lean` so the new `|I| \le \lceil k \rceil` witness wrappers in `repo/Twobites/IndependentSets.lean` specialize to the paper's deterministic `\varepsilon_1 k^2` bounds for `L_I`, `M_I`, and the diagonal `H_I` contributions.
-- [ ] Extend the huge-case bookkeeping in `repo/Twobites/IndependentSets.lean` from the current diagonal same-color projection bounds to the paper's cross-projection inequalities and the min-expression bounds in Lemma `lem:huge`.
+- [ ] Extend the huge-case bookkeeping in `repo/Twobites/IndependentSets.lean` from the new projection-union plus pairwise-intersection control on `H_I \cap V_R` / `H_I \cap V_B` to the paper's convexity/min-expression bounds for the cross-projection terms in Lemma `lem:huge`.
 - [ ] Strengthen `repo/Twobites/ParameterBounds.lean` from the current threshold-order lemmas and the reduction lemma for `t_2 ≤ t_1` to an actual large-`n` proof of that comparison and the related asymptotic bounds used later in Sections 3-4.
 - [ ] Connect the new `finalGraph.CliqueFree 3` theorem and the part-restricted closed-pair bookkeeping to the eventual independence-number proofs in `repo/PaperTheorems.lean`.
 
 ## Completed
+- [x] Add paper-facing deterministic aliases in `repo/Twobites/IndependentSets.lean` for the current Section 3 support results: `paper_large_deterministic`, `paper_medium_deterministic`, `paper_huge_red_diagonal_deterministic`, and `paper_huge_blue_diagonal_deterministic` now package the `GoodEventD` bounds with the new `|I| \le \lceil k \rceil` witness arithmetic interface.
+- [x] Extend the huge-case projection bookkeeping in `repo/Twobites/IndependentSets.lean` with `redProjectionUnion` / `blueProjectionUnion` and the corresponding union-plus-pairwise-intersection bounds, including the `GoodEventD` specializations for `H_I \cap V_R` and `H_I \cap V_B` that start the cross-projection argument behind Lemma `lem:huge`.
 - [x] Add `|I| \le \lceil k \rceil` witness wrappers in `repo/Twobites/IndependentSets.lean`: the large, medium, and diagonal huge `GoodEventD` lemmas now accept a parameter-only witness inequality on `\lceil k \rceil` and package direct `\varepsilon_1 k^2` conclusions once the remaining Section 3 arithmetic bounds are supplied.
 - [x] Add the first witness-inequality-to-contribution lemmas in `repo/Twobites/IndependentSets.lean`: `GoodEventD` now gives large/medium and diagonal-huge bounds once a Section 3 witness-size inequality is supplied, plus the filter-cardinality helper lemmas needed for `H_I ∩ V_R` and `H_I ∩ V_B`.
 - [x] Extend `repo/Twobites/ParameterBounds.lean` with ceiling-level threshold arithmetic (`ceil_paperT1_le_paperKNat`, `ceil_paperT2_le_paperKNat`, `ceil_paperT3_le_ceil_paperT2`, `ceil_paperT2_le_ceil_paperT1_of_loglog_le`) so the new witness/cardinality lemmas have the right natural-number interfaces.
