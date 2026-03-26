@@ -1890,6 +1890,42 @@ theorem cast_hugeBlueContribution_filter_isRight_le_eps_mul_paperKSq_of_goodEven
   (C.cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_paperWitness
     hD I hI hwitness).trans hbound
 
+/-- The current natural-number upper bound for the `H_I ∩ V_R` cross-projection term, before the
+final paper asymptotic simplifications are applied. -/
+def paperHugeBlueCrossConcreteBoundNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
+    (witnessSize degreeBound projCodegreeBound cap : ℕ) : ℕ :=
+  min
+    ((Twobites.paperKNat κ n - (C.redImage I).card + witnessSize * degreeBound +
+      ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+    (cap.choose 2 +
+      ((Twobites.paperKNat κ n - (C.redImage I).card + witnessSize * degreeBound +
+        ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2)
+
+/-- The paper's target natural-number expression for the `H_I ∩ V_R` cross-projection term. -/
+def paperHugeBlueCrossTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
+    (cap : ℕ) : ℕ :=
+  min
+    ((Twobites.paperKNat κ n - (C.redImage I).card).choose 2)
+    (cap.choose 2 + ((Twobites.paperKNat κ n - (C.redImage I).card) - cap).choose 2)
+
+/-- The current natural-number upper bound for the `H_I ∩ V_B` cross-projection term, before the
+final paper asymptotic simplifications are applied. -/
+def paperHugeRedCrossConcreteBoundNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
+    (witnessSize degreeBound projCodegreeBound cap : ℕ) : ℕ :=
+  min
+    ((Twobites.paperKNat κ n - (C.blueImage I).card + witnessSize * degreeBound +
+      ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
+    (cap.choose 2 +
+      ((Twobites.paperKNat κ n - (C.blueImage I).card + witnessSize * degreeBound +
+        ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound) - cap).choose 2)
+
+/-- The paper's target natural-number expression for the `H_I ∩ V_B` cross-projection term. -/
+def paperHugeRedCrossTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
+    (cap : ℕ) : ℕ :=
+  min
+    ((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2)
+    (cap.choose 2 + ((Twobites.paperKNat κ n - (C.blueImage I).card) - cap).choose 2)
+
 /-- The `H_I ∩ V_R` cross-projection term from Paper Lemma `lem:huge`, reduced to the remaining
 paper-witness arithmetic and cap/min-expression estimates. -/
 theorem paper_huge_blue_cross_concrete_of_paperWitness
@@ -1905,18 +1941,13 @@ theorem paper_huge_blue_cross_concrete_of_paperWitness
     (hcapWeight :
       cap ≤ C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex)) :
     C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) ≤
-      min
-        ((Twobites.paperKNat κ n - (C.redImage I).card + witnessSize * degreeBound +
-          ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
-        (cap.choose 2 +
-          ((Twobites.paperKNat κ n - (C.redImage I).card + witnessSize * degreeBound +
-            ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound) -
-            cap).choose 2) := by
+      C.paperHugeBlueCrossConcreteBoundNat I κ witnessSize degreeBound projCodegreeBound cap := by
   have hA : ((C.HPart I).filter IsRedBaseVertex).card ≤ witnessSize := by
     exact (card_filter_IsRedBaseVertex_le (C.HPart I)).trans <|
       Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
-  exact C.blueProjectionPairCount_filter_isLeft_le_min_choose_concrete_of_goodEventD_of_paperBound
-    hD I (C.HPart I) hI hA hcap hcapWeight
+  simpa [paperHugeBlueCrossConcreteBoundNat] using
+    (C.blueProjectionPairCount_filter_isLeft_le_min_choose_concrete_of_goodEventD_of_paperBound
+      hD I (C.HPart I) hI hA hcap hcapWeight)
 
 /-- The `H_I ∩ V_B` cross-projection term from Paper Lemma `lem:huge`, reduced to the remaining
 paper-witness arithmetic and cap/min-expression estimates. -/
@@ -1933,18 +1964,69 @@ theorem paper_huge_red_cross_concrete_of_paperWitness
     (hcapWeight :
       cap ≤ C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex)) :
     C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
-      min
-        ((Twobites.paperKNat κ n - (C.blueImage I).card + witnessSize * degreeBound +
-          ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound).choose 2)
-        (cap.choose 2 +
-          ((Twobites.paperKNat κ n - (C.blueImage I).card + witnessSize * degreeBound +
-            ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound) -
-            cap).choose 2) := by
+      C.paperHugeRedCrossConcreteBoundNat I κ witnessSize degreeBound projCodegreeBound cap := by
   have hA : ((C.HPart I).filter IsBlueBaseVertex).card ≤ witnessSize := by
     exact (card_filter_IsBlueBaseVertex_le (C.HPart I)).trans <|
       Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
-  exact C.redProjectionPairCount_filter_isRight_le_min_choose_concrete_of_goodEventD_of_paperBound
-    hD I (C.HPart I) hI hA hcap hcapWeight
+  simpa [paperHugeRedCrossConcreteBoundNat] using
+    (C.redProjectionPairCount_filter_isRight_le_min_choose_concrete_of_goodEventD_of_paperBound
+      hD I (C.HPart I) hI hA hcap hcapWeight)
+
+/-- The `H_I ∩ V_R` cross-projection term from Paper Lemma `lem:huge`, reduced to a final
+comparison between the current concrete bound and the paper's target min-expression. -/
+theorem paper_huge_blue_cross_deterministic
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε1 : ℝ} {witnessSize cap : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex, (C.blueProjectionImage I x).card ≤ cap)
+    (hcapWeight :
+      cap ≤ C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hbound :
+      ((C.paperHugeBlueCrossConcreteBoundNat I κ witnessSize degreeBound projCodegreeBound cap :
+        ℕ) : ℝ) ≤
+        (1 + ε1) * ((C.paperHugeBlueCrossTargetNat I κ cap : ℕ) : ℝ)) :
+    ((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+      (1 + ε1) * ((C.paperHugeBlueCrossTargetNat I κ cap : ℕ) : ℝ) := by
+  have hnat := C.paper_huge_blue_cross_concrete_of_paperWitness hD I hI hwitness hcap hcapWeight
+  have hcast :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ((C.paperHugeBlueCrossConcreteBoundNat I κ witnessSize degreeBound projCodegreeBound cap :
+          ℕ) : ℝ) := by
+    exact_mod_cast hnat
+  exact hcast.trans hbound
+
+/-- The `H_I ∩ V_B` cross-projection term from Paper Lemma `lem:huge`, reduced to a final
+comparison between the current concrete bound and the paper's target min-expression. -/
+theorem paper_huge_red_cross_deterministic
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε1 : ℝ} {witnessSize cap : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex, (C.redProjectionImage I x).card ≤ cap)
+    (hcapWeight :
+      cap ≤ C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hbound :
+      ((C.paperHugeRedCrossConcreteBoundNat I κ witnessSize degreeBound projCodegreeBound cap :
+        ℕ) : ℝ) ≤
+        (1 + ε1) * ((C.paperHugeRedCrossTargetNat I κ cap : ℕ) : ℝ)) :
+    ((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+      (1 + ε1) * ((C.paperHugeRedCrossTargetNat I κ cap : ℕ) : ℝ) := by
+  have hnat := C.paper_huge_red_cross_concrete_of_paperWitness hD I hI hwitness hcap hcapWeight
+  have hcast :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ((C.paperHugeRedCrossConcreteBoundNat I κ witnessSize degreeBound projCodegreeBound cap :
+          ℕ) : ℝ) := by
+    exact_mod_cast hnat
+  exact hcast.trans hbound
 
 /-- The diagonal red part of Paper Lemma `lem:huge`, reduced to the remaining Section 3 witness
 arithmetic. -/

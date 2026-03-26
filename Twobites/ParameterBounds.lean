@@ -103,6 +103,11 @@ theorem paperT3_nonneg (ε : ℝ) (n : ℕ) : 0 ≤ paperT3 ε n := by
   unfold paperT3
   exact Real.rpow_nonneg (Nat.cast_nonneg n) _
 
+theorem paperT1_nonneg_of_loglog_nonneg {n : ℕ}
+    (hloglog : 0 ≤ Real.log (Real.log (n : ℝ))) : 0 ≤ paperT1 n := by
+  unfold paperT1
+  exact div_nonneg (Real.sqrt_nonneg _) hloglog
+
 theorem paperK_pos {κ : ℝ} (hκ : 0 < κ) {n : ℕ} (hn : 1 < n) : 0 < paperK κ n := by
   unfold paperK
   refine mul_pos hκ ?_
