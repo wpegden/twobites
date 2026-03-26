@@ -106,6 +106,40 @@ theorem paperP_pos {β : ℝ} (hβ : 0 < β) {n : ℕ} (hn : 1 < n) : 0 < paperP
   apply Real.sqrt_pos.2
   exact div_pos (paperLog_pos hn) (by exact_mod_cast (lt_trans Nat.zero_lt_one hn))
 
+theorem paperP_mul_n_eq_paperK {β : ℝ} {n : ℕ} (hn : 0 < n) :
+    paperP β n * n = paperK β n := by
+  have hn' : 0 < (n : ℝ) := by
+    exact_mod_cast hn
+  have hn1 : 1 ≤ n := Nat.succ_le_of_lt hn
+  have hlog : 0 ≤ Real.log (n : ℝ) := by
+    exact Real.log_nonneg (by exact_mod_cast hn1)
+  have hsqrt :
+      Real.sqrt (Real.log (n : ℝ) / (n : ℝ)) * (n : ℝ) =
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    calc
+      Real.sqrt (Real.log (n : ℝ) / (n : ℝ)) * (n : ℝ) =
+          Real.sqrt (Real.log (n : ℝ) / (n : ℝ)) * Real.sqrt ((n : ℝ) ^ 2) := by
+            rw [Real.sqrt_sq_eq_abs, abs_of_nonneg hn'.le]
+      _ = Real.sqrt ((Real.log (n : ℝ) / (n : ℝ)) * (n : ℝ) ^ 2) := by
+            rw [← Real.sqrt_mul (div_nonneg hlog hn'.le) ((n : ℝ) ^ 2)]
+      _ = Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+            congr 1
+            field_simp [hn'.ne']
+  calc
+    paperP β n * n = β * (Real.sqrt (Real.log (n : ℝ) / (n : ℝ)) * (n : ℝ)) := by
+      unfold paperP
+      ring
+    _ = β * Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by rw [hsqrt]
+    _ = paperK β n := by rw [paperK]
+
+theorem paperCap_eq_mul_paperK {β ε2 : ℝ} {n : ℕ} (hn : 0 < n) :
+    paperCap β ε2 n = (1 + ε2) * paperK β n := by
+  calc
+    paperCap β ε2 n = (1 + ε2) * (paperP β n * n) := by
+      unfold paperCap
+      ring
+    _ = (1 + ε2) * paperK β n := by rw [paperP_mul_n_eq_paperK hn]
+
 theorem paperK_nonneg {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) : 0 ≤ paperK κ n := by
   unfold paperK
   exact mul_nonneg hκ (Real.sqrt_nonneg _)
@@ -337,6 +371,13 @@ theorem paperCapNat_le_paperCap_add_one {β ε2 : ℝ}
     (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (n : ℕ) :
     (paperCapNat β ε2 n : ℝ) ≤ paperCap β ε2 n + 1 := by
   exact (paperCapNat_lt_paperCap_add_one hβ hε2 n).le
+
+theorem paperCapNat_le_mul_paperK_add_one {β ε2 : ℝ} {n : ℕ}
+    (hn : 0 < n) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) :
+    (paperCapNat β ε2 n : ℝ) ≤ (1 + ε2) * paperK β n + 1 := by
+  calc
+    (paperCapNat β ε2 n : ℝ) ≤ paperCap β ε2 n + 1 := paperCapNat_le_paperCap_add_one hβ hε2 n
+    _ = (1 + ε2) * paperK β n + 1 := by rw [paperCap_eq_mul_paperK hn]
 
 theorem paperKNat_lt_paperK_add_one {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) :
     (paperKNat κ n : ℝ) < paperK κ n + 1 := by

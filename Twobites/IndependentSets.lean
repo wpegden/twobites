@@ -2331,6 +2331,160 @@ theorem paper_huge_red_cross_deterministic_of_error_bounds
   exact C.paperHugeRedCrossConcreteBoundNat_le_target_of_error_bounds I hε1 hcapBase hleft
     hright
 
+theorem paper_huge_blue_cross_deterministic_of_paperCapNat_of_witnessErrorBounds
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {β κ ε1 ε2 : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hcapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hε1 : 0 ≤ ε1)
+    (hcapBase :
+      Twobites.paperCapNat β ε2 n ≤ Twobites.paperKNat κ n - (C.redImage I).card)
+    (hleft :
+      ((Twobites.paperKNat κ n - (C.redImage I).card : ℕ) : ℝ) *
+          (witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound) +
+        ((((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound).choose 2 :
+          ℕ) : ℝ)) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ)))
+    (hright :
+      C.paperHugeBlueCrossWitnessRightErrorProp I κ ε1 witnessSize degreeBound
+        projCodegreeBound (Twobites.paperCapNat β ε2 n)) :
+    ((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+      (1 + ε1) *
+        ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) := by
+  let B : ℕ := witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound
+  have herror :
+      C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound ≤ B :=
+    C.paperHugeBlueCrossErrorNat_le_of_goodEventD_of_paperWitness hD I hI hwitness
+  have hleft' :
+      ((Twobites.paperKNat κ n - (C.redImage I).card : ℕ) : ℝ) *
+          C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound +
+        (((C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ)) := by
+    have hmono :
+        ((Twobites.paperKNat κ n - (C.redImage I).card : ℕ) : ℝ) *
+            C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound +
+          (((C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+            ℕ) : ℝ) ≤
+        ((Twobites.paperKNat κ n - (C.redImage I).card : ℕ) : ℝ) * B +
+          (((B.choose 2 : ℕ) : ℝ)) := by
+      simpa [B] using
+        (cast_mul_add_choose_two_le_of_le
+          (a := Twobites.paperKNat κ n - (C.redImage I).card) herror)
+    exact hmono.trans <| by simpa [B] using hleft
+  have hright' :
+      (((Twobites.paperKNat κ n - (C.redImage I).card -
+          Twobites.paperCapNat β ε2 n : ℕ) : ℝ) *
+          C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound) +
+        (((C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 *
+          ((C.paperHugeBlueCrossRightTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) := by
+    have hmono :
+        (((Twobites.paperKNat κ n - (C.redImage I).card -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) *
+            C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound) +
+          (((C.paperHugeBlueCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+            ℕ) : ℝ) ≤
+        (((Twobites.paperKNat κ n - (C.redImage I).card -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) * B) +
+          (((B.choose 2 : ℕ) : ℝ)) := by
+      simpa [B] using
+        (cast_mul_add_choose_two_le_of_le
+          (a := Twobites.paperKNat κ n - (C.redImage I).card -
+            Twobites.paperCapNat β ε2 n) herror)
+    exact hmono.trans <| by
+      simpa [paperHugeBlueCrossWitnessRightErrorProp, paperHugeBlueCrossRightTarget, B] using
+        hright
+  exact C.paper_huge_blue_cross_deterministic_of_error_bounds hD I hI hwitness hcap
+    hcapWeight hε1 hcapBase hleft' hright'
+
+theorem paper_huge_red_cross_deterministic_of_paperCapNat_of_witnessErrorBounds
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {β κ ε1 ε2 : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hcap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hcapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hε1 : 0 ≤ ε1)
+    (hcapBase :
+      Twobites.paperCapNat β ε2 n ≤ Twobites.paperKNat κ n - (C.blueImage I).card)
+    (hleft :
+      ((Twobites.paperKNat κ n - (C.blueImage I).card : ℕ) : ℝ) *
+          (witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound) +
+        ((((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound).choose 2 :
+          ℕ) : ℝ)) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ)))
+    (hright :
+      C.paperHugeRedCrossWitnessRightErrorProp I κ ε1 witnessSize degreeBound
+        projCodegreeBound (Twobites.paperCapNat β ε2 n)) :
+    ((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+      (1 + ε1) *
+        ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) := by
+  let B : ℕ := witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound
+  have herror :
+      C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound ≤ B :=
+    C.paperHugeRedCrossErrorNat_le_of_goodEventD_of_paperWitness hD I hI hwitness
+  have hleft' :
+      ((Twobites.paperKNat κ n - (C.blueImage I).card : ℕ) : ℝ) *
+          C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound +
+        (((C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 * ((((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ)) := by
+    have hmono :
+        ((Twobites.paperKNat κ n - (C.blueImage I).card : ℕ) : ℝ) *
+            C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound +
+          (((C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+            ℕ) : ℝ) ≤
+        ((Twobites.paperKNat κ n - (C.blueImage I).card : ℕ) : ℝ) * B +
+          (((B.choose 2 : ℕ) : ℝ)) := by
+      simpa [B] using
+        (cast_mul_add_choose_two_le_of_le
+          (a := Twobites.paperKNat κ n - (C.blueImage I).card) herror)
+    exact hmono.trans <| by simpa [B] using hleft
+  have hright' :
+      (((Twobites.paperKNat κ n - (C.blueImage I).card -
+          Twobites.paperCapNat β ε2 n : ℕ) : ℝ) *
+          C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound) +
+        (((C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+          ℕ) : ℝ) ≤
+        ε1 *
+          ((C.paperHugeRedCrossRightTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) := by
+    have hmono :
+        (((Twobites.paperKNat κ n - (C.blueImage I).card -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) *
+            C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound) +
+          (((C.paperHugeRedCrossErrorNat I witnessSize degreeBound projCodegreeBound).choose 2 :
+            ℕ) : ℝ) ≤
+        (((Twobites.paperKNat κ n - (C.blueImage I).card -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) * B) +
+          (((B.choose 2 : ℕ) : ℝ)) := by
+      simpa [B] using
+        (cast_mul_add_choose_two_le_of_le
+          (a := Twobites.paperKNat κ n - (C.blueImage I).card -
+            Twobites.paperCapNat β ε2 n) herror)
+    exact hmono.trans <| by
+      simpa [paperHugeRedCrossWitnessRightErrorProp, paperHugeRedCrossRightTarget, B] using
+        hright
+  exact C.paper_huge_red_cross_deterministic_of_error_bounds hD I hI hwitness hcap
+    hcapWeight hε1 hcapBase hleft' hright'
+
 /-- The diagonal red part of Paper Lemma `lem:huge`, reduced to the remaining Section 3 witness
 arithmetic. -/
 theorem paper_huge_red_diagonal_deterministic
