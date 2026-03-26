@@ -10,11 +10,13 @@
 <!-- SUPERVISOR_TASKS:END -->
 
 ## Worker Tasks
-- [ ] Extend `repo/Twobites/ParameterBounds.lean` from the current threshold-order lemmas (`t_3 ≤ t_2`, `t_1 ≤ k`, `t_2 ≤ k` under explicit hypotheses) to the remaining large-`n` comparisons needed later in Sections 3-4, especially the `t_2 ≤ t_1`-style bounds.
-- [ ] Extend `repo/Twobites/IndependentSets.lean` from the current part weights, partition disjointness, and first `choose 2` counting bounds to the regime-specific deterministic lemmas that approximate the proofs of `lem:large`, `lem:med`, `lem:small`, and the huge-case projection estimates under explicit weight/codegree hypotheses.
+- [ ] Turn the new explicit-hypothesis contribution lemmas in `repo/Twobites/IndependentSets.lean` into the paper's regime-specific deterministic results by proving the needed weight/codegree hypotheses from the good event `𝒟`.
+- [ ] Strengthen `repo/Twobites/ParameterBounds.lean` from the current threshold-order lemmas and the reduction lemma for `t_2 ≤ t_1` to an actual large-`n` proof of that comparison and the related asymptotic bounds used later in Sections 3-4.
 - [ ] Connect the new `finalGraph.CliqueFree 3` theorem and the part-restricted closed-pair bookkeeping to the eventual independence-number proofs in `repo/PaperTheorems.lean`.
 
 ## Completed
+- [x] Add the first paper-style contribution wrappers under explicit weight hypotheses: large/medium/small `partPairCount` bounds and huge red/blue projection-pair bounds in `repo/Twobites/IndependentSets.lean`.
+- [x] Isolate the remaining analytic comparison for `t_2 ≤ t_1` in `repo/Twobites/ParameterBounds.lean` as a reusable reduction lemma from a log-log growth hypothesis.
 - [x] Add the partition-usage lemmas in `repo/Twobites/IndependentSets.lean`: every base vertex falls into one of `H_I/L_I/M_I/S_I`, the adjacent regimes are disjoint unconditionally, and the remaining disjointness statements are isolated behind the threshold-order hypotheses they need.
 - [x] Add the first huge-regime projection contribution bounds in `repo/Twobites/IndependentSets.lean` via `redProjectionPairCount`, `blueProjectionPairCount`, and their `|I|/2` upper bounds in terms of projection weights.
 - [x] Add the first actual deterministic counting lemmas in `repo/Twobites/IndependentSets.lean`: `partWeight`, `partPairCount`, projection-weight sums, and `choose 2` upper bounds specialized to `H_I`, `L_I`, `M_I`, and `S_I`.

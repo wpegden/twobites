@@ -433,6 +433,42 @@ theorem cast_partPairCount_SPart_le (C : ConstructionData n m) (I : Finset (Fin 
   intro x hx
   exact C.xCard_le_paperT3_of_mem_SPart hx
 
+theorem cast_largeContribution_le_of_partWeight_le (C : ConstructionData n m)
+    (I : Finset (Fin n)) {ε W : ℝ} (hT1 : 0 ≤ Twobites.paperT1 n)
+    (hW : (C.partWeight I (C.LPart I ε) : ℕ) ≤ W) :
+    ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤ (Twobites.paperT1 n / 2) * W := by
+  have hfac : 0 ≤ Twobites.paperT1 n / 2 := by
+    linarith
+  have hbase := C.cast_partPairCount_LPart_le I ε
+  have hmul : (Twobites.paperT1 n / 2) * (C.partWeight I (C.LPart I ε) : ℕ) ≤
+      (Twobites.paperT1 n / 2) * W := by
+    exact mul_le_mul_of_nonneg_left hW hfac
+  exact hbase.trans hmul
+
+theorem cast_mediumContribution_le_of_partWeight_le (C : ConstructionData n m)
+    (I : Finset (Fin n)) {ε W : ℝ}
+    (hW : (C.partWeight I (C.MPart I ε) : ℕ) ≤ W) :
+    ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤ (Twobites.paperT2 ε n / 2) * W := by
+  have hfac : 0 ≤ Twobites.paperT2 ε n / 2 := by
+    nlinarith [Twobites.paperT2_nonneg ε n]
+  have hbase := C.cast_partPairCount_MPart_le I ε
+  have hmul : (Twobites.paperT2 ε n / 2) * (C.partWeight I (C.MPart I ε) : ℕ) ≤
+      (Twobites.paperT2 ε n / 2) * W := by
+    exact mul_le_mul_of_nonneg_left hW hfac
+  exact hbase.trans hmul
+
+theorem cast_smallContribution_le_of_partWeight_le (C : ConstructionData n m)
+    (I : Finset (Fin n)) {ε W : ℝ}
+    (hW : (C.partWeight I (C.SPart I ε) : ℕ) ≤ W) :
+    ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤ (Twobites.paperT3 ε n / 2) * W := by
+  have hfac : 0 ≤ Twobites.paperT3 ε n / 2 := by
+    nlinarith [Twobites.paperT3_nonneg ε n]
+  have hbase := C.cast_partPairCount_SPart_le I ε
+  have hmul : (Twobites.paperT3 ε n / 2) * (C.partWeight I (C.SPart I ε) : ℕ) ≤
+      (Twobites.paperT3 ε n / 2) * W := by
+    exact mul_le_mul_of_nonneg_left hW hfac
+  exact hbase.trans hmul
+
 theorem cast_redProjectionPairCount_le_half_card_mul_redProjectionWeight
     (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
     ((C.redProjectionPairCount I A : ℕ) : ℝ) ≤
@@ -460,6 +496,28 @@ theorem cast_blueProjectionPairCount_HPart_le (C : ConstructionData n m) (I : Fi
     ((C.blueProjectionPairCount I (C.HPart I) : ℕ) : ℝ) ≤
       ((I.card : ℝ) / 2) * (C.blueProjectionWeight I (C.HPart I) : ℕ) :=
   C.cast_blueProjectionPairCount_le_half_card_mul_blueProjectionWeight I (C.HPart I)
+
+theorem cast_hugeRedContribution_le_of_weight_le (C : ConstructionData n m) (I : Finset (Fin n))
+    {W : ℝ} (hW : (C.redProjectionWeight I (C.HPart I) : ℕ) ≤ W) :
+    ((C.redProjectionPairCount I (C.HPart I) : ℕ) : ℝ) ≤ ((I.card : ℝ) / 2) * W := by
+  have hfac : 0 ≤ (I.card : ℝ) / 2 := by
+    positivity
+  have hbase := C.cast_redProjectionPairCount_HPart_le I
+  have hmul : ((I.card : ℝ) / 2) * (C.redProjectionWeight I (C.HPart I) : ℕ) ≤
+      ((I.card : ℝ) / 2) * W := by
+    exact mul_le_mul_of_nonneg_left hW hfac
+  exact hbase.trans hmul
+
+theorem cast_hugeBlueContribution_le_of_weight_le (C : ConstructionData n m) (I : Finset (Fin n))
+    {W : ℝ} (hW : (C.blueProjectionWeight I (C.HPart I) : ℕ) ≤ W) :
+    ((C.blueProjectionPairCount I (C.HPart I) : ℕ) : ℝ) ≤ ((I.card : ℝ) / 2) * W := by
+  have hfac : 0 ≤ (I.card : ℝ) / 2 := by
+    positivity
+  have hbase := C.cast_blueProjectionPairCount_HPart_le I
+  have hmul : ((I.card : ℝ) / 2) * (C.blueProjectionWeight I (C.HPart I) : ℕ) ≤
+      ((I.card : ℝ) / 2) * W := by
+    exact mul_le_mul_of_nonneg_left hW hfac
+  exact hbase.trans hmul
 
 theorem closedPair_comm (C : ConstructionData n m) {I : Finset (Fin n)} {v w : Fin n} :
     C.ClosedPair I v w ↔ C.ClosedPair I w v := by

@@ -174,6 +174,35 @@ theorem paperT2_le_paperK {ε κ : ℝ} {n : ℕ} (hn : 1 ≤ n)
     _ = paperK κ n := by
       rw [paperK]
 
+theorem paperT2_le_paperT1_of_loglog_le {ε : ℝ} {n : ℕ} (hn : 0 < n)
+    (hlog : 0 ≤ Real.log (n : ℝ)) (hloglog : 0 < Real.log (Real.log (n : ℝ)))
+    (hbound :
+      Real.log (Real.log (n : ℝ)) ≤
+        (n : ℝ) ^ ((1 / 4 : ℝ) - ε) * Real.sqrt (Real.log (n : ℝ))) :
+    paperT2 ε n ≤ paperT1 n := by
+  have hn' : 0 < (n : ℝ) := by
+    exact_mod_cast hn
+  have hmul :
+      paperT2 ε n * Real.log (Real.log (n : ℝ)) ≤ Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    have hrpow :
+        (n : ℝ) ^ ((1 / 4 : ℝ) + ε) * (n : ℝ) ^ ((1 / 4 : ℝ) - ε) = (n : ℝ) ^ (1 / 2 : ℝ) := by
+      rw [← Real.rpow_add hn']
+      congr 1
+      linarith
+    calc
+      paperT2 ε n * Real.log (Real.log (n : ℝ))
+          ≤ paperT2 ε n * ((n : ℝ) ^ ((1 / 4 : ℝ) - ε) * Real.sqrt (Real.log (n : ℝ))) := by
+            exact mul_le_mul_of_nonneg_left hbound (paperT2_nonneg ε n)
+      _ = Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+        unfold paperT2
+        rw [← mul_assoc]
+        change (n : ℝ) ^ ((1 / 4 : ℝ) + ε) * (n : ℝ) ^ ((1 / 4 : ℝ) - ε) *
+            Real.sqrt (Real.log (n : ℝ)) = Real.sqrt ((n : ℝ) * Real.log (n : ℝ))
+        rw [hrpow, Real.sqrt_eq_rpow, Real.sqrt_eq_rpow,
+          ← Real.mul_rpow (Nat.cast_nonneg n) hlog]
+  unfold paperT1
+  exact (le_div_iff₀ hloglog).2 hmul
+
 theorem one_le_paperSNat (n : ℕ) : 1 ≤ paperSNat n := by
   unfold paperSNat
   exact Nat.le_max_left _ _
