@@ -49,6 +49,11 @@ theorem paperS_pos {n : ℕ} (hn : 1 < n) : 0 < paperS n := by
   unfold paperS
   nlinarith [sq_pos_of_ne_zero hlog.ne']
 
+theorem paperLog_pos {n : ℕ} (hn : 1 < n) : 0 < Real.log (n : ℝ) := by
+  have hcast : (1 : ℝ) < (n : ℝ) := by
+    exact_mod_cast hn
+  exact Real.log_pos hcast
+
 theorem paperM_nonneg (n : ℕ) : 0 ≤ paperM n := by
   unfold paperM
   exact div_nonneg (Nat.cast_nonneg n) (paperS_nonneg n)
@@ -67,9 +72,21 @@ theorem paperP_nonneg {β : ℝ} (hβ : 0 ≤ β) (n : ℕ) : 0 ≤ paperP β n 
   unfold paperP
   exact mul_nonneg hβ (Real.sqrt_nonneg _)
 
+theorem paperP_pos {β : ℝ} (hβ : 0 < β) {n : ℕ} (hn : 1 < n) : 0 < paperP β n := by
+  unfold paperP
+  refine mul_pos hβ ?_
+  apply Real.sqrt_pos.2
+  exact div_pos (paperLog_pos hn) (by exact_mod_cast (lt_trans Nat.zero_lt_one hn))
+
 theorem paperK_nonneg {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) : 0 ≤ paperK κ n := by
   unfold paperK
   exact mul_nonneg hκ (Real.sqrt_nonneg _)
+
+theorem paperK_pos {κ : ℝ} (hκ : 0 < κ) {n : ℕ} (hn : 1 < n) : 0 < paperK κ n := by
+  unfold paperK
+  refine mul_pos hκ ?_
+  apply Real.sqrt_pos.2
+  exact mul_pos (by exact_mod_cast (lt_trans Nat.zero_lt_one hn)) (paperLog_pos hn)
 
 theorem one_le_paperSNat (n : ℕ) : 1 ≤ paperSNat n := by
   unfold paperSNat
@@ -104,6 +121,18 @@ theorem paperMNat_le_paperM {n : ℕ} (hn : 1 < n) : (paperMNat n : ℝ) ≤ pap
 theorem paperK_le_paperKNat (κ : ℝ) (n : ℕ) : paperK κ n ≤ paperKNat κ n := by
   unfold paperKNat
   exact Nat.le_ceil (paperK κ n)
+
+theorem one_le_paperKNat {κ : ℝ} (hκ : 0 < κ) {n : ℕ} (hn : 1 < n) :
+    1 ≤ paperKNat κ n := by
+  unfold paperKNat
+  rw [Nat.one_le_ceil_iff]
+  exact paperK_pos hκ hn
+
+theorem half_sub_nonneg {ε : ℝ} (hε : ε ≤ (1 / 2 : ℝ)) : 0 ≤ (1 / 2 : ℝ) - ε := by
+  linarith
+
+theorem half_sub_pos {ε : ℝ} (hε : ε < (1 / 2 : ℝ)) : 0 < (1 / 2 : ℝ) - ε := by
+  linarith
 
 theorem paperP_sq (β : ℝ) {n : ℕ} (hn : 1 ≤ n) :
     paperP β n ^ 2 = β ^ 2 * (Real.log (n : ℝ) / (n : ℝ)) := by

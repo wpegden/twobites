@@ -10,11 +10,13 @@
 <!-- SUPERVISOR_TASKS:END -->
 
 ## Worker Tasks
-- [ ] Add deterministic lemmas showing how the deletion predicates in `repo/Twobites/Construction.lean` control triangles and relate `finalGraph` back to the raw red/blue lifts.
-- [ ] Extend `repo/Twobites/ParameterBounds.lean` from the nat/real bridge to the paper's concrete large-`n` and small-`ε` inequalities used later in Sections 3-4.
-- [ ] Start the deterministic independent-set/open-pair layer that bridges the construction API to the proofs of `lem:huge`, `lem:RISI`, and `lem:RI`.
+- [ ] Upgrade the local deletion lemmas in `repo/Twobites/Construction.lean` into a triangle-free / `CliqueFree 3` theorem for `finalGraph`.
+- [ ] Extend `repo/Twobites/ParameterBounds.lean` from the current positivity and nat/real bridge lemmas to the paper's concrete large-`n` and small-`ε` inequalities used later in Sections 3-4.
+- [ ] Extend `repo/Twobites/IndependentSets.lean` from the initial `X_v(I)` / closed-pair interface to the `H_I`, `L_I`, `M_I`, `S_I` partition and the first deterministic counting lemmas.
 
 ## Completed
+- [x] Prove the first deterministic deletion lemmas in `repo/Twobites/Construction.lean`: deleted edges cannot survive retained color layers, and the later edge of a monochromatic triangle cannot survive in `finalGraph`.
+- [x] Start `repo/Twobites/IndependentSets.lean` with the paper's `X_v(I)`, `X_v^+(I)`, closed/open pair predicates, and witness-to-closed-pair lemmas.
 - [x] Extend `repo/Twobites/Construction.lean` through the paper's triangle-deletion bookkeeping: ordered coordinate pairs, monochromatic and mixed deletion witnesses, retained color layers, and the final simple graph.
 - [x] Make the bridge between natural graph parameters and real asymptotic abbreviations explicit in `repo/Twobites/ParameterBounds.lean` via `paperSNat`, `paperMNat`, `paperKNat`, and comparison lemmas.
 - [x] Add the first deterministic support layer in `repo/Twobites/Construction.lean`: construction data, projections, finite-set images, fibers, and the raw red/blue/simple lifted graphs.

@@ -307,6 +307,65 @@ theorem finalGraph_le_rawGraph : C.finalGraph ≤ C.rawGraph := by
   · exact Or.inl ((C.retainedRed_le_redLift) hred)
   · exact Or.inr ((C.retainedBlue_le_blueLift) hblue)
 
+theorem redDeleted_of_redMonochromaticDeletionWitness {u v w : Fin n}
+    (h : C.redMonochromaticDeletionWitness u v w) : C.redDeleted v w :=
+  ⟨u, Or.inl h⟩
+
+theorem redDeleted_of_redMixedDeletionWitness {u v w : Fin n}
+    (h : C.redMixedDeletionWitness u v w) : C.redDeleted v w :=
+  ⟨u, Or.inr h⟩
+
+theorem blueDeleted_of_blueMonochromaticDeletionWitness {u v w : Fin n}
+    (h : C.blueMonochromaticDeletionWitness u v w) : C.blueDeleted v w :=
+  ⟨u, Or.inl h⟩
+
+theorem blueDeleted_of_blueMixedDeletionWitness {u v w : Fin n}
+    (h : C.blueMixedDeletionWitness u v w) : C.blueDeleted v w :=
+  ⟨u, Or.inr h⟩
+
+theorem not_retainedRed_adj_of_redDeleted {v w : Fin n} (hdel : C.redDeleted v w) :
+    ¬ C.retainedRed.Adj v w := by
+  intro hret
+  exact hret.2 hdel
+
+theorem not_retainedBlue_adj_of_blueDeleted {v w : Fin n} (hdel : C.blueDeleted v w) :
+    ¬ C.retainedBlue.Adj v w := by
+  intro hret
+  exact hret.2 hdel
+
+theorem not_retainedRed_adj_of_redMonochromaticDeletionWitness {u v w : Fin n}
+    (h : C.redMonochromaticDeletionWitness u v w) : ¬ C.retainedRed.Adj v w := by
+  exact C.not_retainedRed_adj_of_redDeleted (C.redDeleted_of_redMonochromaticDeletionWitness h)
+
+theorem not_retainedRed_adj_of_redMixedDeletionWitness {u v w : Fin n}
+    (h : C.redMixedDeletionWitness u v w) : ¬ C.retainedRed.Adj v w := by
+  exact C.not_retainedRed_adj_of_redDeleted (C.redDeleted_of_redMixedDeletionWitness h)
+
+theorem not_retainedBlue_adj_of_blueMonochromaticDeletionWitness {u v w : Fin n}
+    (h : C.blueMonochromaticDeletionWitness u v w) : ¬ C.retainedBlue.Adj v w := by
+  exact C.not_retainedBlue_adj_of_blueDeleted
+    (C.blueDeleted_of_blueMonochromaticDeletionWitness h)
+
+theorem not_retainedBlue_adj_of_blueMixedDeletionWitness {u v w : Fin n}
+    (h : C.blueMixedDeletionWitness u v w) : ¬ C.retainedBlue.Adj v w := by
+  exact C.not_retainedBlue_adj_of_blueDeleted (C.blueDeleted_of_blueMixedDeletionWitness h)
+
+theorem not_finalGraph_adj_of_redTriangle {u v w : Fin n}
+    (huv : C.redLift.Adj u v) (huw : C.redLift.Adj u w) (hvw : C.redLift.Adj v w)
+    (hLater : C.redPairLaterInTriangle u v w) : ¬ C.finalGraph.Adj v w := by
+  intro hfinal
+  rcases (C.finalGraph_adj_iff).1 hfinal with hred | hblue
+  · exact hred.2 (C.redDeleted_of_redMonochromaticDeletionWitness ⟨huv, huw, hvw, hLater⟩)
+  · exact hblue.2 (C.blueDeleted_of_blueMixedDeletionWitness ⟨huv, huw, hblue.1⟩)
+
+theorem not_finalGraph_adj_of_blueTriangle {u v w : Fin n}
+    (huv : C.blueLift.Adj u v) (huw : C.blueLift.Adj u w) (hvw : C.blueLift.Adj v w)
+    (hLater : C.bluePairLaterInTriangle u v w) : ¬ C.finalGraph.Adj v w := by
+  intro hfinal
+  rcases (C.finalGraph_adj_iff).1 hfinal with hred | hblue
+  · exact hred.2 (C.redDeleted_of_redMixedDeletionWitness ⟨huv, huw, hred.1⟩)
+  · exact hblue.2 (C.blueDeleted_of_blueMonochromaticDeletionWitness ⟨huv, huw, hvw, hLater⟩)
+
 end ConstructionData
 
 end Twobites
