@@ -1,3 +1,4 @@
+import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Combinatorics.SimpleGraph.Maps
 import Mathlib.Data.Finset.Basic
 
@@ -17,6 +18,17 @@ def orderedPair {α : Type*} [LinearOrder α] (a b : α) : α × α :=
 blue coordinate pairs. -/
 def pairLex {α : Type*} [LinearOrder α] (p q : α × α) : Prop :=
   p.1 < q.1 ∨ (p.1 = q.1 ∧ p.2 < q.2)
+
+theorem least_of_three {α : Type*} [LinearOrder α] {a b c : α} (hab : a ≠ b) (hac : a ≠ c)
+    (hbc : b ≠ c) :
+    (a < b ∧ a < c) ∨ (b < a ∧ b < c) ∨ (c < a ∧ c < b) := by
+  rcases lt_or_gt_of_ne hab with hab' | hba'
+  · rcases lt_or_gt_of_ne hac with hac' | hca'
+    · exact Or.inl ⟨hab', hac'⟩
+    · exact Or.inr (Or.inr ⟨hca', hca'.trans hab'⟩)
+  · rcases lt_or_gt_of_ne hbc with hbc' | hcb'
+    · exact Or.inr (Or.inl ⟨hba', hbc'⟩)
+    · exact Or.inr (Or.inr ⟨hcb'.trans hba', hcb'⟩)
 
 /-- Paper Section 2 construction data: two base graphs on `Fin m` together with the injective map
 `π : Fin n ↪ Fin m × Fin m` used to lift them to the final vertex set. -/
@@ -307,6 +319,72 @@ theorem finalGraph_le_rawGraph : C.finalGraph ≤ C.rawGraph := by
   · exact Or.inl ((C.retainedRed_le_redLift) hred)
   · exact Or.inr ((C.retainedBlue_le_blueLift) hblue)
 
+theorem redPairLaterInTriangle_of_lt_lt {u v w : Fin n}
+    (huv : C.redProj u < C.redProj v) (huw : C.redProj u < C.redProj w) :
+    C.redPairLaterInTriangle u v w := by
+  unfold redPairLaterInTriangle pairLex
+  constructor
+  · left
+    simpa [redCoordinatePair, orderedPair, min_eq_left (le_of_lt huv)] using
+      (show C.redProj u < C.redProj v ∧
+        (C.redProj u < C.redProj w ∨ C.redProj v < C.redProj w) from ⟨huv, Or.inl huw⟩)
+  · left
+    simpa [redCoordinatePair, orderedPair, min_eq_left (le_of_lt huw)] using
+      (show (C.redProj u < C.redProj v ∨ C.redProj w < C.redProj v) ∧
+        C.redProj u < C.redProj w from ⟨Or.inl huv, huw⟩)
+
+theorem bluePairLaterInTriangle_of_lt_lt {u v w : Fin n}
+    (huv : C.blueProj u < C.blueProj v) (huw : C.blueProj u < C.blueProj w) :
+    C.bluePairLaterInTriangle u v w := by
+  unfold bluePairLaterInTriangle pairLex
+  constructor
+  · left
+    simpa [blueCoordinatePair, orderedPair, min_eq_left (le_of_lt huv)] using
+      (show C.blueProj u < C.blueProj v ∧
+        (C.blueProj u < C.blueProj w ∨ C.blueProj v < C.blueProj w) from ⟨huv, Or.inl huw⟩)
+  · left
+    simpa [blueCoordinatePair, orderedPair, min_eq_left (le_of_lt huw)] using
+      (show (C.blueProj u < C.blueProj v ∨ C.blueProj w < C.blueProj v) ∧
+        C.blueProj u < C.blueProj w from ⟨Or.inl huv, huw⟩)
+
+theorem redProj_ne_of_redLift_adj {u v : Fin n} (h : C.redLift.Adj u v) :
+    C.redProj u ≠ C.redProj v := by
+  intro huv
+  change C.redBase.Adj (C.redProj u) (C.redProj v) at h
+  rw [huv] at h
+  exact C.redBase.loopless.irrefl _ h
+
+theorem blueProj_ne_of_blueLift_adj {u v : Fin n} (h : C.blueLift.Adj u v) :
+    C.blueProj u ≠ C.blueProj v := by
+  intro huv
+  change C.blueBase.Adj (C.blueProj u) (C.blueProj v) at h
+  rw [huv] at h
+  exact C.blueBase.loopless.irrefl _ h
+
+theorem exists_redPairLaterInTriangle {u v w : Fin n}
+    (huv : C.redLift.Adj u v) (huw : C.redLift.Adj u w) (hvw : C.redLift.Adj v w) :
+    C.redPairLaterInTriangle u v w ∨
+      C.redPairLaterInTriangle v u w ∨ C.redPairLaterInTriangle w u v := by
+  have huv_ne := C.redProj_ne_of_redLift_adj huv
+  have huw_ne := C.redProj_ne_of_redLift_adj huw
+  have hvw_ne := C.redProj_ne_of_redLift_adj hvw
+  rcases least_of_three huv_ne huw_ne hvw_ne with hleast | hleast | hleast
+  · exact Or.inl (C.redPairLaterInTriangle_of_lt_lt hleast.1 hleast.2)
+  · exact Or.inr (Or.inl (C.redPairLaterInTriangle_of_lt_lt hleast.1 hleast.2))
+  · exact Or.inr (Or.inr (C.redPairLaterInTriangle_of_lt_lt hleast.1 hleast.2))
+
+theorem exists_bluePairLaterInTriangle {u v w : Fin n}
+    (huv : C.blueLift.Adj u v) (huw : C.blueLift.Adj u w) (hvw : C.blueLift.Adj v w) :
+    C.bluePairLaterInTriangle u v w ∨
+      C.bluePairLaterInTriangle v u w ∨ C.bluePairLaterInTriangle w u v := by
+  have huv_ne := C.blueProj_ne_of_blueLift_adj huv
+  have huw_ne := C.blueProj_ne_of_blueLift_adj huw
+  have hvw_ne := C.blueProj_ne_of_blueLift_adj hvw
+  rcases least_of_three huv_ne huw_ne hvw_ne with hleast | hleast | hleast
+  · exact Or.inl (C.bluePairLaterInTriangle_of_lt_lt hleast.1 hleast.2)
+  · exact Or.inr (Or.inl (C.bluePairLaterInTriangle_of_lt_lt hleast.1 hleast.2))
+  · exact Or.inr (Or.inr (C.bluePairLaterInTriangle_of_lt_lt hleast.1 hleast.2))
+
 theorem redDeleted_of_redMonochromaticDeletionWitness {u v w : Fin n}
     (h : C.redMonochromaticDeletionWitness u v w) : C.redDeleted v w :=
   ⟨u, Or.inl h⟩
@@ -365,6 +443,59 @@ theorem not_finalGraph_adj_of_blueTriangle {u v w : Fin n}
   rcases (C.finalGraph_adj_iff).1 hfinal with hred | hblue
   · exact hred.2 (C.redDeleted_of_redMixedDeletionWitness ⟨huv, huw, hred.1⟩)
   · exact hblue.2 (C.blueDeleted_of_blueMonochromaticDeletionWitness ⟨huv, huw, hvw, hLater⟩)
+
+theorem not_retainedRed_triangle {u v w : Fin n}
+    (huv : C.retainedRed.Adj u v) (huw : C.retainedRed.Adj u w) (hvw : C.retainedRed.Adj v w) :
+    False := by
+  rcases C.exists_redPairLaterInTriangle huv.1 huw.1 hvw.1 with h | h | h
+  · exact C.not_retainedRed_adj_of_redMonochromaticDeletionWitness ⟨huv.1, huw.1, hvw.1, h⟩ hvw
+  · exact C.not_retainedRed_adj_of_redMonochromaticDeletionWitness ⟨huv.1.symm, hvw.1, huw.1, h⟩ huw
+  · exact C.not_retainedRed_adj_of_redMonochromaticDeletionWitness
+      ⟨huw.1.symm, hvw.1.symm, huv.1, h⟩ huv
+
+theorem not_retainedBlue_triangle {u v w : Fin n}
+    (huv : C.retainedBlue.Adj u v) (huw : C.retainedBlue.Adj u w) (hvw : C.retainedBlue.Adj v w) :
+    False := by
+  rcases C.exists_bluePairLaterInTriangle huv.1 huw.1 hvw.1 with h | h | h
+  · exact C.not_retainedBlue_adj_of_blueMonochromaticDeletionWitness ⟨huv.1, huw.1, hvw.1, h⟩ hvw
+  · exact C.not_retainedBlue_adj_of_blueMonochromaticDeletionWitness
+      ⟨huv.1.symm, hvw.1, huw.1, h⟩ huw
+  · exact C.not_retainedBlue_adj_of_blueMonochromaticDeletionWitness
+      ⟨huw.1.symm, hvw.1.symm, huv.1, h⟩ huv
+
+theorem retainedRed_cliqueFree : C.retainedRed.CliqueFree 3 := by
+  intro s hs
+  rcases SimpleGraph.is3Clique_iff.1 hs with ⟨u, v, w, huv, huw, hvw, _⟩
+  exact C.not_retainedRed_triangle huv huw hvw
+
+theorem retainedBlue_cliqueFree : C.retainedBlue.CliqueFree 3 := by
+  intro s hs
+  rcases SimpleGraph.is3Clique_iff.1 hs with ⟨u, v, w, huv, huw, hvw, _⟩
+  exact C.not_retainedBlue_triangle huv huw hvw
+
+theorem not_finalGraph_triangle {u v w : Fin n}
+    (huv : C.finalGraph.Adj u v) (huw : C.finalGraph.Adj u w) (hvw : C.finalGraph.Adj v w) :
+    False := by
+  rcases (C.finalGraph_adj_iff).1 huv with huvR | huvB
+  · rcases (C.finalGraph_adj_iff).1 huw with huwR | huwB
+    · rcases (C.finalGraph_adj_iff).1 hvw with hvwR | hvwB
+      · exact C.not_retainedRed_triangle huvR huwR hvwR
+      · exact hvwB.2 (C.blueDeleted_of_blueMixedDeletionWitness ⟨huvR.1, huwR.1, hvwB.1⟩)
+    · rcases (C.finalGraph_adj_iff).1 hvw with hvwR | hvwB
+      · exact huwB.2 (C.blueDeleted_of_blueMixedDeletionWitness ⟨huvR.1.symm, hvwR.1, huwB.1⟩)
+      · exact huvR.2 (C.redDeleted_of_redMixedDeletionWitness ⟨huwB.1.symm, hvwB.1.symm, huvR.1⟩)
+  · rcases (C.finalGraph_adj_iff).1 huw with huwR | huwB
+    · rcases (C.finalGraph_adj_iff).1 hvw with hvwR | hvwB
+      · exact huvB.2 (C.blueDeleted_of_blueMixedDeletionWitness ⟨huwR.1.symm, hvwR.1.symm, huvB.1⟩)
+      · exact huwR.2 (C.redDeleted_of_redMixedDeletionWitness ⟨huvB.1.symm, hvwB.1, huwR.1⟩)
+    · rcases (C.finalGraph_adj_iff).1 hvw with hvwR | hvwB
+      · exact hvwR.2 (C.redDeleted_of_redMixedDeletionWitness ⟨huvB.1, huwB.1, hvwR.1⟩)
+      · exact C.not_retainedBlue_triangle huvB huwB hvwB
+
+theorem finalGraph_cliqueFree : C.finalGraph.CliqueFree 3 := by
+  intro s hs
+  rcases SimpleGraph.is3Clique_iff.1 hs with ⟨u, v, w, huv, huw, hvw, _⟩
+  exact C.not_finalGraph_triangle huv huw hvw
 
 end ConstructionData
 

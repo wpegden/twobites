@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Order.Floor.Semiring
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Nat.Cast.Order.Field
 import Mathlib.Data.Real.Sqrt
 
@@ -23,6 +24,18 @@ def paperP (β : ℝ) (n : ℕ) : ℝ :=
 /-- The paper's target independent-set scale `k = κ * sqrt(n log n)`. -/
 def paperK (κ : ℝ) (n : ℕ) : ℝ :=
   κ * Real.sqrt ((n : ℝ) * Real.log (n : ℝ))
+
+/-- Paper Section 3 threshold `t₁ = sqrt(n log n) / log log n`. -/
+def paperT1 (n : ℕ) : ℝ :=
+  Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) / Real.log (Real.log (n : ℝ))
+
+/-- Paper Section 3 threshold `t₂ = n^(1/4 + ε)`. -/
+def paperT2 (ε : ℝ) (n : ℕ) : ℝ :=
+  Real.rpow (n : ℝ) ((1 / 4 : ℝ) + ε)
+
+/-- Paper Section 3 threshold `t₃ = n^(2ε)`. -/
+def paperT3 (ε : ℝ) (n : ℕ) : ℝ :=
+  Real.rpow (n : ℝ) (2 * ε)
 
 /-- A natural-number version of the paper's scale parameter, rounded up and forced to stay
 positive so it can be used as a divisor in graph-size parameters. -/
@@ -82,11 +95,27 @@ theorem paperK_nonneg {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) : 0 ≤ paperK κ n 
   unfold paperK
   exact mul_nonneg hκ (Real.sqrt_nonneg _)
 
+theorem paperT2_nonneg (ε : ℝ) (n : ℕ) : 0 ≤ paperT2 ε n := by
+  unfold paperT2
+  exact Real.rpow_nonneg (Nat.cast_nonneg n) _
+
+theorem paperT3_nonneg (ε : ℝ) (n : ℕ) : 0 ≤ paperT3 ε n := by
+  unfold paperT3
+  exact Real.rpow_nonneg (Nat.cast_nonneg n) _
+
 theorem paperK_pos {κ : ℝ} (hκ : 0 < κ) {n : ℕ} (hn : 1 < n) : 0 < paperK κ n := by
   unfold paperK
   refine mul_pos hκ ?_
   apply Real.sqrt_pos.2
   exact mul_pos (by exact_mod_cast (lt_trans Nat.zero_lt_one hn)) (paperLog_pos hn)
+
+theorem paperT2_pos (ε : ℝ) {n : ℕ} (hn : 0 < n) : 0 < paperT2 ε n := by
+  unfold paperT2
+  exact Real.rpow_pos_of_pos (by exact_mod_cast hn) _
+
+theorem paperT3_pos (ε : ℝ) {n : ℕ} (hn : 0 < n) : 0 < paperT3 ε n := by
+  unfold paperT3
+  exact Real.rpow_pos_of_pos (by exact_mod_cast hn) _
 
 theorem one_le_paperSNat (n : ℕ) : 1 ≤ paperSNat n := by
   unfold paperSNat

@@ -10,11 +10,14 @@
 <!-- SUPERVISOR_TASKS:END -->
 
 ## Worker Tasks
-- [ ] Upgrade the local deletion lemmas in `repo/Twobites/Construction.lean` into a triangle-free / `CliqueFree 3` theorem for `finalGraph`.
-- [ ] Extend `repo/Twobites/ParameterBounds.lean` from the current positivity and nat/real bridge lemmas to the paper's concrete large-`n` and small-`ε` inequalities used later in Sections 3-4.
-- [ ] Extend `repo/Twobites/IndependentSets.lean` from the initial `X_v(I)` / closed-pair interface to the `H_I`, `L_I`, `M_I`, `S_I` partition and the first deterministic counting lemmas.
+- [ ] Extend `repo/Twobites/ParameterBounds.lean` from the current threshold definitions and positivity lemmas to the paper's concrete large-`n` and small-`ε` ordering inequalities used later in Sections 3-4.
+- [ ] Extend `repo/Twobites/IndependentSets.lean` from the new `H_I`, `L_I`, `M_I`, `S_I` partition and restricted closed-pair interface to the actual deterministic counting lemmas used in `lem:huge`, `lem:RISI`, and `lem:RI`.
+- [ ] Connect the new `finalGraph.CliqueFree 3` theorem and the part-restricted closed-pair bookkeeping to the eventual independence-number proofs in `repo/PaperTheorems.lean`.
 
 ## Completed
+- [x] Upgrade the local deletion lemmas in `repo/Twobites/Construction.lean` into triangle-free / `CliqueFree 3` theorems for `retainedRed`, `retainedBlue`, and `finalGraph`.
+- [x] Extend `repo/Twobites/IndependentSets.lean` to the paper's `H_I`, `L_I`, `M_I`, `S_I` partition, projected-image bookkeeping, and restricted `ClosedPairOn` / `ClosedPairPlusOn` predicates.
+- [x] Extend `repo/Twobites/ParameterBounds.lean` with the paper's Section 3 thresholds `t_1`, `t_2`, `t_3` and their basic positivity lemmas.
 - [x] Prove the first deterministic deletion lemmas in `repo/Twobites/Construction.lean`: deleted edges cannot survive retained color layers, and the later edge of a monochromatic triangle cannot survive in `finalGraph`.
 - [x] Start `repo/Twobites/IndependentSets.lean` with the paper's `X_v(I)`, `X_v^+(I)`, closed/open pair predicates, and witness-to-closed-pair lemmas.
 - [x] Extend `repo/Twobites/Construction.lean` through the paper's triangle-deletion bookkeeping: ordered coordinate pairs, monochromatic and mixed deletion witnesses, retained color layers, and the final simple graph.
