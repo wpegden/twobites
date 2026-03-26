@@ -4,6 +4,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Union
 import Mathlib.Data.Nat.Choose.Cast
+import Mathlib.Tactic
 
 namespace Twobites
 
@@ -324,9 +325,10 @@ theorem card_blueProjectionImage_le_univ (C : ConstructionData n m) (I : Finset 
   Finset.card_le_card (C.blueProjectionImage_subset_univ x)
 
 theorem sum_card_le_card_biUnion_add_choose_mul_of_inter_bound {ι α : Type*}
-    [DecidableEq ι] [DecidableEq α] (s : Finset ι) (F : ι → Finset α) {D : ℕ}
+    [DecidableEq α] (s : Finset ι) (F : ι → Finset α) {D : ℕ}
     (hinter : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → (F a ∩ F b).card ≤ D) :
     ∑ a ∈ s, (F a).card ≤ (s.biUnion F).card + s.card.choose 2 * D := by
+  classical
   induction s using Finset.induction_on with
   | empty =>
       simp
@@ -350,19 +352,23 @@ theorem sum_card_le_card_biUnion_add_choose_mul_of_inter_bound {ι α : Type*}
               exact ha hx)
           _ = s.card * D := by
             simp
-      have hCard : (F a).card + (s.biUnion F).card ≤ ((insert a s).biUnion F).card + s.card * D := by
+      have hCard :
+          (F a).card + (s.biUnion F).card ≤
+            ((insert a s).biUnion F).card + s.card * D := by
         rw [Finset.biUnion_insert, ← Finset.card_union_add_card_inter]
         simpa [add_comm, add_left_comm, add_assoc] using
           add_le_add_left hInterBound ((F a ∪ s.biUnion F).card)
       have hStep : (F a).card + ∑ x ∈ s, (F x).card ≤
           ((insert a s).biUnion F).card + s.card * D + s.card.choose 2 * D := by
         calc
-          (F a).card + ∑ x ∈ s, (F x).card ≤ (F a).card + ((s.biUnion F).card + s.card.choose 2 * D) := by
+          (F a).card + ∑ x ∈ s, (F x).card ≤
+              (F a).card + ((s.biUnion F).card + s.card.choose 2 * D) := by
             simpa [add_comm, add_left_comm, add_assoc] using add_le_add_left ih' ((F a).card)
           _ = ((F a).card + (s.biUnion F).card) + s.card.choose 2 * D := by
             ac_rfl
           _ ≤ (((insert a s).biUnion F).card + s.card * D) + s.card.choose 2 * D := by
-            simpa [add_comm, add_left_comm, add_assoc] using add_le_add_right hCard (s.card.choose 2 * D)
+            simpa [add_comm, add_left_comm, add_assoc] using
+              add_le_add_right hCard (s.card.choose 2 * D)
           _ = ((insert a s).biUnion F).card + s.card * D + s.card.choose 2 * D := by
             ac_rfl
       have hchoose : (insert a s).card.choose 2 = s.card.choose 2 + s.card := by
@@ -436,6 +442,110 @@ theorem partWeight_le_card_I_add_choose_mul_of_goodEventD (C : ConstructionData 
   intro x hx y hy hxy
   exact C.xInter_card_le_of_goodEventD hD I hxy
 
+theorem lowerNat_mul_card_le_partWeight_of_le_xCard (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {lower : ℕ}
+    (hlower : ∀ x ∈ A, lower ≤ C.xCard I x) :
+    A.card * lower ≤ C.partWeight I A := by
+  unfold partWeight
+  calc
+    A.card * lower = ∑ _x ∈ A, lower := by
+      simp [Nat.mul_comm]
+    _ ≤ ∑ x ∈ A, C.xCard I x := by
+      refine Finset.sum_le_sum ?_
+      intro x hx
+      exact hlower x hx
+
+theorem card_lt_of_card_lt_mul_sub_choose_mul_of_pairwise_inter_bound
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    {lower codegreeBound witnessSize : ℕ}
+    (hlower : ∀ x ∈ A, lower ≤ C.xCard I x)
+    (hinter : ∀ x ∈ A, ∀ y ∈ A, x ≠ y → (C.X I x ∩ C.X I y).card ≤ codegreeBound)
+    (hwitness :
+      I.card < witnessSize * lower - witnessSize.choose 2 * codegreeBound) :
+    A.card < witnessSize := by
+  by_contra hA
+  have hge : witnessSize ≤ A.card := Nat.not_lt.1 hA
+  rcases Finset.exists_subset_card_eq hge with ⟨B, hBA, hBcard⟩
+  have hLowerB : ∀ x ∈ B, lower ≤ C.xCard I x := by
+    intro x hx
+    exact hlower x (hBA hx)
+  have hInterB : ∀ x ∈ B, ∀ y ∈ B, x ≠ y → (C.X I x ∩ C.X I y).card ≤ codegreeBound := by
+    intro x hx y hy hxy
+    exact hinter x (hBA hx) y (hBA hy) hxy
+  have hWeightLower : witnessSize * lower ≤ C.partWeight I B := by
+    simpa [hBcard] using C.lowerNat_mul_card_le_partWeight_of_le_xCard I B hLowerB
+  have hWeightUpper :
+      C.partWeight I B ≤ I.card + witnessSize.choose 2 * codegreeBound := by
+    simpa [hBcard] using
+      C.partWeight_le_card_I_add_choose_mul_of_pairwise_inter_bound I B hInterB
+  have hmul : witnessSize * lower ≤ I.card + witnessSize.choose 2 * codegreeBound :=
+    hWeightLower.trans hWeightUpper
+  have hbound : witnessSize * lower - witnessSize.choose 2 * codegreeBound ≤ I.card := by
+    omega
+  exact not_lt_of_ge hbound hwitness
+
+theorem card_lt_of_card_lt_mul_sub_choose_mul_of_goodEventD (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {lower witnessSize : ℕ}
+    (hlower : ∀ x ∈ A, lower ≤ C.xCard I x)
+    (hwitness :
+      I.card < witnessSize * lower - witnessSize.choose 2 * codegreeBound) :
+    A.card < witnessSize := by
+  apply C.card_lt_of_card_lt_mul_sub_choose_mul_of_pairwise_inter_bound I A hlower
+  · intro x hx y hy hxy
+    exact C.xInter_card_le_of_goodEventD hD I hxy
+  · exact hwitness
+
+theorem partWeight_le_card_I_add_choose_mul_of_goodEventD_of_card_le (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {bound : ℕ} (hA : A.card ≤ bound) :
+    C.partWeight I A ≤ I.card + bound.choose 2 * codegreeBound := by
+  have hchoose : A.card.choose 2 * codegreeBound ≤ bound.choose 2 * codegreeBound := by
+    exact Nat.mul_le_mul_right _ (Nat.choose_le_choose 2 hA)
+  exact (C.partWeight_le_card_I_add_choose_mul_of_goodEventD hD I A).trans
+    (Nat.add_le_add_left hchoose _)
+
+theorem LPart_card_lt_of_goodEventD_of_lt (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ε : ℝ} {witnessSize : ℕ}
+    (hwitness :
+      I.card < witnessSize * ⌈Twobites.paperT2 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    (C.LPart I ε).card < witnessSize := by
+  apply C.card_lt_of_card_lt_mul_sub_choose_mul_of_goodEventD hD I (C.LPart I ε)
+  · intro x hx
+    exact (Nat.ceil_le).2 (le_of_lt ((C.mem_LPart.1 hx).1))
+  · exact hwitness
+
+theorem MPart_card_lt_of_goodEventD_of_lt (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ε : ℝ} {witnessSize : ℕ}
+    (hwitness :
+      I.card < witnessSize * ⌈Twobites.paperT3 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    (C.MPart I ε).card < witnessSize := by
+  apply C.card_lt_of_card_lt_mul_sub_choose_mul_of_goodEventD hD I (C.MPart I ε)
+  · intro x hx
+    exact (Nat.ceil_le).2 (le_of_lt ((C.mem_MPart.1 hx).1))
+  · exact hwitness
+
+theorem HPart_card_lt_of_goodEventD_of_lt (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {witnessSize : ℕ}
+    (hwitness :
+      I.card < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    (C.HPart I).card < witnessSize := by
+  apply C.card_lt_of_card_lt_mul_sub_choose_mul_of_goodEventD hD I (C.HPart I)
+  · intro x hx
+    exact (Nat.ceil_le).2 (le_of_lt ((C.mem_HPart.1 hx).1))
+  · exact hwitness
+
 theorem paperT1_lt_xCard_of_mem_HPart (C : ConstructionData n m) {I : Finset (Fin n)}
     {x : BaseVertex m} (hx : x ∈ C.HPart I) : Twobites.paperT1 n < (C.xCard I x : ℝ) :=
   (C.mem_HPart.1 hx).1
@@ -468,6 +578,20 @@ theorem xCard_le_paperT3_of_mem_SPart (C : ConstructionData n m) {I : Finset (Fi
     {ε : ℝ} {x : BaseVertex m} (hx : x ∈ C.SPart I ε) :
     (C.xCard I x : ℝ) ≤ Twobites.paperT3 ε n :=
   (C.mem_SPart.1 hx)
+
+theorem ceil_paperT1_le_xCard_of_mem_HPart (C : ConstructionData n m) {I : Finset (Fin n)}
+    {x : BaseVertex m} (hx : x ∈ C.HPart I) : ⌈Twobites.paperT1 n⌉₊ ≤ C.xCard I x := by
+  exact (Nat.ceil_le).2 (le_of_lt (C.paperT1_lt_xCard_of_mem_HPart hx))
+
+theorem ceil_paperT2_le_xCard_of_mem_LPart (C : ConstructionData n m) {I : Finset (Fin n)}
+    {ε : ℝ} {x : BaseVertex m} (hx : x ∈ C.LPart I ε) :
+    ⌈Twobites.paperT2 ε n⌉₊ ≤ C.xCard I x := by
+  exact (Nat.ceil_le).2 (le_of_lt (C.paperT2_lt_xCard_of_mem_LPart hx))
+
+theorem ceil_paperT3_le_xCard_of_mem_MPart (C : ConstructionData n m) {I : Finset (Fin n)}
+    {ε : ℝ} {x : BaseVertex m} (hx : x ∈ C.MPart I ε) :
+    ⌈Twobites.paperT3 ε n⌉₊ ≤ C.xCard I x := by
+  exact (Nat.ceil_le).2 (le_of_lt (C.paperT3_lt_xCard_of_mem_MPart hx))
 
 theorem mem_HPart_or_mem_LPart_or_mem_MPart_or_mem_SPart (C : ConstructionData n m)
     (I : Finset (Fin n)) (ε : ℝ) (x : BaseVertex m) :
@@ -597,7 +721,8 @@ theorem redProjectionWeight_filter_isLeft_le_card_mul_of_univ_bound
 theorem blueProjectionWeight_filter_isRight_le_card_mul_of_univ_bound
     (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {D : ℕ}
     (hD : ∀ b : Fin m, (C.blueProjectionImage Finset.univ (Sum.inr b)).card ≤ D) :
-    C.blueProjectionWeight I (A.filter IsBlueBaseVertex) ≤ (A.filter IsBlueBaseVertex).card * D := by
+    C.blueProjectionWeight I (A.filter IsBlueBaseVertex) ≤
+      (A.filter IsBlueBaseVertex).card * D := by
   unfold blueProjectionWeight
   calc
     ∑ x ∈ A.filter IsBlueBaseVertex, (C.blueProjectionImage I x).card ≤
@@ -615,15 +740,35 @@ theorem redProjectionWeight_filter_isLeft_le_of_goodEventD (C : ConstructionData
     {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
     (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
-    C.redProjectionWeight I (A.filter IsRedBaseVertex) ≤ (A.filter IsRedBaseVertex).card * degreeBound :=
+    C.redProjectionWeight I (A.filter IsRedBaseVertex) ≤
+      (A.filter IsRedBaseVertex).card * degreeBound :=
   C.redProjectionWeight_filter_isLeft_le_card_mul_of_univ_bound I A hD.redProjectionBound
 
 theorem blueProjectionWeight_filter_isRight_le_of_goodEventD (C : ConstructionData n m)
     {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
     (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
-    C.blueProjectionWeight I (A.filter IsBlueBaseVertex) ≤ (A.filter IsBlueBaseVertex).card * degreeBound :=
+    C.blueProjectionWeight I (A.filter IsBlueBaseVertex) ≤
+      (A.filter IsBlueBaseVertex).card * degreeBound :=
   C.blueProjectionWeight_filter_isRight_le_card_mul_of_univ_bound I A hD.blueProjectionBound
+
+theorem redProjectionWeight_filter_isLeft_le_of_goodEventD_of_card_le
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {bound : ℕ}
+    (hA : (A.filter IsRedBaseVertex).card ≤ bound) :
+    C.redProjectionWeight I (A.filter IsRedBaseVertex) ≤ bound * degreeBound :=
+  (C.redProjectionWeight_filter_isLeft_le_of_goodEventD hD I A).trans
+    (Nat.mul_le_mul_right _ hA)
+
+theorem blueProjectionWeight_filter_isRight_le_of_goodEventD_of_card_le
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {bound : ℕ}
+    (hA : (A.filter IsBlueBaseVertex).card ≤ bound) :
+    C.blueProjectionWeight I (A.filter IsBlueBaseVertex) ≤ bound * degreeBound :=
+  (C.blueProjectionWeight_filter_isRight_le_of_goodEventD hD I A).trans
+    (Nat.mul_le_mul_right _ hA)
 
 theorem cast_partPairCount_le_half_threshold_mul_partWeight (C : ConstructionData n m)
     (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {T : ℝ}
@@ -740,6 +885,37 @@ theorem cast_smallContribution_le_of_goodEventD (C : ConstructionData n m)
   apply C.cast_smallContribution_le_of_partWeight_le I
   exact_mod_cast C.partWeight_le_card_I_add_choose_mul_of_goodEventD hD I (C.SPart I ε)
 
+theorem cast_largeContribution_le_of_goodEventD_of_card_le (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ε : ℝ} {bound : ℕ} (hT1 : 0 ≤ Twobites.paperT1 n)
+    (hA : (C.LPart I ε).card ≤ bound) :
+    ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT1 n / 2) * (I.card + bound.choose 2 * codegreeBound : ℕ) := by
+  apply C.cast_largeContribution_le_of_partWeight_le I hT1
+  exact_mod_cast C.partWeight_le_card_I_add_choose_mul_of_goodEventD_of_card_le hD I
+    (C.LPart I ε) hA
+
+theorem cast_mediumContribution_le_of_goodEventD_of_card_le (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ε : ℝ} {bound : ℕ} (hA : (C.MPart I ε).card ≤ bound) :
+    ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT2 ε n / 2) * (I.card + bound.choose 2 * codegreeBound : ℕ) := by
+  apply C.cast_mediumContribution_le_of_partWeight_le I
+  exact_mod_cast C.partWeight_le_card_I_add_choose_mul_of_goodEventD_of_card_le hD I
+    (C.MPart I ε) hA
+
+theorem cast_smallContribution_le_of_goodEventD_of_card_le (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ε : ℝ} {bound : ℕ} (hA : (C.SPart I ε).card ≤ bound) :
+    ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT3 ε n / 2) * (I.card + bound.choose 2 * codegreeBound : ℕ) := by
+  apply C.cast_smallContribution_le_of_partWeight_le I
+  exact_mod_cast C.partWeight_le_card_I_add_choose_mul_of_goodEventD_of_card_le hD I
+    (C.SPart I ε) hA
+
 theorem cast_redProjectionPairCount_le_half_card_mul_redProjectionWeight
     (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
     ((C.redProjectionPairCount I A : ℕ) : ℝ) ≤
@@ -819,6 +995,28 @@ theorem cast_hugeBlueContribution_filter_isRight_le_of_goodEventD (C : Construct
       ((I.card : ℝ) / 2) * (((C.HPart I).filter IsBlueBaseVertex).card * degreeBound : ℕ) := by
   apply C.cast_blueProjectionContribution_le_of_weight_le I ((C.HPart I).filter IsBlueBaseVertex)
   exact_mod_cast C.blueProjectionWeight_filter_isRight_le_of_goodEventD hD I (C.HPart I)
+
+theorem cast_hugeRedContribution_filter_isLeft_le_of_goodEventD_of_card_le
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {bound : ℕ}
+    (hA : ((C.HPart I).filter IsRedBaseVertex).card ≤ bound) :
+    ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+      ((I.card : ℝ) / 2) * (bound * degreeBound : ℕ) := by
+  apply C.cast_redProjectionContribution_le_of_weight_le I ((C.HPart I).filter IsRedBaseVertex)
+  exact_mod_cast C.redProjectionWeight_filter_isLeft_le_of_goodEventD_of_card_le hD I
+    (C.HPart I) hA
+
+theorem cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_card_le
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {bound : ℕ}
+    (hA : ((C.HPart I).filter IsBlueBaseVertex).card ≤ bound) :
+    ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+      ((I.card : ℝ) / 2) * (bound * degreeBound : ℕ) := by
+  apply C.cast_blueProjectionContribution_le_of_weight_le I ((C.HPart I).filter IsBlueBaseVertex)
+  exact_mod_cast C.blueProjectionWeight_filter_isRight_le_of_goodEventD_of_card_le hD I
+    (C.HPart I) hA
 
 theorem closedPair_comm (C : ConstructionData n m) {I : Finset (Fin n)} {v w : Fin n} :
     C.ClosedPair I v w ↔ C.ClosedPair I w v := by

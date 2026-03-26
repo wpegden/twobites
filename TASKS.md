@@ -10,12 +10,14 @@
 <!-- SUPERVISOR_TASKS:END -->
 
 ## Worker Tasks
-- [ ] Upgrade the new raw `GoodEventD`-driven large/medium/small and diagonal-huge contribution bounds in `repo/Twobites/IndependentSets.lean` to the paper's `\varepsilon_1 k^2` deterministic lemmas by proving the needed cardinality/threshold estimates for `L_I`, `M_I`, `S_I`, and `H_I`.
+- [ ] Upgrade the new `GoodEventD` cardinality and contribution lemmas in `repo/Twobites/IndependentSets.lean` to the paper's `\varepsilon_1 k^2` deterministic results by proving the remaining threshold arithmetic that instantiates the new witness-size hypotheses for `L_I`, `M_I`, `S_I`, and `H_I`.
 - [ ] Extend the huge-case bookkeeping in `repo/Twobites/IndependentSets.lean` from the current diagonal same-color projection bounds to the paper's cross-projection inequalities and the min-expression bounds in Lemma `lem:huge`.
 - [ ] Strengthen `repo/Twobites/ParameterBounds.lean` from the current threshold-order lemmas and the reduction lemma for `t_2 ≤ t_1` to an actual large-`n` proof of that comparison and the related asymptotic bounds used later in Sections 3-4.
 - [ ] Connect the new `finalGraph.CliqueFree 3` theorem and the part-restricted closed-pair bookkeeping to the eventual independence-number proofs in `repo/PaperTheorems.lean`.
 
 ## Completed
+- [x] Add the witness-subset/cardinality infrastructure in `repo/Twobites/IndependentSets.lean`: lower-bound the `partWeight` of a family from a natural lower bound on every `|X_v(I)|`, extract fixed-size witness subsets with `Finset.exists_subset_card_eq`, and deduce `L_I`, `M_I`, and `H_I` cardinality bounds from `GoodEventD` once the corresponding threshold inequalities are supplied.
+- [x] Clean the current `repo/Twobites/IndependentSets.lean` linter warnings while extending the `GoodEventD` machinery.
 - [x] Encode the deterministic good event `𝒟` in `repo/Twobites/IndependentSets.lean` as `GoodEventD`, and derive from it the inherited `X_v(I)` codegree bounds, projected codegree bounds, and `partWeight` / projection-weight upper bounds needed by the counting lemmas.
 - [x] Turn the earlier explicit-hypothesis wrappers into actual deterministic support lemmas in `repo/Twobites/IndependentSets.lean`: `GoodEventD` now yields raw large/medium/small contribution bounds and the diagonal huge red/blue contribution bounds on `H_I ∩ V_R` and `H_I ∩ V_B`.
 - [x] Add the first paper-style contribution wrappers under explicit weight hypotheses: large/medium/small `partPairCount` bounds and huge red/blue projection-pair bounds in `repo/Twobites/IndependentSets.lean`.
