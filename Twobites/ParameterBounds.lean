@@ -1,4 +1,6 @@
+import Mathlib.Algebra.Order.Floor.Semiring
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Data.Nat.Cast.Order.Field
 import Mathlib.Data.Real.Sqrt
 
 namespace Twobites
@@ -21,6 +23,19 @@ def paperP (β : ℝ) (n : ℕ) : ℝ :=
 /-- The paper's target independent-set scale `k = κ * sqrt(n log n)`. -/
 def paperK (κ : ℝ) (n : ℕ) : ℝ :=
   κ * Real.sqrt ((n : ℝ) * Real.log (n : ℝ))
+
+/-- A natural-number version of the paper's scale parameter, rounded up and forced to stay
+positive so it can be used as a divisor in graph-size parameters. -/
+def paperSNat (n : ℕ) : ℕ :=
+  max 1 ⌈paperS n⌉₊
+
+/-- The natural-number base-graph size used when the construction needs a genuine vertex count. -/
+def paperMNat (n : ℕ) : ℕ :=
+  n / paperSNat n
+
+/-- A natural-number version of the paper's target independent-set scale. -/
+def paperKNat (κ : ℝ) (n : ℕ) : ℕ :=
+  ⌈paperK κ n⌉₊
 
 theorem paperS_nonneg (n : ℕ) : 0 ≤ paperS n := by
   unfold paperS
@@ -55,6 +70,40 @@ theorem paperP_nonneg {β : ℝ} (hβ : 0 ≤ β) (n : ℕ) : 0 ≤ paperP β n 
 theorem paperK_nonneg {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) : 0 ≤ paperK κ n := by
   unfold paperK
   exact mul_nonneg hκ (Real.sqrt_nonneg _)
+
+theorem one_le_paperSNat (n : ℕ) : 1 ≤ paperSNat n := by
+  unfold paperSNat
+  exact Nat.le_max_left _ _
+
+theorem paperSNat_ne_zero (n : ℕ) : paperSNat n ≠ 0 := by
+  exact Nat.ne_of_gt (Nat.succ_le_iff.mp (one_le_paperSNat n))
+
+theorem paperS_le_paperSNat (n : ℕ) : paperS n ≤ paperSNat n := by
+  have hceil : paperS n ≤ (⌈paperS n⌉₊ : ℝ) := Nat.le_ceil (paperS n)
+  have hmax : ((⌈paperS n⌉₊ : ℕ) : ℝ) ≤ paperSNat n := by
+    exact_mod_cast (Nat.le_max_right 1 ⌈paperS n⌉₊)
+  exact hceil.trans hmax
+
+theorem paperMNat_mul_paperSNat_le (n : ℕ) : paperMNat n * paperSNat n ≤ n := by
+  unfold paperMNat
+  exact Nat.div_mul_le_self n (paperSNat n)
+
+theorem paperMNat_cast_le_div (n : ℕ) :
+    (paperMNat n : ℝ) ≤ (n : ℝ) / paperSNat n := by
+  unfold paperMNat
+  simpa using (Nat.cast_div_le : ((n / paperSNat n : ℕ) : ℝ) ≤ n / paperSNat n)
+
+theorem div_paperSNat_le_paperM {n : ℕ} (hn : 1 < n) :
+    (n : ℝ) / paperSNat n ≤ paperM n := by
+  unfold paperM
+  exact div_le_div_of_nonneg_left (Nat.cast_nonneg n) (paperS_pos hn) (paperS_le_paperSNat n)
+
+theorem paperMNat_le_paperM {n : ℕ} (hn : 1 < n) : (paperMNat n : ℝ) ≤ paperM n := by
+  exact (paperMNat_cast_le_div n).trans (div_paperSNat_le_paperM hn)
+
+theorem paperK_le_paperKNat (κ : ℝ) (n : ℕ) : paperK κ n ≤ paperKNat κ n := by
+  unfold paperKNat
+  exact Nat.le_ceil (paperK κ n)
 
 theorem paperP_sq (β : ℝ) {n : ℕ} (hn : 1 ≤ n) :
     paperP β n ^ 2 = β ^ 2 * (Real.log (n : ℝ) / (n : ℝ)) := by
