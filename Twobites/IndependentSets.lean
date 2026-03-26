@@ -1,8 +1,11 @@
 import Twobites.Construction
 import Twobites.ParameterBounds
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Nat.Choose.Cast
 
 namespace Twobites
+
+open scoped BigOperators
 
 /-- The paper's ambient vertex type `V_R ∪ V_B`, represented as a tagged disjoint union. -/
 abbrev BaseVertex (m : ℕ) := Fin m ⊕ Fin m
@@ -72,6 +75,26 @@ def SPart (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) : Finset (B
   classical
   exact Finset.univ.filter fun x =>
     (C.xCard I x : ℝ) ≤ Twobites.paperT3 ε n
+
+/-- The total weight `∑_{v ∈ A} |X_v(I)|` of a selected part `A ⊆ V_R ∪ V_B`. -/
+def partWeight (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) : ℕ :=
+  ∑ x ∈ A, C.xCard I x
+
+/-- The raw sum `∑_{v ∈ A} (|X_v(I)| choose 2)` that upper-bounds the contribution of closed pairs
+from a part before inclusion-exclusion. -/
+def partPairCount (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : ℕ :=
+  ∑ x ∈ A, (C.xCard I x).choose 2
+
+/-- The total red-projection weight `∑_{v ∈ A} |π_R(X_v(I))|`. -/
+def redProjectionWeight (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : ℕ :=
+  ∑ x ∈ A, (C.redProjectionImage I x).card
+
+/-- The total blue-projection weight `∑_{v ∈ A} |π_B(X_v(I))|`. -/
+def blueProjectionWeight (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : ℕ :=
+  ∑ x ∈ A, (C.blueProjectionImage I x).card
 
 /-- The paper's closed-pair predicate `C(I)`, expressed on ordered pairs of distinct vertices of
 `I`. -/
@@ -234,6 +257,79 @@ theorem xCard_le_paperT3_of_mem_SPart (C : ConstructionData n m) {I : Finset (Fi
     {ε : ℝ} {x : BaseVertex m} (hx : x ∈ C.SPart I ε) :
     (C.xCard I x : ℝ) ≤ Twobites.paperT3 ε n :=
   (C.mem_SPart.1 hx)
+
+theorem cast_choose_two_le_half_mul_of_le {a : ℕ} {T : ℝ} (hT : (a : ℝ) ≤ T) :
+    ((a.choose 2 : ℕ) : ℝ) ≤ (a : ℝ) * T / 2 := by
+  have ha : 0 ≤ (a : ℝ) := by
+    positivity
+  have hminus : (a : ℝ) - 1 ≤ T := by
+    linarith
+  calc
+    ((a.choose 2 : ℕ) : ℝ) = (a : ℝ) * ((a : ℝ) - 1) / 2 := by
+      simpa using (Nat.cast_choose_two ℝ a)
+    _ ≤ (a : ℝ) * T / 2 := by
+      have hmul : (a : ℝ) * ((a : ℝ) - 1) ≤ (a : ℝ) * T := by
+        exact mul_le_mul_of_nonneg_left hminus ha
+      nlinarith
+
+theorem redProjectionWeight_le_partWeight (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : C.redProjectionWeight I A ≤ C.partWeight I A := by
+  unfold redProjectionWeight partWeight
+  simpa using (Finset.sum_le_sum fun x _ => C.card_redProjectionImage_le_xCard I x)
+
+theorem blueProjectionWeight_le_partWeight (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : C.blueProjectionWeight I A ≤ C.partWeight I A := by
+  unfold blueProjectionWeight partWeight
+  simpa using (Finset.sum_le_sum fun x _ => C.card_blueProjectionImage_le_xCard I x)
+
+theorem cast_partPairCount_le_half_threshold_mul_partWeight (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) {T : ℝ}
+    (hA : ∀ x ∈ A, (C.xCard I x : ℝ) ≤ T) :
+    ((C.partPairCount I A : ℕ) : ℝ) ≤ (T / 2) * (C.partWeight I A : ℕ) := by
+  unfold partPairCount partWeight
+  calc
+    ((∑ x ∈ A, (C.xCard I x).choose 2 : ℕ) : ℝ)
+        = ∑ x ∈ A, (((C.xCard I x).choose 2 : ℕ) : ℝ) := by
+            simp
+    _ ≤ ∑ x ∈ A, (C.xCard I x : ℝ) * T / 2 := by
+      refine Finset.sum_le_sum ?_
+      intro x hx
+      exact cast_choose_two_le_half_mul_of_le (hA x hx)
+    _ = (T / 2) * ∑ x ∈ A, (C.xCard I x : ℝ) := by
+      rw [Finset.mul_sum]
+      refine Finset.sum_congr rfl ?_
+      intro x hx
+      ring
+    _ = (T / 2) * (C.partWeight I A : ℕ) := by
+      simp [partWeight]
+
+theorem cast_partPairCount_HPart_le (C : ConstructionData n m) (I : Finset (Fin n)) :
+    ((C.partPairCount I (C.HPart I) : ℕ) : ℝ) ≤
+      ((I.card : ℝ) / 2) * (C.partWeight I (C.HPart I) : ℕ) := by
+  apply C.cast_partPairCount_le_half_threshold_mul_partWeight
+  intro x hx
+  exact C.xCard_le_card_I_of_mem_HPart hx
+
+theorem cast_partPairCount_LPart_le (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
+    ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT1 n / 2) * (C.partWeight I (C.LPart I ε) : ℕ) := by
+  apply C.cast_partPairCount_le_half_threshold_mul_partWeight
+  intro x hx
+  exact C.xCard_le_paperT1_of_mem_LPart hx
+
+theorem cast_partPairCount_MPart_le (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
+    ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT2 ε n / 2) * (C.partWeight I (C.MPart I ε) : ℕ) := by
+  apply C.cast_partPairCount_le_half_threshold_mul_partWeight
+  intro x hx
+  exact C.xCard_le_paperT2_of_mem_MPart hx
+
+theorem cast_partPairCount_SPart_le (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
+    ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+      (Twobites.paperT3 ε n / 2) * (C.partWeight I (C.SPart I ε) : ℕ) := by
+  apply C.cast_partPairCount_le_half_threshold_mul_partWeight
+  intro x hx
+  exact C.xCard_le_paperT3_of_mem_SPart hx
 
 theorem closedPair_comm (C : ConstructionData n m) {I : Finset (Fin n)} {v w : Fin n} :
     C.ClosedPair I v w ↔ C.ClosedPair I w v := by

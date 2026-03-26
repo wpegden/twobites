@@ -10,11 +10,13 @@
 <!-- SUPERVISOR_TASKS:END -->
 
 ## Worker Tasks
-- [ ] Extend `repo/Twobites/ParameterBounds.lean` from the current threshold definitions and positivity lemmas to the paper's concrete large-`n` and small-`ε` ordering inequalities used later in Sections 3-4.
-- [ ] Extend `repo/Twobites/IndependentSets.lean` from the new `H_I`, `L_I`, `M_I`, `S_I` partition and restricted closed-pair interface to the actual deterministic counting lemmas used in `lem:huge`, `lem:RISI`, and `lem:RI`.
+- [ ] Extend `repo/Twobites/ParameterBounds.lean` from the current threshold-order lemmas (`t_3 ≤ t_2`, `t_1 ≤ k`, `t_2 ≤ k` under explicit hypotheses) to the remaining large-`n` comparisons needed later in Sections 3-4, especially the `t_2 ≤ t_1`-style bounds.
+- [ ] Extend `repo/Twobites/IndependentSets.lean` from the current part weights and first `choose 2` counting bounds to the regime-specific deterministic lemmas that approximate the proofs of `lem:large`, `lem:med`, `lem:small`, and the huge-case projection estimates.
 - [ ] Connect the new `finalGraph.CliqueFree 3` theorem and the part-restricted closed-pair bookkeeping to the eventual independence-number proofs in `repo/PaperTheorems.lean`.
 
 ## Completed
+- [x] Add the first actual deterministic counting lemmas in `repo/Twobites/IndependentSets.lean`: `partWeight`, `partPairCount`, projection-weight sums, and `choose 2` upper bounds specialized to `H_I`, `L_I`, `M_I`, and `S_I`.
+- [x] Strengthen `repo/Twobites/ParameterBounds.lean` with the first concrete threshold-order inequalities, including `t_3 ≤ t_2` and explicit bounds placing `t_1` and `t_2` below `k` under large-`n` / small-`ε` hypotheses.
 - [x] Upgrade the local deletion lemmas in `repo/Twobites/Construction.lean` into triangle-free / `CliqueFree 3` theorems for `retainedRed`, `retainedBlue`, and `finalGraph`.
 - [x] Extend `repo/Twobites/IndependentSets.lean` to the paper's `H_I`, `L_I`, `M_I`, `S_I` partition, projected-image bookkeeping, and restricted `ClosedPairOn` / `ClosedPairPlusOn` predicates.
 - [x] Extend `repo/Twobites/ParameterBounds.lean` with the paper's Section 3 thresholds `t_1`, `t_2`, `t_3` and their basic positivity lemmas.

@@ -117,6 +117,63 @@ theorem paperT3_pos (ε : ℝ) {n : ℕ} (hn : 0 < n) : 0 < paperT3 ε n := by
   unfold paperT3
   exact Real.rpow_pos_of_pos (by exact_mod_cast hn) _
 
+theorem paperT3_le_paperT2 {ε : ℝ} {n : ℕ} (hn : 1 ≤ n) (hε : ε ≤ (1 / 4 : ℝ)) :
+    paperT3 ε n ≤ paperT2 ε n := by
+  unfold paperT3 paperT2
+  have hx : 1 ≤ (n : ℝ) := by
+    exact_mod_cast hn
+  apply Real.rpow_le_rpow_of_exponent_le hx
+  linarith
+
+theorem paperT1_le_paperK_one {n : ℕ} (hloglog : 1 ≤ Real.log (Real.log (n : ℝ))) :
+    paperT1 n ≤ paperK 1 n := by
+  unfold paperT1 paperK
+  have hden : 0 < Real.log (Real.log (n : ℝ)) := by
+    linarith
+  have hsqrt : 0 ≤ Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := Real.sqrt_nonneg _
+  have hdiv :
+      Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) / Real.log (Real.log (n : ℝ)) ≤
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) / 1 := by
+    rw [div_one]
+    exact (div_le_iff₀ hden).2 <| by
+      simpa [one_mul] using mul_le_mul_of_nonneg_left hloglog hsqrt
+  simpa using hdiv
+
+theorem paperK_one_le_paperK {κ : ℝ} {n : ℕ} (hκ : 1 ≤ κ) : paperK 1 n ≤ paperK κ n := by
+  unfold paperK
+  have hsqrt : 0 ≤ Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := Real.sqrt_nonneg _
+  exact mul_le_mul_of_nonneg_right hκ hsqrt
+
+theorem paperT1_le_paperK {κ : ℝ} {n : ℕ}
+    (hloglog : 1 ≤ Real.log (Real.log (n : ℝ))) (hκ : 1 ≤ κ) : paperT1 n ≤ paperK κ n := by
+  exact (paperT1_le_paperK_one hloglog).trans (paperK_one_le_paperK hκ)
+
+theorem paperT2_le_paperK {ε κ : ℝ} {n : ℕ} (hn : 1 ≤ n)
+    (hlog : 1 ≤ Real.log (n : ℝ)) (hε : ε ≤ (1 / 4 : ℝ)) (hκ : 1 ≤ κ) :
+    paperT2 ε n ≤ paperK κ n := by
+  have hn' : 1 ≤ (n : ℝ) := by
+    exact_mod_cast hn
+  have hlogn : 0 ≤ Real.log (n : ℝ) := by
+    exact Real.log_nonneg hn'
+  calc
+    paperT2 ε n = (n : ℝ) ^ ((1 / 4 : ℝ) + ε) := by
+      rfl
+    _ ≤ (n : ℝ) ^ (1 / 2 : ℝ) := by
+      apply Real.rpow_le_rpow_of_exponent_le hn'
+      linarith
+    _ = Real.sqrt (n : ℝ) := by
+      rw [Real.sqrt_eq_rpow]
+    _ ≤ Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+      apply Real.sqrt_le_sqrt
+      have hn0 : 0 ≤ (n : ℝ) := by
+        positivity
+      nlinarith
+    _ ≤ κ * Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+      have hsqrt : 0 ≤ Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := Real.sqrt_nonneg _
+      nlinarith
+    _ = paperK κ n := by
+      rw [paperK]
+
 theorem one_le_paperSNat (n : ℕ) : 1 ≤ paperSNat n := by
   unfold paperSNat
   exact Nat.le_max_left _ _
