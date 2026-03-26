@@ -149,6 +149,25 @@ theorem paperK_le_paperK_of_le {κ₁ κ₂ : ℝ} {n : ℕ} (hκ : κ₁ ≤ κ
   unfold paperK
   exact mul_le_mul_of_nonneg_right hκ (Real.sqrt_nonneg _)
 
+theorem natCeil_add_natCeil_le_natCeil_add_one {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    ⌈a⌉₊ + ⌈b⌉₊ ≤ ⌈a + b⌉₊ + 1 := by
+  have hlt :
+      ((⌈a⌉₊ + ⌈b⌉₊ : ℕ) : ℝ) < ((⌈a + b⌉₊ + 2 : ℕ) : ℝ) := by
+    calc
+      ((⌈a⌉₊ + ⌈b⌉₊ : ℕ) : ℝ) = (⌈a⌉₊ : ℝ) + (⌈b⌉₊ : ℝ) := by
+        norm_num
+      _ < (a + 1) + (b + 1) := by
+        nlinarith [Nat.ceil_lt_add_one ha, Nat.ceil_lt_add_one hb]
+      _ = a + b + 2 := by ring
+      _ ≤ (⌈a + b⌉₊ : ℝ) + 2 := by
+        gcongr
+        exact Nat.le_ceil (a + b)
+      _ = ((⌈a + b⌉₊ + 2 : ℕ) : ℝ) := by
+        norm_num
+  have hlt_nat : ⌈a⌉₊ + ⌈b⌉₊ < ⌈a + b⌉₊ + 2 := by
+    exact_mod_cast hlt
+  omega
+
 theorem paperT2_nonneg (ε : ℝ) (n : ℕ) : 0 ≤ paperT2 ε n := by
   unfold paperT2
   exact Real.rpow_nonneg (Nat.cast_nonneg n) _
@@ -404,6 +423,22 @@ theorem paperCapNat_le_paperKNat_of_mul_le {β ε2 κ : ℝ} {n : ℕ} (hn : 0 <
     paperCapNat β ε2 n ≤ paperKNat κ n := by
   apply Nat.ceil_le.2
   exact (paperCap_le_paperK_of_mul_le hn hκ).trans (Nat.le_ceil _)
+
+theorem paperK_add {κ₁ κ₂ : ℝ} (n : ℕ) :
+    paperK κ₁ n + paperK κ₂ n = paperK (κ₁ + κ₂) n := by
+  unfold paperK
+  ring
+
+theorem paperKNat_add_paperCapNat_le_paperKNat_add_one {ρ β ε2 : ℝ} {n : ℕ}
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) :
+    paperKNat ρ n + paperCapNat β ε2 n ≤ paperKNat (ρ + (1 + ε2) * β) n + 1 := by
+  unfold paperKNat paperCapNat
+  calc
+    ⌈paperK ρ n⌉₊ + ⌈paperCap β ε2 n⌉₊ ≤ ⌈paperK ρ n + paperCap β ε2 n⌉₊ + 1 := by
+      exact natCeil_add_natCeil_le_natCeil_add_one (paperK_nonneg hρ n) (paperCap_nonneg hβ hε2 n)
+    _ = ⌈paperK (ρ + (1 + ε2) * β) n⌉₊ + 1 := by
+      congr 1
+      rw [paperCap_eq_paperK_scaled hn, paperK_add]
 
 theorem paperKNat_lt_paperK_add_one {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) :
     (paperKNat κ n : ℝ) < paperK κ n + 1 := by
