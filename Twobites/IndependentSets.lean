@@ -91,10 +91,20 @@ def redProjectionWeight (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : ℕ :=
   ∑ x ∈ A, (C.redProjectionImage I x).card
 
+/-- The huge-case red self-contribution `∑_{v ∈ A} (|π_R(X_v(I))| choose 2)`. -/
+def redProjectionPairCount (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : ℕ :=
+  ∑ x ∈ A, ((C.redProjectionImage I x).card).choose 2
+
 /-- The total blue-projection weight `∑_{v ∈ A} |π_B(X_v(I))|`. -/
 def blueProjectionWeight (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : ℕ :=
   ∑ x ∈ A, (C.blueProjectionImage I x).card
+
+/-- The huge-case blue self-contribution `∑_{v ∈ A} (|π_B(X_v(I))| choose 2)`. -/
+def blueProjectionPairCount (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : ℕ :=
+  ∑ x ∈ A, ((C.blueProjectionImage I x).card).choose 2
 
 /-- The paper's closed-pair predicate `C(I)`, expressed on ordered pairs of distinct vertices of
 `I`. -/
@@ -225,6 +235,14 @@ theorem card_blueProjectionImage_le_xCard (C : ConstructionData n m) (I : Finset
   unfold blueProjectionImage xCard
   exact Finset.card_image_le
 
+theorem redProjectionImage_card_le_card_I (C : ConstructionData n m) (I : Finset (Fin n))
+    (x : BaseVertex m) : (C.redProjectionImage I x).card ≤ I.card :=
+  (C.card_redProjectionImage_le_xCard I x).trans (C.xCard_le_card_I I x)
+
+theorem blueProjectionImage_card_le_card_I (C : ConstructionData n m) (I : Finset (Fin n))
+    (x : BaseVertex m) : (C.blueProjectionImage I x).card ≤ I.card :=
+  (C.card_blueProjectionImage_le_xCard I x).trans (C.xCard_le_card_I I x)
+
 theorem paperT1_lt_xCard_of_mem_HPart (C : ConstructionData n m) {I : Finset (Fin n)}
     {x : BaseVertex m} (hx : x ∈ C.HPart I) : Twobites.paperT1 n < (C.xCard I x : ℝ) :=
   (C.mem_HPart.1 hx).1
@@ -258,6 +276,71 @@ theorem xCard_le_paperT3_of_mem_SPart (C : ConstructionData n m) {I : Finset (Fi
     (C.xCard I x : ℝ) ≤ Twobites.paperT3 ε n :=
   (C.mem_SPart.1 hx)
 
+theorem mem_HPart_or_mem_LPart_or_mem_MPart_or_mem_SPart (C : ConstructionData n m)
+    (I : Finset (Fin n)) (ε : ℝ) (x : BaseVertex m) :
+    x ∈ C.HPart I ∨ x ∈ C.LPart I ε ∨ x ∈ C.MPart I ε ∨ x ∈ C.SPart I ε := by
+  by_cases hs : (C.xCard I x : ℝ) ≤ Twobites.paperT3 ε n
+  · exact Or.inr <| Or.inr <| Or.inr <| (C.mem_SPart).2 hs
+  · have hs' : Twobites.paperT3 ε n < (C.xCard I x : ℝ) := lt_of_not_ge hs
+    by_cases hm : (C.xCard I x : ℝ) ≤ Twobites.paperT2 ε n
+    · exact Or.inr <| Or.inr <| Or.inl <| (C.mem_MPart).2 ⟨hs', hm⟩
+    · have hm' : Twobites.paperT2 ε n < (C.xCard I x : ℝ) := lt_of_not_ge hm
+      by_cases hl : (C.xCard I x : ℝ) ≤ Twobites.paperT1 n
+      · exact Or.inr <| Or.inl <| (C.mem_LPart).2 ⟨hm', hl⟩
+      · have hl' : Twobites.paperT1 n < (C.xCard I x : ℝ) := lt_of_not_ge hl
+        exact Or.inl <| (C.mem_HPart).2 ⟨hl', by exact_mod_cast C.xCard_le_card_I I x⟩
+
+theorem disjoint_HPart_LPart (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
+    Disjoint (C.HPart I) (C.LPart I ε) := by
+  refine Finset.disjoint_left.2 ?_
+  intro x hxH hxL
+  have hH := C.paperT1_lt_xCard_of_mem_HPart hxH
+  have hL := C.xCard_le_paperT1_of_mem_LPart hxL
+  linarith
+
+theorem disjoint_LPart_MPart (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
+    Disjoint (C.LPart I ε) (C.MPart I ε) := by
+  refine Finset.disjoint_left.2 ?_
+  intro x hxL hxM
+  have hL := C.paperT2_lt_xCard_of_mem_LPart hxL
+  have hM := C.xCard_le_paperT2_of_mem_MPart hxM
+  linarith
+
+theorem disjoint_MPart_SPart (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
+    Disjoint (C.MPart I ε) (C.SPart I ε) := by
+  refine Finset.disjoint_left.2 ?_
+  intro x hxM hxS
+  have hM := C.paperT3_lt_xCard_of_mem_MPart hxM
+  have hS := C.xCard_le_paperT3_of_mem_SPart hxS
+  linarith
+
+theorem disjoint_HPart_MPart (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n) :
+    Disjoint (C.HPart I) (C.MPart I ε) := by
+  refine Finset.disjoint_left.2 ?_
+  intro x hxH hxM
+  have hH := C.paperT1_lt_xCard_of_mem_HPart hxH
+  have hM := C.xCard_le_paperT2_of_mem_MPart hxM
+  linarith
+
+theorem disjoint_LPart_SPart (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n) :
+    Disjoint (C.LPart I ε) (C.SPart I ε) := by
+  refine Finset.disjoint_left.2 ?_
+  intro x hxL hxS
+  have hL := C.paperT2_lt_xCard_of_mem_LPart hxL
+  have hS := C.xCard_le_paperT3_of_mem_SPart hxS
+  linarith
+
+theorem disjoint_HPart_SPart (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (ht31 : Twobites.paperT3 ε n ≤ Twobites.paperT1 n) :
+    Disjoint (C.HPart I) (C.SPart I ε) := by
+  refine Finset.disjoint_left.2 ?_
+  intro x hxH hxS
+  have hH := C.paperT1_lt_xCard_of_mem_HPart hxH
+  have hS := C.xCard_le_paperT3_of_mem_SPart hxS
+  linarith
+
 theorem cast_choose_two_le_half_mul_of_le {a : ℕ} {T : ℝ} (hT : (a : ℝ) ≤ T) :
     ((a.choose 2 : ℕ) : ℝ) ≤ (a : ℝ) * T / 2 := by
   have ha : 0 ≤ (a : ℝ) := by
@@ -271,6 +354,25 @@ theorem cast_choose_two_le_half_mul_of_le {a : ℕ} {T : ℝ} (hT : (a : ℝ) �
       have hmul : (a : ℝ) * ((a : ℝ) - 1) ≤ (a : ℝ) * T := by
         exact mul_le_mul_of_nonneg_left hminus ha
       nlinarith
+
+theorem cast_sum_choose_two_card_le_half_threshold_mul_sum_card {α : Type*}
+    (F : BaseVertex m → Finset α) (A : Finset (BaseVertex m)) {T : ℝ}
+    (hA : ∀ x ∈ A, ((F x).card : ℝ) ≤ T) :
+    ((∑ x ∈ A, ((F x).card).choose 2 : ℕ) : ℝ) ≤
+      (T / 2) * ∑ x ∈ A, ((F x).card : ℝ) := by
+  calc
+    ((∑ x ∈ A, ((F x).card).choose 2 : ℕ) : ℝ)
+        = ∑ x ∈ A, ((((F x).card).choose 2 : ℕ) : ℝ) := by
+            simp
+    _ ≤ ∑ x ∈ A, ((F x).card : ℝ) * T / 2 := by
+      refine Finset.sum_le_sum ?_
+      intro x hx
+      exact cast_choose_two_le_half_mul_of_le (hA x hx)
+    _ = (T / 2) * ∑ x ∈ A, ((F x).card : ℝ) := by
+      rw [Finset.mul_sum]
+      refine Finset.sum_congr rfl ?_
+      intro x hx
+      ring
 
 theorem redProjectionWeight_le_partWeight (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : C.redProjectionWeight I A ≤ C.partWeight I A := by
@@ -330,6 +432,34 @@ theorem cast_partPairCount_SPart_le (C : ConstructionData n m) (I : Finset (Fin 
   apply C.cast_partPairCount_le_half_threshold_mul_partWeight
   intro x hx
   exact C.xCard_le_paperT3_of_mem_SPart hx
+
+theorem cast_redProjectionPairCount_le_half_card_mul_redProjectionWeight
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    ((C.redProjectionPairCount I A : ℕ) : ℝ) ≤
+      ((I.card : ℝ) / 2) * (C.redProjectionWeight I A : ℕ) := by
+  simpa [redProjectionPairCount, redProjectionWeight] using
+    (cast_sum_choose_two_card_le_half_threshold_mul_sum_card
+      (m := m) (F := fun x => C.redProjectionImage I x) A
+      (fun x hx => by exact_mod_cast C.redProjectionImage_card_le_card_I I x))
+
+theorem cast_blueProjectionPairCount_le_half_card_mul_blueProjectionWeight
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    ((C.blueProjectionPairCount I A : ℕ) : ℝ) ≤
+      ((I.card : ℝ) / 2) * (C.blueProjectionWeight I A : ℕ) := by
+  simpa [blueProjectionPairCount, blueProjectionWeight] using
+    (cast_sum_choose_two_card_le_half_threshold_mul_sum_card
+      (m := m) (F := fun x => C.blueProjectionImage I x) A
+      (fun x hx => by exact_mod_cast C.blueProjectionImage_card_le_card_I I x))
+
+theorem cast_redProjectionPairCount_HPart_le (C : ConstructionData n m) (I : Finset (Fin n)) :
+    ((C.redProjectionPairCount I (C.HPart I) : ℕ) : ℝ) ≤
+      ((I.card : ℝ) / 2) * (C.redProjectionWeight I (C.HPart I) : ℕ) :=
+  C.cast_redProjectionPairCount_le_half_card_mul_redProjectionWeight I (C.HPart I)
+
+theorem cast_blueProjectionPairCount_HPart_le (C : ConstructionData n m) (I : Finset (Fin n)) :
+    ((C.blueProjectionPairCount I (C.HPart I) : ℕ) : ℝ) ≤
+      ((I.card : ℝ) / 2) * (C.blueProjectionWeight I (C.HPart I) : ℕ) :=
+  C.cast_blueProjectionPairCount_le_half_card_mul_blueProjectionWeight I (C.HPart I)
 
 theorem closedPair_comm (C : ConstructionData n m) {I : Finset (Fin n)} {v w : Fin n} :
     C.ClosedPair I v w ↔ C.ClosedPair I w v := by
