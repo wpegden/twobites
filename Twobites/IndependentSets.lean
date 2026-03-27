@@ -1590,6 +1590,266 @@ theorem section4F2_card_le_card_LPart_union_HPart_of_log_pos_of_paperT3_le_paper
   exact Finset.card_le_card
     (C.section4F2_subset_LPart_union_HPart_of_log_pos_of_paperT3_le_paperT2 I hlog ht32)
 
+theorem baseFiber_card_le_log_of_mem_baseImage_of_not_mem_section4F1
+    (C : ConstructionData n m) {I : Finset (Fin n)} {x : BaseVertex m}
+    (hxBase : x ∈ C.baseImage I) (hxF1 : x ∉ C.section4F1 I) :
+    (((C.baseFiber x ∩ I).card : ℕ) : ℝ) ≤ Real.log (n : ℝ) := by
+  by_contra hgt
+  exact hxF1 ((C.mem_section4F1.2 ⟨hxBase, lt_of_not_ge hgt⟩))
+
+theorem section4F1_neighbor_card_le_paperT2_div_log_of_mem_baseImage_of_not_mem_section4F2
+    (C : ConstructionData n m) {I : Finset (Fin n)} {x : BaseVertex m} {ε : ℝ}
+    (hxBase : x ∈ C.baseImage I) (hxF2 : x ∉ C.section4F2 I ε) :
+    ((((C.baseNeighborSet x ∩ C.section4F1 I).card : ℕ) : ℝ)) ≤
+      Twobites.paperT2 ε n / Real.log (n : ℝ) := by
+  by_contra hgt
+  exact hxF2 ((C.mem_section4F2.2 ⟨hxBase, lt_of_not_ge hgt⟩))
+
+theorem xCard_red_le_fiberBound_mul_section4F1_neighbor_card_add_log_mul_degreeBound_of_goodEventD
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (r : Fin m) :
+    (C.xCard I (Sum.inl r) : ℝ) ≤
+      (fiberBound : ℝ) *
+          ((((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
+        Real.log (n : ℝ) * degreeBound := by
+  classical
+  let A : Finset (Fin m) := C.redProjectionImage I (Sum.inl r)
+  let A₁ : Finset (Fin m) := A.filter fun r' => Sum.inl r' ∈ C.section4F1 I
+  let A₂ : Finset (Fin m) := A.filter fun r' => Sum.inl r' ∉ C.section4F1 I
+  have hsplit :
+      ∑ r' ∈ A, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) =
+        ∑ r' ∈ A₁, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) +
+          ∑ r' ∈ A₂, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) := by
+    simpa [A₁, A₂, A] using
+      (Finset.sum_filter_add_sum_filter_not A
+        (fun r' => Sum.inl r' ∈ C.section4F1 I)
+        (fun r' => (((C.redFiber r' ∩ I).card : ℕ) : ℝ))).symm
+  have hA₁card :
+      ((A₁.card : ℕ) : ℝ) =
+        ((((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ)) := by
+    have hA₁cardNat : A₁.card = (C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card := by
+      calc
+        A₁.card = (A₁.image fun r' : Fin m => (Sum.inl r' : BaseVertex m)).card := by
+          symm
+          exact Finset.card_image_of_injective _ (by
+            intro a b hab
+            exact Sum.inl.inj hab)
+        _ = (C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card := by
+          rw [C.redProjectionImage_filter_section4F1_image_inl_eq_baseNeighborSet_inter_section4F1
+            I r]
+    exact_mod_cast hA₁cardNat
+  have hsumA₁ :
+      ∑ r' ∈ A₁, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) ≤
+        (fiberBound : ℝ) * (A₁.card : ℝ) := by
+    calc
+      ∑ r' ∈ A₁, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) ≤
+          ∑ _r' ∈ A₁, (fiberBound : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro r' hr'
+        have hcard : (C.redFiber r' ∩ I).card ≤ fiberBound := by
+          exact (Finset.card_le_card (by
+            intro v hv
+            exact (Finset.mem_inter.1 hv).1)).trans (hD.redFiberBound r')
+        exact_mod_cast hcard
+      _ = (fiberBound : ℝ) * (A₁.card : ℝ) := by
+        simp [mul_comm]
+  have hsumA₂ :
+      ∑ r' ∈ A₂, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) ≤
+        Real.log (n : ℝ) * (A₂.card : ℝ) := by
+    calc
+      ∑ r' ∈ A₂, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) ≤
+          ∑ _r' ∈ A₂, Real.log (n : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro r' hr'
+        rcases Finset.mem_filter.1 hr' with ⟨hrA, hrNotF1⟩
+        have hrBase : Sum.inl r' ∈ C.baseImage I := by
+          exact C.mem_baseImage_inl.2 ((C.mem_redProjectionImage_inl.1 hrA).2)
+        exact C.baseFiber_card_le_log_of_mem_baseImage_of_not_mem_section4F1 hrBase hrNotF1
+      _ = Real.log (n : ℝ) * (A₂.card : ℝ) := by
+        simp [mul_comm]
+  have hA₂card :
+      (A₂.card : ℝ) ≤ degreeBound := by
+    have hA₂cardNat : A₂.card ≤ degreeBound := by
+      have hfilter : A₂.card ≤ A.card := by
+        simpa [A₂] using (A.card_filter_le fun r' => Sum.inl r' ∉ C.section4F1 I)
+      exact hfilter.trans
+        ((C.card_redProjectionImage_le_univ I (Sum.inl r)).trans (hD.redProjectionBound r))
+    exact_mod_cast hA₂cardNat
+  have hwhole :
+      (C.xCard I (Sum.inl r) : ℝ) =
+        ∑ r' ∈ A, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) := by
+    exact_mod_cast C.xCard_red_eq_sum_card_redFiber_inter I r
+  calc
+    (C.xCard I (Sum.inl r) : ℝ) =
+        ∑ r' ∈ A, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) := hwhole
+    _ =
+        ∑ r' ∈ A₁, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) +
+          ∑ r' ∈ A₂, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) := hsplit
+    _ ≤ (fiberBound : ℝ) * (A₁.card : ℝ) + Real.log (n : ℝ) * (A₂.card : ℝ) := by
+      exact add_le_add hsumA₁ hsumA₂
+    _ =
+        (fiberBound : ℝ) *
+            ((((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
+          Real.log (n : ℝ) * (A₂.card : ℝ) := by
+      rw [hA₁card]
+    _ ≤
+        (fiberBound : ℝ) *
+            ((((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
+          Real.log (n : ℝ) * degreeBound := by
+      gcongr
+
+theorem xCard_blue_le_fiberBound_mul_section4F1_neighbor_card_add_log_mul_degreeBound_of_goodEventD
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) (b : Fin m) :
+    (C.xCard I (Sum.inr b) : ℝ) ≤
+      (fiberBound : ℝ) *
+          ((((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
+        Real.log (n : ℝ) * degreeBound := by
+  classical
+  let A : Finset (Fin m) := C.blueProjectionImage I (Sum.inr b)
+  let A₁ : Finset (Fin m) := A.filter fun b' => Sum.inr b' ∈ C.section4F1 I
+  let A₂ : Finset (Fin m) := A.filter fun b' => Sum.inr b' ∉ C.section4F1 I
+  have hsplit :
+      ∑ b' ∈ A, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) =
+        ∑ b' ∈ A₁, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) +
+          ∑ b' ∈ A₂, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) := by
+    simpa [A₁, A₂, A] using
+      (Finset.sum_filter_add_sum_filter_not A
+        (fun b' => Sum.inr b' ∈ C.section4F1 I)
+        (fun b' => (((C.blueFiber b' ∩ I).card : ℕ) : ℝ))).symm
+  have hA₁card :
+      ((A₁.card : ℕ) : ℝ) =
+        ((((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ)) := by
+    have hA₁cardNat : A₁.card = (C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card := by
+      calc
+        A₁.card = (A₁.image fun b' : Fin m => (Sum.inr b' : BaseVertex m)).card := by
+          symm
+          exact Finset.card_image_of_injective _ (by
+            intro a c hac
+            exact Sum.inr.inj hac)
+        _ = (C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card := by
+          rw [C.blueProjectionImage_filter_section4F1_image_inr_eq_baseNeighborSet_inter_section4F1
+            I b]
+    exact_mod_cast hA₁cardNat
+  have hsumA₁ :
+      ∑ b' ∈ A₁, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) ≤
+        (fiberBound : ℝ) * (A₁.card : ℝ) := by
+    calc
+      ∑ b' ∈ A₁, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) ≤
+          ∑ _b' ∈ A₁, (fiberBound : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro b' hb'
+        have hcard : (C.blueFiber b' ∩ I).card ≤ fiberBound := by
+          exact (Finset.card_le_card (by
+            intro v hv
+            exact (Finset.mem_inter.1 hv).1)).trans (hD.blueFiberBound b')
+        exact_mod_cast hcard
+      _ = (fiberBound : ℝ) * (A₁.card : ℝ) := by
+        simp [mul_comm]
+  have hsumA₂ :
+      ∑ b' ∈ A₂, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) ≤
+        Real.log (n : ℝ) * (A₂.card : ℝ) := by
+    calc
+      ∑ b' ∈ A₂, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) ≤
+          ∑ _b' ∈ A₂, Real.log (n : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro b' hb'
+        rcases Finset.mem_filter.1 hb' with ⟨hbA, hbNotF1⟩
+        have hbBase : Sum.inr b' ∈ C.baseImage I := by
+          exact C.mem_baseImage_inr.2 ((C.mem_blueProjectionImage_inr.1 hbA).2)
+        exact C.baseFiber_card_le_log_of_mem_baseImage_of_not_mem_section4F1 hbBase hbNotF1
+      _ = Real.log (n : ℝ) * (A₂.card : ℝ) := by
+        simp [mul_comm]
+  have hA₂card :
+      (A₂.card : ℝ) ≤ degreeBound := by
+    have hA₂cardNat : A₂.card ≤ degreeBound := by
+      have hfilter : A₂.card ≤ A.card := by
+        simpa [A₂] using (A.card_filter_le fun b' => Sum.inr b' ∉ C.section4F1 I)
+      exact hfilter.trans
+        ((C.card_blueProjectionImage_le_univ I (Sum.inr b)).trans (hD.blueProjectionBound b))
+    exact_mod_cast hA₂cardNat
+  have hwhole :
+      (C.xCard I (Sum.inr b) : ℝ) =
+        ∑ b' ∈ A, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) := by
+    exact_mod_cast C.xCard_blue_eq_sum_card_blueFiber_inter I b
+  calc
+    (C.xCard I (Sum.inr b) : ℝ) =
+        ∑ b' ∈ A, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) := hwhole
+    _ =
+        ∑ b' ∈ A₁, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) +
+          ∑ b' ∈ A₂, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) := hsplit
+    _ ≤ (fiberBound : ℝ) * (A₁.card : ℝ) + Real.log (n : ℝ) * (A₂.card : ℝ) := by
+      exact add_le_add hsumA₁ hsumA₂
+    _ =
+        (fiberBound : ℝ) *
+            ((((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
+          Real.log (n : ℝ) * (A₂.card : ℝ) := by
+      rw [hA₁card]
+    _ ≤
+        (fiberBound : ℝ) *
+            ((((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
+          Real.log (n : ℝ) * degreeBound := by
+      gcongr
+
+theorem xCard_le_fiberBound_mul_paperT2_div_log_add_log_mul_degreeBound_of_goodEventD_of_mem_baseImage_of_not_mem_section4F2
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {x : BaseVertex m} {ε : ℝ}
+    (hxBase : x ∈ C.baseImage I) (hxF2 : x ∉ C.section4F2 I ε) :
+    (C.xCard I x : ℝ) ≤
+      (fiberBound : ℝ) * (Twobites.paperT2 ε n / Real.log (n : ℝ)) +
+        Real.log (n : ℝ) * degreeBound := by
+  have hcount :
+      ((((C.baseNeighborSet x ∩ C.section4F1 I).card : ℕ) : ℝ)) ≤
+        Twobites.paperT2 ε n / Real.log (n : ℝ) :=
+    C.section4F1_neighbor_card_le_paperT2_div_log_of_mem_baseImage_of_not_mem_section4F2
+      hxBase hxF2
+  cases x with
+  | inl r =>
+      calc
+        (C.xCard I (Sum.inl r) : ℝ) ≤
+            (fiberBound : ℝ) *
+                ((((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
+              Real.log (n : ℝ) * degreeBound := by
+            exact C.xCard_red_le_fiberBound_mul_section4F1_neighbor_card_add_log_mul_degreeBound_of_goodEventD
+              hD I r
+        _ ≤
+            (fiberBound : ℝ) * (Twobites.paperT2 ε n / Real.log (n : ℝ)) +
+              Real.log (n : ℝ) * degreeBound := by
+            gcongr
+  | inr b =>
+      calc
+        (C.xCard I (Sum.inr b) : ℝ) ≤
+            (fiberBound : ℝ) *
+                ((((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
+              Real.log (n : ℝ) * degreeBound := by
+            exact C.xCard_blue_le_fiberBound_mul_section4F1_neighbor_card_add_log_mul_degreeBound_of_goodEventD
+              hD I b
+        _ ≤
+            (fiberBound : ℝ) * (Twobites.paperT2 ε n / Real.log (n : ℝ)) +
+              Real.log (n : ℝ) * degreeBound := by
+            gcongr
+
+theorem baseImage_inter_HPart_subset_section4F2_of_goodEventD_of_section4_bound
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {ε : ℝ}
+    (hbound :
+      (fiberBound : ℝ) * (Twobites.paperT2 ε n / Real.log (n : ℝ)) +
+          Real.log (n : ℝ) * degreeBound ≤
+        Twobites.paperT1 n) :
+    C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε := by
+  intro x hx
+  rcases Finset.mem_inter.1 hx with ⟨hxBase, hxH⟩
+  by_contra hxF2
+  have hxle :=
+    C.xCard_le_fiberBound_mul_paperT2_div_log_add_log_mul_degreeBound_of_goodEventD_of_mem_baseImage_of_not_mem_section4F2
+      hD I hxBase hxF2
+  have hxgt := C.paperT1_lt_xCard_of_mem_HPart hxH
+  linarith
+
 theorem cast_choose_two_le_half_mul_of_le {a : ℕ} {T : ℝ} (hT : (a : ℝ) ≤ T) :
     ((a.choose 2 : ℕ) : ℝ) ≤ (a : ℝ) * T / 2 := by
   have ha : 0 ≤ (a : ℝ) := by
