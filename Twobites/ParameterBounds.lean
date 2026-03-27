@@ -445,6 +445,44 @@ theorem paperKNat_add_paperCapNat_le_paperKNat_add_one {ρ β ε2 : ℝ} {n : �
       congr 1
       rw [paperCap_eq_paperK_scaled hn, paperK_add]
 
+theorem paperKNat_add_paperKNat_le_paperKNat_add_one {ρ δ : ℝ} {n : ℕ}
+    (hρ : 0 ≤ ρ) (hδ : 0 ≤ δ) :
+    paperKNat ρ n + paperKNat δ n ≤ paperKNat (ρ + δ) n + 1 := by
+  unfold paperKNat
+  calc
+    ⌈paperK ρ n⌉₊ + ⌈paperK δ n⌉₊ ≤ ⌈paperK ρ n + paperK δ n⌉₊ + 1 := by
+      exact natCeil_add_natCeil_le_natCeil_add_one (paperK_nonneg hρ n) (paperK_nonneg hδ n)
+    _ = ⌈paperK (ρ + δ) n⌉₊ + 1 := by
+      congr 1
+      rw [paperK_add]
+
+theorem paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_add_two
+    {ρ β ε2 δ : ℝ} {n : ℕ} (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β)
+    (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ) :
+    paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n ≤
+      paperKNat (ρ + (1 + ε2) * β + δ) n + 2 := by
+  have hcap :
+      paperKNat ρ n + paperCapNat β ε2 n ≤
+        paperKNat (ρ + (1 + ε2) * β) n + 1 := by
+    exact paperKNat_add_paperCapNat_le_paperKNat_add_one hn hρ hβ hε2
+  have hsum :
+      paperKNat (ρ + (1 + ε2) * β) n + paperKNat δ n ≤
+        paperKNat ((ρ + (1 + ε2) * β) + δ) n + 1 := by
+    apply paperKNat_add_paperKNat_le_paperKNat_add_one
+    · have hfac : 0 ≤ 1 + ε2 := by linarith
+      exact add_nonneg hρ (mul_nonneg hfac hβ)
+    · exact hδ
+  calc
+    paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n ≤
+        (paperKNat (ρ + (1 + ε2) * β) n + 1) + paperKNat δ n := by
+      exact Nat.add_le_add_right hcap (paperKNat δ n)
+    _ = paperKNat (ρ + (1 + ε2) * β) n + paperKNat δ n + 1 := by
+      omega
+    _ ≤ paperKNat ((ρ + (1 + ε2) * β) + δ) n + 1 + 1 := by
+      exact Nat.add_le_add_right hsum 1
+    _ = paperKNat (ρ + (1 + ε2) * β + δ) n + 2 := by
+      congr 1
+
 theorem paperKNat_add_one_le_paperKNat_of_one_le_gap {σ δ : ℝ} {n : ℕ}
     (hσ : 0 ≤ σ) (hgap : 1 ≤ paperK δ n) :
     paperKNat σ n + 1 ≤ paperKNat (σ + δ) n := by
@@ -453,6 +491,17 @@ theorem paperKNat_add_one_le_paperKNat_of_one_le_gap {σ δ : ℝ} {n : ℕ}
   apply Nat.ceil_le.2
   calc
     paperK σ n + 1 ≤ paperK σ n + paperK δ n := by linarith
+    _ = paperK (σ + δ) n := by rw [paperK_add]
+    _ ≤ (⌈paperK (σ + δ) n⌉₊ : ℝ) := by exact Nat.le_ceil _
+
+theorem paperKNat_add_two_le_paperKNat_of_two_le_gap {σ δ : ℝ} {n : ℕ}
+    (hσ : 0 ≤ σ) (hgap : 2 ≤ paperK δ n) :
+    paperKNat σ n + 2 ≤ paperKNat (σ + δ) n := by
+  unfold paperKNat
+  rw [← Nat.ceil_add_natCast (paperK_nonneg hσ n) 2]
+  apply Nat.ceil_le.2
+  calc
+    paperK σ n + 2 ≤ paperK σ n + paperK δ n := by linarith
     _ = paperK (σ + δ) n := by rw [paperK_add]
     _ ≤ (⌈paperK (σ + δ) n⌉₊ : ℝ) := by exact Nat.le_ceil _
 
@@ -470,6 +519,22 @@ theorem paperKNat_add_paperCapNat_le_paperKNat_of_one_le_gap {ρ β ε2 δ : ℝ
     _ ≤ paperKNat ((ρ + (1 + ε2) * β) + δ) n := by
       exact paperKNat_add_one_le_paperKNat_of_one_le_gap hσ hgap
     _ = paperKNat (ρ + (1 + ε2) * β + δ) n := by ring_nf
+
+theorem paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_of_two_le_gap
+    {ρ β ε2 δ η : ℝ} {n : ℕ} (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β)
+    (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ) (hgap : 2 ≤ paperK η n) :
+    paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n ≤
+      paperKNat (ρ + (1 + ε2) * β + δ + η) n := by
+  have hσ : 0 ≤ ρ + (1 + ε2) * β + δ := by
+    have hfac : 0 ≤ 1 + ε2 := by linarith
+    exact add_nonneg (add_nonneg hρ (mul_nonneg hfac hβ)) hδ
+  calc
+    paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n ≤
+        paperKNat (ρ + (1 + ε2) * β + δ) n + 2 := by
+      exact paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_add_two hn hρ hβ hε2 hδ
+    _ ≤ paperKNat ((ρ + (1 + ε2) * β + δ) + η) n := by
+      exact paperKNat_add_two_le_paperKNat_of_two_le_gap hσ hgap
+    _ = paperKNat (ρ + (1 + ε2) * β + δ + η) n := by ring_nf
 
 theorem paperKNat_add_paperCapNat_le_paperKNat_of_one_le_gap_of_le
     {ρ β ε2 δ κ : ℝ} {n : ℕ} (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β)
