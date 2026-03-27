@@ -1309,6 +1309,36 @@ theorem paperHugeWitnessCodegCoeff_le_eps_third_mul_branchParam {ε1 κ q : ℝ}
     _ = ((ε1 / 3) * (3 / ε1)) * paperHugeWitnessCodegCoeff κ q n := by rw [hmul]
     _ = (ε1 / 3) * ((3 / ε1) * paperHugeWitnessCodegCoeff κ q n) := by ring
 
+theorem paperHugeWitnessDegreeBranchParam_le_of_coeff_le {ε1 κ β δ : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1)
+    (hcoeff : paperHugeWitnessDegreeCoeff κ β n ≤ (ε1 / 3) * δ) :
+    paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ δ := by
+  have hε1_ne : ε1 ≠ 0 := ne_of_gt hε1
+  have hfac : 0 ≤ 3 / ε1 := by positivity
+  have hmul : (3 / ε1) * (ε1 / 3) = 1 := by
+    field_simp [hε1_ne]
+  unfold paperHugeWitnessDegreeBranchParam
+  calc
+    (3 / ε1) * paperHugeWitnessDegreeCoeff κ β n ≤ (3 / ε1) * ((ε1 / 3) * δ) := by
+      exact mul_le_mul_of_nonneg_left hcoeff hfac
+    _ = ((3 / ε1) * (ε1 / 3)) * δ := by ring
+    _ = δ := by rw [hmul, one_mul]
+
+theorem paperHugeWitnessCodegBranchParam_le_of_coeff_le {ε1 κ q δ : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1)
+    (hcoeff : paperHugeWitnessCodegCoeff κ q n ≤ (ε1 / 3) * δ) :
+    paperHugeWitnessCodegBranchParam ε1 κ q n ≤ δ := by
+  have hε1_ne : ε1 ≠ 0 := ne_of_gt hε1
+  have hfac : 0 ≤ 3 / ε1 := by positivity
+  have hmul : (3 / ε1) * (ε1 / 3) = 1 := by
+    field_simp [hε1_ne]
+  unfold paperHugeWitnessCodegBranchParam
+  calc
+    (3 / ε1) * paperHugeWitnessCodegCoeff κ q n ≤ (3 / ε1) * ((ε1 / 3) * δ) := by
+      exact mul_le_mul_of_nonneg_left hcoeff hfac
+    _ = ((3 / ε1) * (ε1 / 3)) * δ := by ring
+    _ = δ := by rw [hmul, one_mul]
+
 theorem paperHugeWitnessCoeff_le_of_exact_piece_branchParam
     {ε1 κ β q : ℝ} {n : ℕ} (hε1 : 0 < ε1) :
     paperHugeWitnessCoeff κ β q n ≤
@@ -1370,6 +1400,17 @@ theorem paperHugeWitnessBranchParam_le_of_coeff_le {ε1 κ β q δ : ℝ} {n : �
       exact mul_le_mul_of_nonneg_left hcoeff hfac
     _ = ((3 / ε1) * (ε1 / 3)) * δ := by ring
     _ = δ := by rw [hmul, one_mul]
+
+theorem paperHugeWitnessBranchParam_le_of_pieceBranchParamBounds
+    {ε1 κ β q δdeg δcodeg δbranch : ℝ} {n : ℕ}
+    (hdeg :
+      paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ δdeg)
+    (hcodeg :
+      paperHugeWitnessCodegBranchParam ε1 κ q n ≤ δcodeg)
+    (hsum : δdeg + δcodeg ≤ δbranch) :
+    paperHugeWitnessBranchParam ε1 κ β q n ≤ δbranch := by
+  rw [paperHugeWitnessBranchParam_eq_add]
+  exact (add_le_add hdeg hcodeg).trans hsum
 
 theorem paperHugeWitnessCoeff_le_of_le_of_le {κ β q a b : ℝ} {n : ℕ}
     (hfirst :
