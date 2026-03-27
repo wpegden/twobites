@@ -576,6 +576,37 @@ theorem paperHugeWitnessNat_le_two_mul_mul_loglog_add_two {κ : ℝ} {n : ℕ}
       rw [paperK_div_paperT1_eq_mul_loglog hn hloglog]
       ring
 
+theorem paperHugeWitnessNat_le_two_add_eta_mul_paperK_div_paperT1 {κ η : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hT1 : 0 < paperT1 n)
+    (hgap : 2 ≤ η * (paperK κ n / paperT1 n)) :
+    (paperHugeWitnessNat κ n : ℝ) ≤ (2 + η) * (paperK κ n / paperT1 n) := by
+  have hratio : 0 ≤ paperK κ n / paperT1 n := by
+    exact div_nonneg (paperK_nonneg hκ n) hT1.le
+  calc
+    (paperHugeWitnessNat κ n : ℝ) ≤ 2 * (paperK κ n / paperT1 n) + 2 := by
+      exact paperHugeWitnessNat_le_two_mul_paperK_div_paperT1_add_two hκ hT1
+    _ ≤ 2 * (paperK κ n / paperT1 n) + η * (paperK κ n / paperT1 n) := by
+      linarith
+    _ = (2 + η) * (paperK κ n / paperT1 n) := by ring
+
+theorem paperHugeWitnessNat_le_two_add_eta_mul_mul_loglog {κ η : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hn : 1 < n) (hloglog : 0 < Real.log (Real.log (n : ℝ)))
+    (hgap : 2 ≤ η * (κ * Real.log (Real.log (n : ℝ)))) :
+    (paperHugeWitnessNat κ n : ℝ) ≤ (2 + η) * κ * Real.log (Real.log (n : ℝ)) := by
+  have hT1 : 0 < paperT1 n := by
+    unfold paperT1
+    refine div_pos ?_ hloglog
+    apply Real.sqrt_pos.2
+    exact mul_pos (by exact_mod_cast (lt_trans Nat.zero_lt_one hn)) (paperLog_pos hn)
+  have hgap' : 2 ≤ η * (paperK κ n / paperT1 n) := by
+    simpa [paperK_div_paperT1_eq_mul_loglog hn hloglog, mul_assoc] using hgap
+  calc
+    (paperHugeWitnessNat κ n : ℝ) ≤ (2 + η) * (paperK κ n / paperT1 n) := by
+      exact paperHugeWitnessNat_le_two_add_eta_mul_paperK_div_paperT1 hκ hT1 hgap'
+    _ = (2 + η) * κ * Real.log (Real.log (n : ℝ)) := by
+      rw [paperK_div_paperT1_eq_mul_loglog hn hloglog]
+      ring
+
 theorem paperHugeWitnessNat_splitCoeff_le_of_loglog {κ β q : ℝ} {n : ℕ}
     (hκ : 0 ≤ κ) (hn : 1 < n) (hloglog : 0 < Real.log (Real.log (n : ℝ)))
     (hβ : 0 ≤ β) (hq : 0 ≤ q) :
