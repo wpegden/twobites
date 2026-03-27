@@ -1012,6 +1012,49 @@ theorem paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_of_two_le_gap_of_le
     _ ≤ paperKNat κ n := by
       exact paperKNat_le_paperKNat_of_le hκ
 
+theorem paperKNat_add_paperCapNat_add_paperKNat_add_one_le_paperKNat_of_gap1_gap2_of_le
+    {ρ β ε2 δ δsumGap δgap κ : ℝ} {n : ℕ} (hn : 1 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β)
+    (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ) (hsumGap : 1 ≤ paperK δsumGap n)
+    (hgap : 2 ≤ paperK δgap n)
+    (hκ : ρ + (1 + ε2) * β + δ + δsumGap + δgap ≤ κ) :
+    paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n + 1 ≤ paperKNat κ n := by
+  have hfac : 0 ≤ 1 + ε2 := by linarith
+  have hδsumGap : 0 ≤ δsumGap := nonneg_of_one_le_paperK hn hsumGap
+  have hδgap : 0 ≤ δgap := nonneg_of_one_le_paperK hn (by linarith [hgap])
+  have hσ :
+      0 ≤ ρ + (1 + ε2) * β + δ := by
+    exact add_nonneg (add_nonneg hρ (mul_nonneg hfac hβ)) hδ
+  have hσgap :
+      0 ≤ ρ + (1 + ε2) * β + δ + δgap := by
+    exact add_nonneg hσ hδgap
+  have hbase :
+      paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n ≤
+        paperKNat (ρ + (1 + ε2) * β + δ) n + 2 := by
+    exact paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_add_two
+      (lt_trans Nat.zero_lt_one hn) hρ hβ hε2 hδ
+  have hgapStep :
+      paperKNat (ρ + (1 + ε2) * β + δ) n + 2 ≤
+        paperKNat (ρ + (1 + ε2) * β + δ + δgap) n := by
+    exact paperKNat_add_two_le_paperKNat_of_two_le_gap hσ hgap
+  have hsumStep :
+      paperKNat (ρ + (1 + ε2) * β + δ + δgap) n + 1 ≤
+        paperKNat ((ρ + (1 + ε2) * β + δ + δgap) + δsumGap) n := by
+    exact paperKNat_add_one_le_paperKNat_of_one_le_gap hσgap hsumGap
+  calc
+    paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n + 1 ≤
+        (paperKNat (ρ + (1 + ε2) * β + δ) n + 2) + 1 := by
+      exact Nat.add_le_add_right hbase 1
+    _ = (paperKNat (ρ + (1 + ε2) * β + δ) n + 2) + 1 := by ring_nf
+    _ ≤ paperKNat (ρ + (1 + ε2) * β + δ + δgap) n + 1 := by
+      exact Nat.add_le_add_right hgapStep 1
+    _ ≤ paperKNat ((ρ + (1 + ε2) * β + δ + δgap) + δsumGap) n := by
+      exact hsumStep
+    _ = paperKNat (ρ + (1 + ε2) * β + δ + δsumGap + δgap) n := by
+      congr 1
+      ring
+    _ ≤ paperKNat κ n := by
+      exact paperKNat_le_paperKNat_of_le hκ
+
 theorem add_le_paperKNat_of_le_paperKNat_of_le_paperKNat_of_one_le_gap_of_le
     {a b : ℕ} {α β γ κ : ℝ} {n : ℕ} (ha : a ≤ paperKNat α n) (hb : b ≤ paperKNat β n)
     (hα : 0 ≤ α) (hβ : 0 ≤ β) (hgap : 1 ≤ paperK γ n) (hκ : α + β + γ ≤ κ) :
@@ -1198,6 +1241,39 @@ theorem cross_residual_sub_one_le_paperK
   have hkceil : (paperKNat κ n : ℝ) ≤ paperK κ n + 1 :=
     paperKNat_le_paperK_add_one hκ n
   linarith
+
+theorem paperK_le_cross_residual_sub_one_of_nonneg_of_gap1_gap2_of_le
+    {ρ β ε2 δ δsumGap δgap κ : ℝ} {n : ℕ} (hn : 1 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β)
+    (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ) (hsumGap : 1 ≤ paperK δsumGap n)
+    (hgap : 2 ≤ paperK δgap n)
+    (hκ : ρ + (1 + ε2) * β + δ + δsumGap + δgap ≤ κ) :
+    paperK δ n ≤
+      (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+  have hnat :
+      paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n + 1 ≤ paperKNat κ n := by
+    exact
+      paperKNat_add_paperCapNat_add_paperKNat_add_one_le_paperKNat_of_gap1_gap2_of_le
+        hn hρ hβ hε2 hδ hsumGap hgap hκ
+  have hk :
+      paperKNat ρ n + paperCapNat β ε2 n ≤ paperKNat κ n := by
+    exact le_trans (Nat.le_add_right _ _) <| le_trans (Nat.le_add_right _ _) hnat
+  have hnatDef :
+      paperKNat δ n + 1 ≤
+        paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n := by
+    have hbase :
+        paperKNat δ n + 1 ≤
+          paperKNat κ n - (paperKNat ρ n + paperCapNat β ε2 n) := by
+      exact (Nat.le_sub_iff_add_le hk).2 <| by
+        simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using hnat
+    simpa [Nat.sub_sub, Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using hbase
+  have hcast :
+      (paperKNat δ n : ℝ) + 1 ≤
+        ((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) := by
+    exact_mod_cast hnatDef
+  calc
+    paperK δ n ≤ paperKNat δ n := Nat.le_ceil _
+    _ ≤ (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+      linarith
 
 theorem not_six_mul_paperK_le_cross_residual
     {ρ β ε2 κ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) :

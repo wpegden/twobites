@@ -8027,6 +8027,126 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_exactWitnessCoeff_of_coeffSmall_of_paramDeficit
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB δblue δred : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hκ : 1 ≤ κ)
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hε1 : 0 ≤ ε1)
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hblueCoeffSmall :
+      Twobites.paperHugeWitnessCoeff κ βdeg qcodeg n ≤ (ε1 / 3) * δblue)
+    (hδblue : 0 ≤ δblue)
+    (hκ3R :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + δblue + δsumGap + δgapR ≤ κ)
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hredCoeffSmall :
+      Twobites.paperHugeWitnessCoeff κ βdeg qcodeg n ≤ (ε1 / 3) * δred)
+    (hδred : 0 ≤ δred)
+    (hκ3B :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + δred + δsumGap + δgapB ≤ κ) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  have hκ0 : 0 ≤ κ := by linarith
+  have hdoubleEps : 0 ≤ 2 * ε1 * κ := by nlinarith
+  have hκ2R :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapR ≤ κ := by
+    have hdrop :
+        ρR + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapR ≤
+          ρR + (1 + ε2) * β + 2 * ε1 * κ + δblue + δsumGap + δgapR := by
+      nlinarith
+    exact hdrop.trans hκ3R
+  have hκ2B :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapB ≤ κ := by
+    have hdrop :
+        ρB + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapB ≤
+          ρB + (1 + ε2) * β + 2 * ε1 * κ + δred + δsumGap + δgapB := by
+      nlinarith
+    exact hdrop.trans hκ3B
+  have hκ3R' :
+      ρR + (1 + ε2) * β + (2 * ε1 * κ + δblue) + δsumGap + δgapR ≤ κ := by
+    simpa [add_assoc, add_left_comm, add_comm] using hκ3R
+  have hκ3B' :
+      ρB + (1 + ε2) * β + (2 * ε1 * κ + δred) + δsumGap + δgapB ≤ κ := by
+    simpa [add_assoc, add_left_comm, add_comm] using hκ3B
+  have hdoubleBlue : 0 ≤ 2 * ε1 * κ + δblue := add_nonneg hdoubleEps hδblue
+  have hdoubleRed : 0 ≤ 2 * ε1 * κ + δred := add_nonneg hdoubleEps hδred
+  have hblueResidualAux :
+      Twobites.paperK (2 * ε1 * κ + δblue) n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    exact
+      Twobites.paperK_le_cross_residual_sub_one_of_nonneg_of_gap1_gap2_of_le
+        hn hρR hβ hε2 hdoubleBlue hsumGap hgap2R hκ3R'
+  have hblueResidual :
+      Twobites.paperK δblue n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    have hmono :
+        Twobites.paperK δblue n ≤ Twobites.paperK (2 * ε1 * κ + δblue) n := by
+      exact Twobites.paperK_le_paperK_of_le (le_add_of_nonneg_left hdoubleEps)
+    exact hmono.trans hblueResidualAux
+  have hredResidualAux :
+      Twobites.paperK (2 * ε1 * κ + δred) n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    exact
+      Twobites.paperK_le_cross_residual_sub_one_of_nonneg_of_gap1_gap2_of_le
+        hn hρB hβ hε2 hdoubleRed hsumGap hgap2B hκ3B'
+  have hredResidual :
+      Twobites.paperK δred n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    have hmono :
+        Twobites.paperK δred n ≤ Twobites.paperK (2 * ε1 * κ + δred) n := by
+      exact Twobites.paperK_le_paperK_of_le (le_add_of_nonneg_left hdoubleEps)
+    exact hmono.trans hredResidualAux
+  exact
+    C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_exactWitnessCoeff_of_coeffSmall
+      hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR hρB
+      hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegScale hsumGap hdegBound
+      hchooseCodegBound hcodegBound hgap2R hκ2R hblueCoeffSmall hblueResidual hgap2B
+      hκ2B hredCoeffSmall hredResidual
+
+set_option linter.style.longLine false in
+theorem
     paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_kSmall
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
