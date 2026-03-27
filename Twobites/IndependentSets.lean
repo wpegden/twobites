@@ -3082,6 +3082,60 @@ theorem card_mul_section4F1_union_section4F2_card_le_two_mul_card_sq_div_log_add
       I hn hε
   exact mul_le_mul_of_nonneg_left hcard (by positivity)
 
+set_option linter.style.longLine false in
+theorem
+    cast_section4RevealBudget_le_eps_mul_paperKSq_of_goodEventD_of_witnessBounds
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε ε1 : ℝ} {lWitness hWitness : ℕ}
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hLWitness :
+      Twobites.paperKNat κ n < lWitness * ⌈Twobites.paperT2 ε n⌉₊ -
+        lWitness.choose 2 * codegreeBound)
+    (hHWitness :
+      Twobites.paperKNat κ n < hWitness * ⌈Twobites.paperT1 n⌉₊ -
+        hWitness.choose 2 * codegreeBound)
+    (harith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) + (lWitness : ℝ) + (hWitness : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤
+      ε1 * Twobites.paperK κ n ^ 2 := by
+  have hL :
+      ((C.LPart I ε).card : ℝ) ≤ (lWitness : ℝ) := by
+    exact_mod_cast Nat.le_of_lt (C.LPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hLWitness))
+  have hH :
+      ((C.HPart I).card : ℝ) ≤ (hWitness : ℝ) := by
+    exact_mod_cast Nat.le_of_lt (C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hHWitness))
+  have hinner :
+      2 * (I.card : ℝ) / Real.log (n : ℝ) +
+          ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ) ≤
+        2 * (I.card : ℝ) / Real.log (n : ℝ) + (lWitness : ℝ) + (hWitness : ℝ) := by
+    linarith
+  have hparts :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+            ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ)) ≤
+        (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) + (lWitness : ℝ) + (hWitness : ℝ)) := by
+    exact mul_le_mul_of_nonneg_left hinner (by positivity)
+  calc
+    (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) =
+        (I.card : ℝ) * ((C.section4F1 I ∪ C.section4F2 I ε).card : ℝ) := by
+      norm_num
+    _ ≤
+        (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+            ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ)) :=
+      C.card_mul_section4F1_union_section4F2_card_le_two_mul_card_sq_div_log_add_card_mul_parts
+        I hn hε
+    _ ≤
+        (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) + (lWitness : ℝ) + (hWitness : ℝ)) :=
+      hparts
+    _ ≤ ε1 * Twobites.paperK κ n ^ 2 := harith
+
 /-- The ordered reveal-counting object is bounded by the obvious color-separated rectangle count. -/
 theorem revealedBaseArcSet_card_le (A B : Finset (BaseVertex m)) :
     (revealedBaseArcSet A B).card ≤
@@ -12735,6 +12789,71 @@ theorem
   apply Real.exp_le_exp.mpr
   ring_nf
   linarith
+
+set_option linter.style.longLine false in
+theorem
+    section4ActualConditionedEventMass_le_exp_of_indep_of_uniformError_of_revealWitnessBounds
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε p ε1 : ℝ} {N : ℕ} {lWitness hWitness : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        N)
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hLWitness :
+      Twobites.paperKNat κ n < lWitness * ⌈Twobites.paperT2 ε n⌉₊ -
+        lWitness.choose 2 * codegreeBound)
+    (hHWitness :
+      Twobites.paperKNat κ n < hWitness * ⌈Twobites.paperT1 n⌉₊ -
+        hWitness.choose 2 * codegreeBound)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) + (lWitness : ℝ) + (hWitness : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    C.section4ActualConditionedEventMass I ε p N ≤
+      Real.exp (p * (12 * (ε1 * Twobites.paperK κ n ^ 2)) - p * (N : ℝ)) := by
+  apply C.section4ActualConditionedEventMass_le_exp_of_indep_of_uniformError
+    (I := I) (ε := ε) (p := p) (κ := κ) (N := N)
+  · exact hindep
+  · exact hp0
+  · exact hp1
+  · exact hHsubset
+  · exact ht21
+  · exact ht32
+  · exact hLossLeN
+  · exact
+      C.cast_section4RevealBudget_le_eps_mul_paperKSq_of_goodEventD_of_witnessBounds
+        hD I hn hε hI hLWitness hHWitness hRevealArith
+  · exact hLarge
+  · exact hMedium
+  · exact hSmall
+  · exact hHugeRed
+  · exact hHugeBlue
 
 end
 
