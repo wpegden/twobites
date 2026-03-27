@@ -140,6 +140,46 @@ theorem paperCap_eq_mul_paperK {β ε2 : ℝ} {n : ℕ} (hn : 0 < n) :
       ring
     _ = (1 + ε2) * paperK β n := by rw [paperP_mul_n_eq_paperK hn]
 
+theorem paperP_mul_paperM_eq_paperK_div_paperS {β : ℝ} {n : ℕ} (hn : 1 < n) :
+    paperP β n * paperM n = paperK (β / paperS n) n := by
+  have hn' : 0 < n := lt_trans Nat.zero_lt_one hn
+  calc
+    paperP β n * paperM n = paperP β n * ((n : ℝ) / paperS n) := by
+      rw [paperM]
+    _ = (paperP β n * n) / paperS n := by ring
+    _ = paperK β n / paperS n := by rw [paperP_mul_n_eq_paperK hn']
+    _ = paperK (β / paperS n) n := by
+      unfold paperK
+      ring
+
+theorem mul_paperP_mul_paperM_eq_paperK_div_paperS {c β : ℝ} {n : ℕ} (hn : 1 < n) :
+    c * (paperP β n * paperM n) = paperK (c * β / paperS n) n := by
+  calc
+    c * (paperP β n * paperM n) = c * paperK (β / paperS n) n := by
+      rw [paperP_mul_paperM_eq_paperK_div_paperS hn]
+    _ = paperK (c * β / paperS n) n := by
+      unfold paperK
+      ring
+
+theorem cast_mul_le_paperK_of_le_of_le_paperP_mul_paperM
+    {w bound degreeBound : ℕ} {β : ℝ} {n : ℕ}
+    (hw : w ≤ bound) (hβ : 0 ≤ β) (hn : 1 < n)
+    (hdegree : (degreeBound : ℝ) ≤ paperP β n * paperM n) :
+    ((w * degreeBound : ℕ) : ℝ) ≤ paperK (((bound : ℕ) : ℝ) * β / paperS n) n := by
+  have hw' : (w : ℝ) ≤ bound := by
+    exact_mod_cast hw
+  have hpm_nonneg : 0 ≤ paperP β n * paperM n := by
+    exact mul_nonneg (paperP_nonneg hβ n) (paperM_nonneg n)
+  calc
+    ((w * degreeBound : ℕ) : ℝ) = (w : ℝ) * (degreeBound : ℝ) := by
+      norm_num
+    _ ≤ (bound : ℝ) * (degreeBound : ℝ) := by
+      gcongr
+    _ ≤ (bound : ℝ) * (paperP β n * paperM n) := by
+      exact mul_le_mul_of_nonneg_left hdegree (Nat.cast_nonneg bound)
+    _ = paperK (((bound : ℕ) : ℝ) * β / paperS n) n := by
+      simpa using mul_paperP_mul_paperM_eq_paperK_div_paperS (c := (bound : ℝ)) hn
+
 theorem paperK_nonneg {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) : 0 ≤ paperK κ n := by
   unfold paperK
   exact mul_nonneg hκ (Real.sqrt_nonneg _)
