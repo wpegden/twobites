@@ -3082,6 +3082,90 @@ theorem card_mul_section4F1_union_section4F2_card_le_two_mul_card_sq_div_log_add
       I hn hε
   exact mul_le_mul_of_nonneg_left hcard (by positivity)
 
+theorem cast_section4RevealBudget_le_eps_mul_paperKSq_of_cardBounds
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ ε ε1 lBound hBound : ℝ}
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ))
+    (hL : ((C.LPart I ε).card : ℝ) ≤ lBound)
+    (hH : ((C.HPart I).card : ℝ) ≤ hBound)
+    (harith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) + lBound + hBound) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤
+      ε1 * Twobites.paperK κ n ^ 2 := by
+  have hinner :
+      2 * (I.card : ℝ) / Real.log (n : ℝ) +
+          ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ) ≤
+        2 * (I.card : ℝ) / Real.log (n : ℝ) + lBound + hBound := by
+    linarith
+  have hparts :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+            ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ)) ≤
+        (I.card : ℝ) * (2 * (I.card : ℝ) / Real.log (n : ℝ) + lBound + hBound) := by
+    exact mul_le_mul_of_nonneg_left hinner (by positivity)
+  calc
+    (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) =
+        (I.card : ℝ) * ((C.section4F1 I ∪ C.section4F2 I ε).card : ℝ) := by
+      norm_num
+    _ ≤
+        (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+            ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ)) :=
+      C.card_mul_section4F1_union_section4F2_card_le_two_mul_card_sq_div_log_add_card_mul_parts
+        I hn hε
+    _ ≤ (I.card : ℝ) * (2 * (I.card : ℝ) / Real.log (n : ℝ) + lBound + hBound) := hparts
+    _ ≤ ε1 * Twobites.paperK κ n ^ 2 := harith
+
+theorem HPart_card_le_paperHugeWitnessNat_of_goodEventD
+    (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 0 ≤ κ) (hT1 : 2 < Twobites.paperT1 n)
+    (hchoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n) :
+    ((C.HPart I).card : ℝ) ≤ (Twobites.paperHugeWitnessNat κ n : ℝ) := by
+  have htwo :
+      2 * Twobites.paperKNat κ n <
+        Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ :=
+    Twobites.two_mul_paperKNat_lt_paperHugeWitnessNat_mul_ceil_paperT1 hκ hT1
+  have hwitness :
+      Twobites.paperKNat κ n <
+        Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ -
+          (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound :=
+    Twobites.paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt htwo hchoose
+  exact_mod_cast
+    Nat.le_of_lt (C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness))
+
+set_option linter.style.longLine false in
+theorem
+    cast_section4RevealBudget_le_eps_mul_paperKSq_of_LBound_of_paperHugeWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε ε1 lBound : ℝ}
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 0 ≤ κ) (hT1 : 2 < Twobites.paperT1 n)
+    (hchoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hL : ((C.LPart I ε).card : ℝ) ≤ lBound)
+    (harith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) + lBound +
+            (Twobites.paperHugeWitnessNat κ n : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤
+      ε1 * Twobites.paperK κ n ^ 2 := by
+  have hH :
+      ((C.HPart I).card : ℝ) ≤ (Twobites.paperHugeWitnessNat κ n : ℝ) :=
+    C.HPart_card_le_paperHugeWitnessNat_of_goodEventD hD I hI hκ hT1 hchoose
+  exact
+    C.cast_section4RevealBudget_le_eps_mul_paperKSq_of_cardBounds I hn hε hL hH harith
+
 set_option linter.style.longLine false in
 theorem
     cast_section4RevealBudget_le_eps_mul_paperKSq_of_goodEventD_of_witnessBounds
@@ -12933,6 +13017,71 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    section4ActualConditionedEventMass_le_exp_of_indep_of_uniformError_of_revealLBound_of_paperHugeWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε p ε1 lBound : ℝ} {N : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        N)
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 0 ≤ κ) (hT1 : 2 < Twobites.paperT1 n)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hL : ((C.LPart I ε).card : ℝ) ≤ lBound)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) + lBound +
+            (Twobites.paperHugeWitnessNat κ n : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    C.section4ActualConditionedEventMass I ε p N ≤
+      Real.exp (p * (12 * (ε1 * Twobites.paperK κ n ^ 2)) - p * (N : ℝ)) := by
+  apply C.section4ActualConditionedEventMass_le_exp_of_indep_of_uniformError
+    (I := I) (ε := ε) (p := p) (κ := κ) (N := N)
+  · exact hindep
+  · exact hp0
+  · exact hp1
+  · exact hHsubset
+  · exact ht21
+  · exact ht32
+  · exact hLossLeN
+  · exact
+      C.cast_section4RevealBudget_le_eps_mul_paperKSq_of_LBound_of_paperHugeWitness
+        hD I hn hε hI hκ hT1 hHChoose hL hRevealArith
+  · exact hLarge
+  · exact hMedium
+  · exact hSmall
+  · exact hHugeRed
+  · exact hHugeBlue
+
+set_option linter.style.longLine false in
+theorem
     section4ActualConditionedEventMass_le_exp_of_indep_of_uniformError_of_revealWitnessBounds_of_targetGap
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
@@ -12986,6 +13135,82 @@ theorem
     C.section4ActualConditionedEventMass_le_exp_of_indep_of_uniformError_of_revealWitnessBounds
       hD I hindep hp0 hp1 hHsubset ht21 ht32 hLossLeTarget hn hε hI hLWitness hHWitness
       hRevealArith hLarge hMedium hSmall hHugeRed hHugeBlue
+  refine hbase.trans ?_
+  apply Real.exp_le_exp.mpr
+  have hsub :
+      (C.paperSection4OpenPairTargetNat I κ cap : ℝ) - (openError : ℝ) ≤
+        (((C.paperSection4OpenPairTargetNat I κ cap - openError : ℕ) : ℝ)) := by
+    by_cases hle : openError ≤ C.paperSection4OpenPairTargetNat I κ cap
+    · rw [Nat.cast_sub hle]
+    · have hzero :
+        (((C.paperSection4OpenPairTargetNat I κ cap - openError : ℕ) : ℝ)) = 0 := by
+        simp [Nat.sub_eq_zero_of_le (Nat.le_of_lt (Nat.lt_of_not_ge hle))]
+      have hnonpos :
+          (C.paperSection4OpenPairTargetNat I κ cap : ℝ) - (openError : ℝ) ≤ 0 := by
+        exact sub_nonpos.mpr (by exact_mod_cast Nat.le_of_lt (Nat.lt_of_not_ge hle))
+      simpa [hzero] using hnonpos
+  have hmul :
+      p * ((C.paperSection4OpenPairTargetNat I κ cap : ℝ) - (openError : ℝ)) ≤
+        p * (((C.paperSection4OpenPairTargetNat I κ cap - openError : ℕ) : ℝ)) := by
+    exact mul_le_mul_of_nonneg_left hsub hp0
+  unfold paperSection4OpenPairTarget
+  nlinarith
+
+set_option linter.style.longLine false in
+theorem
+    section4ActualConditionedEventMass_le_exp_of_indep_of_uniformError_of_revealLBound_of_paperHugeWitness_of_targetGap
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {κ ε p ε1 lBound : ℝ} {cap openError : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeTarget :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        C.paperSection4OpenPairTargetNat I κ cap - openError)
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 0 ≤ κ) (hT1 : 2 < Twobites.paperT1 n)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hL : ((C.LPart I ε).card : ℝ) ≤ lBound)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) + lBound +
+            (Twobites.paperHugeWitnessNat κ n : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    C.section4ActualConditionedEventMass I ε p
+        (C.paperSection4OpenPairTargetNat I κ cap - openError) ≤
+      Real.exp
+        (p * (12 * (ε1 * Twobites.paperK κ n ^ 2) + (openError : ℝ)) -
+          p * C.paperSection4OpenPairTarget I κ cap) := by
+  have hbase :=
+    C.section4ActualConditionedEventMass_le_exp_of_indep_of_uniformError_of_revealLBound_of_paperHugeWitness
+      hD I hindep hp0 hp1 hHsubset ht21 ht32 hLossLeTarget hn hε hI hκ hT1 hHChoose
+      hL hRevealArith hLarge hMedium hSmall hHugeRed hHugeBlue
   refine hbase.trans ?_
   apply Real.exp_le_exp.mpr
   have hsub :
