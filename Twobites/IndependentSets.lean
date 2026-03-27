@@ -390,6 +390,464 @@ theorem section4F0_union_baseImage (C : ConstructionData n m) (I : Finset (Fin n
   ext x
   simp [section4F0]
 
+@[simp] theorem mem_redProjectionImage_inl (C : ConstructionData n m) {I : Finset (Fin n)}
+    {r r' : Fin m} :
+    r' ∈ C.redProjectionImage I (Sum.inl r) ↔ C.redBase.Adj r r' ∧ r' ∈ C.redImage I := by
+  constructor
+  · intro hr'
+    rcases Finset.mem_image.1 hr' with ⟨v, hvX, hrv⟩
+    rcases (C.mem_X_red).1 hvX with ⟨hvI, hAdj⟩
+    rw [hrv] at hAdj
+    refine ⟨hAdj, ?_⟩
+    exact (C.mem_redImage).2 ⟨v, hvI, hrv⟩
+  · rintro ⟨hAdj, hrI⟩
+    rcases (C.mem_redImage).1 hrI with ⟨v, hvI, hrv⟩
+    refine Finset.mem_image.2 ⟨v, ?_, hrv⟩
+    have hAdj' : C.redBase.Adj r (C.redProj v) := by
+      rwa [hrv]
+    exact (C.mem_X_red).2 ⟨hvI, hAdj'⟩
+
+@[simp] theorem mem_blueProjectionImage_inr (C : ConstructionData n m) {I : Finset (Fin n)}
+    {b b' : Fin m} :
+    b' ∈ C.blueProjectionImage I (Sum.inr b) ↔
+      C.blueBase.Adj b b' ∧ b' ∈ C.blueImage I := by
+  constructor
+  · intro hb'
+    rcases Finset.mem_image.1 hb' with ⟨v, hvX, hbv⟩
+    rcases (C.mem_X_blue).1 hvX with ⟨hvI, hAdj⟩
+    rw [hbv] at hAdj
+    refine ⟨hAdj, ?_⟩
+    exact (C.mem_blueImage).2 ⟨v, hvI, hbv⟩
+  · rintro ⟨hAdj, hbI⟩
+    rcases (C.mem_blueImage).1 hbI with ⟨v, hvI, hbv⟩
+    refine Finset.mem_image.2 ⟨v, ?_, hbv⟩
+    have hAdj' : C.blueBase.Adj b (C.blueProj v) := by
+      rwa [hbv]
+    exact (C.mem_X_blue).2 ⟨hvI, hAdj'⟩
+
+theorem redProjectionImage_image_inl_eq_baseNeighborSet_inter_baseImage
+    (C : ConstructionData n m) (I : Finset (Fin n)) (r : Fin m) :
+    (C.redProjectionImage I (Sum.inl r)).image Sum.inl =
+      C.baseNeighborSet (Sum.inl r) ∩ C.baseImage I := by
+  ext x
+  cases x with
+  | inl r' =>
+      simp [C.mem_redProjectionImage_inl, and_assoc]
+  | inr b =>
+      simp
+
+theorem blueProjectionImage_image_inr_eq_baseNeighborSet_inter_baseImage
+    (C : ConstructionData n m) (I : Finset (Fin n)) (b : Fin m) :
+    (C.blueProjectionImage I (Sum.inr b)).image Sum.inr =
+      C.baseNeighborSet (Sum.inr b) ∩ C.baseImage I := by
+  ext x
+  cases x with
+  | inl r =>
+      simp
+  | inr b' =>
+      simp [C.mem_blueProjectionImage_inr, and_assoc]
+
+theorem
+    redProjectionImage_filter_section4F1_image_inl_eq_baseNeighborSet_inter_section4F1
+    (C : ConstructionData n m) (I : Finset (Fin n)) (r : Fin m) :
+    ((C.redProjectionImage I (Sum.inl r)).filter fun r' => Sum.inl r' ∈ C.section4F1 I).image
+        Sum.inl =
+      C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I := by
+  ext x
+  cases x with
+  | inl r' =>
+      constructor
+      · intro hx
+        rcases Finset.mem_image.1 hx with ⟨s, hs, hsEq⟩
+        rcases Finset.mem_filter.1 hs with ⟨hsProj, hsF1⟩
+        have hAdj : C.redBase.Adj r s := (C.mem_redProjectionImage_inl.1 hsProj).1
+        exact hsEq ▸ Finset.mem_inter.2 ⟨by simpa using hAdj, hsF1⟩
+      · intro hx
+        rcases Finset.mem_inter.1 hx with ⟨hAdjMem, hF1⟩
+        have hAdj : C.redBase.Adj r r' := (C.mem_baseNeighborSet_inl_inl.1 hAdjMem)
+        have hsProj : r' ∈ C.redProjectionImage I (Sum.inl r) := by
+          exact (C.mem_redProjectionImage_inl.2
+            ⟨hAdj, C.mem_baseImage_inl.1 ((C.mem_section4F1.1 hF1).1)⟩)
+        exact Finset.mem_image.2 ⟨r', Finset.mem_filter.2 ⟨hsProj, hF1⟩, rfl⟩
+  | inr b =>
+      simp
+
+theorem
+    blueProjectionImage_filter_section4F1_image_inr_eq_baseNeighborSet_inter_section4F1
+    (C : ConstructionData n m) (I : Finset (Fin n)) (b : Fin m) :
+    ((C.blueProjectionImage I (Sum.inr b)).filter fun b' => Sum.inr b' ∈ C.section4F1 I).image
+        Sum.inr =
+      C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I := by
+  ext x
+  cases x with
+  | inl r =>
+      simp
+  | inr b' =>
+      constructor
+      · intro hx
+        rcases Finset.mem_image.1 hx with ⟨s, hs, hsEq⟩
+        rcases Finset.mem_filter.1 hs with ⟨hsProj, hsF1⟩
+        have hAdj : C.blueBase.Adj b s := (C.mem_blueProjectionImage_inr.1 hsProj).1
+        exact hsEq ▸ Finset.mem_inter.2 ⟨by simpa using hAdj, hsF1⟩
+      · intro hx
+        rcases Finset.mem_inter.1 hx with ⟨hAdjMem, hF1⟩
+        have hAdj : C.blueBase.Adj b b' := (C.mem_baseNeighborSet_inr_inr.1 hAdjMem)
+        have hsProj : b' ∈ C.blueProjectionImage I (Sum.inr b) := by
+          exact (C.mem_blueProjectionImage_inr.2
+            ⟨hAdj, C.mem_baseImage_inr.1 ((C.mem_section4F1.1 hF1).1)⟩)
+        exact Finset.mem_image.2 ⟨b', Finset.mem_filter.2 ⟨hsProj, hF1⟩, rfl⟩
+
+theorem disjoint_redFiber_inter (C : ConstructionData n m) (I : Finset (Fin n))
+    {r r' : Fin m} (hrr' : r ≠ r') :
+    Disjoint (C.redFiber r ∩ I) (C.redFiber r' ∩ I) := by
+  rw [Finset.disjoint_left]
+  intro v hv hv'
+  rcases Finset.mem_inter.1 hv with ⟨hvFiber, _⟩
+  rcases Finset.mem_inter.1 hv' with ⟨hvFiber', _⟩
+  have h1 : C.redProj v = r := C.mem_redFiber.1 hvFiber
+  have h2 : C.redProj v = r' := C.mem_redFiber.1 hvFiber'
+  exact hrr' (h1.symm.trans h2)
+
+theorem disjoint_blueFiber_inter (C : ConstructionData n m) (I : Finset (Fin n))
+    {b b' : Fin m} (hbb' : b ≠ b') :
+    Disjoint (C.blueFiber b ∩ I) (C.blueFiber b' ∩ I) := by
+  rw [Finset.disjoint_left]
+  intro v hv hv'
+  rcases Finset.mem_inter.1 hv with ⟨hvFiber, _⟩
+  rcases Finset.mem_inter.1 hv' with ⟨hvFiber', _⟩
+  have h1 : C.blueProj v = b := C.mem_blueFiber.1 hvFiber
+  have h2 : C.blueProj v = b' := C.mem_blueFiber.1 hvFiber'
+  exact hbb' (h1.symm.trans h2)
+
+theorem X_red_eq_biUnion_redFiber_inter (C : ConstructionData n m) (I : Finset (Fin n))
+    (r : Fin m) :
+    C.X I (Sum.inl r) =
+      (C.redProjectionImage I (Sum.inl r)).biUnion fun r' => C.redFiber r' ∩ I := by
+  ext v
+  constructor
+  · intro hv
+    refine Finset.mem_biUnion.2 ⟨C.redProj v, ?_, ?_⟩
+    · exact Finset.mem_image.2 ⟨v, hv, rfl⟩
+    · rcases (C.mem_X_red).1 hv with ⟨hvI, _⟩
+      simp [hvI]
+  · intro hv
+    rcases Finset.mem_biUnion.1 hv with ⟨r', hr', hv'⟩
+    rcases Finset.mem_inter.1 hv' with ⟨hvFiber, hvI⟩
+    have hAdj : C.redBase.Adj r r' := (C.mem_redProjectionImage_inl.1 hr').1
+    have hAdj' : C.redBase.Adj r (C.redProj v) := by
+      rwa [C.mem_redFiber.1 hvFiber]
+    exact (C.mem_X_red).2 ⟨hvI, hAdj'⟩
+
+theorem X_blue_eq_biUnion_blueFiber_inter (C : ConstructionData n m) (I : Finset (Fin n))
+    (b : Fin m) :
+    C.X I (Sum.inr b) =
+      (C.blueProjectionImage I (Sum.inr b)).biUnion fun b' => C.blueFiber b' ∩ I := by
+  ext v
+  constructor
+  · intro hv
+    refine Finset.mem_biUnion.2 ⟨C.blueProj v, ?_, ?_⟩
+    · exact Finset.mem_image.2 ⟨v, hv, rfl⟩
+    · rcases (C.mem_X_blue).1 hv with ⟨hvI, _⟩
+      simp [hvI]
+  · intro hv
+    rcases Finset.mem_biUnion.1 hv with ⟨b', hb', hv'⟩
+    rcases Finset.mem_inter.1 hv' with ⟨hvFiber, hvI⟩
+    have hAdj : C.blueBase.Adj b b' := (C.mem_blueProjectionImage_inr.1 hb').1
+    have hAdj' : C.blueBase.Adj b (C.blueProj v) := by
+      rwa [C.mem_blueFiber.1 hvFiber]
+    exact (C.mem_X_blue).2 ⟨hvI, hAdj'⟩
+
+theorem xCard_red_eq_sum_card_redFiber_inter (C : ConstructionData n m) (I : Finset (Fin n))
+    (r : Fin m) :
+    C.xCard I (Sum.inl r) =
+      ∑ r' ∈ C.redProjectionImage I (Sum.inl r), (C.redFiber r' ∩ I).card := by
+  rw [xCard, C.X_red_eq_biUnion_redFiber_inter I r]
+  exact Finset.card_biUnion (by
+    intro r' hr' s hs hrs
+    exact C.disjoint_redFiber_inter I hrs)
+
+theorem xCard_blue_eq_sum_card_blueFiber_inter (C : ConstructionData n m) (I : Finset (Fin n))
+    (b : Fin m) :
+    C.xCard I (Sum.inr b) =
+      ∑ b' ∈ C.blueProjectionImage I (Sum.inr b), (C.blueFiber b' ∩ I).card := by
+  rw [xCard, C.X_blue_eq_biUnion_blueFiber_inter I b]
+  exact Finset.card_biUnion (by
+    intro b' hb' c hc hbc
+    exact C.disjoint_blueFiber_inter I hbc)
+
+theorem section4F1_filter_isRed_card_mul_log_le_card (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    Real.log (n : ℝ) * (((C.section4F1 I).filter IsRedBaseVertex).card : ℝ) ≤ (I.card : ℝ) := by
+  classical
+  let A : Finset (Fin m) := (C.redImage I).filter fun r => Sum.inl r ∈ C.section4F1 I
+  have hcard :
+      (((C.section4F1 I).filter IsRedBaseVertex).card : ℝ) = (A.card : ℝ) := by
+    have hAcard :
+        A.card = ((C.section4F1 I).filter IsRedBaseVertex).card := by
+      calc
+        A.card = ((A.image fun r : Fin m => (Sum.inl r : BaseVertex m)).card) := by
+          symm
+          exact Finset.card_image_of_injective _ (by
+            intro a b hab
+            exact Sum.inl.inj hab)
+        _ = ((C.section4F1 I).filter IsRedBaseVertex).card := by
+          rw [show A.image (fun r : Fin m => (Sum.inl r : BaseVertex m)) =
+              (C.section4F1 I).filter IsRedBaseVertex by
+            ext x
+            cases x with
+            | inl r =>
+                simp [A]
+            | inr b =>
+                simp [A]]
+    exact_mod_cast hAcard.symm
+  have hsum :
+      Real.log (n : ℝ) * (A.card : ℝ) ≤
+        ∑ r ∈ A, (((C.redFiber r ∩ I).card : ℕ) : ℝ) := by
+    calc
+      Real.log (n : ℝ) * (A.card : ℝ) = ∑ _r ∈ A, Real.log (n : ℝ) := by
+        simp [mul_comm]
+      _ ≤ ∑ r ∈ A, (((C.redFiber r ∩ I).card : ℕ) : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro r hr
+        have hrF1 : Sum.inl r ∈ C.section4F1 I := (Finset.mem_filter.1 hr).2
+        exact le_of_lt ((C.mem_section4F1.1 hrF1).2)
+  have hdisj :
+      (A : Set (Fin m)).PairwiseDisjoint fun r => C.redFiber r ∩ I := by
+    intro r hr s hs hrs
+    exact C.disjoint_redFiber_inter I hrs
+  have hUnionNat :
+      (A.biUnion fun r => C.redFiber r ∩ I).card =
+        ∑ r ∈ A, (C.redFiber r ∩ I).card :=
+    Finset.card_biUnion hdisj
+  have hUnion :
+      ((((A.biUnion fun r => C.redFiber r ∩ I).card : ℕ) : ℝ)) =
+        ∑ r ∈ A, (((C.redFiber r ∩ I).card : ℕ) : ℝ) := by
+    exact_mod_cast hUnionNat
+  have hSubset : A.biUnion (fun r => C.redFiber r ∩ I) ⊆ I := by
+    intro v hv
+    rcases Finset.mem_biUnion.1 hv with ⟨r, -, hv'⟩
+    exact (Finset.mem_inter.1 hv').2
+  calc
+    Real.log (n : ℝ) * (((C.section4F1 I).filter IsRedBaseVertex).card : ℝ)
+        = Real.log (n : ℝ) * (A.card : ℝ) := by rw [hcard]
+    _ ≤ ∑ r ∈ A, (((C.redFiber r ∩ I).card : ℕ) : ℝ) := hsum
+    _ = (((A.biUnion fun r => C.redFiber r ∩ I).card : ℕ) : ℝ) := hUnion.symm
+    _ ≤ (I.card : ℝ) := by
+      exact_mod_cast Finset.card_le_card hSubset
+
+theorem section4F1_filter_isBlue_card_mul_log_le_card (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    Real.log (n : ℝ) * (((C.section4F1 I).filter IsBlueBaseVertex).card : ℝ) ≤ (I.card : ℝ) := by
+  classical
+  let A : Finset (Fin m) := (C.blueImage I).filter fun b => Sum.inr b ∈ C.section4F1 I
+  have hcard :
+      (((C.section4F1 I).filter IsBlueBaseVertex).card : ℝ) = (A.card : ℝ) := by
+    have hAcard :
+        A.card = ((C.section4F1 I).filter IsBlueBaseVertex).card := by
+      calc
+        A.card = ((A.image fun b : Fin m => (Sum.inr b : BaseVertex m)).card) := by
+          symm
+          exact Finset.card_image_of_injective _ (by
+            intro a b hab
+            exact Sum.inr.inj hab)
+        _ = ((C.section4F1 I).filter IsBlueBaseVertex).card := by
+          rw [show A.image (fun b : Fin m => (Sum.inr b : BaseVertex m)) =
+              (C.section4F1 I).filter IsBlueBaseVertex by
+            ext x
+            cases x with
+            | inl r =>
+                simp [A]
+            | inr b =>
+                simp [A]]
+    exact_mod_cast hAcard.symm
+  have hsum :
+      Real.log (n : ℝ) * (A.card : ℝ) ≤
+        ∑ b ∈ A, (((C.blueFiber b ∩ I).card : ℕ) : ℝ) := by
+    calc
+      Real.log (n : ℝ) * (A.card : ℝ) = ∑ _b ∈ A, Real.log (n : ℝ) := by
+        simp [mul_comm]
+      _ ≤ ∑ b ∈ A, (((C.blueFiber b ∩ I).card : ℕ) : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro b hb
+        have hbF1 : Sum.inr b ∈ C.section4F1 I := (Finset.mem_filter.1 hb).2
+        exact le_of_lt ((C.mem_section4F1.1 hbF1).2)
+  have hdisj :
+      (A : Set (Fin m)).PairwiseDisjoint fun b => C.blueFiber b ∩ I := by
+    intro b hb c hc hbc
+    exact C.disjoint_blueFiber_inter I hbc
+  have hUnionNat :
+      (A.biUnion fun b => C.blueFiber b ∩ I).card =
+        ∑ b ∈ A, (C.blueFiber b ∩ I).card :=
+    Finset.card_biUnion hdisj
+  have hUnion :
+      ((((A.biUnion fun b => C.blueFiber b ∩ I).card : ℕ) : ℝ)) =
+        ∑ b ∈ A, (((C.blueFiber b ∩ I).card : ℕ) : ℝ) := by
+    exact_mod_cast hUnionNat
+  have hSubset : A.biUnion (fun b => C.blueFiber b ∩ I) ⊆ I := by
+    intro v hv
+    rcases Finset.mem_biUnion.1 hv with ⟨b, -, hv'⟩
+    exact (Finset.mem_inter.1 hv').2
+  calc
+    Real.log (n : ℝ) * (((C.section4F1 I).filter IsBlueBaseVertex).card : ℝ)
+        = Real.log (n : ℝ) * (A.card : ℝ) := by rw [hcard]
+    _ ≤ ∑ b ∈ A, (((C.blueFiber b ∩ I).card : ℕ) : ℝ) := hsum
+    _ = (((A.biUnion fun b => C.blueFiber b ∩ I).card : ℕ) : ℝ) := hUnion.symm
+    _ ≤ (I.card : ℝ) := by
+      exact_mod_cast Finset.card_le_card hSubset
+
+theorem section4F1_eq_filter_isRed_union_filter_isBlue (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    C.section4F1 I =
+      (C.section4F1 I).filter IsRedBaseVertex ∪ (C.section4F1 I).filter IsBlueBaseVertex := by
+  ext x
+  cases x with
+  | inl r =>
+      simp
+  | inr b =>
+      simp
+
+theorem disjoint_section4F1_filter_isRed_filter_isBlue (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    Disjoint ((C.section4F1 I).filter IsRedBaseVertex)
+      ((C.section4F1 I).filter IsBlueBaseVertex) := by
+  refine Finset.disjoint_left.2 ?_
+  intro x hxR hxB
+  cases x with
+  | inl r =>
+      simp at hxB
+  | inr b =>
+      simp at hxR
+
+theorem section4F1_card_mul_log_le_two_mul_card (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    Real.log (n : ℝ) * ((C.section4F1 I).card : ℝ) ≤ 2 * (I.card : ℝ) := by
+  have hred := C.section4F1_filter_isRed_card_mul_log_le_card I
+  have hblue := C.section4F1_filter_isBlue_card_mul_log_le_card I
+  have hcard :
+      (C.section4F1 I).card =
+        ((C.section4F1 I).filter IsRedBaseVertex).card +
+          ((C.section4F1 I).filter IsBlueBaseVertex).card := by
+    calc
+      (C.section4F1 I).card =
+          (((C.section4F1 I).filter IsRedBaseVertex ∪
+              (C.section4F1 I).filter IsBlueBaseVertex).card) := by
+            rw [← C.section4F1_eq_filter_isRed_union_filter_isBlue I]
+      _ =
+          ((C.section4F1 I).filter IsRedBaseVertex).card +
+            ((C.section4F1 I).filter IsBlueBaseVertex).card := by
+          exact Finset.card_union_of_disjoint (C.disjoint_section4F1_filter_isRed_filter_isBlue I)
+  calc
+    Real.log (n : ℝ) * ((C.section4F1 I).card : ℝ)
+        = Real.log (n : ℝ) *
+            ((((C.section4F1 I).filter IsRedBaseVertex).card +
+                ((C.section4F1 I).filter IsBlueBaseVertex).card : ℕ) : ℝ) := by
+          rw [hcard]
+    _ = Real.log (n : ℝ) * (((C.section4F1 I).filter IsRedBaseVertex).card : ℝ) +
+          Real.log (n : ℝ) * (((C.section4F1 I).filter IsBlueBaseVertex).card : ℝ) := by
+          simp [mul_add]
+    _ ≤ (I.card : ℝ) + (I.card : ℝ) := by
+      linarith
+    _ = 2 * (I.card : ℝ) := by ring
+
+theorem xCard_red_ge_log_mul_section4F1_neighbor_card (C : ConstructionData n m)
+    (I : Finset (Fin n)) (r : Fin m) :
+    Real.log (n : ℝ) * (((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ) ≤
+      (C.xCard I (Sum.inl r) : ℝ) := by
+  classical
+  let A : Finset (Fin m) :=
+    (C.redProjectionImage I (Sum.inl r)).filter fun r' => Sum.inl r' ∈ C.section4F1 I
+  have hcard :
+      (((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ) = (A.card : ℝ) := by
+    have hAcard : A.card = (C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card := by
+      calc
+        A.card = ((A.image fun r' : Fin m => (Sum.inl r' : BaseVertex m)).card) := by
+          symm
+          exact Finset.card_image_of_injective _ (by
+            intro a b hab
+            exact Sum.inl.inj hab)
+        _ = (C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card := by
+          rw [C.redProjectionImage_filter_section4F1_image_inl_eq_baseNeighborSet_inter_section4F1
+            I r]
+    exact_mod_cast hAcard.symm
+  have hsumA :
+      Real.log (n : ℝ) * (A.card : ℝ) ≤
+        ∑ r' ∈ A, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) := by
+    calc
+      Real.log (n : ℝ) * (A.card : ℝ) = ∑ _r' ∈ A, Real.log (n : ℝ) := by
+        simp [mul_comm]
+      _ ≤ ∑ r' ∈ A, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro r' hr'
+        have hr'F1 : Sum.inl r' ∈ C.section4F1 I := (Finset.mem_filter.1 hr').2
+        exact le_of_lt ((C.mem_section4F1.1 hr'F1).2)
+  have hsumSubset :
+      ∑ r' ∈ A, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) ≤
+        ∑ r' ∈ C.redProjectionImage I (Sum.inl r), (((C.redFiber r' ∩ I).card : ℕ) : ℝ) := by
+    exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) (by
+      intro r' hr' hnot
+      positivity)
+  have hwhole :
+      (C.xCard I (Sum.inl r) : ℝ) =
+        ∑ r' ∈ C.redProjectionImage I (Sum.inl r), (((C.redFiber r' ∩ I).card : ℕ) : ℝ) := by
+    exact_mod_cast C.xCard_red_eq_sum_card_redFiber_inter I r
+  calc
+    Real.log (n : ℝ) * (((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ)
+        = Real.log (n : ℝ) * (A.card : ℝ) := by rw [hcard]
+    _ ≤ ∑ r' ∈ A, (((C.redFiber r' ∩ I).card : ℕ) : ℝ) := hsumA
+    _ ≤ ∑ r' ∈ C.redProjectionImage I (Sum.inl r), (((C.redFiber r' ∩ I).card : ℕ) : ℝ) :=
+      hsumSubset
+    _ = (C.xCard I (Sum.inl r) : ℝ) := hwhole.symm
+
+theorem xCard_blue_ge_log_mul_section4F1_neighbor_card (C : ConstructionData n m)
+    (I : Finset (Fin n)) (b : Fin m) :
+    Real.log (n : ℝ) * (((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ) ≤
+      (C.xCard I (Sum.inr b) : ℝ) := by
+  classical
+  let A : Finset (Fin m) :=
+    (C.blueProjectionImage I (Sum.inr b)).filter fun b' => Sum.inr b' ∈ C.section4F1 I
+  have hcard :
+      (((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ) = (A.card : ℝ) := by
+    have hAcard : A.card = (C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card := by
+      calc
+        A.card = ((A.image fun b' : Fin m => (Sum.inr b' : BaseVertex m)).card) := by
+          symm
+          exact Finset.card_image_of_injective _ (by
+            intro a c hac
+            exact Sum.inr.inj hac)
+        _ = (C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card := by
+          rw [C.blueProjectionImage_filter_section4F1_image_inr_eq_baseNeighborSet_inter_section4F1
+            I b]
+    exact_mod_cast hAcard.symm
+  have hsumA :
+      Real.log (n : ℝ) * (A.card : ℝ) ≤
+        ∑ b' ∈ A, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) := by
+    calc
+      Real.log (n : ℝ) * (A.card : ℝ) = ∑ _b' ∈ A, Real.log (n : ℝ) := by
+        simp [mul_comm]
+      _ ≤ ∑ b' ∈ A, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro b' hb'
+        have hb'F1 : Sum.inr b' ∈ C.section4F1 I := (Finset.mem_filter.1 hb').2
+        exact le_of_lt ((C.mem_section4F1.1 hb'F1).2)
+  have hsumSubset :
+      ∑ b' ∈ A, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) ≤
+        ∑ b' ∈ C.blueProjectionImage I (Sum.inr b), (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) := by
+    exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) (by
+      intro b' hb' hnot
+      positivity)
+  have hwhole :
+      (C.xCard I (Sum.inr b) : ℝ) =
+        ∑ b' ∈ C.blueProjectionImage I (Sum.inr b), (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) := by
+    exact_mod_cast C.xCard_blue_eq_sum_card_blueFiber_inter I b
+  calc
+    Real.log (n : ℝ) * (((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ)
+        = Real.log (n : ℝ) * (A.card : ℝ) := by rw [hcard]
+    _ ≤ ∑ b' ∈ A, (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) := hsumA
+    _ ≤ ∑ b' ∈ C.blueProjectionImage I (Sum.inr b), (((C.blueFiber b' ∩ I).card : ℕ) : ℝ) :=
+      hsumSubset
+    _ = (C.xCard I (Sum.inr b) : ℝ) := hwhole.symm
+
+
 theorem mem_I_of_mem_X (C : ConstructionData n m) {I : Finset (Fin n)} {x : BaseVertex m}
     {v : Fin n} (hv : v ∈ C.X I x) : v ∈ I := by
   cases x with
@@ -1079,6 +1537,58 @@ theorem disjoint_HPart_SPart (C : ConstructionData n m) (I : Finset (Fin n)) {ε
   have hH := C.paperT1_lt_xCard_of_mem_HPart hxH
   have hS := C.xCard_le_paperT3_of_mem_SPart hxS
   linarith
+
+theorem section4F2_subset_LPart_union_HPart_of_log_pos_of_paperT3_le_paperT2
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (hlog : 0 < Real.log (n : ℝ)) (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n) :
+    C.section4F2 I ε ⊆ C.LPart I ε ∪ C.HPart I := by
+  intro x hx
+  have hxgt : Twobites.paperT2 ε n < (C.xCard I x : ℝ) := by
+    cases x with
+    | inl r =>
+        have hcount : Twobites.paperT2 ε n / Real.log (n : ℝ) <
+            (((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ) :=
+          (C.mem_section4F2.1 hx).2
+        have hmul' :
+            Twobites.paperT2 ε n <
+              (((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ) *
+                Real.log (n : ℝ) := (div_lt_iff₀ hlog).1 hcount
+        have hmul :
+            Twobites.paperT2 ε n <
+              Real.log (n : ℝ) *
+                (((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ) := by
+          simpa [mul_comm] using hmul'
+        exact lt_of_lt_of_le hmul (C.xCard_red_ge_log_mul_section4F1_neighbor_card I r)
+    | inr b =>
+        have hcount : Twobites.paperT2 ε n / Real.log (n : ℝ) <
+            (((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ) :=
+          (C.mem_section4F2.1 hx).2
+        have hmul' :
+            Twobites.paperT2 ε n <
+              (((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ) *
+                Real.log (n : ℝ) := (div_lt_iff₀ hlog).1 hcount
+        have hmul :
+            Twobites.paperT2 ε n <
+              Real.log (n : ℝ) *
+                (((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ) := by
+          simpa [mul_comm] using hmul'
+        exact lt_of_lt_of_le hmul (C.xCard_blue_ge_log_mul_section4F1_neighbor_card I b)
+  rcases C.mem_HPart_or_mem_LPart_or_mem_MPart_or_mem_SPart I ε x with hH | hL | hM | hS
+  · exact Finset.mem_union.2 (Or.inr hH)
+  · exact Finset.mem_union.2 (Or.inl hL)
+  · exfalso
+    have hMle := C.xCard_le_paperT2_of_mem_MPart hM
+    linarith
+  · exfalso
+    have hSle := C.xCard_le_paperT3_of_mem_SPart hS
+    linarith
+
+theorem section4F2_card_le_card_LPart_union_HPart_of_log_pos_of_paperT3_le_paperT2
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (hlog : 0 < Real.log (n : ℝ)) (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n) :
+    (C.section4F2 I ε).card ≤ (C.LPart I ε ∪ C.HPart I).card := by
+  exact Finset.card_le_card
+    (C.section4F2_subset_LPart_union_HPart_of_log_pos_of_paperT3_le_paperT2 I hlog ht32)
 
 theorem cast_choose_two_le_half_mul_of_le {a : ℕ} {T : ℝ} (hT : (a : ℝ) ≤ T) :
     ((a.choose 2 : ℕ) : ℝ) ≤ (a : ℝ) * T / 2 := by
