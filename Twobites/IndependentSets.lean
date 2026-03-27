@@ -598,6 +598,28 @@ def section4UCondChoiceEventMassSum (C : ConstructionData n m) (I : Finset (Fin 
     Finset.sum (section4CountIndexSet uRMax uBMax) fun uv =>
       C.section4UCondChoiceEventMass I A p uv.1 uv.2 remaining
 
+/-- The aggregate Section 4 loss term subtracted from a base open-pair lower bound before the
+second-stage Bernoulli exposure: reveal budget, same-color `ClosedPairPlus`, and opposite-color
+witness-cap contributions. -/
+def section4SecondStageLossNat (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) : ℕ :=
+  I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+    (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+      C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) +
+    C.redProjectionPairCount I
+      ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) +
+    C.blueProjectionPairCount I
+      ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+
+/-- The literal finite mass of the actual conditioned second-stage Section 4 event, obtained by
+plugging the true `(u_R,u_B)` counts and the aggregate loss term into the explicit Bernoulli event
+family. This is the repo-level stand-in for the conditioned probability in `lem:RISI`. -/
+def section4ActualConditionedEventMass (C : ConstructionData n m) (I : Finset (Fin n))
+    (ε p : ℝ) (N : ℕ) : ℝ :=
+  let uRActual := (C.section4URedCondPairSet I (C.section4F I ε)).card
+  let uBActual := (C.section4UBlueCondPairSet I (C.section4F I ε)).card
+  C.section4UCondChoiceEventMass I (C.section4F I ε) p uRActual uBActual
+    (N - C.section4SecondStageLossNat I ε)
+
 @[simp] theorem mem_X_red (C : ConstructionData n m) {I : Finset (Fin n)} {r : Fin m}
     {v : Fin n} : v ∈ C.X I (Sum.inl r) ↔ v ∈ I ∧ C.redBase.Adj r (C.redProj v) := by
   classical
@@ -12067,6 +12089,33 @@ theorem
       (remainingNat : ℝ) = (N : ℝ) - (removedNat : ℝ) := by
     simp [remainingNat, Nat.cast_sub hremoved]
   nlinarith
+
+set_option linter.style.longLine false in
+theorem
+    section4ActualConditionedEventMass_le_exp_of_indep_of_totalError
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p totalError : ℝ} {N : ℕ}
+    {uRBound uBBound : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hUR :
+      C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) ≤
+        uRBound)
+    (hUB :
+      C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) ≤
+        uBBound)
+    (hLossLeN : C.section4SecondStageLossNat I ε ≤ N)
+    (hTotal :
+      (C.section4SecondStageLossNat I ε : ℝ) + (uRBound : ℝ) + (uBBound : ℝ) ≤ totalError) :
+    C.section4ActualConditionedEventMass I ε p N ≤ Real.exp (p * totalError - p * (N : ℝ)) := by
+  unfold section4ActualConditionedEventMass section4SecondStageLossNat
+  simpa using
+    (C.section4UCondChoiceEventMass_section4F_le_exp_of_indep_of_totalError
+      (I := I) (ε := ε) (p := p) (N := N)
+      (uRBound := uRBound) (uBBound := uBBound)
+      hindep hp0 hp1 hUR hUB hLossLeN hTotal)
 
 end
 
