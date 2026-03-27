@@ -1269,6 +1269,29 @@ theorem paperHugeWitnessBranchParam_le_of_coeff_le {ε1 κ β q δ : ℝ} {n : �
     _ = ((3 / ε1) * (ε1 / 3)) * δ := by ring
     _ = δ := by rw [hmul, one_mul]
 
+theorem paperHugeWitnessCoeff_le_of_le_of_le {κ β q a b : ℝ} {n : ℕ}
+    (hfirst :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n ≤ a)
+    (hsecond :
+      ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤ b) :
+    paperHugeWitnessCoeff κ β q n ≤ a + b := by
+  unfold paperHugeWitnessCoeff
+  linarith
+
+theorem paperHugeWitnessBranchParam_le_of_le_of_le_of_add_le
+    {ε1 κ β q a b δ : ℝ} {n : ℕ} (hε1 : 0 < ε1)
+    (hfirst :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n ≤ a)
+    (hsecond :
+      ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤ b)
+    (hsum : a + b ≤ (ε1 / 3) * δ) :
+    paperHugeWitnessBranchParam ε1 κ β q n ≤ δ := by
+  exact
+    paperHugeWitnessBranchParam_le_of_coeff_le hε1
+      ((paperHugeWitnessCoeff_le_of_le_of_le hfirst hsecond).trans hsum)
+
 theorem three_mul_paperK_le_eps_mul_of_le_two_eps_mul_of_six_mul_paperK_le
     {δ κ ε rhs : ℝ} {n : ℕ} (hδ : δ ≤ 2 * ε * κ) (hsmall : 6 * paperK κ n ≤ rhs)
     (hε : 0 ≤ ε) :
