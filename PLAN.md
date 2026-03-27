@@ -129,8 +129,8 @@
      - in the huge-case wrapper chain, keep the additive deficit coefficient separate from the right-branch smallness coefficient: the former may absorb the diagonal/sum-gap arithmetic, while the latter should track only the genuine Section 3 witness error coming from the union-size / projected-codegree estimate
     - the canonical huge-case wrappers now use the exact Section 3 witness-error coefficient directly, and the latest interface packages that coefficient as the concrete branch parameter `paperHugeWitnessBranchParam ε₁ κ βdeg qcodeg n`
     - the `deficit - 1` residual is already derived internally from branch-deficit hypotheses `ρ + (1+ε₂)β + 2ε₁κ + paperHugeWitnessBranchParam ε₁ κ βdeg qcodeg n + δsumGap + δgap ≤ κ`
-    - there is now also a monotone bridge from coefficient-smallness to branch-parameter bounds and from branch-parameter bounds to the exact huge-case theorem, together with canonical wrappers that accept either a whole-coefficient bound or separate smallness bounds for the degree and projected-codegree pieces of `paperHugeWitnessCoeff`
-    - the remaining arithmetic target is to prove concrete large-`n` bounds for those two witness-coefficient pieces, combine them into the desired branch slack `δbranch`, then feed those bounds into the exact-route theorem and on to the paper-facing wrappers
+    - there is now also a monotone bridge from coefficient-smallness to branch-parameter bounds and from branch-parameter bounds to the exact huge-case theorem, together with canonical wrappers that accept either a whole-coefficient bound, one shared decomposition of the degree/projected-codegree pieces of `paperHugeWitnessCoeff`, or separate blue/red decompositions of those same two pieces
+    - the remaining arithmetic target is to prove concrete large-`n` bounds for those two witness-coefficient pieces, combine them into the desired blue and red branch slacks, then feed those bounds into the exact-route theorem and on to the paper-facing wrappers
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound

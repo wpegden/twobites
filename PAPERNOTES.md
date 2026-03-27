@@ -14,6 +14,7 @@
 - `reference.tex:578-580` (`lem:huge`): the expression `π(I) \setminus (\bigcup X_{v_i}(I))` is ill-typed because `π(I) ⊆ V_R × V_B` while `X_{v_i}(I) ⊆ V(G)`. The intended inequality is
   `|π_R(I)| ≤ |π_R(\bigcup X_{v_i}(I))| + |I \setminus \bigcup X_{v_i}(I)|`,
   which then yields `|\bigcup X_{v_i}(I)| ≤ k - |π_R(I)| + o(k)`.
+- `reference.tex:533-580` (`lem:huge`): beyond the two corrections above, the manuscript keeps the huge-case union-size and projected-codegree losses only at qualitative `o(k)` scale. It never names explicit blue/red slack parameters for those two witness-error pieces. The Lean development therefore has to expose exact branchwise smallness hypotheses for those pieces instead of recovering a single canonical constant from the text.
 - `reference.tex:639` (`lem:RISI`): `U_B` should be `T_B ∩ E(G_B)`, not `T_B ∩ E(G_R)`.
 - `reference.tex:663` (`lem:RISI`): `T_I` should be `T_R ∪ T_B`, or the sentence should simply say that every unrevealed open pair lies in `T_R ∪ T_B` and must be a non-edge.
 - `reference.tex:668-669` (`lem:RISI`): `f(\ell_r,\ell_B)` should be `f(\ell_R,\ell_B)`.
