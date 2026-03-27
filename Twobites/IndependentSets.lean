@@ -5825,6 +5825,422 @@ theorem paper_huge_deterministic_of_witness_bound_of_diagCoeff_of_bounds_of_gaps
       hρB hβ hε2 hgapR hgapB hκR hκB hε1 hbound hdiagCoeff hsplit hsumGap hdegBound
       hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall
 
+theorem paper_huge_deterministic_of_small_coeff_gap_diag_paperK_of_bound_le_of_witnessCoeff
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 δR δB βdeg qcodeg δsplit δwitness δsumGap δgapR δgapB B : ℝ}
+    {bound witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgapR : 1 ≤ Twobites.paperK δR n) (hgapB : 1 ≤ Twobites.paperK δB n)
+    (hκR : ρR + (1 + ε2) * β + δR ≤ κ)
+    (hκB : ρB + (1 + ε2) * β + δB ≤ κ)
+    (hε1 : 0 ≤ ε1) (hw : witnessSize ≤ bound) (hbound : (bound : ℝ) ≤ B)
+    (hβdeg : 0 ≤ βdeg) (hqcodeg : 0 ≤ qcodeg)
+    (hdiag :
+      ((Twobites.paperK κ n + 1) / 2) * Twobites.paperK (B * βdeg / Twobites.paperS n) n ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hsplit :
+      (B * βdeg) / Twobites.paperS n +
+          ((B ^ 2 / 2) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        δsplit)
+    (hwitnessCoeff :
+      (B * βdeg) / Twobites.paperS n +
+          ((B ^ 2 / 2) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        δwitness)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R : ρR + (1 + ε2) * β + δsplit + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B : ρB + (1 + ε2) * β + δsplit + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1)) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  let δdeg : ℝ := (((bound : ℕ) : ℝ) * βdeg) / Twobites.paperS n
+  let δcodeg : ℝ :=
+    ((((bound.choose 2 : ℕ) : ℝ) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)))
+  have hδR : 0 ≤ δR := Twobites.nonneg_of_one_le_paperK hn hgapR
+  have hκ : 0 ≤ κ := by
+    have hfac : 0 ≤ 1 + ε2 := by linarith
+    have hbase : 0 ≤ ρR + (1 + ε2) * β + δR := by
+      nlinarith
+    linarith
+  have hcoeff :
+      δdeg ≤ (B * βdeg) / Twobites.paperS n := by
+    have hs : 0 < Twobites.paperS n := Twobites.paperS_pos hn
+    dsimp [δdeg]
+    apply (div_le_div_iff₀ hs hs).2
+    nlinarith [mul_le_mul_of_nonneg_right hbound hβdeg]
+  have hdiag' :
+      ((Twobites.paperK κ n + 1) / 2) * Twobites.paperK δdeg n ≤
+        ε1 * Twobites.paperK κ n ^ 2 := by
+    have hfac : 0 ≤ (Twobites.paperK κ n + 1) / 2 := by
+      have hk : 0 ≤ Twobites.paperK κ n := Twobites.paperK_nonneg hκ n
+      nlinarith
+    calc
+      ((Twobites.paperK κ n + 1) / 2) * Twobites.paperK δdeg n ≤
+          ((Twobites.paperK κ n + 1) / 2) * Twobites.paperK (B * βdeg / Twobites.paperS n) n := by
+            gcongr
+            exact Twobites.paperK_le_paperK_of_le hcoeff
+      _ ≤ ε1 * Twobites.paperK κ n ^ 2 := hdiag
+  have hsplit' : δdeg + δcodeg ≤ δsplit := by
+    dsimp [δdeg, δcodeg]
+    exact (Twobites.splitCoeff_le_of_bound_le hn hbound hβdeg hqcodeg).trans hsplit
+  have hwitnessCoeff' : δdeg + δcodeg ≤ δwitness := by
+    dsimp [δdeg, δcodeg]
+    exact (Twobites.splitCoeff_le_of_bound_le hn hbound hβdeg hqcodeg).trans hwitnessCoeff
+  have hcoeffNonneg : 0 ≤ δdeg + δcodeg := by
+    simpa [δdeg, δcodeg] using
+      (Twobites.splitCoeff_nonneg (bound := bound) (n := n) hβdeg hqcodeg)
+  have hδsplit : 0 ≤ δsplit := by linarith
+  have hδsumGap : 0 ≤ δsumGap := Twobites.nonneg_of_one_le_paperK hn hsumGap
+  have hδerr : 0 ≤ δsplit + δsumGap := add_nonneg hδsplit hδsumGap
+  have hsumκ :
+      δdeg + δcodeg + δsumGap ≤ δsplit + δsumGap := by
+    linarith
+  have hblueCrossSmall' :
+      (3 : ℝ) * (Twobites.paperK δdeg n + Twobites.paperK δcodeg n) ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    have hmono : Twobites.paperK (δdeg + δcodeg) n ≤ Twobites.paperK δwitness n :=
+      Twobites.paperK_le_paperK_of_le hwitnessCoeff'
+    calc
+      (3 : ℝ) * (Twobites.paperK δdeg n + Twobites.paperK δcodeg n) =
+          (3 : ℝ) * Twobites.paperK (δdeg + δcodeg) n := by
+            rw [← Twobites.paperK_add (n := n)]
+      _ ≤ (3 : ℝ) * Twobites.paperK δwitness n := by
+        gcongr
+      _ ≤ _ := hblueCrossSmall
+  have hredCrossSmall' :
+      (3 : ℝ) * (Twobites.paperK δdeg n + Twobites.paperK δcodeg n) ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    have hmono : Twobites.paperK (δdeg + δcodeg) n ≤ Twobites.paperK δwitness n :=
+      Twobites.paperK_le_paperK_of_le hwitnessCoeff'
+    calc
+      (3 : ℝ) * (Twobites.paperK δdeg n + Twobites.paperK δcodeg n) =
+          (3 : ℝ) * Twobites.paperK (δdeg + δcodeg) n := by
+            rw [← Twobites.paperK_add (n := n)]
+      _ ≤ (3 : ℝ) * Twobites.paperK δwitness n := by
+        gcongr
+      _ ≤ _ := hredCrossSmall
+  exact
+    C.paper_huge_deterministic_of_split_degree_le_paperPM_of_codegree_le_of_split_small
+      (δerr := δsplit + δsumGap) (bound := bound) hD I hI hwitness hred hblue hblueCap
+      hblueCapWeight hredCap hredCapWeight hn hρR hρB hβ hε2 hgapR hgapB hκR hκB hdiag'
+      hdiag' hε1 hw hβdeg hqcodeg hδerr hsumGap
+      (by simpa [δdeg, δcodeg, add_assoc, add_left_comm, add_comm] using hsumκ) hdegBound
+      hcodegBound hgap2R
+      (by simpa [add_assoc, add_left_comm, add_comm] using hκ2R)
+      (by simpa [δdeg, δcodeg] using hblueCrossSmall') hgap2B
+      (by simpa [add_assoc, add_left_comm, add_comm] using hκ2B)
+      (by simpa [δdeg, δcodeg] using hredCrossSmall')
+
+theorem paper_huge_deterministic_of_small_coeff_gap_diag_paperK_of_witness_bound_le_of_witnessCoeff
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 δR δB βdeg qcodeg δsplit δwitness δsumGap δgapR δgapB B : ℝ}
+    {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgapR : 1 ≤ Twobites.paperK δR n) (hgapB : 1 ≤ Twobites.paperK δB n)
+    (hκR : ρR + (1 + ε2) * β + δR ≤ κ)
+    (hκB : ρB + (1 + ε2) * β + δB ≤ κ)
+    (hε1 : 0 ≤ ε1) (hbound : (witnessSize : ℝ) ≤ B) (hβdeg : 0 ≤ βdeg)
+    (hqcodeg : 0 ≤ qcodeg)
+    (hdiag :
+      ((Twobites.paperK κ n + 1) / 2) * Twobites.paperK (B * βdeg / Twobites.paperS n) n ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hsplit :
+      (B * βdeg) / Twobites.paperS n +
+          ((B ^ 2 / 2) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        δsplit)
+    (hwitnessCoeff :
+      (B * βdeg) / Twobites.paperS n +
+          ((B ^ 2 / 2) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        δwitness)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R : ρR + (1 + ε2) * β + δsplit + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B : ρB + (1 + ε2) * β + δsplit + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1)) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  exact
+    C.paper_huge_deterministic_of_small_coeff_gap_diag_paperK_of_bound_le_of_witnessCoeff
+      (bound := witnessSize) hD I hI hwitness hred hblue hblueCap hblueCapWeight hredCap
+      hredCapWeight hn hρR hρB hβ hε2 hgapR hgapB hκR hκB hε1
+      (le_rfl : witnessSize ≤ witnessSize) hbound hβdeg hqcodeg hdiag hsplit hwitnessCoeff
+      hsumGap hdegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
+      hredCrossSmall
+
+theorem
+    paper_huge_deterministic_of_small_coeff_gap_diag_paperK_of_witness_bound_le_of_diagCoeff_of_witnessCoeff
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 δR δB βdeg qcodeg δsplit δwitness δsumGap δgapR δgapB B : ℝ}
+    {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgapR : 1 ≤ Twobites.paperK δR n) (hgapB : 1 ≤ Twobites.paperK δB n)
+    (hκR : ρR + (1 + ε2) * β + δR ≤ κ)
+    (hκB : ρB + (1 + ε2) * β + δB ≤ κ)
+    (hε1 : 0 ≤ ε1) (hbound : (witnessSize : ℝ) ≤ B) (hβdeg : 0 ≤ βdeg)
+    (hqcodeg : 0 ≤ qcodeg)
+    (hdiagCoeff :
+      (B * βdeg / Twobites.paperS n) * (Twobites.paperK κ n + 1) ≤
+        2 * ε1 * κ * Twobites.paperK κ n)
+    (hsplit :
+      (B * βdeg) / Twobites.paperS n +
+          ((B ^ 2 / 2) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        δsplit)
+    (hwitnessCoeff :
+      (B * βdeg) / Twobites.paperS n +
+          ((B ^ 2 / 2) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        δwitness)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R : ρR + (1 + ε2) * β + δsplit + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B : ρB + (1 + ε2) * β + δsplit + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1)) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  have hdiag :
+      ((Twobites.paperK κ n + 1) / 2) * Twobites.paperK (B * βdeg / Twobites.paperS n) n ≤
+        ε1 * Twobites.paperK κ n ^ 2 := by
+    exact Twobites.half_add_one_mul_paperK_le_eps_mul_paperKSq_of_le hn hdiagCoeff
+  exact
+    C.paper_huge_deterministic_of_small_coeff_gap_diag_paperK_of_witness_bound_le_of_witnessCoeff
+      hD I hI hwitness hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hρR
+      hρB hβ hε2 hgapR hgapB hκR hκB hε1 hbound hβdeg hqcodeg hdiag hsplit
+      hwitnessCoeff hsumGap hdegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B
+      hκ2B hredCrossSmall
+
+theorem paper_huge_deterministic_of_witness_bound_of_diagCoeff_of_bounds_of_gaps_of_witnessCoeff
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 βdeg qcodeg δsplit δwitness δsumGap δgapR δgapB B : ℝ}
+    {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hε1 : 0 ≤ ε1) (hbound : (witnessSize : ℝ) ≤ B)
+    (hdiagCoeff :
+      (B * βdeg / Twobites.paperS n) * (Twobites.paperK κ n + 1) ≤
+        2 * ε1 * κ * Twobites.paperK κ n)
+    (hsplit :
+      (B * βdeg) / Twobites.paperS n +
+          ((B ^ 2 / 2) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        δsplit)
+    (hwitnessCoeff :
+      (B * βdeg) / Twobites.paperS n +
+          ((B ^ 2 / 2) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        δwitness)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R : ρR + (1 + ε2) * β + δsplit + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B : ρB + (1 + ε2) * β + δsplit + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1)) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  have hβdeg : 0 ≤ βdeg := Twobites.nonneg_of_le_paperP_mul_paperM hn hdegBound
+  have hqcodeg : 0 ≤ qcodeg := Twobites.nonneg_of_natCast_le hcodegBound
+  have hB : 0 ≤ B := by
+    have hw0 : 0 ≤ (witnessSize : ℝ) := by positivity
+    linarith
+  have hsplitNonneg :
+      0 ≤ (B * βdeg) / Twobites.paperS n +
+        ((B ^ 2 / 2) * qcodeg) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    refine add_nonneg ?_ ?_
+    · exact div_nonneg (mul_nonneg hB hβdeg) (Twobites.paperS_nonneg n)
+    · have hBsq : 0 ≤ B ^ 2 / 2 := by
+        nlinarith [sq_nonneg B]
+      exact div_nonneg (mul_nonneg hBsq hqcodeg) (Real.sqrt_nonneg _)
+  have hδsplit : 0 ≤ δsplit := by
+    linarith
+  have hδsumGap : 0 ≤ δsumGap := Twobites.nonneg_of_one_le_paperK hn hsumGap
+  have hδgapR : 0 ≤ δgapR := Twobites.nonneg_of_one_le_paperK hn (by linarith [hgap2R])
+  have hδgapB : 0 ≤ δgapB := Twobites.nonneg_of_one_le_paperK hn (by linarith [hgap2B])
+  have hgapR :
+      1 ≤ Twobites.paperK (δsplit + δsumGap + δgapR) n := by
+    have hmono :
+        Twobites.paperK δgapR n ≤ Twobites.paperK (δsplit + δsumGap + δgapR) n := by
+      apply Twobites.paperK_le_paperK_of_le
+      nlinarith
+    linarith
+  have hgapB :
+      1 ≤ Twobites.paperK (δsplit + δsumGap + δgapB) n := by
+    have hmono :
+        Twobites.paperK δgapB n ≤ Twobites.paperK (δsplit + δsumGap + δgapB) n := by
+      apply Twobites.paperK_le_paperK_of_le
+      nlinarith
+    linarith
+  have hκR :
+      ρR + (1 + ε2) * β + (δsplit + δsumGap + δgapR) ≤ κ := by
+    simpa [add_assoc, add_left_comm, add_comm] using hκ2R
+  have hκB :
+      ρB + (1 + ε2) * β + (δsplit + δsumGap + δgapB) ≤ κ := by
+    simpa [add_assoc, add_left_comm, add_comm] using hκ2B
+  exact
+    C.paper_huge_deterministic_of_small_coeff_gap_diag_paperK_of_witness_bound_le_of_diagCoeff_of_witnessCoeff
+      (δR := δsplit + δsumGap + δgapR) (δB := δsplit + δsumGap + δgapB)
+      hD I hI hwitness hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hρR
+      hρB hβ hε2 hgapR hgapB hκR hκB hε1 hbound hβdeg hqcodeg hdiagCoeff hsplit
+      hwitnessCoeff hsumGap hdegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B
+      hκ2B hredCrossSmall
+
 theorem paper_huge_deterministic_of_ratio_witness_bound_of_diagCoeff_of_bounds_of_gaps
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
@@ -6908,6 +7324,167 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_split_of_witnessCoeff
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB δcodeg δwitness : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hκ : 1 ≤ κ)
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hε1 : 0 ≤ ε1)
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      δcodeg)
+    (hwitnessCoeff :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * βdeg) / Twobites.paperS n +
+          ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * qcodeg) /
+            Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+        δwitness)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + ε2) * β + (ε1 * κ + δcodeg) + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + ε2) * β + (ε1 * κ + δcodeg) + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1)) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  have hκ0 : 0 ≤ κ := by linarith
+  have hloglog : 0 < Real.log (Real.log (n : ℝ)) := by
+    have hdivpos : 0 < 2 / ε1 := by positivity
+    linarith
+  have hgapWitness : 2 ≤ ε1 * (κ * Real.log (Real.log (n : ℝ))) :=
+    Twobites.two_le_eta_mul_mul_loglog_of_two_div_loglog_le hκ hε1pos hloglogGap
+  have hboundBase :
+      (Twobites.paperHugeWitnessNat κ n : ℝ) ≤
+        (2 + ε1) * κ * Real.log (Real.log (n : ℝ)) := by
+    exact
+      Twobites.paperHugeWitnessNat_le_two_add_eta_mul_mul_loglog hκ0 hn hloglog
+        hgapWitness
+  have hB :
+      (2 + ε1) * κ * Real.log (Real.log (n : ℝ)) ≤
+        3 * κ * Real.log (Real.log (n : ℝ)) := by
+    have hconst : 2 + ε1 ≤ 3 := by linarith
+    nlinarith
+  have hbound :
+      (Twobites.paperHugeWitnessNat κ n : ℝ) ≤
+        3 * κ * Real.log (Real.log (n : ℝ)) := hboundBase.trans hB
+  have hloglogOne : 1 ≤ Real.log (Real.log (n : ℝ)) := by
+    have htwo : (2 : ℝ) ≤ 2 / ε1 := by
+      refine (le_div_iff₀ hε1pos).2 ?_
+      nlinarith
+    linarith
+  have hk : 1 ≤ Twobites.paperK κ n := by
+    have hT1leK : Twobites.paperT1 n ≤ Twobites.paperK κ n :=
+      Twobites.paperT1_le_paperK hloglogOne hκ
+    linarith
+  have hdiagCoeff :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * βdeg / Twobites.paperS n) *
+          (Twobites.paperK κ n + 1) ≤
+        2 * ε1 * κ * Twobites.paperK κ n := by
+    exact Twobites.three_loglog_diagCoeff_le hn hκ0 hε1 hk hdiagScale
+  have hcodegCoeff :
+      ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      δcodeg := by
+    convert hcodegScale using 1
+    ring_nf
+  have hsplit :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * βdeg) / Twobites.paperS n +
+          ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * qcodeg) /
+            Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+        ε1 * κ + δcodeg := by
+    have hfirst :
+        ((3 * κ * Real.log (Real.log (n : ℝ))) * βdeg) / Twobites.paperS n ≤ ε1 * κ := by
+      exact Twobites.three_loglog_split_first_le hn hκ0 hdiagScale
+    linarith
+  have hqcodeg : 0 ≤ qcodeg := Twobites.nonneg_of_natCast_le hcodegBound
+  have hδsumGap : 0 ≤ δsumGap := Twobites.nonneg_of_one_le_paperK hn hsumGap
+  have hδgapR : 0 ≤ δgapR := Twobites.nonneg_of_one_le_paperK hn (by linarith [hgap2R])
+  have hδcodeg_le_κ : δcodeg ≤ κ := by
+    have hε1κ : 0 ≤ ε1 * κ := by nlinarith
+    have hfac : 0 ≤ 1 + ε2 := by linarith
+    have hbase : 0 ≤ ρR + (1 + ε2) * β + δsumGap + δgapR := by
+      nlinarith
+    linarith
+  have hchooseCoeff :
+      ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      κ := hcodegCoeff.trans hδcodeg_le_κ
+  have hchooseReal :
+      (((Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound : ℕ) : ℝ) ≤
+        Twobites.paperK
+          ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * qcodeg) /
+            Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
+    exact
+      Twobites.cast_choose_mul_le_paperK_of_real_bound hbound hn hchooseCodegBound
+  have hchooseReal' :
+      (((Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound : ℕ) : ℝ) ≤
+        Twobites.paperK κ n := by
+    exact hchooseReal.trans <| Twobites.paperK_le_paperK_of_le hchooseCoeff
+  have hchoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n := by
+    exact Twobites.nat_le_paperKNat_of_le_paperK hchooseReal'
+  have htwo :
+      2 * Twobites.paperKNat κ n <
+        Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ :=
+    Twobites.two_mul_paperKNat_lt_paperHugeWitnessNat_mul_ceil_paperT1 hκ0 hT1
+  have hwitness :
+      Twobites.paperKNat κ n <
+        Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ -
+          (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound :=
+    Twobites.paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt htwo hchoose
+  exact
+    C.paper_huge_deterministic_of_witness_bound_of_diagCoeff_of_bounds_of_gaps_of_witnessCoeff
+      (B := 3 * κ * Real.log (Real.log (n : ℝ))) (δsplit := ε1 * κ + δcodeg) hD I hI
+      hwitness hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hρR hρB hβ
+      hε2 hε1 hbound hdiagCoeff hsplit hwitnessCoeff hsumGap hdegBound hcodegBound hgap2R
+      hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall
+
+set_option linter.style.longLine false in
+theorem
     paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
@@ -6997,6 +7574,88 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_witnessCoeff
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB δwitness : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hκ : 1 ≤ κ)
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hε1 : 0 ≤ ε1)
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ)
+    (hwitnessCoeff :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * βdeg) / Twobites.paperS n +
+          ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * qcodeg) /
+            Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+        δwitness)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1)) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  have hsplitEq : 2 * ε1 * κ = ε1 * κ + ε1 * κ := by ring
+  have hκ2R' :
+      ρR + (1 + ε2) * β + (ε1 * κ + ε1 * κ) + δsumGap + δgapR ≤ κ := by
+    simpa [hsplitEq, add_assoc, add_left_comm, add_comm] using hκ2R
+  have hκ2B' :
+      ρB + (1 + ε2) * β + (ε1 * κ + ε1 * κ) + δsumGap + δgapB ≤ κ := by
+    simpa [hsplitEq, add_assoc, add_left_comm, add_comm] using hκ2B
+  simpa [hsplitEq, add_assoc, add_left_comm, add_comm] using
+    C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_split_of_witnessCoeff
+      (δcodeg := ε1 * κ) hD I hI hred hblue hblueCap hblueCapWeight hredCap
+      hredCapWeight hn hκ hρR hρB hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale
+      hcodegScale hwitnessCoeff hsumGap hdegBound hchooseCodegBound hcodegBound hgap2R
+      hκ2R' hblueCrossSmall hgap2B hκ2B' hredCrossSmall
+
+set_option linter.style.longLine false in
+theorem
     paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_kSmall
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
@@ -7076,6 +7735,110 @@ theorem
       hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegScale hsumGap hdegBound
       hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall' hgap2B hκ2B
       hredCrossSmall'
+
+set_option linter.style.longLine false in
+theorem
+    paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_kSmall_of_witnessCoeff
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB δwitness : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hκ : 1 ≤ κ)
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hε1 : 0 ≤ ε1)
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ)
+    (hwitnessCoeff :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * βdeg) / Twobites.paperS n +
+          ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * qcodeg) /
+            Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+        δwitness)
+    (hδwitness : δwitness ≤ 2 * ε1 * κ)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      6 * Twobites.paperK κ n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      6 * Twobites.paperK κ n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1)) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  have hblueCrossSmall' :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    have hmono : Twobites.paperK δwitness n ≤ Twobites.paperK (2 * ε1 * κ) n :=
+      Twobites.paperK_le_paperK_of_le hδwitness
+    calc
+      (3 : ℝ) * Twobites.paperK δwitness n ≤ (3 : ℝ) * Twobites.paperK (2 * ε1 * κ) n := by
+        gcongr
+      _ = ε1 * (6 * Twobites.paperK κ n) := by rw [Twobites.three_mul_paperK_two_mul_eq]
+      _ ≤ ε1 *
+            (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+                Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+        exact mul_le_mul_of_nonneg_left hblueCrossSmall hε1
+  have hredCrossSmall' :
+      (3 : ℝ) * Twobites.paperK δwitness n ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    have hmono : Twobites.paperK δwitness n ≤ Twobites.paperK (2 * ε1 * κ) n :=
+      Twobites.paperK_le_paperK_of_le hδwitness
+    calc
+      (3 : ℝ) * Twobites.paperK δwitness n ≤ (3 : ℝ) * Twobites.paperK (2 * ε1 * κ) n := by
+        gcongr
+      _ = ε1 * (6 * Twobites.paperK κ n) := by rw [Twobites.three_mul_paperK_two_mul_eq]
+      _ ≤ ε1 *
+            (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+                Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+        exact mul_le_mul_of_nonneg_left hredCrossSmall hε1
+  exact
+    C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_witnessCoeff
+      hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR hρB
+      hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegScale hwitnessCoeff hsumGap
+      hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall' hgap2B
+      hκ2B hredCrossSmall'
 
 theorem closedPair_comm (C : ConstructionData n m) {I : Finset (Fin n)} {v w : Fin n} :
     C.ClosedPair I v w ↔ C.ClosedPair I w v := by
