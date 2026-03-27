@@ -6,6 +6,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Nat.Choose.Bounds
 import Mathlib.Data.Nat.Choose.Cast
 import Mathlib.Data.Nat.Cast.Order.Field
+import Mathlib.Data.Finset.Sigma
 import Mathlib.Data.Real.Sqrt
 
 namespace Twobites
@@ -1817,11 +1818,138 @@ theorem paperRI_nearOne_finalCoeff_neg
     nlinarith
   exact div_neg_of_neg_of_pos hnum hden
 
+/-- The red-coordinate image of a `k`-subset of `V_R × V_B` in the outer counting step of Paper
+Lemma `lem:RI`. -/
+def paperRIOuterRedImage {m : ℕ} (S : Finset (Fin m × Fin m)) : Finset (Fin m) :=
+  S.image Prod.fst
+
+/-- The blue-coordinate image of a `k`-subset of `V_R × V_B` in the outer counting step of Paper
+Lemma `lem:RI`. -/
+def paperRIOuterBlueImage {m : ℕ} (S : Finset (Fin m × Fin m)) : Finset (Fin m) :=
+  S.image Prod.snd
+
+/-- The exact outer event family `\mathcal S_{I,\ell_R,\ell_B}` from Paper Lemma `lem:RI`,
+expressed as the family of `k`-subsets of `V_R × V_B` whose red and blue coordinate images have
+cardinalities `lR` and `lB`. -/
+def paperRIOuterEventSet (m lR lB k : ℕ) : Finset (Finset (Fin m × Fin m)) :=
+  ((Finset.univ : Finset (Fin m × Fin m)).powersetCard k).filter fun S =>
+    (paperRIOuterRedImage S).card = lR ∧ (paperRIOuterBlueImage S).card = lB
+
+/-- A witness family for the outer event counting step: choose the red image, choose the blue
+image, then choose a `k`-subset of their product. -/
+def paperRIOuterWitnessSet (m lR lB k : ℕ) :
+    Finset (Sigma fun _AB : Finset (Fin m) × Finset (Fin m) => Finset (Fin m × Fin m)) :=
+  ((((Finset.univ : Finset (Fin m)).powersetCard lR).product
+      ((Finset.univ : Finset (Fin m)).powersetCard lB)).sigma fun AB =>
+    (AB.1 ×ˢ AB.2).powersetCard k)
+
+/-- The finite mass of the exact outer event family `\mathcal S_{I,\ell_R,\ell_B}` when `π(I)` is
+uniformly distributed over the `k`-subsets of `V_R × V_B`. -/
+def paperRIOuterEventMass (m lR lB k : ℕ) : ℝ :=
+  ((paperRIOuterEventSet m lR lB k).card : ℝ) / ((m * m).choose k : ℝ)
+
+theorem paperRIOuter_subset_product_images {m : ℕ} {S : Finset (Fin m × Fin m)} :
+    S ⊆ (paperRIOuterRedImage S ×ˢ paperRIOuterBlueImage S) := by
+  intro p hp
+  rcases p with ⟨r, b⟩
+  refine Finset.mem_product.2 ?_
+  constructor
+  · exact Finset.mem_image.2 ⟨(r, b), hp, rfl⟩
+  · exact Finset.mem_image.2 ⟨(r, b), hp, rfl⟩
+
+theorem mem_paperRIOuterWitnessSet_of_mem_paperRIOuterEventSet
+    {m lR lB k : ℕ} {S : Finset (Fin m × Fin m)}
+    (hS : S ∈ paperRIOuterEventSet m lR lB k) :
+    Sigma.mk (paperRIOuterRedImage S, paperRIOuterBlueImage S) S ∈
+      paperRIOuterWitnessSet m lR lB k := by
+  rcases Finset.mem_filter.1 hS with ⟨hkset, himages⟩
+  rcases himages with ⟨hredCard, hblueCard⟩
+  have hk : S.card = k := (Finset.mem_powersetCard.1 hkset).2
+  have hred :
+      paperRIOuterRedImage S ∈ (Finset.univ : Finset (Fin m)).powersetCard lR := by
+    refine Finset.mem_powersetCard.2 ?_
+    constructor
+    · exact Finset.subset_univ _
+    · simpa using hredCard
+  have hblue :
+      paperRIOuterBlueImage S ∈ (Finset.univ : Finset (Fin m)).powersetCard lB := by
+    refine Finset.mem_powersetCard.2 ?_
+    constructor
+    · exact Finset.subset_univ _
+    · simpa using hblueCard
+  have hsubset : S ⊆ paperRIOuterRedImage S ×ˢ paperRIOuterBlueImage S :=
+    paperRIOuter_subset_product_images
+  have hprod :
+      S ∈ (paperRIOuterRedImage S ×ˢ paperRIOuterBlueImage S).powersetCard k := by
+    exact Finset.mem_powersetCard.2 ⟨hsubset, hk⟩
+  refine Finset.mem_sigma.2 ?_
+  exact ⟨Finset.mem_product.2 ⟨hred, hblue⟩, hprod⟩
+
+theorem paperRIOuterEventSet_card_le_witnessSet_card
+    (m lR lB k : ℕ) :
+    (paperRIOuterEventSet m lR lB k).card ≤ (paperRIOuterWitnessSet m lR lB k).card := by
+  refine Finset.card_le_card_of_injOn
+      (f := fun S => Sigma.mk (paperRIOuterRedImage S, paperRIOuterBlueImage S) S) ?_ ?_
+  · intro S hS
+    exact mem_paperRIOuterWitnessSet_of_mem_paperRIOuterEventSet hS
+  · intro S hS T hT hEq
+    exact congrArg Sigma.snd hEq
+
+theorem paperRIOuterWitnessSet_card_eq_choose_choose_choose
+    (m lR lB k : ℕ) :
+    (paperRIOuterWitnessSet m lR lB k).card =
+      (m.choose lR) * (m.choose lB) * ((lR * lB).choose k) := by
+  let Aset : Finset (Finset (Fin m)) := (Finset.univ : Finset (Fin m)).powersetCard lR
+  let Bset : Finset (Finset (Fin m)) := (Finset.univ : Finset (Fin m)).powersetCard lB
+  calc
+    (paperRIOuterWitnessSet m lR lB k).card =
+        ∑ AB ∈ Aset ×ˢ Bset, (((AB.1 ×ˢ AB.2).powersetCard k).card) := by
+      rw [paperRIOuterWitnessSet, Finset.card_sigma]
+      simp [Aset, Bset]
+    _ = ∑ _AB ∈ Aset ×ˢ Bset, ((lR * lB).choose k) := by
+      refine Finset.sum_congr rfl ?_
+      intro AB hAB
+      rcases Finset.mem_product.1 hAB with ⟨hA, hB⟩
+      have hAcard : AB.1.card = lR := (Finset.mem_powersetCard.1 hA).2
+      have hBcard : AB.2.card = lB := (Finset.mem_powersetCard.1 hB).2
+      rw [Finset.card_powersetCard, Finset.card_product, hAcard, hBcard]
+    _ = (Aset ×ˢ Bset).card * ((lR * lB).choose k) := by
+      simp
+    _ = (Aset.card * Bset.card) * ((lR * lB).choose k) := by
+      rw [Finset.card_product]
+    _ = (m.choose lR) * (m.choose lB) * ((lR * lB).choose k) := by
+      simp [Aset, Bset, Nat.mul_assoc]
+
+/-- The exact finite outer event family from Paper Lemma `lem:RI` is bounded by the combinatorial
+overcount that chooses red and blue coordinate images and then a `k`-subset of their product. -/
+theorem paperRIOuterEventSet_card_le_choose_choose_choose
+    (m lR lB k : ℕ) :
+    (paperRIOuterEventSet m lR lB k).card ≤
+      (m.choose lR) * (m.choose lB) * ((lR * lB).choose k) := by
+  exact
+    (paperRIOuterEventSet_card_le_witnessSet_card m lR lB k).trans
+      (by rw [paperRIOuterWitnessSet_card_eq_choose_choose_choose])
+
 /-- The combinatorial outer bound from the opening lines of Paper Lemma `lem:RI`. This packages
 the counting term for the event `\mathcal S_{I,\ell_R,\ell_B}` before it is simplified
 asymptotically. -/
 def paperRIOuterCombBound (m lR lB k : ℕ) : ℝ :=
   ((m.choose lR : ℝ) * (m.choose lB : ℝ) * ((lR * lB).choose k : ℝ)) / ((m * m).choose k : ℝ)
+
+/-- The corresponding finite mass bound for the exact outer event family `\mathcal S_{I,\ell_R,
+\ell_B}`. This is the paper's first counting step before the later ratio and exponential
+simplifications. -/
+theorem paperRIOuterEventMass_le_outerCombBound
+    {m lR lB k : ℕ} :
+    paperRIOuterEventMass m lR lB k ≤ paperRIOuterCombBound m lR lB k := by
+  have hcard :
+      ((paperRIOuterEventSet m lR lB k).card : ℝ) ≤
+        (m.choose lR : ℝ) * (m.choose lB : ℝ) * ((lR * lB).choose k : ℝ) := by
+    exact_mod_cast paperRIOuterEventSet_card_le_choose_choose_choose m lR lB k
+  unfold paperRIOuterEventMass paperRIOuterCombBound
+  have hden : 0 ≤ (((m * m).choose k : ℕ) : ℝ) := by positivity
+  exact
+    (div_le_div_of_nonneg_right hcard hden).trans_eq <| by ring
 
 /-- The raw binomial-ratio estimate behind the first finite counting step in Paper Lemma `lem:RI`.
 It is the exact comparison obtained by bounding the numerator with `choose_le_pow_div` and the
@@ -1878,6 +2006,16 @@ theorem paperRIOuterCombBound_le_choose_choose_mul_pow_ratio
     _ ≤ (m.choose lR : ℝ) * (m.choose lB : ℝ) *
           ((((lR * lB : ℕ) : ℝ) ^ k) / ((((m * m + 1 - k : ℕ) : ℝ) ^ k))) := by
       exact mul_le_mul_of_nonneg_left (paperRI_outerChooseRatio_le_pow_ratio hk) hchoose_nonneg
+
+/-- The exact outer event family also satisfies the simplified power-ratio version of the paper's
+counting bound. -/
+theorem paperRIOuterEventMass_le_choose_choose_mul_pow_ratio
+    {m lR lB k : ℕ} (hk : k ≤ m * m) :
+    paperRIOuterEventMass m lR lB k ≤
+      (m.choose lR : ℝ) * (m.choose lB : ℝ) *
+        ((((lR * lB : ℕ) : ℝ) ^ k) / ((((m * m + 1 - k : ℕ) : ℝ) ^ k))) := by
+  exact (paperRIOuterEventMass_le_outerCombBound).trans
+    (paperRIOuterCombBound_le_choose_choose_mul_pow_ratio hk)
 
 theorem paperRI_smallSumCoeff_le
     {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
