@@ -1100,6 +1100,70 @@ theorem three_loglog_split_first_le {β κ ε : ℝ} {n : ℕ}
     exact mul_le_mul_of_nonneg_left hcoeff' hκ
   simpa [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hmul
 
+theorem splitRightCoeff_le_eps_mul_choose_two_of_sum_le_of_three_mul_le
+    {a : ℕ} {ε U O W : ℝ}
+    (hε : 0 ≤ ε) (hεle : ε ≤ 1) (hU : 0 ≤ U) (hO : 0 ≤ O)
+    (hsum : U + O ≤ W)
+    (hsmall : (3 : ℝ) * W ≤ ε * ((a : ℝ) - 1)) :
+    ((3 : ℝ) / 2) * (a : ℝ) * U + ((((a : ℝ) + U) * O) + O ^ 2 / 2) ≤
+      ε * (((a.choose 2 : ℕ) : ℝ)) := by
+  have hW : 0 ≤ W := by
+    have hUO : 0 ≤ U + O := add_nonneg hU hO
+    linarith
+  have hhalf : W ≤ (a : ℝ) / 2 := by
+    have ha0 : 0 ≤ (a : ℝ) := by positivity
+    nlinarith
+  have hsum_half : U + O ≤ (a : ℝ) / 2 := hsum.trans hhalf
+  have hcross :
+      U * O + O ^ 2 / 2 ≤ ((a : ℝ) / 2) * O := by
+    have haux : U + O / 2 ≤ (a : ℝ) / 2 := by
+      nlinarith
+    calc
+      U * O + O ^ 2 / 2 = O * (U + O / 2) := by ring
+      _ ≤ O * ((a : ℝ) / 2) := by
+            exact mul_le_mul_of_nonneg_left haux hO
+      _ = ((a : ℝ) / 2) * O := by ring
+  have hcoeff :
+      ((3 : ℝ) / 2) * (a : ℝ) * U + ((((a : ℝ) + U) * O) + O ^ 2 / 2) ≤
+        ((3 : ℝ) / 2) * (a : ℝ) * W := by
+    calc
+      ((3 : ℝ) / 2) * (a : ℝ) * U + ((((a : ℝ) + U) * O) + O ^ 2 / 2) =
+          ((3 : ℝ) / 2) * (a : ℝ) * U + (a : ℝ) * O + (U * O + O ^ 2 / 2) := by
+            ring
+      _ ≤ ((3 : ℝ) / 2) * (a : ℝ) * U + (a : ℝ) * O + ((a : ℝ) / 2) * O := by
+            gcongr
+      _ = ((3 : ℝ) / 2) * (a : ℝ) * (U + O) := by
+            ring
+      _ ≤ ((3 : ℝ) / 2) * (a : ℝ) * W := by
+            gcongr
+  have hmain :
+      ((3 : ℝ) / 2) * (a : ℝ) * W ≤ ε * (((a.choose 2 : ℕ) : ℝ)) := by
+    rw [Nat.cast_choose_two]
+    nlinarith
+  exact hcoeff.trans hmain
+
+theorem splitRightCoeff_le_eps_mul_cap_choose_two_add_choose_two_of_sum_le_of_three_mul_le
+    {a cap : ℕ} {ε U O W : ℝ}
+    (hε : 0 ≤ ε) (hεle : ε ≤ 1) (hU : 0 ≤ U) (hO : 0 ≤ O)
+    (hsum : U + O ≤ W)
+    (hsmall : (3 : ℝ) * W ≤ ε * ((a : ℝ) - 1)) :
+    ((3 : ℝ) / 2) * (a : ℝ) * U + ((((a : ℝ) + U) * O) + O ^ 2 / 2) ≤
+      ε * (((cap.choose 2 + a.choose 2 : ℕ) : ℝ)) := by
+  have hbase :
+      ((3 : ℝ) / 2) * (a : ℝ) * U + ((((a : ℝ) + U) * O) + O ^ 2 / 2) ≤
+        ε * (((a.choose 2 : ℕ) : ℝ)) := by
+    exact splitRightCoeff_le_eps_mul_choose_two_of_sum_le_of_three_mul_le
+      hε hεle hU hO hsum hsmall
+  have hmono :
+      ε * (((a.choose 2 : ℕ) : ℝ)) ≤ ε * (((cap.choose 2 + a.choose 2 : ℕ) : ℝ)) := by
+    have hnat : a.choose 2 ≤ cap.choose 2 + a.choose 2 := by
+      exact Nat.le_add_left _ _
+    have hcast :
+        (((a.choose 2 : ℕ) : ℝ)) ≤ (((cap.choose 2 + a.choose 2 : ℕ) : ℝ)) := by
+      exact_mod_cast hnat
+    exact mul_le_mul_of_nonneg_left hcast hε
+  exact hbase.trans hmono
+
 theorem three_loglog_codegCoeff_eq {κ q : ℝ} {n : ℕ} :
     ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
         Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) =
