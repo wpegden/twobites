@@ -1048,6 +1048,30 @@ theorem half_add_one_mul_paperK_le_eps_mul_paperKSq_of_le
   unfold paperK at hcoeff ⊢
   nlinarith [hsqrt]
 
+theorem three_loglog_diagCoeff_le {β κ ε : ℝ} {n : ℕ}
+    (hn : 1 < n) (hκ : 0 ≤ κ) (hε : 0 ≤ ε) (hk : 1 ≤ paperK κ n)
+    (hcoeff : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε * paperS n) :
+    ((3 * κ * Real.log (Real.log (n : ℝ))) * β / paperS n) * (paperK κ n + 1) ≤
+      2 * ε * κ * paperK κ n := by
+  have hs : 0 < paperS n := paperS_pos hn
+  have hk0 : 0 ≤ paperK κ n := paperK_nonneg hκ n
+  have hk2 : paperK κ n + 1 ≤ 2 * paperK κ n := by
+    linarith
+  have hcoeff' : (3 * β * Real.log (Real.log (n : ℝ))) / paperS n ≤ ε := by
+    exact (div_le_iff₀ hs).2 hcoeff
+  have hleftCoeff :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * β / paperS n) ≤ ε * κ := by
+    have hmul : κ * ((3 * β * Real.log (Real.log (n : ℝ))) / paperS n) ≤ κ * ε := by
+      exact mul_le_mul_of_nonneg_left hcoeff' hκ
+    simpa [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hmul
+  calc
+    ((3 * κ * Real.log (Real.log (n : ℝ))) * β / paperS n) * (paperK κ n + 1) ≤
+        (ε * κ) * (paperK κ n + 1) := by
+          exact mul_le_mul_of_nonneg_right hleftCoeff (by linarith)
+    _ ≤ (ε * κ) * (2 * paperK κ n) := by
+      exact mul_le_mul_of_nonneg_left hk2 (mul_nonneg hε hκ)
+    _ = 2 * ε * κ * paperK κ n := by ring
+
 end
 
 end Twobites
