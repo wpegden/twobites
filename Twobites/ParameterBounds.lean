@@ -1339,6 +1339,26 @@ theorem paperHugeWitnessCodegBranchParam_le_of_coeff_le {ε1 κ q δ : ℝ} {n :
     _ = ((3 / ε1) * (ε1 / 3)) * δ := by ring
     _ = δ := by rw [hmul, one_mul]
 
+theorem paperHugeWitnessDegreeBranchParam_le_of_le {ε1 κ β δ : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1)
+    (hcoeff :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n ≤ (ε1 / 3) * δ) :
+    paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ δ := by
+  exact
+    paperHugeWitnessDegreeBranchParam_le_of_coeff_le hε1
+      (by simpa [paperHugeWitnessDegreeCoeff] using hcoeff)
+
+theorem paperHugeWitnessCodegBranchParam_le_of_le {ε1 κ q δ : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1)
+    (hcoeff :
+      ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+        (ε1 / 3) * δ) :
+    paperHugeWitnessCodegBranchParam ε1 κ q n ≤ δ := by
+  exact
+    paperHugeWitnessCodegBranchParam_le_of_coeff_le hε1
+      (by simpa [paperHugeWitnessCodegCoeff] using hcoeff)
+
 theorem paperHugeWitnessCoeff_le_of_exact_piece_branchParam
     {ε1 κ β q : ℝ} {n : ℕ} (hε1 : 0 < ε1) :
     paperHugeWitnessCoeff κ β q n ≤
