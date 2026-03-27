@@ -1919,6 +1919,17 @@ theorem paperHugeWitnessFourEpsRhoBudget_half_one_add_eps_of_x_le
     nlinarith
   exact paperHugeWitnessFourEpsRhoBudget_half_one_add_eps_of_rho_le hρ' hsmall
 
+theorem paperHugeWitnessQuarterProjection_of_middleSum_of_blueLeRed
+    {ρR ρB ε : ℝ}
+    (hblueLeRed : ρB ≤ ρR)
+    (hsum : ρR + ρB ≤ (1 + ε / 2) * (1 + ε)) :
+    ρB ≤ (((1 / 2 : ℝ) + ε / 4) * (1 + ε)) := by
+  have hhalf : ρB ≤ ((1 + ε / 2) * (1 + ε)) / 2 := by
+    linarith
+  have hform : ((1 + ε / 2) * (1 + ε)) / 2 = (((1 / 2 : ℝ) + ε / 4) * (1 + ε)) := by
+    ring
+  simpa [hform] using hhalf
+
 theorem paperHugeWitness_crossSmall_of_twoEpsThreshold_of_rhoBudget
     {ρ β κ ε1 ε2 βdeg qcodeg δsumGap δgap : ℝ} {n : ℕ}
     (hn : 1 < n) (hκ : 1 ≤ κ) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
