@@ -275,6 +275,18 @@ def blueBaseOpenPairSet (C : ConstructionData n m) (I : Finset (Fin n)) :
   exact ((C.blueImage I).product (C.blueImage I)).filter fun p =>
     p.1 < p.2 ∧ ¬ C.blueBase.Adj p.1 p.2
 
+/-- Canonical red closed pairs inside `π_R(I)`, counted with the order `r < r'`. -/
+def redBaseClosedPairSet (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Finset (Fin m × Fin m) := by
+  classical
+  exact (C.redBasePairSet I).filter fun p => C.redBase.Adj p.1 p.2
+
+/-- Canonical blue closed pairs inside `π_B(I)`, counted with the order `b < b'`. -/
+def blueBaseClosedPairSet (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Finset (Fin m × Fin m) := by
+  classical
+  exact (C.blueBasePairSet I).filter fun p => C.blueBase.Adj p.1 p.2
+
 /-- The paper's open pairs inside `π_R(I) ∪ π_B(I)`, represented as canonical same-color base
 pairs. -/
 def baseOpenPairSet (C : ConstructionData n m) (I : Finset (Fin n)) :
@@ -766,6 +778,20 @@ def section4ActualConditionedEventMass (C : ConstructionData n m) (I : Finset (F
   classical
   simp [blueBasePairSet, and_assoc]
 
+@[simp] theorem mem_redBaseClosedPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {r r' : Fin m} :
+    (r, r') ∈ C.redBaseClosedPairSet I ↔
+      r ∈ C.redImage I ∧ r' ∈ C.redImage I ∧ r < r' ∧ C.redBase.Adj r r' := by
+  classical
+  simp [redBaseClosedPairSet, and_assoc]
+
+@[simp] theorem mem_blueBaseClosedPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {b b' : Fin m} :
+    (b, b') ∈ C.blueBaseClosedPairSet I ↔
+      b ∈ C.blueImage I ∧ b' ∈ C.blueImage I ∧ b < b' ∧ C.blueBase.Adj b b' := by
+  classical
+  simp [blueBaseClosedPairSet, and_assoc]
+
 @[simp] theorem mem_revealedBaseOpenPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
     {A : Finset (BaseVertex m)} {p : BaseVertex m × BaseVertex m} :
     p ∈ C.revealedBaseOpenPairSet I A ↔ p ∈ C.baseOpenPairSet I ∧ (p.1 ∈ A ∨ p.2 ∈ A) := by
@@ -1136,6 +1162,106 @@ theorem card_image_sym2_mk_of_strictPairSet {α : Type*} [DecidableEq α] [Linea
         rcases sym2_mk_injective_of_lt (hstrict _ hp) (hstrict _ hq) hpq with ⟨hac, hbd⟩
         exact Prod.ext hac hbd))
 
+theorem redBasePairSet_image_sym2_eq_redImage_offDiag_image (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    (C.redBasePairSet I).image Sym2.mk = (C.redImage I).offDiag.image Sym2.mk := by
+  ext z
+  constructor
+  · intro hz
+    rcases Finset.mem_image.1 hz with ⟨p, hp, rfl⟩
+    rcases p with ⟨r, r'⟩
+    rcases (C.mem_redBasePairSet.1 hp) with ⟨hr, hr', hlt⟩
+    exact Finset.mem_image.2 ⟨(r, r'), Finset.mem_offDiag.2 ⟨hr, hr', hlt.ne⟩, rfl⟩
+  · intro hz
+    rcases Finset.mem_image.1 hz with ⟨p, hp, rfl⟩
+    rcases p with ⟨r, r'⟩
+    rcases Finset.mem_offDiag.1 hp with ⟨hr, hr', hneq⟩
+    rcases lt_or_gt_of_ne hneq with hlt | hgt
+    · exact Finset.mem_image.2 ⟨(r, r'), (C.mem_redBasePairSet.2 ⟨hr, hr', hlt⟩), rfl⟩
+    · exact Finset.mem_image.2
+        ⟨(r', r), (C.mem_redBasePairSet.2 ⟨hr', hr, hgt⟩),
+          by simpa using (Sym2.mk_prod_swap_eq (p := (r, r')))⟩
+
+theorem blueBasePairSet_image_sym2_eq_blueImage_offDiag_image (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    (C.blueBasePairSet I).image Sym2.mk = (C.blueImage I).offDiag.image Sym2.mk := by
+  ext z
+  constructor
+  · intro hz
+    rcases Finset.mem_image.1 hz with ⟨p, hp, rfl⟩
+    rcases p with ⟨b, b'⟩
+    rcases (C.mem_blueBasePairSet.1 hp) with ⟨hb, hb', hlt⟩
+    exact Finset.mem_image.2 ⟨(b, b'), Finset.mem_offDiag.2 ⟨hb, hb', hlt.ne⟩, rfl⟩
+  · intro hz
+    rcases Finset.mem_image.1 hz with ⟨p, hp, rfl⟩
+    rcases p with ⟨b, b'⟩
+    rcases Finset.mem_offDiag.1 hp with ⟨hb, hb', hneq⟩
+    rcases lt_or_gt_of_ne hneq with hlt | hgt
+    · exact Finset.mem_image.2 ⟨(b, b'), (C.mem_blueBasePairSet.2 ⟨hb, hb', hlt⟩), rfl⟩
+    · exact Finset.mem_image.2
+        ⟨(b', b), (C.mem_blueBasePairSet.2 ⟨hb', hb, hgt⟩),
+          by simpa using (Sym2.mk_prod_swap_eq (p := (b, b')))⟩
+
+theorem redBasePairSet_card_eq_choose (C : ConstructionData n m) (I : Finset (Fin n)) :
+    (C.redBasePairSet I).card = (C.redImage I).card.choose 2 := by
+  have hstrict : ∀ p ∈ C.redBasePairSet I, p.1 < p.2 := by
+    intro p hp
+    exact (C.mem_redBasePairSet.1 hp).2.2
+  calc
+    (C.redBasePairSet I).card = ((C.redBasePairSet I).image Sym2.mk).card := by
+      symm
+      exact card_image_sym2_mk_of_strictPairSet _ hstrict
+    _ = ((C.redImage I).offDiag.image Sym2.mk).card := by
+      rw [C.redBasePairSet_image_sym2_eq_redImage_offDiag_image I]
+    _ = (C.redImage I).card.choose 2 := by
+      simpa using Sym2.card_image_offDiag (C.redImage I)
+
+theorem blueBasePairSet_card_eq_choose (C : ConstructionData n m) (I : Finset (Fin n)) :
+    (C.blueBasePairSet I).card = (C.blueImage I).card.choose 2 := by
+  have hstrict : ∀ p ∈ C.blueBasePairSet I, p.1 < p.2 := by
+    intro p hp
+    exact (C.mem_blueBasePairSet.1 hp).2.2
+  calc
+    (C.blueBasePairSet I).card = ((C.blueBasePairSet I).image Sym2.mk).card := by
+      symm
+      exact card_image_sym2_mk_of_strictPairSet _ hstrict
+    _ = ((C.blueImage I).offDiag.image Sym2.mk).card := by
+      rw [C.blueBasePairSet_image_sym2_eq_blueImage_offDiag_image I]
+    _ = (C.blueImage I).card.choose 2 := by
+      simpa using Sym2.card_image_offDiag (C.blueImage I)
+
+theorem redBaseOpenPairSet_card_add_redBaseClosedPairSet_card (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    (C.redBaseOpenPairSet I).card + (C.redBaseClosedPairSet I).card =
+      (C.redBasePairSet I).card := by
+  classical
+  have hopen :
+      C.redBaseOpenPairSet I =
+        (C.redBasePairSet I).filter fun p => ¬ C.redBase.Adj p.1 p.2 := by
+    ext p
+    rcases p with ⟨r, r'⟩
+    simp [redBaseOpenPairSet, redBasePairSet, and_left_comm, and_assoc]
+  rw [hopen]
+  simpa [add_comm, redBaseClosedPairSet] using
+    (Finset.card_filter_add_card_filter_not (s := C.redBasePairSet I)
+      (p := fun p => C.redBase.Adj p.1 p.2))
+
+theorem blueBaseOpenPairSet_card_add_blueBaseClosedPairSet_card (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    (C.blueBaseOpenPairSet I).card + (C.blueBaseClosedPairSet I).card =
+      (C.blueBasePairSet I).card := by
+  classical
+  have hopen :
+      C.blueBaseOpenPairSet I =
+        (C.blueBasePairSet I).filter fun p => ¬ C.blueBase.Adj p.1 p.2 := by
+    ext p
+    rcases p with ⟨b, b'⟩
+    simp [blueBaseOpenPairSet, and_left_comm, and_assoc]
+  rw [hopen]
+  simpa [add_comm, blueBaseClosedPairSet] using
+    (Finset.card_filter_add_card_filter_not (s := C.blueBasePairSet I)
+      (p := fun p => C.blueBase.Adj p.1 p.2))
+
 theorem swap_not_mem_redBaseOpenPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
     {r r' : Fin m} (h : (r, r') ∈ C.redBaseOpenPairSet I) :
     (r', r) ∉ C.redBaseOpenPairSet I := by
@@ -1167,6 +1293,68 @@ theorem swap_not_mem_baseOpenPairSet (C : ConstructionData n m) {I : Finset (Fin
     exact
       C.swap_not_mem_blueBaseOpenPairSet ((C.mem_baseOpenPairSet_inr_inr).1 h)
         ((C.mem_baseOpenPairSet_inr_inr).1 hswap)
+
+theorem baseOpenPairSet_card_eq_redBaseOpenPairSet_card_add_blueBaseOpenPairSet_card
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    (C.baseOpenPairSet I).card =
+      (C.redBaseOpenPairSet I).card + (C.blueBaseOpenPairSet I).card := by
+  classical
+  let sR : Finset (BaseVertex m × BaseVertex m) :=
+    (C.redBaseOpenPairSet I).image fun p => (Sum.inl p.1, Sum.inl p.2)
+  let sB : Finset (BaseVertex m × BaseVertex m) :=
+    (C.blueBaseOpenPairSet I).image fun p => (Sum.inr p.1, Sum.inr p.2)
+  have hsR :
+      sR.card = (C.redBaseOpenPairSet I).card := by
+    dsimp [sR]
+    simpa using
+      (Finset.card_image_of_injective (s := C.redBaseOpenPairSet I)
+        (f := fun p => (Sum.inl p.1, Sum.inl p.2))
+        (by
+          intro a b hab
+          cases a
+          cases b
+          cases hab
+          rfl))
+  have hsB :
+      sB.card = (C.blueBaseOpenPairSet I).card := by
+    dsimp [sB]
+    simpa using
+      (Finset.card_image_of_injective (s := C.blueBaseOpenPairSet I)
+        (f := fun p => (Sum.inr p.1, Sum.inr p.2))
+        (by
+          intro a b hab
+          cases a
+          cases b
+          cases hab
+          rfl))
+  have hdisj : Disjoint sR sB := by
+    refine Finset.disjoint_left.2 ?_
+    intro p hpR hpB
+    rcases Finset.mem_image.1 hpR with ⟨r, hr, hpR'⟩
+    rcases Finset.mem_image.1 hpB with ⟨b, hb, hpB'⟩
+    rcases r with ⟨r₁, r₂⟩
+    rcases b with ⟨b₁, b₂⟩
+    rw [← hpR'] at hpB'
+    cases hpB'
+  have hcard :
+      (C.baseOpenPairSet I).card = sR.card + sB.card := by
+    dsimp [sR, sB]
+    rw [baseOpenPairSet]
+    simpa using (Finset.card_union_eq_card_add_card.2 hdisj)
+  rw [hcard, hsR, hsB]
+
+theorem baseOpenPairSet_lower_bound_of_closedBounds (C : ConstructionData n m)
+    (I : Finset (Fin n)) {redBound blueBound : ℕ}
+    (hred : (C.redBaseClosedPairSet I).card ≤ redBound)
+    (hblue : (C.blueBaseClosedPairSet I).card ≤ blueBound) :
+    (C.redImage I).card.choose 2 + (C.blueImage I).card.choose 2 - redBound - blueBound ≤
+      (C.baseOpenPairSet I).card := by
+  have hbase := C.baseOpenPairSet_card_eq_redBaseOpenPairSet_card_add_blueBaseOpenPairSet_card I
+  have hredPart := C.redBaseOpenPairSet_card_add_redBaseClosedPairSet_card I
+  have hbluePart := C.blueBaseOpenPairSet_card_add_blueBaseClosedPairSet_card I
+  have hredTot := C.redBasePairSet_card_eq_choose I
+  have hblueTot := C.blueBasePairSet_card_eq_choose I
+  omega
 
 theorem fst_mem_baseImage_of_mem_baseOpenPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
     {p : BaseVertex m × BaseVertex m} (h : p ∈ C.baseOpenPairSet I) : p.1 ∈ C.baseImage I := by
@@ -5548,6 +5736,54 @@ def paperSection4OpenPairTargetNat (C : ConstructionData n m) (I : Finset (Fin n
 def paperSection4OpenPairTarget (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
     (cap : ℕ) : ℝ :=
   (C.paperSection4OpenPairTargetNat I κ cap : ℕ)
+
+theorem paperSection4OpenPairTargetNat_le_baseOpenPairSet_card_of_closedBounds
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap : ℕ}
+    (hred :
+      (C.redBaseClosedPairSet I).card ≤ C.paperHugeBlueCrossTargetNat I κ cap)
+    (hblue :
+      (C.blueBaseClosedPairSet I).card ≤ C.paperHugeRedCrossTargetNat I κ cap) :
+    C.paperSection4OpenPairTargetNat I κ cap ≤ (C.baseOpenPairSet I).card := by
+  simpa [paperSection4OpenPairTargetNat] using
+    C.baseOpenPairSet_lower_bound_of_closedBounds I hred hblue
+
+theorem paperSection4OpenPairTargetNat_sub_openError_le_baseOpenPairSet_card_of_closedBounds
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap openError : ℕ}
+    (hred :
+      (C.redBaseClosedPairSet I).card ≤ C.paperHugeBlueCrossTargetNat I κ cap)
+    (hblue :
+      (C.blueBaseClosedPairSet I).card ≤ C.paperHugeRedCrossTargetNat I κ cap) :
+    C.paperSection4OpenPairTargetNat I κ cap - openError ≤ (C.baseOpenPairSet I).card := by
+  exact
+    (Nat.sub_le _ _).trans
+      (C.paperSection4OpenPairTargetNat_le_baseOpenPairSet_card_of_closedBounds I hred hblue)
+
+theorem paperSection4OpenPairTargetNat_sub_errorSum_le_baseOpenPairSet_card_of_closedErrorBounds
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap redError blueError : ℕ}
+    (hred :
+      (C.redBaseClosedPairSet I).card ≤ C.paperHugeBlueCrossTargetNat I κ cap + redError)
+    (hblue :
+      (C.blueBaseClosedPairSet I).card ≤ C.paperHugeRedCrossTargetNat I κ cap + blueError) :
+    C.paperSection4OpenPairTargetNat I κ cap - (redError + blueError) ≤
+      (C.baseOpenPairSet I).card := by
+  have hbase :=
+    C.baseOpenPairSet_lower_bound_of_closedBounds I hred hblue
+  simpa [paperSection4OpenPairTargetNat, Nat.sub_sub, add_assoc, add_left_comm, add_comm] using
+    hbase
+
+theorem paperSection4OpenPairTargetNat_sub_openError_le_baseOpenPairSet_card_of_closedErrorBounds
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {κ : ℝ} {cap redError blueError openError : ℕ}
+    (hred :
+      (C.redBaseClosedPairSet I).card ≤ C.paperHugeBlueCrossTargetNat I κ cap + redError)
+    (hblue :
+      (C.blueBaseClosedPairSet I).card ≤ C.paperHugeRedCrossTargetNat I κ cap + blueError)
+    (herror : redError + blueError ≤ openError) :
+    C.paperSection4OpenPairTargetNat I κ cap - openError ≤ (C.baseOpenPairSet I).card := by
+  have hsum :=
+    C.paperSection4OpenPairTargetNat_sub_errorSum_le_baseOpenPairSet_card_of_closedErrorBounds
+      I hred hblue
+  exact (Nat.sub_le_sub_left herror _).trans hsum
 
 /-- The `H_I ∩ V_R` cross-projection term from Paper Lemma `lem:huge`, reduced to the remaining
 paper-witness arithmetic and cap/min-expression estimates. -/
