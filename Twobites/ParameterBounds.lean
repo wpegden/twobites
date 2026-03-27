@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Order.Floor.Semiring
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Data.Nat.Choose.Cast
 import Mathlib.Data.Nat.Cast.Order.Field
 import Mathlib.Data.Real.Sqrt
 
@@ -238,6 +239,40 @@ theorem splitCoeff_nonneg {bound n : ℕ} {β q : ℝ} (hβ : 0 ≤ β) (hq : 0 
   refine add_nonneg ?_ ?_
   · exact div_nonneg (mul_nonneg (by positivity) hβ) (paperS_nonneg n)
   · exact div_nonneg (mul_nonneg (by positivity) hq) (Real.sqrt_nonneg _)
+
+theorem cast_choose_two_le_sq_div_two (b : ℕ) :
+    ((b.choose 2 : ℕ) : ℝ) ≤ (b : ℝ) ^ 2 / 2 := by
+  rw [Nat.cast_choose_two]
+  have hmul : (b : ℝ) * ((b : ℝ) - 1) ≤ (b : ℝ) ^ 2 := by
+    nlinarith
+  have htwo : (0 : ℝ) < 2 := by norm_num
+  exact div_le_div_of_nonneg_right hmul (le_of_lt htwo)
+
+theorem splitCoeff_le_of_bound_le {bound n : ℕ} {β q B : ℝ}
+    (hn : 1 < n) (hbound : (bound : ℝ) ≤ B) (hβ : 0 ≤ β) (hq : 0 ≤ q) :
+    (((bound : ℕ) : ℝ) * β) / paperS n +
+        ((((bound.choose 2 : ℕ) : ℝ) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      (B * β) / paperS n + ((B ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+  have hs : 0 < paperS n := paperS_pos hn
+  have hsqrt : 0 < Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    apply Real.sqrt_pos.2
+    exact mul_pos (by exact_mod_cast (lt_trans Nat.zero_lt_one hn)) (paperLog_pos hn)
+  have hfirst :
+      (((bound : ℕ) : ℝ) * β) / paperS n ≤ (B * β) / paperS n := by
+    exact (div_le_div_iff₀ hs hs).2 <| by
+      nlinarith [mul_le_mul_of_nonneg_right hbound hβ]
+  have hchoose :
+      ((bound.choose 2 : ℕ) : ℝ) ≤ B ^ 2 / 2 := by
+    refine (cast_choose_two_le_sq_div_two bound).trans ?_
+    have hsquare : (bound : ℝ) ^ 2 ≤ B ^ 2 := by
+      nlinarith [sq_nonneg (B - (bound : ℝ))]
+    nlinarith
+  have hsecond :
+      ((((bound.choose 2 : ℕ) : ℝ) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+        ((B ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    exact (div_le_div_iff₀ hsqrt hsqrt).2 <| by
+      nlinarith [mul_le_mul_of_nonneg_right hchoose hq]
+  linarith
 
 theorem paperK_le_paperK_of_le {κ₁ κ₂ : ℝ} {n : ℕ} (hκ : κ₁ ≤ κ₂) :
     paperK κ₁ n ≤ paperK κ₂ n := by
