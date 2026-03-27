@@ -127,7 +127,8 @@
      - formalize the `large`, `medium`, `small`, and `huge` lemmas as four separate files/sections
      - treat the huge-case projection inequalities as the bridge between the raw construction and the final independence-number calculation
      - in the huge-case wrapper chain, keep the additive deficit coefficient separate from the right-branch smallness coefficient: the former may absorb the diagonal/sum-gap arithmetic, while the latter should track only the genuine Section 3 witness error coming from the union-size / projected-codegree estimate
-    - the canonical huge-case wrappers now use the exact Section 3 witness-error coefficient directly; the remaining arithmetic target is to prove the resulting `paperK δwitness` right-branch smallness inequalities from the Section 3 bounds and feed them into the final paper-facing wrappers
+     - the canonical huge-case wrappers now use the exact Section 3 witness-error coefficient directly, and the latest interface packages the remaining branchwise work as coefficient bounds `paperHugeWitnessCoeff ≤ (ε₁ / 3) * δblue/red` plus residual estimates `paperK δblue/red ≤ deficit - 1`
+     - the remaining arithmetic target is to prove those concrete coefficient/residual inequalities from the Section 3 union-size and projected-codegree bounds and feed them into the final paper-facing wrappers
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound

@@ -1145,6 +1145,33 @@ theorem three_mul_paperK_two_mul_eq {ε κ : ℝ} {n : ℕ} :
   unfold paperK
   ring
 
+theorem paperK_mul (c κ : ℝ) (n : ℕ) :
+    paperK (c * κ) n = c * paperK κ n := by
+  unfold paperK
+  ring
+
+theorem three_mul_paperK_le_mul_paperK_of_le_mul {δ₁ δ₂ ε : ℝ} {n : ℕ}
+    (hδ : δ₁ ≤ (ε / 3) * δ₂) :
+    (3 : ℝ) * paperK δ₁ n ≤ ε * paperK δ₂ n := by
+  have hmono : paperK δ₁ n ≤ paperK ((ε / 3) * δ₂) n := paperK_le_paperK_of_le hδ
+  calc
+    (3 : ℝ) * paperK δ₁ n ≤ (3 : ℝ) * paperK ((ε / 3) * δ₂) n := by
+      exact mul_le_mul_of_nonneg_left hmono (by norm_num)
+    _ = ε * paperK δ₂ n := by
+      rw [paperK_mul]
+      ring
+
+theorem three_mul_paperK_paperHugeWitnessCoeff_le_of_le_mul_of_le
+    {κ β q ε δ rhs : ℝ} {n : ℕ} (hε : 0 ≤ ε)
+    (hcoeff : paperHugeWitnessCoeff κ β q n ≤ (ε / 3) * δ)
+    (hsmall : paperK δ n ≤ rhs) :
+    (3 : ℝ) * paperK (paperHugeWitnessCoeff κ β q n) n ≤ ε * rhs := by
+  calc
+    (3 : ℝ) * paperK (paperHugeWitnessCoeff κ β q n) n ≤ ε * paperK δ n := by
+      exact three_mul_paperK_le_mul_paperK_of_le_mul hcoeff
+    _ ≤ ε * rhs := by
+      exact mul_le_mul_of_nonneg_left hsmall hε
+
 theorem three_mul_paperK_le_eps_mul_of_le_two_eps_mul_of_six_mul_paperK_le
     {δ κ ε rhs : ℝ} {n : ℕ} (hδ : δ ≤ 2 * ε * κ) (hsmall : 6 * paperK κ n ≤ rhs)
     (hε : 0 ≤ ε) :
