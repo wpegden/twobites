@@ -211,6 +211,32 @@ def section4F (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
     Finset (BaseVertex m) :=
   C.section4F0 I ∪ C.section4F1 I ∪ C.section4F2 I ε
 
+/-- An ordered overcount of the same-color base-image pairs exposed when every vertex of `A` is
+queried against `B`. This is the finite counting object used for the Section 4 reveal budget. -/
+def revealedBaseArcSet (A B : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
+  classical
+  exact
+    (((A.filter IsRedBaseVertex).product (B.filter IsRedBaseVertex)).filter fun p => p.1 ≠ p.2) ∪
+      (((A.filter IsBlueBaseVertex).product (B.filter IsBlueBaseVertex)).filter
+        fun p => p.1 ≠ p.2)
+
+/-- The Section 4 counting argument only needs an overcount, so we reuse the ordered arc set as the
+pair-counting object. -/
+def revealedBasePairSet (A B : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
+  exact revealedBaseArcSet A B
+
+/-- Section 4's ordered overcount of revealed pairs coming from the queried vertices `A`. -/
+def section4RevealArcSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) :=
+  revealedBaseArcSet A (C.baseImage I)
+
+/-- Section 4's finite same-color reveal-counting object contributed by the queried vertices `A`.
+It is an overcount rather than a deduplicated unordered-pair set, which is enough for the paper's
+budget estimate. -/
+def section4RevealPairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) :=
+  revealedBasePairSet A (C.baseImage I)
+
 /-- The paper's closed-pair predicate `C(I)`, expressed on ordered pairs of distinct vertices of
 `I`. -/
 def ClosedPair (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) : Prop :=
@@ -376,6 +402,71 @@ theorem section4F2_subset_baseImage (C : ConstructionData n m) (I : Finset (Fin 
     C.section4F2 I ε ⊆ C.baseImage I := by
   intro x hx
   exact (C.mem_section4F2).1 hx |>.1
+
+theorem filter_isRed_union_filter_isBlue (A : Finset (BaseVertex m)) :
+    A.filter IsRedBaseVertex ∪ A.filter IsBlueBaseVertex = A := by
+  classical
+  ext x
+  cases x <;> simp [IsRedBaseVertex, IsBlueBaseVertex]
+
+theorem disjoint_filter_isRed_filter_isBlue (A : Finset (BaseVertex m)) :
+    Disjoint (A.filter IsRedBaseVertex) (A.filter IsBlueBaseVertex) := by
+  classical
+  refine Finset.disjoint_left.2 ?_
+  intro x hxRed hxBlue
+  cases x <;> simp [IsRedBaseVertex, IsBlueBaseVertex] at hxRed hxBlue
+
+theorem card_filter_isRed_add_card_filter_isBlue (A : Finset (BaseVertex m)) :
+    (A.filter IsRedBaseVertex).card + (A.filter IsBlueBaseVertex).card = A.card := by
+  classical
+  calc
+    (A.filter IsRedBaseVertex).card + (A.filter IsBlueBaseVertex).card =
+        (A.filter IsRedBaseVertex ∪ A.filter IsBlueBaseVertex).card := by
+      symm
+      exact Finset.card_union_of_disjoint (disjoint_filter_isRed_filter_isBlue A)
+    _ = A.card := by rw [filter_isRed_union_filter_isBlue]
+
+theorem baseImage_filter_isRed_eq_redImage_image_inl (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    (C.baseImage I).filter IsRedBaseVertex = (C.redImage I).image Sum.inl := by
+  classical
+  ext x
+  cases x with
+  | inl r =>
+      simp [mem_baseImage_inl]
+  | inr b =>
+      simp
+
+theorem baseImage_filter_isBlue_eq_blueImage_image_inr (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    (C.baseImage I).filter IsBlueBaseVertex = (C.blueImage I).image Sum.inr := by
+  classical
+  ext x
+  cases x with
+  | inl r =>
+      simp
+  | inr b =>
+      simp [mem_baseImage_inr]
+
+theorem baseImage_filter_isRed_card_eq_redImage_card (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    ((C.baseImage I).filter IsRedBaseVertex).card = (C.redImage I).card := by
+  rw [C.baseImage_filter_isRed_eq_redImage_image_inl I]
+  simpa using
+    (Finset.card_image_of_injective (s := C.redImage I) (f := Sum.inl)
+      (by
+        intro a b hab
+        exact Sum.inl.inj hab))
+
+theorem baseImage_filter_isBlue_card_eq_blueImage_card (C : ConstructionData n m)
+    (I : Finset (Fin n)) :
+    ((C.baseImage I).filter IsBlueBaseVertex).card = (C.blueImage I).card := by
+  rw [C.baseImage_filter_isBlue_eq_blueImage_image_inr I]
+  simpa using
+    (Finset.card_image_of_injective (s := C.blueImage I) (f := Sum.inr)
+      (by
+        intro a b hab
+        exact Sum.inr.inj hab))
 
 theorem section4F0_disjoint_baseImage (C : ConstructionData n m) (I : Finset (Fin n)) :
     Disjoint (C.section4F0 I) (C.baseImage I) := by
@@ -1941,6 +2032,101 @@ theorem card_mul_section4F1_union_section4F2_card_le_two_mul_card_sq_div_log_add
     C.section4F1_union_section4F2_card_le_two_mul_card_div_log_add_card_LPart_add_card_HPart
       I hn hε
   exact mul_le_mul_of_nonneg_left hcard (by positivity)
+
+/-- The ordered reveal-counting object is bounded by the obvious color-separated rectangle count. -/
+theorem revealedBaseArcSet_card_le (A B : Finset (BaseVertex m)) :
+    (revealedBaseArcSet A B).card ≤
+      (A.filter IsRedBaseVertex).card * (B.filter IsRedBaseVertex).card +
+        (A.filter IsBlueBaseVertex).card * (B.filter IsBlueBaseVertex).card := by
+  classical
+  calc
+    (revealedBaseArcSet A B).card ≤
+        ((((A.filter IsRedBaseVertex).product (B.filter IsRedBaseVertex)).filter
+            fun p => p.1 ≠ p.2).card) +
+          ((((A.filter IsBlueBaseVertex).product (B.filter IsBlueBaseVertex)).filter
+              fun p => p.1 ≠ p.2).card) := by
+      simpa [revealedBaseArcSet] using
+        (Finset.card_union_le
+          (((A.filter IsRedBaseVertex).product (B.filter IsRedBaseVertex)).filter
+            fun p => p.1 ≠ p.2)
+          (((A.filter IsBlueBaseVertex).product (B.filter IsBlueBaseVertex)).filter
+            fun p => p.1 ≠ p.2))
+    _ ≤ ((A.filter IsRedBaseVertex).product (B.filter IsRedBaseVertex)).card +
+          ((A.filter IsBlueBaseVertex).product (B.filter IsBlueBaseVertex)).card := by
+      exact add_le_add (Finset.card_filter_le _ _) (Finset.card_filter_le _ _)
+    _ = (A.filter IsRedBaseVertex).card * (B.filter IsRedBaseVertex).card +
+          (A.filter IsBlueBaseVertex).card * (B.filter IsBlueBaseVertex).card := by
+      simp
+
+theorem revealedBasePairSet_card_le_revealedBaseArcSet_card (A B : Finset (BaseVertex m)) :
+    (revealedBasePairSet A B).card ≤ (revealedBaseArcSet A B).card := by
+  rfl
+
+theorem section4RevealArcSet_card_le_card_mul (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.section4RevealArcSet I A).card ≤ I.card * A.card := by
+  have hbase := revealedBaseArcSet_card_le A (C.baseImage I)
+  have hred :
+      (A.filter IsRedBaseVertex).card * ((C.baseImage I).filter IsRedBaseVertex).card ≤
+        (A.filter IsRedBaseVertex).card * I.card := by
+    have hredImage :
+        ((C.baseImage I).filter IsRedBaseVertex).card ≤ I.card := by
+      rw [C.baseImage_filter_isRed_card_eq_redImage_card I]
+      simpa [ConstructionData.redImage] using
+        (Finset.card_image_le (s := I) (f := C.redProj))
+    exact Nat.mul_le_mul_left _ hredImage
+  have hblue :
+      (A.filter IsBlueBaseVertex).card * ((C.baseImage I).filter IsBlueBaseVertex).card ≤
+        (A.filter IsBlueBaseVertex).card * I.card := by
+    have hblueImage :
+        ((C.baseImage I).filter IsBlueBaseVertex).card ≤ I.card := by
+      rw [C.baseImage_filter_isBlue_card_eq_blueImage_card I]
+      simpa [ConstructionData.blueImage] using
+        (Finset.card_image_le (s := I) (f := C.blueProj))
+    exact Nat.mul_le_mul_left _ hblueImage
+  calc
+    (C.section4RevealArcSet I A).card =
+        (revealedBaseArcSet A (C.baseImage I)).card := rfl
+    _ ≤ (A.filter IsRedBaseVertex).card * ((C.baseImage I).filter IsRedBaseVertex).card +
+          (A.filter IsBlueBaseVertex).card * ((C.baseImage I).filter IsBlueBaseVertex).card :=
+        hbase
+    _ ≤ (A.filter IsRedBaseVertex).card * I.card +
+          (A.filter IsBlueBaseVertex).card * I.card := Nat.add_le_add hred hblue
+    _ = ((A.filter IsRedBaseVertex).card + (A.filter IsBlueBaseVertex).card) * I.card := by
+      rw [Nat.add_mul]
+    _ = A.card * I.card := by rw [card_filter_isRed_add_card_filter_isBlue A]
+    _ = I.card * A.card := by rw [Nat.mul_comm]
+
+theorem section4RevealPairSet_card_le_card_mul (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.section4RevealPairSet I A).card ≤ I.card * A.card := by
+  exact
+    (revealedBasePairSet_card_le_revealedBaseArcSet_card A (C.baseImage I)).trans
+      (C.section4RevealArcSet_card_le_card_mul I A)
+
+theorem section4RevealPairSet_card_le_section4_budget (C : ConstructionData n m)
+    (I : Finset (Fin n)) {ε : ℝ} :
+    (C.section4RevealPairSet I (C.section4F1 I ∪ C.section4F2 I ε)).card ≤
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card := by
+  exact C.section4RevealPairSet_card_le_card_mul I (C.section4F1 I ∪ C.section4F2 I ε)
+
+theorem cast_section4RevealPairSet_card_le_two_mul_card_sq_div_log_add_card_mul_parts
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ)) :
+    (((C.section4RevealPairSet I (C.section4F1 I ∪ C.section4F2 I ε)).card : ℕ) : ℝ) ≤
+      (I.card : ℝ) *
+        (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+          ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ)) := by
+  calc
+    (((C.section4RevealPairSet I (C.section4F1 I ∪ C.section4F2 I ε)).card : ℕ) : ℝ) ≤
+        (I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) := by
+      exact_mod_cast C.section4RevealPairSet_card_le_section4_budget I (ε := ε)
+    _ = (I.card : ℝ) * ((C.section4F1 I ∪ C.section4F2 I ε).card : ℝ) := by norm_num
+    _ ≤ (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+            ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ)) :=
+      C.card_mul_section4F1_union_section4F2_card_le_two_mul_card_sq_div_log_add_card_mul_parts
+        I hn hε
 
 theorem cast_choose_two_le_half_mul_of_le {a : ℕ} {T : ℝ} (hT : (a : ℝ) ≤ T) :
     ((a.choose 2 : ℕ) : ℝ) ≤ (a : ℝ) * T / 2 := by
