@@ -5029,6 +5029,32 @@ theorem paper_medium_deterministic
   C.cast_mediumContribution_le_eps_mul_paperKSq_of_goodEventD_of_paperWitness
     hD I hI hwitness hbound
 
+/-- Paper Lemma `lem:small`, reduced to the remaining Section 3 small-event arithmetic. -/
+theorem paper_small_deterministic
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε ε1 : ℝ} {bound : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hS : (C.SPart I ε).card ≤ bound)
+    (hbound :
+      (Twobites.paperT3 ε n / 2) *
+          (Twobites.paperKNat κ n + bound.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤ ε1 * Twobites.paperK κ n ^ 2 := by
+  have hbase := C.cast_smallContribution_le_of_goodEventD_of_card_le hD I hS
+  have hfac : 0 ≤ Twobites.paperT3 ε n / 2 := by
+    nlinarith [Twobites.paperT3_nonneg ε n]
+  have hnat :
+      I.card + bound.choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n + bound.choose 2 * codegreeBound :=
+    Nat.add_le_add_right hI _
+  have hmul :
+      (Twobites.paperT3 ε n / 2) * (I.card + bound.choose 2 * codegreeBound : ℕ) ≤
+        (Twobites.paperT3 ε n / 2) *
+          (Twobites.paperKNat κ n + bound.choose 2 * codegreeBound : ℕ) := by
+    exact mul_le_mul_of_nonneg_left (by exact_mod_cast hnat) hfac
+  exact hbase.trans (hmul.trans hbound)
+
 theorem cast_redProjectionPairCount_le_half_card_mul_redProjectionWeight
     (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
     ((C.redProjectionPairCount I A : ℕ) : ℝ) ≤
@@ -12612,6 +12638,103 @@ theorem
     C.section4ActualConditionedEventMass_le_exp_of_indep_of_LMS_totalError
       (I := I) (ε := ε) (p := p) (N := N)
       hindep hp0 hp1 hHsubset ht21 ht32 hLossLeN hTotal'
+
+set_option linter.style.longLine false in
+theorem
+    section4ActualConditionedEventMass_le_exp_of_indep_of_uniformPartError
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε p revealError ε1 κ : ℝ} {N : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        N)
+    (hReveal :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤ revealError)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    C.section4ActualConditionedEventMass I ε p N ≤
+      Real.exp
+        (p * (revealError + 11 * (ε1 * Twobites.paperK κ n ^ 2)) - p * (N : ℝ)) := by
+  refine
+    C.section4ActualConditionedEventMass_le_exp_of_indep_of_splitPartTotalError
+      (I := I) (ε := ε) (p := p) (N := N)
+      (totalError := revealError + 11 * (ε1 * Twobites.paperK κ n ^ 2))
+      (revealError := revealError)
+      (largeError := ε1 * Twobites.paperK κ n ^ 2)
+      (mediumError := ε1 * Twobites.paperK κ n ^ 2)
+      (smallError := ε1 * Twobites.paperK κ n ^ 2)
+      (hugeRedError := ε1 * Twobites.paperK κ n ^ 2)
+      (hugeBlueError := ε1 * Twobites.paperK κ n ^ 2)
+      hindep hp0 hp1 hHsubset ht21 ht32 hLossLeN hReveal hLarge hMedium hSmall
+      hHugeRed hHugeBlue ?_
+  nlinarith
+
+set_option linter.style.longLine false in
+theorem
+    section4ActualConditionedEventMass_le_exp_of_indep_of_uniformError
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p ε1 κ : ℝ} {N : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        N)
+    (hReveal :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    C.section4ActualConditionedEventMass I ε p N ≤
+      Real.exp (p * (12 * (ε1 * Twobites.paperK κ n ^ 2)) - p * (N : ℝ)) := by
+  have hbase :=
+    C.section4ActualConditionedEventMass_le_exp_of_indep_of_uniformPartError
+      (I := I) (ε := ε) (p := p) (N := N) (revealError := ε1 * Twobites.paperK κ n ^ 2)
+      hindep hp0 hp1 hHsubset ht21 ht32 hLossLeN hReveal hLarge hMedium hSmall
+      hHugeRed hHugeBlue
+  refine hbase.trans ?_
+  apply Real.exp_le_exp.mpr
+  ring_nf
+  linarith
 
 end
 
