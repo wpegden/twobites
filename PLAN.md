@@ -126,6 +126,7 @@
   6. Closed-pair counting layer:
      - formalize the `large`, `medium`, `small`, and `huge` lemmas as four separate files/sections
      - treat the huge-case projection inequalities as the bridge between the raw construction and the final independence-number calculation
+     - in the huge cross-term bridge, keep separate the union-size slack and the projected-codegree overlap slack; the capped/right-branch comparison should only pay a quadratic penalty on the overlap slack, not on the full combined error
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound

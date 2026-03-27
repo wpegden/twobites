@@ -2177,12 +2177,25 @@ theorem cast_hugeBlueContribution_filter_isRight_le_eps_mul_paperKSq_of_goodEven
   (C.cast_hugeBlueContribution_filter_isRight_le_of_goodEventD_of_paperWitness
     hD I hI hwitness).trans hbound
 
+/-- The union-size slack in the `H_I ∩ V_R` cross-projection term coming from the
+`|π_R (⋃ X_v(I))|` contribution in the paper proof. -/
+def paperHugeBlueCrossUnionSlackNat (_C : ConstructionData n m) (_I : Finset (Fin n))
+    (witnessSize degreeBound : ℕ) : ℕ :=
+  witnessSize * degreeBound
+
+/-- The projected-overlap slack in the `H_I ∩ V_R` cross-projection term coming from pairwise
+intersections of the projected neighborhoods. -/
+def paperHugeBlueCrossOverlapErrorNat (C : ConstructionData n m) (I : Finset (Fin n))
+    (projCodegreeBound : ℕ) : ℕ :=
+  ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound
+
 /-- The current natural-number upper bound for the `H_I ∩ V_R` cross-projection term, before the
-final paper asymptotic simplifications are applied. -/
+final paper asymptotic simplifications are applied. It is the sum of the union-size slack and the
+projected-overlap slack. -/
 def paperHugeBlueCrossErrorNat (C : ConstructionData n m) (I : Finset (Fin n))
     (witnessSize degreeBound projCodegreeBound : ℕ) : ℕ :=
-  witnessSize * degreeBound +
-    ((C.HPart I).filter IsRedBaseVertex).card.choose 2 * projCodegreeBound
+  C.paperHugeBlueCrossUnionSlackNat I witnessSize degreeBound +
+    C.paperHugeBlueCrossOverlapErrorNat I projCodegreeBound
 
 /-- The paper's capped right-hand branch for the `H_I ∩ V_R` cross-projection term. -/
 def paperHugeBlueCrossRightTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
@@ -2221,12 +2234,25 @@ def paperHugeBlueCrossTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) 
     ((Twobites.paperKNat κ n - (C.redImage I).card).choose 2)
     (C.paperHugeBlueCrossRightTargetNat I κ cap)
 
+/-- The union-size slack in the `H_I ∩ V_B` cross-projection term coming from the
+`|π_B (⋃ X_v(I))|` contribution in the paper proof. -/
+def paperHugeRedCrossUnionSlackNat (_C : ConstructionData n m) (_I : Finset (Fin n))
+    (witnessSize degreeBound : ℕ) : ℕ :=
+  witnessSize * degreeBound
+
+/-- The projected-overlap slack in the `H_I ∩ V_B` cross-projection term coming from pairwise
+intersections of the projected neighborhoods. -/
+def paperHugeRedCrossOverlapErrorNat (C : ConstructionData n m) (I : Finset (Fin n))
+    (projCodegreeBound : ℕ) : ℕ :=
+  ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound
+
 /-- The current natural-number upper bound for the `H_I ∩ V_B` cross-projection term, before the
-final paper asymptotic simplifications are applied. -/
+final paper asymptotic simplifications are applied. It is the sum of the union-size slack and the
+projected-overlap slack. -/
 def paperHugeRedCrossErrorNat (C : ConstructionData n m) (I : Finset (Fin n))
     (witnessSize degreeBound projCodegreeBound : ℕ) : ℕ :=
-  witnessSize * degreeBound +
-    ((C.HPart I).filter IsBlueBaseVertex).card.choose 2 * projCodegreeBound
+  C.paperHugeRedCrossUnionSlackNat I witnessSize degreeBound +
+    C.paperHugeRedCrossOverlapErrorNat I projCodegreeBound
 
 /-- The paper's capped right-hand branch for the `H_I ∩ V_B` cross-projection term. -/
 def paperHugeRedCrossRightTargetNat (C : ConstructionData n m) (I : Finset (Fin n)) (κ : ℝ)
@@ -2325,6 +2351,7 @@ theorem paperHugeBlueCrossErrorNat_le_of_goodEventD_of_paperWitness
   have hcard : ((C.HPart I).filter IsRedBaseVertex).card ≤ witnessSize := by
     exact (card_filter_IsRedBaseVertex_le (C.HPart I)).trans <|
       Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
+  unfold paperHugeBlueCrossUnionSlackNat paperHugeBlueCrossOverlapErrorNat
   gcongr
 
 theorem paperHugeRedCrossErrorNat_le_of_goodEventD_of_paperWitness
@@ -2341,6 +2368,7 @@ theorem paperHugeRedCrossErrorNat_le_of_goodEventD_of_paperWitness
   have hcard : ((C.HPart I).filter IsBlueBaseVertex).card ≤ witnessSize := by
     exact (card_filter_IsBlueBaseVertex_le (C.HPart I)).trans <|
       Nat.le_of_lt <| C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
+  unfold paperHugeRedCrossUnionSlackNat paperHugeRedCrossOverlapErrorNat
   gcongr
 
 theorem paperHugeBlueCrossLeftError_of_le_of_three_mul_le
