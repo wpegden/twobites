@@ -181,6 +181,32 @@ theorem cast_mul_le_paperK_of_le_of_le_paperP_mul_paperM
     _ = paperK (((bound : ℕ) : ℝ) * β / paperS n) n := by
       simpa using mul_paperP_mul_paperM_eq_paperK_div_paperS (c := (bound : ℝ)) hn
 
+theorem nonneg_of_natCast_le {a : ℕ} {x : ℝ} (h : (a : ℝ) ≤ x) : 0 ≤ x := by
+  have ha : 0 ≤ (a : ℝ) := by positivity
+  linarith
+
+theorem nonneg_of_le_paperP_mul_paperM
+    {degreeBound : ℕ} {β : ℝ} {n : ℕ} (hn : 1 < n)
+    (hdegree : (degreeBound : ℝ) ≤ paperP β n * paperM n) : 0 ≤ β := by
+  have hpm_nonneg : 0 ≤ paperP β n * paperM n := by
+    exact nonneg_of_natCast_le hdegree
+  have hm : 0 < paperM n := paperM_pos hn
+  have hp_nonneg : 0 ≤ paperP β n := by
+    by_contra hp
+    have hpneg : paperP β n < 0 := lt_of_not_ge hp
+    have hprod_neg : paperP β n * paperM n < 0 := mul_neg_of_neg_of_pos hpneg hm
+    linarith
+  have hsqrt :
+      0 < Real.sqrt (Real.log (n : ℝ) / (n : ℝ)) := by
+    apply Real.sqrt_pos.2
+    exact div_pos (paperLog_pos hn) (by exact_mod_cast (lt_trans Nat.zero_lt_one hn))
+  by_contra hβ
+  have hβneg : β < 0 := lt_of_not_ge hβ
+  have hpneg : paperP β n < 0 := by
+    unfold paperP
+    exact mul_neg_of_neg_of_pos hβneg hsqrt
+  linarith
+
 theorem paperK_ratio_eq {x : ℝ} {n : ℕ} (hn : 1 < n) :
     paperK (x / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n = x := by
   let s : ℝ := Real.sqrt ((n : ℝ) * Real.log (n : ℝ))
