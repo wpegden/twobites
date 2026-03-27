@@ -1392,6 +1392,38 @@ theorem not_three_mul_paperK_add_nonneg_le_cross_residual
   have : 3 * paperK κ n ≤ paperK κ n := hthree.trans hres_le
   linarith
 
+theorem three_loglog_codegCoeff_nonneg {κ q : ℝ} {n : ℕ}
+    (hq : 0 ≤ q) :
+    0 ≤
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) := by
+  exact div_nonneg (mul_nonneg (mul_nonneg (by positivity) (by positivity)) hq)
+    (Real.sqrt_nonneg _)
+
+theorem not_three_mul_paperK_three_loglog_codegCoeff_le_cross_residual
+    {ρ β ε2 κ ε1 q : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) (hε1 : 0 < ε1)
+    (hq : 0 ≤ q) :
+    ¬ (3 : ℝ) *
+          paperK
+            (ε1 * κ +
+              ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * q) /
+                Real.sqrt ((n : ℝ) * Real.log (n : ℝ)))) n ≤
+        ε1 *
+          ((((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1)) := by
+  exact
+    not_three_mul_paperK_add_nonneg_le_cross_residual hn hκ hε1
+      (three_loglog_codegCoeff_nonneg hq)
+
+theorem not_three_mul_paperK_two_mul_le_cross_residual
+    {ρ β ε2 κ ε1 : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) (hε1 : 0 < ε1) :
+    ¬ (3 : ℝ) * paperK (2 * ε1 * κ) n ≤
+        ε1 *
+          ((((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1)) := by
+  simpa [show 2 * ε1 * κ = ε1 * κ + ε1 * κ by ring] using
+    (not_three_mul_paperK_add_nonneg_le_cross_residual
+      (ρ := ρ) (β := β) (ε2 := ε2) (κ := κ) (ε := ε1) (δ := ε1 * κ) hn hκ hε1
+      (by nlinarith : 0 ≤ ε1 * κ))
+
 theorem three_loglog_diagCoeff_le {β κ ε : ℝ} {n : ℕ}
     (hn : 1 < n) (hκ : 0 ≤ κ) (hε : 0 ≤ ε) (hk : 1 ≤ paperK κ n)
     (hcoeff : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε * paperS n) :
