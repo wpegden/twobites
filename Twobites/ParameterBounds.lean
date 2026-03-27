@@ -214,6 +214,31 @@ theorem paperK_nonneg {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) : 0 ≤ paperK κ n 
   unfold paperK
   exact mul_nonneg hκ (Real.sqrt_nonneg _)
 
+theorem nonneg_of_paperK_nonneg {κ : ℝ} {n : ℕ} (hn : 1 < n)
+    (hκ : 0 ≤ paperK κ n) : 0 ≤ κ := by
+  by_contra hneg
+  have hκneg : κ < 0 := lt_of_not_ge hneg
+  have hsqrt :
+      0 < Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    apply Real.sqrt_pos.2
+    exact mul_pos (by exact_mod_cast (lt_trans Nat.zero_lt_one hn)) (paperLog_pos hn)
+  unfold paperK at hκ
+  have hprod : κ * Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) < 0 :=
+    mul_neg_of_neg_of_pos hκneg hsqrt
+  linarith
+
+theorem nonneg_of_one_le_paperK {κ : ℝ} {n : ℕ} (hn : 1 < n)
+    (hκ : 1 ≤ paperK κ n) : 0 ≤ κ := by
+  apply nonneg_of_paperK_nonneg hn
+  linarith
+
+theorem splitCoeff_nonneg {bound n : ℕ} {β q : ℝ} (hβ : 0 ≤ β) (hq : 0 ≤ q) :
+    0 ≤ (((bound : ℕ) : ℝ) * β) / paperS n +
+      ((((bound.choose 2 : ℕ) : ℝ) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) := by
+  refine add_nonneg ?_ ?_
+  · exact div_nonneg (mul_nonneg (by positivity) hβ) (paperS_nonneg n)
+  · exact div_nonneg (mul_nonneg (by positivity) hq) (Real.sqrt_nonneg _)
+
 theorem paperK_le_paperK_of_le {κ₁ κ₂ : ℝ} {n : ℕ} (hκ : κ₁ ≤ κ₂) :
     paperK κ₁ n ≤ paperK κ₂ n := by
   unfold paperK
