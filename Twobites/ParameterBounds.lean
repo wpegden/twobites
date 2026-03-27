@@ -1633,6 +1633,32 @@ theorem paperHugeWitnessBranchwiseBranchParamBounds_eventually_le
     ⟨paperHugeWitnessBranchParam_le_of_pieceBranchParamBounds hdegBlue hcodegBlue hblueBranchSum,
       paperHugeWitnessBranchParam_le_of_pieceBranchParamBounds hdegRed hcodegRed hredBranchSum⟩
 
+theorem paperHugeWitnessBranchwisePieceBranchParamBounds_eventually_le_eps_mul
+    {ε1 κ β q : ℝ} (hε1 : 0 < ε1) (hκ : 0 < κ) (hβ : 0 ≤ β) (hq : 0 ≤ q) :
+    ∃ N : ℕ, ∀ ⦃n : ℕ⦄, N ≤ n →
+      paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ ε1 * κ ∧
+        paperHugeWitnessCodegBranchParam ε1 κ q n ≤ ε1 * κ ∧
+          paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ ε1 * κ ∧
+            paperHugeWitnessCodegBranchParam ε1 κ q n ≤ ε1 * κ := by
+  have hδ : 0 < ε1 * κ := by
+    positivity
+  exact
+    paperHugeWitnessBranchwisePieceBranchParamBounds_eventually_le
+      hε1 hκ.le hβ hq hδ hδ hδ hδ
+
+theorem paperHugeWitnessBranchwiseBranchParamBounds_eventually_le_two_eps_mul
+    {ε1 κ β q : ℝ} (hε1 : 0 < ε1) (hκ : 0 < κ) (hβ : 0 ≤ β) (hq : 0 ≤ q) :
+    ∃ N : ℕ, ∀ ⦃n : ℕ⦄, N ≤ n →
+      paperHugeWitnessBranchParam ε1 κ β q n ≤ 2 * ε1 * κ ∧
+        paperHugeWitnessBranchParam ε1 κ β q n ≤ 2 * ε1 * κ := by
+  have hδ : 0 < ε1 * κ := by
+    positivity
+  have hsum : ε1 * κ + ε1 * κ ≤ 2 * ε1 * κ := by
+    exact le_of_eq (by ring)
+  exact
+    paperHugeWitnessBranchwiseBranchParamBounds_eventually_le
+      hε1 hκ.le hβ hq hδ hδ hsum hδ hδ hsum
+
 theorem paperHugeWitnessDegreeBranchParam_le_three_mul_of_diagScale
     {ε1 κ β : ℝ} {n : ℕ} (hε1 : 0 < ε1) (hn : 1 < n) (hκ : 0 ≤ κ)
     (hdiagScale : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε1 * paperS n) :
