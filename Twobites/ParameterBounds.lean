@@ -1107,6 +1107,34 @@ theorem three_loglog_codegCoeff_eq {κ q : ℝ} {n : ℕ} :
         Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) := by
   ring_nf
 
+theorem three_loglog_witnessCoeff_le_two_eps_mul {β κ ε q : ℝ} {n : ℕ}
+    (hn : 1 < n) (hκ : 0 ≤ κ)
+    (hdiagScale : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε * paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε * κ) :
+    ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n +
+        ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+          Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      2 * ε * κ := by
+  have hfirst :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n ≤ ε * κ := by
+    exact three_loglog_split_first_le hn hκ hdiagScale
+  have hsecond :
+      ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε * κ := by
+    convert hcodegScale using 1
+    ring_nf
+  calc
+    ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n +
+        ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+          Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε * κ + ε * κ := by
+        exact add_le_add hfirst hsecond
+    _ = 2 * ε * κ := by ring
+
 theorem three_mul_paperK_two_mul_eq {ε κ : ℝ} {n : ℕ} :
     (3 : ℝ) * paperK (2 * ε * κ) n = ε * (6 * paperK κ n) := by
   unfold paperK
