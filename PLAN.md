@@ -127,7 +127,8 @@
      - formalize the `large`, `medium`, `small`, and `huge` lemmas as four separate files/sections
      - treat the huge-case projection inequalities as the bridge between the raw construction and the final independence-number calculation
     - in the huge cross-term bridge, keep separate the union-size slack and the projected-codegree overlap slack; the capped/right-branch comparison should only pay a quadratic penalty on the overlap slack, not on the full combined error
-    - the current checked milestone is the direct witness theorem `paper_huge_deterministic_of_witnessSplitRightErrorBounds`, built on `paperHuge*CrossWitnessRightSplitErrorProp`; the remaining work is to rethread the canonical `...of_realErrorBound` / `...of_coeffBound` / `...of_rightSmall` / `...of_paramDeficit` wrappers through that split-right package
+    - the direct witness theorem `paper_huge_deterministic_of_witnessSplitRightErrorBounds` is now in place and the canonical helper chain `...of_realErrorBound` / `...of_coeffBound` / `...of_rightSmall` / `...of_paramDeficit` has been rethreaded through `paperHuge*CrossWitnessRightSplitErrorProp`
+    - the remaining huge-case work is the large-`n` arithmetic for the explicit split right-branch coefficient inequalities now exposed by those wrappers; the ruled-out combined-error smallness target must not be reintroduced
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
