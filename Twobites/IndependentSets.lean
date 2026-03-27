@@ -504,10 +504,33 @@ def section4UChoiceSet (C : ConstructionData n m) (I : Finset (Fin n))
     Finset (Finset (Sym2 (Fin m)) × Finset (Sym2 (Fin m))) :=
   C.section4URedChoiceSet I A uR ×ˢ C.section4UBlueChoiceSet I A uB
 
+/-- The literal red second-stage sample space of size-`u_R` edge sets inside `T_R`. -/
+def section4TRedChoiceSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (uR : ℕ) : Finset (Finset (Sym2 (Fin m))) :=
+  ((C.section4TRedPairSet I A).image Sym2.mk).powersetCard uR
+
+/-- The literal blue second-stage sample space of size-`u_B` edge sets inside `T_B`. -/
+def section4TBlueChoiceSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (uB : ℕ) : Finset (Finset (Sym2 (Fin m))) :=
+  ((C.section4TBluePairSet I A).image Sym2.mk).powersetCard uB
+
+/-- The literal second-stage sample space of size-`(u_R,u_B)` edge outcomes inside `T_R × T_B`. -/
+def section4TChoiceSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (uR uB : ℕ) :
+    Finset (Finset (Sym2 (Fin m)) × Finset (Sym2 (Fin m))) :=
+  C.section4TRedChoiceSet I A uR ×ˢ C.section4TBlueChoiceSet I A uB
+
 /-- The Bernoulli mass of a second-stage exposure pattern with `uR + uB` chosen edges and
 `remaining` forced non-edges. -/
 def section4BernoulliMass (p : ℝ) (uR uB remaining : ℕ) : ℝ :=
   p ^ (uR + uB) * (1 - p) ^ remaining
+
+/-- The finite Bernoulli mass of an explicit second-stage event family. -/
+def section4SecondStageEventMass
+    (E : Finset (Finset (Sym2 (Fin m)) × Finset (Sym2 (Fin m))))
+    (p : ℝ) (remaining : ℕ) : ℝ := by
+  exact Finset.sum E fun outcome =>
+    section4BernoulliMass p outcome.1.card outcome.2.card remaining
 
 /-- The counted-event upper bound obtained by choosing a red/blue witness pattern and then forcing
 all residual `T \ U` pairs to be non-edges. -/
@@ -519,8 +542,7 @@ def section4ChoiceMass (C : ConstructionData n m) (I : Finset (Fin n))
 def section4ChoiceEventMass (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) (p : ℝ) (uR uB remaining : ℕ) : ℝ := by
   exact
-    Finset.sum (C.section4UChoiceSet I A uR uB) fun outcome =>
-      section4BernoulliMass p outcome.1.card outcome.2.card remaining
+    section4SecondStageEventMass (C.section4UChoiceSet I A uR uB) p remaining
 
 /-- The finite index set for the possible `(u_R,u_B)` counts used in the summed `lem:RISI`
 estimate. -/
@@ -567,8 +589,7 @@ counts. -/
 def section4UCondChoiceEventMass (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) (p : ℝ) (uR uB remaining : ℕ) : ℝ := by
   exact
-    Finset.sum (C.section4UCondChoiceEvent I A uR uB) fun outcome =>
-      section4BernoulliMass p outcome.1.card outcome.2.card remaining
+    section4SecondStageEventMass (C.section4UCondChoiceEvent I A uR uB) p remaining
 
 /-- The summed mass of the actual conditioned event over all admissible `(u_R,u_B)` values. -/
 def section4UCondChoiceEventMassSum (C : ConstructionData n m) (I : Finset (Fin n))
@@ -10896,6 +10917,48 @@ theorem section4UBlueCondPairSet_image_sym2_card_eq
     exact (C.mem_blueBasePairSet.1 ((C.mem_unrevealedBlueBasePairSet.1 hpUn).1)).2.2
   exact card_image_sym2_mk_of_strictPairSet _ hstrict
 
+theorem section4TRedPairSet_image_sym2_card_eq
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    ((C.section4TRedPairSet I A).image Sym2.mk).card =
+      (C.section4TRedPairSet I A).card := by
+  have hstrict :
+      ∀ p ∈ C.section4TRedPairSet I A, p.1 < p.2 := by
+    intro p hp
+    have hpUn := (C.mem_section4TRedPairSet.1 hp).1
+    exact (C.mem_redBasePairSet.1 ((C.mem_unrevealedRedBasePairSet.1 hpUn).1)).2.2
+  exact card_image_sym2_mk_of_strictPairSet _ hstrict
+
+theorem section4TBluePairSet_image_sym2_card_eq
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    ((C.section4TBluePairSet I A).image Sym2.mk).card =
+      (C.section4TBluePairSet I A).card := by
+  have hstrict :
+      ∀ p ∈ C.section4TBluePairSet I A, p.1 < p.2 := by
+    intro p hp
+    have hpUn := (C.mem_section4TBluePairSet.1 hp).1
+    exact (C.mem_blueBasePairSet.1 ((C.mem_unrevealedBlueBasePairSet.1 hpUn).1)).2.2
+  exact card_image_sym2_mk_of_strictPairSet _ hstrict
+
+theorem section4URedCondPairSet_image_sym2_subset_section4TRedPairSet_image_sym2
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4URedCondPairSet I A).image Sym2.mk ⊆
+      (C.section4TRedPairSet I A).image Sym2.mk := by
+  intro s hs
+  rcases Finset.mem_image.1 hs with ⟨p, hp, rfl⟩
+  have hpT : p ∈ C.section4TRedPairSet I A :=
+    (C.mem_section4URedPairSet.1 ((C.mem_section4URedCondPairSet.1 hp).1)).1
+  exact Finset.mem_image.2 ⟨p, hpT, rfl⟩
+
+theorem section4UBlueCondPairSet_image_sym2_subset_section4TBluePairSet_image_sym2
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4UBlueCondPairSet I A).image Sym2.mk ⊆
+      (C.section4TBluePairSet I A).image Sym2.mk := by
+  intro s hs
+  rcases Finset.mem_image.1 hs with ⟨p, hp, rfl⟩
+  have hpT : p ∈ C.section4TBluePairSet I A :=
+    (C.mem_section4UBluePairSet.1 ((C.mem_section4UBlueCondPairSet.1 hp).1)).1
+  exact Finset.mem_image.2 ⟨p, hpT, rfl⟩
+
 @[simp] theorem section4URedChoiceSet_card_eq (C : ConstructionData n m)
     (I : Finset (Fin n)) (A : Finset (BaseVertex m)) (uR : ℕ) :
     (C.section4URedChoiceSet I A uR).card = (C.redOppositeWitnessBiUnion I A).card.choose uR := by
@@ -10970,6 +11033,31 @@ theorem section4UCondChoiceOutcome_mem_section4UChoiceSet_of_card_eq_of_indep
     C.section4UCondChoiceOutcome I A ∈ C.section4UChoiceSet I A uR uB := by
   simpa [section4UCondChoiceOutcome] using
     C.section4UCondPair_images_mem_section4UChoiceSet_of_card_eq_of_indep hindep huR huB
+
+theorem section4UCondChoiceOutcome_mem_section4TChoiceSet_of_card_eq
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uR uB : ℕ}
+    (huR : (C.section4URedCondPairSet I A).card = uR)
+    (huB : (C.section4UBlueCondPairSet I A).card = uB) :
+    C.section4UCondChoiceOutcome I A ∈ C.section4TChoiceSet I A uR uB := by
+  refine Finset.mem_product.2 ?_
+  constructor
+  · refine Finset.mem_powersetCard.2 ?_
+    constructor
+    · exact C.section4URedCondPairSet_image_sym2_subset_section4TRedPairSet_image_sym2
+    · rw [C.section4UCondChoiceOutcome_fst_card_eq, huR]
+  · refine Finset.mem_powersetCard.2 ?_
+    constructor
+    · exact C.section4UBlueCondPairSet_image_sym2_subset_section4TBluePairSet_image_sym2
+    · rw [C.section4UCondChoiceOutcome_snd_card_eq, huB]
+
+theorem section4UCondChoiceEvent_subset_section4TChoiceSet_of_card_eq
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uR uB : ℕ}
+    (huR : (C.section4URedCondPairSet I A).card = uR)
+    (huB : (C.section4UBlueCondPairSet I A).card = uB) :
+    C.section4UCondChoiceEvent I A uR uB ⊆ C.section4TChoiceSet I A uR uB := by
+  intro outcome houtcome
+  simp [section4UCondChoiceEvent, huR, huB] at houtcome
+  simpa [houtcome] using C.section4UCondChoiceOutcome_mem_section4TChoiceSet_of_card_eq huR huB
 
 theorem section4URedChoiceSet_card_le_choose_redProjectionPairCount
     (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uR : ℕ} :
@@ -11303,12 +11391,14 @@ theorem section4UCondChoiceEventMass_le_section4ChoiceEventMass_of_indep
     have hactual :
         C.section4UCondChoiceEventMass I A p uR uB remaining =
           section4BernoulliMass p uR uB remaining := by
-      simp [section4UCondChoiceEventMass, section4UCondChoiceEvent, huR, huB]
+      simp [section4UCondChoiceEventMass, section4SecondStageEventMass,
+        section4UCondChoiceEvent, huR, huB]
     rw [hactual]
     exact hsingle
   · have hzero :
         C.section4UCondChoiceEventMass I A p uR uB remaining = 0 := by
-      simp [section4UCondChoiceEventMass, section4UCondChoiceEvent, hcount]
+      simp [section4UCondChoiceEventMass, section4SecondStageEventMass,
+        section4UCondChoiceEvent, hcount]
     rw [hzero]
     exact C.section4ChoiceEventMass_nonneg hp0 hp1
 
