@@ -6133,6 +6133,98 @@ theorem paperSection4OpenPairTarget_lower_bound_of_blueRight_of_redLeft
       (by simp [paperHugeBlueCrossTargetNat])
       (by simp [paperHugeRedCrossTargetNat])
 
+theorem nat_le_paperSection4OpenPairTargetNat_of_blueLeft_of_redLeft
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap lossNat : ℕ}
+    (hLoss :
+      (lossNat : ℝ) ≤
+        (((C.redImage I).card.choose 2 : ℕ) : ℝ) + (((C.blueImage I).card.choose 2 : ℕ) : ℝ) -
+          ((((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ)) -
+          ((((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ))) :
+    lossNat ≤ C.paperSection4OpenPairTargetNat I κ cap := by
+  have htarget :
+      (lossNat : ℝ) ≤ C.paperSection4OpenPairTarget I κ cap := by
+    exact hLoss.trans (C.paperSection4OpenPairTarget_lower_bound_of_blueLeft_of_redLeft I)
+  have htarget' :
+      (lossNat : ℝ) ≤ (C.paperSection4OpenPairTargetNat I κ cap : ℝ) := by
+    simpa [paperSection4OpenPairTarget] using htarget
+  exact_mod_cast htarget'
+
+theorem nat_le_paperSection4OpenPairTargetNat_of_blueLeft_of_redRight
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap lossNat : ℕ}
+    (hLoss :
+      (lossNat : ℝ) ≤
+        (((C.redImage I).card.choose 2 : ℕ) : ℝ) + (((C.blueImage I).card.choose 2 : ℕ) : ℝ) -
+          ((((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ)) -
+          C.paperHugeRedCrossRightTarget I κ cap) :
+    lossNat ≤ C.paperSection4OpenPairTargetNat I κ cap := by
+  have htarget :
+      (lossNat : ℝ) ≤ C.paperSection4OpenPairTarget I κ cap := by
+    exact hLoss.trans (C.paperSection4OpenPairTarget_lower_bound_of_blueLeft_of_redRight I)
+  have htarget' :
+      (lossNat : ℝ) ≤ (C.paperSection4OpenPairTargetNat I κ cap : ℝ) := by
+    simpa [paperSection4OpenPairTarget] using htarget
+  exact_mod_cast htarget'
+
+theorem nat_le_paperSection4OpenPairTargetNat_of_blueRight_of_redLeft
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap lossNat : ℕ}
+    (hLoss :
+      (lossNat : ℝ) ≤
+        (((C.redImage I).card.choose 2 : ℕ) : ℝ) + (((C.blueImage I).card.choose 2 : ℕ) : ℝ) -
+          C.paperHugeBlueCrossRightTarget I κ cap -
+          ((((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ))) :
+    lossNat ≤ C.paperSection4OpenPairTargetNat I κ cap := by
+  have htarget :
+      (lossNat : ℝ) ≤ C.paperSection4OpenPairTarget I κ cap := by
+    exact hLoss.trans (C.paperSection4OpenPairTarget_lower_bound_of_blueRight_of_redLeft I)
+  have htarget' :
+      (lossNat : ℝ) ≤ (C.paperSection4OpenPairTargetNat I κ cap : ℝ) := by
+    simpa [paperSection4OpenPairTarget] using htarget
+  exact_mod_cast htarget'
+
+/-- The combined manuscript-scale deterministic loss term that remains to be dominated by the
+Section 4 target in `lem:RISI`. -/
+def paperRISILossNat (κ ε1 : ℝ) (n : ℕ) : ℕ :=
+  ⌈9 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ + ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊
+
+theorem paper_risi_hLossGap_of_blueLeft_of_redLeft
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ ε1 : ℝ} {cap : ℕ}
+    (hLoss :
+      (paperRISILossNat κ ε1 n : ℝ) ≤
+        ((C.redImage I).card.choose 2 : ℝ) + ((C.blueImage I).card.choose 2 : ℝ) -
+          (((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ) -
+          (((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ)) :
+    paperRISILossNat κ ε1 n ≤
+      C.paperSection4OpenPairTargetNat I κ cap := by
+  exact
+    C.nat_le_paperSection4OpenPairTargetNat_of_blueLeft_of_redLeft (I := I) (cap := cap)
+      (lossNat := paperRISILossNat κ ε1 n) hLoss
+
+theorem paper_risi_hLossGap_of_blueLeft_of_redRight
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ ε1 : ℝ} {cap : ℕ}
+    (hLoss :
+      (paperRISILossNat κ ε1 n : ℝ) ≤
+        ((C.redImage I).card.choose 2 : ℝ) + ((C.blueImage I).card.choose 2 : ℝ) -
+          (((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ) -
+          C.paperHugeRedCrossRightTarget I κ cap) :
+    paperRISILossNat κ ε1 n ≤
+      C.paperSection4OpenPairTargetNat I κ cap := by
+  exact
+    C.nat_le_paperSection4OpenPairTargetNat_of_blueLeft_of_redRight (I := I) (cap := cap)
+      (lossNat := paperRISILossNat κ ε1 n) hLoss
+
+theorem paper_risi_hLossGap_of_blueRight_of_redLeft
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ ε1 : ℝ} {cap : ℕ}
+    (hLoss :
+      (paperRISILossNat κ ε1 n : ℝ) ≤
+        ((C.redImage I).card.choose 2 : ℝ) + ((C.blueImage I).card.choose 2 : ℝ) -
+          C.paperHugeBlueCrossRightTarget I κ cap -
+          (((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ)) :
+    paperRISILossNat κ ε1 n ≤
+      C.paperSection4OpenPairTargetNat I κ cap := by
+  exact
+    C.nat_le_paperSection4OpenPairTargetNat_of_blueRight_of_redLeft (I := I) (cap := cap)
+      (lossNat := paperRISILossNat κ ε1 n) hLoss
+
 theorem paperHugeBlueCrossTargetNat_cast_le_paperKSq
     (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap : ℕ}
     (hκ : 0 ≤ κ) (hk : 1 ≤ Twobites.paperK κ n) :
