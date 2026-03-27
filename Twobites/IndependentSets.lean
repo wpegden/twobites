@@ -15283,6 +15283,40 @@ theorem section4ActualConditionedEventMass_antitone
         C.section4UCondChoiceEventMass_eq_bernoulliMass_of_card_eq
           (A := C.section4F I ε) (uR := uRActual) (uB := uBActual) huR huB]
 
+theorem section4ActualConditionedEventMass_nonneg
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p : ℝ} {N : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    0 ≤ C.section4ActualConditionedEventMass I ε p N := by
+  let uRActual := (C.section4URedCondPairSet I (C.section4F I ε)).card
+  let uBActual := (C.section4UBlueCondPairSet I (C.section4F I ε)).card
+  let loss := C.section4SecondStageLossNat I ε
+  have huR : (C.section4URedCondPairSet I (C.section4F I ε)).card = uRActual := rfl
+  have huB : (C.section4UBlueCondPairSet I (C.section4F I ε)).card = uBActual := rfl
+  calc
+    0 ≤ section4BernoulliMass p uRActual uBActual (N - loss) := by
+      exact section4BernoulliMass_nonneg hp0 hp1
+    _ = C.section4ActualConditionedEventMass I ε p N := by
+      unfold section4ActualConditionedEventMass
+      simp [uRActual, uBActual, loss,
+        C.section4UCondChoiceEventMass_eq_bernoulliMass_of_card_eq
+          (A := C.section4F I ε) (uR := uRActual) (uB := uBActual) huR huB]
+
+theorem mul_section4ActualConditionedEventMass_le_exp_add
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε p outerMass outerExp innerExp : ℝ} {N : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (houter : outerMass ≤ Real.exp outerExp)
+    (hinner : C.section4ActualConditionedEventMass I ε p N ≤ Real.exp innerExp) :
+    outerMass * C.section4ActualConditionedEventMass I ε p N ≤
+      Real.exp (outerExp + innerExp) := by
+  have hinner0 : 0 ≤ C.section4ActualConditionedEventMass I ε p N :=
+    C.section4ActualConditionedEventMass_nonneg I hp0 hp1
+  have hmul :
+      outerMass * C.section4ActualConditionedEventMass I ε p N ≤
+        Real.exp outerExp * Real.exp innerExp := by
+    exact mul_le_mul houter hinner hinner0 (by positivity)
+  simpa [Real.exp_add] using hmul
+
 theorem section4UCondChoiceEventMass_le_section4ChoiceEventMass_of_indep
     (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
     {p : ℝ} {uR uB remaining : ℕ}
@@ -17220,6 +17254,129 @@ theorem paper_risi_finiteMassBound_of_paperRISILossGap
       hblue hblueCap hblueCapWeight hredCap hredCapWeight hρR hρB hβ hε2 hε1pos hε1le
       hloglogGap hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound hcodegBound
       hgap2R hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall hLossGap
+
+set_option linter.style.longLine false in
+/-- Paper inequality `eq:long`, expressed in the repo's current finite-mass language: an outer
+exponential bound for the `\mathcal S_{I,\ell_R,\ell_B}` layer combines with the checked
+Section 4 `lem:RISI` bound by adding exponents. -/
+theorem paper_ri_eqLong_bound_of_outer_le_exp_of_paperRISILossGap
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε p ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB outerMass outerExp : ℝ}
+    {mediumWitness smallBound : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 1 ≤ κ) (hT2 : 2 < Twobites.paperT2 ε n) (hT1 : 2 < Twobites.paperT1 n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hLargeBound :
+      (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat κ n +
+            (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMediumWitness :
+      Twobites.paperKNat κ n < mediumWitness * ⌈Twobites.paperT3 ε n⌉₊ -
+        mediumWitness.choose 2 * codegreeBound)
+    (hMediumBound :
+      (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat κ n + mediumWitness.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmallCard : (C.SPart I ε).card ≤ smallBound)
+    (hSmallBound :
+      (Twobites.paperT3 ε n / 2) *
+          (Twobites.paperKNat κ n + smallBound.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+              (Twobites.paperLargeWitnessNat κ ε n : ℝ) +
+            (Twobites.paperHugeWitnessNat κ n : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      6 * Twobites.paperK κ n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      6 * Twobites.paperK κ n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (houter : outerMass ≤ Real.exp outerExp)
+    (hLossGap :
+      paperRISILossNat κ ε1 n ≤
+        C.paperSection4OpenPairTargetNat I κ (Twobites.paperCapNat β ε2 n)) :
+    outerMass * C.section4ActualConditionedEventMass I ε p (C.baseOpenPairSet I).card ≤
+      Real.exp
+        (outerExp +
+          (p * (12 * (ε1 * Twobites.paperK κ n ^ 2) +
+              (⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ : ℝ)) -
+            p * C.paperSection4OpenPairTarget I κ (Twobites.paperCapNat β ε2 n))) := by
+  exact
+    C.mul_section4ActualConditionedEventMass_le_exp_add I hp0 hp1 houter <|
+      C.paper_risi_finiteMassBound_of_paperRISILossGap hD I hindep hp0 hp1 hHsubset ht21 ht32
+        hn hε hI hκ hT2 hT1 hLChoose hLargeBound hMediumWitness hMediumBound hSmallCard
+        hSmallBound hHChoose hRevealArith hLarge hMedium hSmall hHugeRed hHugeBlue hred
+        hblue hblueCap hblueCapWeight hredCap hredCapWeight hρR hρB hβ hε2 hε1pos hε1le
+        hloglogGap hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound hcodegBound
+        hgap2R hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall hLossGap
 
 end
 
