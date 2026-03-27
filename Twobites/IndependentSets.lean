@@ -1180,7 +1180,7 @@ theorem redBasePairSet_image_sym2_eq_redImage_offDiag_image (C : ConstructionDat
     · exact Finset.mem_image.2 ⟨(r, r'), (C.mem_redBasePairSet.2 ⟨hr, hr', hlt⟩), rfl⟩
     · exact Finset.mem_image.2
         ⟨(r', r), (C.mem_redBasePairSet.2 ⟨hr', hr, hgt⟩),
-          by simpa using (Sym2.mk_prod_swap_eq (p := (r, r')))⟩
+          by exact (Sym2.mk_prod_swap_eq (p := (r', r))).symm⟩
 
 theorem blueBasePairSet_image_sym2_eq_blueImage_offDiag_image (C : ConstructionData n m)
     (I : Finset (Fin n)) :
@@ -1200,7 +1200,7 @@ theorem blueBasePairSet_image_sym2_eq_blueImage_offDiag_image (C : ConstructionD
     · exact Finset.mem_image.2 ⟨(b, b'), (C.mem_blueBasePairSet.2 ⟨hb, hb', hlt⟩), rfl⟩
     · exact Finset.mem_image.2
         ⟨(b', b), (C.mem_blueBasePairSet.2 ⟨hb', hb, hgt⟩),
-          by simpa using (Sym2.mk_prod_swap_eq (p := (b, b')))⟩
+          by exact (Sym2.mk_prod_swap_eq (p := (b', b))).symm⟩
 
 theorem redBasePairSet_card_eq_choose (C : ConstructionData n m) (I : Finset (Fin n)) :
     (C.redBasePairSet I).card = (C.redImage I).card.choose 2 := by
@@ -2621,6 +2621,28 @@ theorem LPart_card_lt_of_goodEventD_of_lt (C : ConstructionData n m)
     exact (Nat.ceil_le).2 (le_of_lt ((C.mem_LPart.1 hx).1))
   · exact hwitness
 
+theorem LPart_card_le_of_goodEventD_of_paperWitness (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT2 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    (C.LPart I ε).card ≤ witnessSize := by
+  exact Nat.le_of_lt (C.LPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness))
+
+theorem cast_LPart_card_le_of_goodEventD_of_paperWitness (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT2 ε n⌉₊ -
+        witnessSize.choose 2 * codegreeBound) :
+    ((C.LPart I ε).card : ℝ) ≤ (witnessSize : ℝ) := by
+  exact_mod_cast C.LPart_card_le_of_goodEventD_of_paperWitness hD I hI hwitness
+
 theorem MPart_card_lt_of_goodEventD_of_lt (C : ConstructionData n m)
     {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
@@ -3353,6 +3375,35 @@ theorem
     C.HPart_card_le_paperHugeWitnessNat_of_goodEventD hD I hI hκ hT1 hchoose
   exact
     C.cast_section4RevealBudget_le_eps_mul_paperKSq_of_cardBounds I hn hε hL hH harith
+
+set_option linter.style.longLine false in
+theorem
+    cast_section4RevealBudget_le_eps_mul_paperKSq_of_LWitness_of_paperHugeWitness
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ ε ε1 : ℝ} {lWitness : ℕ}
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 0 ≤ κ) (hT1 : 2 < Twobites.paperT1 n)
+    (hLWitness :
+      Twobites.paperKNat κ n < lWitness * ⌈Twobites.paperT2 ε n⌉₊ -
+        lWitness.choose 2 * codegreeBound)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (harith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) + (lWitness : ℝ) +
+            (Twobites.paperHugeWitnessNat κ n : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤
+      ε1 * Twobites.paperK κ n ^ 2 := by
+  have hL :
+      ((C.LPart I ε).card : ℝ) ≤ (lWitness : ℝ) :=
+    C.cast_LPart_card_le_of_goodEventD_of_paperWitness hD I hI hLWitness
+  exact
+    C.cast_section4RevealBudget_le_eps_mul_paperKSq_of_LBound_of_paperHugeWitness
+      hD I hn hε hI hκ hT1 hHChoose hL harith
 
 set_option linter.style.longLine false in
 theorem
