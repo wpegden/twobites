@@ -1299,6 +1299,35 @@ theorem paperKNat_add_paperKNat_le_paperKNat_add_one {ρ δ : ℝ} {n : ℕ}
       congr 1
       rw [paperK_add]
 
+theorem le_paperKNat_half_of_two_mul_le_paperKNat {a : ℕ} {κ : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (h : 2 * a ≤ paperKNat κ n) :
+    a ≤ paperKNat (κ / 2) n := by
+  by_contra ha
+  have ha' : paperKNat (κ / 2) n + 1 ≤ a := by
+    omega
+  have hκhalf : 0 ≤ κ / 2 := by
+    linarith
+  have haReal : paperK (κ / 2) n + 1 ≤ (a : ℝ) := by
+    have hceil : paperK (κ / 2) n ≤ paperKNat (κ / 2) n :=
+      paperK_le_paperKNat (κ / 2) n
+    have haReal' : (paperKNat (κ / 2) n : ℝ) + 1 ≤ (a : ℝ) := by
+      exact_mod_cast ha'
+    linarith
+  have hdouble : paperK κ n + 2 ≤ ((2 * a : ℕ) : ℝ) := by
+    have htmp : 2 * (paperK (κ / 2) n + 1) ≤ 2 * (a : ℝ) := by
+      linarith
+    have hkey : 2 * (paperK (κ / 2) n + 1) = paperK κ n + 2 := by
+      unfold paperK
+      ring
+    simpa [Nat.cast_mul, hkey] using htmp
+  have hceilLt : (paperKNat κ n : ℝ) < paperK κ n + 1 := by
+    exact Nat.ceil_lt_add_one (paperK_nonneg hκ n)
+  have hnatLt : paperKNat κ n < 2 * a := by
+    have hrealLt : (paperKNat κ n : ℝ) < ((2 * a : ℕ) : ℝ) := by
+      linarith
+    exact_mod_cast hrealLt
+  omega
+
 theorem paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_add_two
     {ρ β ε2 δ : ℝ} {n : ℕ} (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β)
     (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ) :

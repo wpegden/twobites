@@ -8113,6 +8113,24 @@ theorem blueImage_card_le_card (C : ConstructionData n m) (I : Finset (Fin n)) :
   simpa [ConstructionData.blueImage] using
     (Finset.card_image_le (s := I) (f := C.blueProj))
 
+theorem blueImage_card_le_paperKNat_half_of_sum_le_of_blue_le_red
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ}
+    (hsum : (C.redImage I).card + (C.blueImage I).card ≤ Twobites.paperKNat κ n)
+    (hblue : (C.blueImage I).card ≤ (C.redImage I).card) (hκ : 0 ≤ κ) :
+    (C.blueImage I).card ≤ Twobites.paperKNat (κ / 2) n := by
+  have htwo : 2 * (C.blueImage I).card ≤ (C.redImage I).card + (C.blueImage I).card := by
+    omega
+  exact Twobites.le_paperKNat_half_of_two_mul_le_paperKNat hκ (htwo.trans hsum)
+
+theorem redImage_card_le_paperKNat_half_of_sum_le_of_red_le_blue
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ}
+    (hsum : (C.redImage I).card + (C.blueImage I).card ≤ Twobites.paperKNat κ n)
+    (hred : (C.redImage I).card ≤ (C.blueImage I).card) (hκ : 0 ≤ κ) :
+    (C.redImage I).card ≤ Twobites.paperKNat (κ / 2) n := by
+  have htwo : 2 * (C.redImage I).card ≤ (C.redImage I).card + (C.blueImage I).card := by
+    omega
+  exact Twobites.le_paperKNat_half_of_two_mul_le_paperKNat hκ (htwo.trans hsum)
+
 theorem paperKNat_le_paperKNat_sub_redImage_card_sub_paperCapNat_of_card_le_of_two_le_gap_of_le
     (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ η κ : ℝ}
     (hred : (C.redImage I).card ≤ Twobites.paperKNat ρ n)
@@ -8454,6 +8472,94 @@ theorem paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOne_of_
     C.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOne
       I hI hred (show 0 < n by exact Nat.lt_trans Nat.zero_lt_one hn) hε0.le hε1.le hgap2
       hLoss
+
+theorem blueImage_card_le_paperKNat_of_paperNearOneSum_of_blue_le_red
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (hsum :
+      (C.redImage I).card + (C.blueImage I).card ≤
+        Twobites.paperKNat (((1 + ε) * (2 + ε)) / 2) n)
+    (hblue : (C.blueImage I).card ≤ (C.redImage I).card) (hε : 0 ≤ ε) :
+    (C.blueImage I).card ≤ Twobites.paperKNat (((1 + ε) * (2 + ε)) / 4) n := by
+  have hκ : 0 ≤ (((1 + ε) * (2 + ε)) / 2 : ℝ) := by
+    nlinarith
+  have hhalf :
+      (C.blueImage I).card ≤
+        Twobites.paperKNat ((((1 + ε) * (2 + ε)) / 2) / 2) n :=
+    C.blueImage_card_le_paperKNat_half_of_sum_le_of_blue_le_red I hsum hblue hκ
+  have hcoeff : ((((1 + ε) * (2 + ε)) / 2) / 2 : ℝ) = (((1 + ε) * (2 + ε)) / 4 : ℝ) := by
+    ring
+  simpa [hcoeff] using hhalf
+
+theorem redImage_card_le_paperKNat_of_paperNearOneSum_of_red_le_blue
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (hsum :
+      (C.redImage I).card + (C.blueImage I).card ≤
+        Twobites.paperKNat (((1 + ε) * (2 + ε)) / 2) n)
+    (hred : (C.redImage I).card ≤ (C.blueImage I).card) (hε : 0 ≤ ε) :
+    (C.redImage I).card ≤ Twobites.paperKNat (((1 + ε) * (2 + ε)) / 4) n := by
+  have hκ : 0 ≤ (((1 + ε) * (2 + ε)) / 2 : ℝ) := by
+    nlinarith
+  have hhalf :
+      (C.redImage I).card ≤
+        Twobites.paperKNat ((((1 + ε) * (2 + ε)) / 2) / 2) n :=
+    C.redImage_card_le_paperKNat_half_of_sum_le_of_red_le_blue I hsum hred hκ
+  have hcoeff : ((((1 + ε) * (2 + ε)) / 2) / 2 : ℝ) = (((1 + ε) * (2 + ε)) / 4 : ℝ) := by
+    ring
+  simpa [hcoeff] using hhalf
+
+set_option linter.style.longLine false in
+theorem
+    paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_paperNearOneSum_of_blue_le_red_of_two_div_le_loglog
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hsum :
+      (C.redImage I).card + (C.blueImage I).card ≤
+        Twobites.paperKNat (((1 + ε) * (2 + ε)) / 2) n)
+    (hblueLeRed : (C.blueImage I).card ≤ (C.redImage I).card)
+    (hn : 1 < n) (hε0 : 0 < ε) (hε1 : ε < 1)
+    (hloglog : 2 / (ε * (1 - ε) / 8) ≤ Real.log (Real.log (n : ℝ)))
+    (hLoss :
+      (paperRISILossNat (1 + ε) ε1 n : ℝ) +
+          (((Twobites.paperKNat (1 + ε) n -
+                ((C.redImage I).card + (C.blueImage I).card) : ℕ) : ℕ) : ℝ) *
+            ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) ≤
+        (Twobites.paperCapNat (1 / 2) 0 n : ℝ) *
+          (Twobites.paperKNat (ε * (1 - ε) / 8) n : ℝ)) :
+    paperRISILossNat (1 + ε) ε1 n ≤
+      C.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+  have hblue :
+      (C.blueImage I).card ≤ Twobites.paperKNat (((1 + ε) * (2 + ε)) / 4) n :=
+    C.blueImage_card_le_paperKNat_of_paperNearOneSum_of_blue_le_red I hsum hblueLeRed hε0.le
+  exact
+    C.paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_paperNearOne_of_two_div_le_loglog
+      I hI hblue hn hε0 hε1 hloglog hLoss
+
+set_option linter.style.longLine false in
+theorem
+    paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOneSum_of_red_le_blue_of_two_div_le_loglog
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hsum :
+      (C.redImage I).card + (C.blueImage I).card ≤
+        Twobites.paperKNat (((1 + ε) * (2 + ε)) / 2) n)
+    (hredLeBlue : (C.redImage I).card ≤ (C.blueImage I).card)
+    (hn : 1 < n) (hε0 : 0 < ε) (hε1 : ε < 1)
+    (hloglog : 2 / (ε * (1 - ε) / 8) ≤ Real.log (Real.log (n : ℝ)))
+    (hLoss :
+      (paperRISILossNat (1 + ε) ε1 n : ℝ) +
+          (((Twobites.paperKNat (1 + ε) n -
+                ((C.redImage I).card + (C.blueImage I).card) : ℕ) : ℕ) : ℝ) *
+            ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) ≤
+        (Twobites.paperCapNat (1 / 2) 0 n : ℝ) *
+          (Twobites.paperKNat (ε * (1 - ε) / 8) n : ℝ)) :
+    paperRISILossNat (1 + ε) ε1 n ≤
+      C.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+  have hred :
+      (C.redImage I).card ≤ Twobites.paperKNat (((1 + ε) * (2 + ε)) / 4) n :=
+    C.redImage_card_le_paperKNat_of_paperNearOneSum_of_red_le_blue I hsum hredLeBlue hε0.le
+  exact
+    C.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOne_of_two_div_le_loglog
+      I hI hred hn hε0 hε1 hloglog hLoss
 
 theorem paper_huge_blue_cross_deterministic_of_paperCapNat_of_witnessErrorBounds_of_additiveCapBase
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
