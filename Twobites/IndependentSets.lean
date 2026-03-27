@@ -3594,6 +3594,84 @@ theorem paper_huge_deterministic_of_error_le_paperKNat
         hD I hI hwitness hblue hredCap hredCapWeight hn hρB hβ hε2 hgapB hκB hε1
         hδerrB hgap2B hκ2B hredCrossError hredCrossSmall
 
+theorem paper_huge_deterministic_of_split_error_le_paperKNat
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 δR δB δdeg δcodeg δsumGap δerr δgapR δgapB : ℝ}
+    {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 0 < n) (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hgapR : 1 ≤ Twobites.paperK δR n) (hgapB : 1 ≤ Twobites.paperK δB n)
+    (hκR : ρR + (1 + ε2) * β + δR ≤ κ)
+    (hκB : ρB + (1 + ε2) * β + δB ≤ κ)
+    (hdiagRed :
+      ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hdiagBlue :
+      ((Twobites.paperKNat κ n : ℝ) / 2) * (witnessSize * degreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hε1 : 0 ≤ ε1)
+    (hδdeg : 0 ≤ δdeg) (hδcodeg : 0 ≤ δcodeg) (hδerr : 0 ≤ δerr)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hsumκ : δdeg + δcodeg + δsumGap ≤ δerr)
+    (hdegBound : witnessSize * degreeBound ≤ Twobites.paperKNat δdeg n)
+    (hcodegBound : witnessSize.choose 2 * projCodegreeBound ≤ Twobites.paperKNat δcodeg n)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R : ρR + (1 + ε2) * β + δerr + δgapR ≤ κ)
+    (hblueCrossSmall :
+      (3 : ℝ) *
+          ((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound : ℕ) : ℝ) ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B : ρB + (1 + ε2) * β + δerr + δgapB ≤ κ)
+    (hredCrossSmall :
+      (3 : ℝ) *
+          ((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound : ℕ) : ℝ) ≤
+        ε1 *
+          (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+              Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1)) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  have herror :
+      witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound ≤
+        Twobites.paperKNat δerr n := by
+    exact
+      Twobites.add_le_paperKNat_of_le_paperKNat_of_le_paperKNat_of_one_le_gap_of_le
+        hdegBound hcodegBound hδdeg hδcodeg hsumGap hsumκ
+  exact
+    C.paper_huge_deterministic_of_error_le_paperKNat hD I hI hwitness hred hblue hblueCap
+      hblueCapWeight hredCap hredCapWeight hn hρR hρB hβ hε2 hgapR hgapB hκR hκB hdiagRed
+      hdiagBlue hε1 hδerr hgap2R hκ2R herror hblueCrossSmall hδerr hgap2B hκ2B herror
+      hredCrossSmall
+
 theorem closedPair_comm (C : ConstructionData n m) {I : Finset (Fin n)} {v w : Fin n} :
     C.ClosedPair I v w ↔ C.ClosedPair I w v := by
   constructor
