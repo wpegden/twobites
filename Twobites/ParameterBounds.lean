@@ -1898,6 +1898,27 @@ theorem paperHugeWitness_four_eps_budget_of_rho_le
   unfold paperHugeWitnessFourEpsRhoBudget at hρ
   linarith
 
+theorem paperHugeWitnessFourEpsRhoBudget_half_one_add_eps_of_rho_le
+    {ρ ε ε1 ε2 δsumGap δgap : ℝ}
+    (hρ : ρ ≤ (((1 / 2 : ℝ) + ε / 4) * (1 + ε)))
+    (hsmall :
+      ε2 / 2 + 4 * ε1 * (1 + ε) + δsumGap + δgap ≤ ε * (1 - ε) / 4) :
+    ρ ≤ paperHugeWitnessFourEpsRhoBudget (1 / 2) ε1 ε2 (1 + ε) δsumGap δgap := by
+  unfold paperHugeWitnessFourEpsRhoBudget
+  linarith
+
+theorem paperHugeWitnessFourEpsRhoBudget_half_one_add_eps_of_x_le
+    {ρ x ε ε1 ε2 δsumGap δgap : ℝ}
+    (hε : 0 ≤ ε)
+    (hρ : ρ ≤ x * (1 + ε))
+    (hx : x ≤ (1 / 2 : ℝ) + ε / 4)
+    (hsmall :
+      ε2 / 2 + 4 * ε1 * (1 + ε) + δsumGap + δgap ≤ ε * (1 - ε) / 4) :
+    ρ ≤ paperHugeWitnessFourEpsRhoBudget (1 / 2) ε1 ε2 (1 + ε) δsumGap δgap := by
+  have hρ' : ρ ≤ (((1 / 2 : ℝ) + ε / 4) * (1 + ε)) := by
+    nlinarith
+  exact paperHugeWitnessFourEpsRhoBudget_half_one_add_eps_of_rho_le hρ' hsmall
+
 theorem not_six_mul_paperK_le_cross_residual
     {ρ β ε2 κ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) :
     ¬ 6 * paperK κ n ≤
