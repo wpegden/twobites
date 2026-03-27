@@ -363,6 +363,47 @@ theorem splitCoeffReal_le_of_le {β q B₁ B₂ : ℝ} {n : ℕ}
     exact mul_le_mul_of_nonneg_right (by nlinarith) hq
   linarith
 
+theorem cast_witnessError_le_paperK_of_real_bound
+    {witnessSize degreeBound projCodegreeBound : ℕ} {B β q : ℝ} {n : ℕ}
+    (hB : (witnessSize : ℝ) ≤ B) (hβ : 0 ≤ β) (hn : 1 < n)
+    (hdegree : (degreeBound : ℝ) ≤ paperP β n * paperM n)
+    (hproj : (projCodegreeBound : ℝ) ≤ q) :
+    (((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound : ℕ) : ℝ)) ≤
+      paperK ((B * β) / paperS n +
+        ((B ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
+  have hdegreePart :
+      ((witnessSize * degreeBound : ℕ) : ℝ) ≤
+        paperK (((witnessSize : ℝ) * β) / paperS n) n := by
+    simpa using
+      (cast_mul_le_paperK_of_le_of_le_paperP_mul_paperM
+        (w := witnessSize) (bound := witnessSize) (degreeBound := degreeBound)
+        (β := β) (n := n) (le_rfl : witnessSize ≤ witnessSize) hβ hn hdegree)
+  have hdegreeCoeff :
+      ((witnessSize : ℝ) * β) / paperS n ≤ (B * β) / paperS n := by
+    exact
+      div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hB hβ) (paperS_nonneg n)
+  have hdegreePartB :
+      ((witnessSize * degreeBound : ℕ) : ℝ) ≤ paperK ((B * β) / paperS n) n :=
+    hdegreePart.trans <| by
+      unfold paperK
+      exact mul_le_mul_of_nonneg_right hdegreeCoeff (Real.sqrt_nonneg _)
+  have hcodegPart :
+      ((witnessSize.choose 2 * projCodegreeBound : ℕ) : ℝ) ≤
+        paperK (((B ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n :=
+    cast_choose_mul_le_paperK_of_real_bound hB hn hproj
+  calc
+    (((witnessSize * degreeBound + witnessSize.choose 2 * projCodegreeBound : ℕ) : ℝ)) =
+        ((witnessSize * degreeBound : ℕ) : ℝ) +
+          ((witnessSize.choose 2 * projCodegreeBound : ℕ) : ℝ) := by
+      norm_num
+    _ ≤ paperK ((B * β) / paperS n) n +
+          paperK (((B ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
+      gcongr
+    _ = paperK ((B * β) / paperS n +
+          ((B ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
+      unfold paperK
+      ring
+
 theorem paperK_le_paperK_of_le {κ₁ κ₂ : ℝ} {n : ℕ} (hκ : κ₁ ≤ κ₂) :
     paperK κ₁ n ≤ paperK κ₂ n := by
   unfold paperK
