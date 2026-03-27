@@ -11922,6 +11922,152 @@ theorem
     C.section4UCondChoiceEventMassSum_section4F_le_exp_of_indep_of_bounds
       (I := I) (ε := ε) (p := p) (N := N) hindep hp0 hp1 hRemaining hUR hUB
 
+set_option linter.style.longLine false in
+theorem
+    section4UCondChoiceEventMass_section4F_le_exp_of_indep_of_bounds_of_sum_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p errorBound : ℝ} {N : ℕ}
+    {remainingBound uRBound uBBound : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hRemaining :
+      remainingBound ≤
+        N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl))
+    (hUR :
+      C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) ≤
+        uRBound)
+    (hUB :
+      C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) ≤
+        uBBound)
+    (hError : (uRBound : ℝ) + (uBBound : ℝ) ≤ errorBound) :
+    let remainingNat :=
+      N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+        (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+        C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+        C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    let uRActual := (C.section4URedCondPairSet I (C.section4F I ε)).card
+    let uBActual := (C.section4UBlueCondPairSet I (C.section4F I ε)).card
+    C.section4UCondChoiceEventMass I (C.section4F I ε) p uRActual uBActual remainingNat ≤
+      Real.exp (p * errorBound - p * (remainingBound : ℝ)) := by
+  let remainingNat :=
+    N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+      (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+        C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+  let uRActual := (C.section4URedCondPairSet I (C.section4F I ε)).card
+  let uBActual := (C.section4UBlueCondPairSet I (C.section4F I ε)).card
+  change
+    C.section4UCondChoiceEventMass I (C.section4F I ε) p uRActual uBActual remainingNat ≤
+      Real.exp (p * errorBound - p * (remainingBound : ℝ))
+  refine
+    (C.section4UCondChoiceEventMass_section4F_le_exp_of_indep_of_bounds
+      (I := I) (ε := ε) (p := p) (N := N) hindep hp0 hp1
+      hRemaining hUR hUB).trans ?_
+  apply Real.exp_le_exp.mpr
+  nlinarith
+
+set_option linter.style.longLine false in
+theorem
+    section4UCondChoiceEventMass_section4F_le_exp_of_indep_of_totalError
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p totalError : ℝ} {N : ℕ}
+    {uRBound uBBound : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hUR :
+      C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) ≤
+        uRBound)
+    (hUB :
+      C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) ≤
+        uBBound)
+    (hRemovedLeN :
+      let removedNat :=
+        I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) +
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) +
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+      removedNat ≤ N)
+    (hTotal :
+      let removedNat :=
+        I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) +
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) +
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+      (removedNat : ℝ) + (uRBound : ℝ) + (uBBound : ℝ) ≤ totalError) :
+    let removedNat :=
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+        (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) +
+        C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) +
+        C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    let remainingNat := N - removedNat
+    let uRActual := (C.section4URedCondPairSet I (C.section4F I ε)).card
+    let uBActual := (C.section4UBlueCondPairSet I (C.section4F I ε)).card
+    C.section4UCondChoiceEventMass I (C.section4F I ε) p uRActual uBActual remainingNat ≤
+      Real.exp (p * totalError - p * (N : ℝ)) := by
+  let removedNat :=
+    I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+      (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+        C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) +
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) +
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+  let remainingNat := N - removedNat
+  let uRActual := (C.section4URedCondPairSet I (C.section4F I ε)).card
+  let uBActual := (C.section4UBlueCondPairSet I (C.section4F I ε)).card
+  have hremoved : removedNat ≤ N := by
+    simpa [removedNat] using hRemovedLeN
+  have htotal :
+      (removedNat : ℝ) + (uRBound : ℝ) + (uBBound : ℝ) ≤ totalError := by
+    simpa [removedNat] using hTotal
+  change
+    C.section4UCondChoiceEventMass I (C.section4F I ε) p uRActual uBActual remainingNat ≤
+      Real.exp (p * totalError - p * (N : ℝ))
+  have hraw :=
+    C.section4UCondChoiceEventMass_section4F_le_exp_of_indep_of_bounds_of_sum_le
+      (I := I) (ε := ε) (p := p) (N := N)
+      (errorBound := totalError - (removedNat : ℝ))
+      (remainingBound := remainingNat)
+      hindep hp0 hp1
+      (by simp [remainingNat, removedNat, Nat.sub_sub])
+      hUR hUB
+      (by nlinarith)
+  have hbase :
+      C.section4UCondChoiceEventMass I (C.section4F I ε) p uRActual uBActual remainingNat ≤
+        Real.exp (p * (totalError - (removedNat : ℝ)) - p * (remainingNat : ℝ)) := by
+    simpa [uRActual, uBActual, remainingNat, removedNat, Nat.sub_sub] using hraw
+  refine hbase.trans ?_
+  apply Real.exp_le_exp.mpr
+  have hcast :
+      (remainingNat : ℝ) = (N : ℝ) - (removedNat : ℝ) := by
+    simp [remainingNat, Nat.cast_sub hremoved]
+  nlinarith
+
 end
 
 end ConstructionData
