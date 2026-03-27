@@ -2015,6 +2015,12 @@ theorem not_six_mul_paperK_le_cross_residual
   have : 6 * paperK κ n ≤ paperK κ n := hsmall.trans hres_le
   linarith
 
+theorem not_six_mul_paperK_le_cross_residual_half_one_add_eps
+    {ρ ε ε2 : ℝ} {n : ℕ} (hn : 1 < n) (hε : 0 ≤ ε) :
+    ¬ 6 * paperK (1 + ε) n ≤
+        (((paperKNat (1 + ε) n - paperKNat ρ n - paperCapNat (1 / 2) ε2 n : ℕ) : ℝ) - 1) := by
+  exact not_six_mul_paperK_le_cross_residual hn (by linarith)
+
 theorem not_three_mul_paperK_add_nonneg_le_cross_residual
     {ρ β ε2 κ ε δ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) (hε : 0 < ε)
     (hδ : 0 ≤ δ) :
