@@ -720,6 +720,146 @@ theorem ceil_paperT2_le_ceil_paperT1_of_two_le_loglog {ε : ℝ} {n : ℕ} (hn :
   apply Nat.ceil_le.2
   exact (paperT2_le_paperT1_of_two_le_loglog hn hε hloglog).trans (Nat.le_ceil _)
 
+theorem paperSection4FiberTerm_le_half_paperT1_of_two_le_loglog_of_fiberScale
+    {ε2 : ℝ} {n : ℕ} (hn : 1 < n)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiber :
+      (1 + ε2) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε2) / 2) :
+    (1 + ε2) * paperS n * (paperT2 ε2 n / Real.log (n : ℝ)) ≤ paperT1 n / 2 := by
+  have hn1 : 1 ≤ n := Nat.le_of_lt hn
+  have hn' : 0 < (n : ℝ) := by
+    exact_mod_cast (lt_trans Nat.zero_lt_one hn)
+  have hlogpos : 0 < Real.log (n : ℝ) := paperLog_pos hn
+  have hscale :
+      (1 + ε2) * paperS n * (paperT2 ε2 n / Real.log (n : ℝ)) =
+        ((1 + ε2) * Real.log (n : ℝ)) * paperT2 ε2 n := by
+    unfold paperS
+    field_simp [hlogpos.ne']
+  have hmul :
+      ((1 + ε2) * Real.log (n : ℝ)) * paperT2 ε2 n ≤
+        ((n : ℝ) ^ ((1 / 8 : ℝ) - ε2) / 2) * paperT2 ε2 n := by
+    exact mul_le_mul_of_nonneg_right hfiber (paperT2_nonneg ε2 n)
+  have hrpow :
+      ((n : ℝ) ^ ((1 / 8 : ℝ) - ε2) / 2) * paperT2 ε2 n =
+        paperT2 (1 / 8 : ℝ) n / 2 := by
+    calc
+      ((n : ℝ) ^ ((1 / 8 : ℝ) - ε2) / 2) * paperT2 ε2 n
+          = (((n : ℝ) ^ ((1 / 8 : ℝ) - ε2)) * paperT2 ε2 n) / 2 := by ring
+      _ = paperT2 (1 / 8 : ℝ) n / 2 := by
+        unfold paperT2
+        change ((n : ℝ) ^ ((1 / 8 : ℝ) - ε2) * (n : ℝ) ^ ((1 / 4 : ℝ) + ε2)) / 2 =
+          (n : ℝ) ^ ((1 / 4 : ℝ) + (1 / 8 : ℝ)) / 2
+        rw [← Real.rpow_add hn']
+        congr 1
+        ring_nf
+  have hT2 :
+      paperT2 (1 / 8 : ℝ) n ≤ paperT1 n :=
+    paperT2_le_paperT1_of_two_le_loglog hn1 (by norm_num) hloglog
+  calc
+    (1 + ε2) * paperS n * (paperT2 ε2 n / Real.log (n : ℝ))
+        = ((1 + ε2) * Real.log (n : ℝ)) * paperT2 ε2 n := hscale
+    _ ≤ ((n : ℝ) ^ ((1 / 8 : ℝ) - ε2) / 2) * paperT2 ε2 n := hmul
+    _ = paperT2 (1 / 8 : ℝ) n / 2 := hrpow
+    _ ≤ paperT1 n / 2 := by
+      linarith
+
+theorem paperSection4DegreeTerm_le_half_paperT1_of_two_le_loglog
+    {β ε2 : ℝ} {n : ℕ} (hn : 1 < n) (hβ0 : 0 ≤ β) (hβ : β ≤ (1 / 2 : ℝ))
+    (hε2low : -1 ≤ ε2) (hε2 : ε2 ≤ 1)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
+    Real.log (n : ℝ) * ((1 + ε2) * paperP β n * paperM n) ≤ paperT1 n / 2 := by
+  have hlogpos : 0 < Real.log (n : ℝ) := paperLog_pos hn
+  have hlog : 0 ≤ Real.log (n : ℝ) := hlogpos.le
+  have hloglog_nonneg : 0 ≤ Real.log (Real.log (n : ℝ)) := by
+    linarith
+  have hloglog_pos : 0 < Real.log (Real.log (n : ℝ)) := by
+    linarith
+  have hloglog_le_sqrt :
+      Real.log (Real.log (n : ℝ)) ≤ Real.sqrt (Real.log (n : ℝ)) :=
+    loglog_le_sqrt_log_of_two_le_loglog hlog hloglog
+  have hlog_ge_four : 4 ≤ Real.log (n : ℝ) := by
+    have hexp2_le : Real.exp 2 ≤ Real.log (n : ℝ) := by
+      exact (Real.le_log_iff_exp_le hlogpos).1 hloglog
+    have hfour_lt : (4 : ℝ) < Real.exp 2 := by
+      calc
+        (4 : ℝ) < Real.exp 1 * Real.exp 1 := by
+          nlinarith [Real.exp_one_gt_two]
+        _ = Real.exp 2 := by
+          rw [← Real.exp_add]
+          norm_num
+    linarith
+  have hsqrt_le_half_log :
+      Real.sqrt (Real.log (n : ℝ)) ≤ Real.log (n : ℝ) / 2 := by
+    have hsq :
+        Real.sqrt (Real.log (n : ℝ)) ^ 2 ≤ (Real.log (n : ℝ) / 2) ^ 2 := by
+      rw [Real.sq_sqrt hlog]
+      nlinarith
+    have hsqrt_nonneg : 0 ≤ Real.sqrt (Real.log (n : ℝ)) := Real.sqrt_nonneg _
+    nlinarith
+  have hloglog_le_half_log :
+      Real.log (Real.log (n : ℝ)) ≤ Real.log (n : ℝ) / 2 :=
+    hloglog_le_sqrt.trans hsqrt_le_half_log
+  have hratio :
+      Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ) ≤ (1 / 2 : ℝ) := by
+    have hloglog_le_half_log' :
+        Real.log (Real.log (n : ℝ)) ≤ (1 / 2 : ℝ) * Real.log (n : ℝ) := by
+      nlinarith
+    exact (div_le_iff₀ hlogpos).2 hloglog_le_half_log'
+  have hratio_nonneg : 0 ≤ Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ) := by
+    exact div_nonneg hloglog_nonneg hlog
+  have hfac_nonneg : 0 ≤ 1 + ε2 := by
+    linarith
+  have hcoef_le_one : (1 + ε2) * β ≤ 1 := by
+    nlinarith
+  have hcoef_nonneg : 0 ≤ (1 + ε2) * β := by
+    exact mul_nonneg hfac_nonneg hβ0
+  have hcoeff :
+      ((1 + ε2) * β) * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ)) ≤ (1 / 2 : ℝ) := by
+    calc
+      ((1 + ε2) * β) * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))
+          ≤ 1 * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ)) := by
+            gcongr
+      _ ≤ (1 / 2 : ℝ) := by
+        simpa using hratio
+  have hrewrite :
+      Real.log (n : ℝ) * ((1 + ε2) * paperP β n * paperM n) =
+        (((1 + ε2) * β) * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))) * paperT1 n := by
+    calc
+      Real.log (n : ℝ) * ((1 + ε2) * paperP β n * paperM n)
+          = Real.log (n : ℝ) * ((1 + ε2) * (paperP β n * paperM n)) := by ring
+      _ = Real.log (n : ℝ) * ((1 + ε2) * paperK (β / paperS n) n) := by
+            rw [paperP_mul_paperM_eq_paperK_div_paperS hn]
+      _ = (((1 + ε2) * β) * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))) * paperT1 n := by
+            rw [paperK_eq_mul_loglog_mul_paperT1 hloglog_pos.ne']
+            unfold paperS
+            field_simp [hlogpos.ne']
+  have hT1_nonneg : 0 ≤ paperT1 n := paperT1_nonneg_of_loglog_nonneg hloglog_nonneg
+  calc
+    Real.log (n : ℝ) * ((1 + ε2) * paperP β n * paperM n)
+        = (((1 + ε2) * β) * (Real.log (Real.log (n : ℝ)) / Real.log (n : ℝ))) * paperT1 n := by
+            rw [hrewrite]
+    _ ≤ (1 / 2 : ℝ) * paperT1 n := by
+      exact mul_le_mul_of_nonneg_right hcoeff hT1_nonneg
+    _ = paperT1 n / 2 := by
+      ring
+
+theorem paperSection4Bound_le_paperT1_of_two_le_loglog_of_fiberScale
+    {β ε2 : ℝ} {n : ℕ} (hn : 1 < n) (hβ0 : 0 ≤ β) (hβ : β ≤ (1 / 2 : ℝ))
+    (hε2low : -1 ≤ ε2) (hε2 : ε2 ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiber :
+      (1 + ε2) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε2) / 2) :
+    (1 + ε2) * paperS n * (paperT2 ε2 n / Real.log (n : ℝ)) +
+        Real.log (n : ℝ) * ((1 + ε2) * paperP β n * paperM n) ≤
+      paperT1 n := by
+  have hFiber :=
+    paperSection4FiberTerm_le_half_paperT1_of_two_le_loglog_of_fiberScale hn hloglog hfiber
+  have hε2one : ε2 ≤ 1 := by
+    linarith
+  have hDegree :=
+    paperSection4DegreeTerm_le_half_paperT1_of_two_le_loglog hn hβ0 hβ hε2low hε2one hloglog
+  linarith
+
 theorem two_lt_paperT1_of_two_le_loglog {n : ℕ}
     (hn : 1 < n) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
     2 < paperT1 n := by

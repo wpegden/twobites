@@ -1793,7 +1793,9 @@ theorem xCard_blue_le_fiberBound_mul_section4F1_neighbor_card_add_log_mul_degree
           Real.log (n : ℝ) * degreeBound := by
       gcongr
 
-theorem xCard_le_fiberBound_mul_paperT2_div_log_add_log_mul_degreeBound_of_goodEventD_of_mem_baseImage_of_not_mem_section4F2
+set_option linter.style.longLine false in
+theorem
+    xCard_le_fiberBound_mul_paperT2_div_log_add_log_mul_degreeBound_of_goodEventD_of_mem_baseImage_of_not_mem_section4F2
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
     (I : Finset (Fin n)) {x : BaseVertex m} {ε : ℝ}
@@ -1813,8 +1815,9 @@ theorem xCard_le_fiberBound_mul_paperT2_div_log_add_log_mul_degreeBound_of_goodE
             (fiberBound : ℝ) *
                 ((((C.baseNeighborSet (Sum.inl r) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
               Real.log (n : ℝ) * degreeBound := by
-            exact C.xCard_red_le_fiberBound_mul_section4F1_neighbor_card_add_log_mul_degreeBound_of_goodEventD
-              hD I r
+            exact
+              C.xCard_red_le_fiberBound_mul_section4F1_neighbor_card_add_log_mul_degreeBound_of_goodEventD
+                hD I r
         _ ≤
             (fiberBound : ℝ) * (Twobites.paperT2 ε n / Real.log (n : ℝ)) +
               Real.log (n : ℝ) * degreeBound := by
@@ -1825,14 +1828,17 @@ theorem xCard_le_fiberBound_mul_paperT2_div_log_add_log_mul_degreeBound_of_goodE
             (fiberBound : ℝ) *
                 ((((C.baseNeighborSet (Sum.inr b) ∩ C.section4F1 I).card : ℕ) : ℝ)) +
               Real.log (n : ℝ) * degreeBound := by
-            exact C.xCard_blue_le_fiberBound_mul_section4F1_neighbor_card_add_log_mul_degreeBound_of_goodEventD
-              hD I b
+            exact
+              C.xCard_blue_le_fiberBound_mul_section4F1_neighbor_card_add_log_mul_degreeBound_of_goodEventD
+                hD I b
         _ ≤
             (fiberBound : ℝ) * (Twobites.paperT2 ε n / Real.log (n : ℝ)) +
               Real.log (n : ℝ) * degreeBound := by
             gcongr
 
-theorem baseImage_inter_HPart_subset_section4F2_of_goodEventD_of_section4_bound
+set_option linter.style.longLine false in
+theorem
+    baseImage_inter_HPart_subset_section4F2_of_goodEventD_of_section4_bound
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
     (I : Finset (Fin n)) {ε : ℝ}
@@ -1849,6 +1855,63 @@ theorem baseImage_inter_HPart_subset_section4F2_of_goodEventD_of_section4_bound
       hD I hxBase hxF2
   have hxgt := C.paperT1_lt_xCard_of_mem_HPart hxH
   linarith
+
+theorem
+    baseImage_inter_HPart_subset_section4F2_of_goodEventD_of_paperSection4Bound
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {β ε2 : ℝ}
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε2) * Twobites.paperS n)
+    (hdegreeBound : (degreeBound : ℝ) ≤ (1 + ε2) * Twobites.paperP β n * Twobites.paperM n)
+    (hn : 1 < n) (hβ0 : 0 ≤ β) (hβ : β ≤ (1 / 2 : ℝ)) (hε2low : -1 ≤ ε2)
+    (hε2 : ε2 ≤ (1 / 8 : ℝ)) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε2) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε2) / 2) :
+    C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε2 := by
+  have hlogpos : 0 < Real.log (n : ℝ) := Twobites.paperLog_pos hn
+  have htermNonneg : 0 ≤ Twobites.paperT2 ε2 n / Real.log (n : ℝ) := by
+    exact div_nonneg (Twobites.paperT2_nonneg ε2 n) hlogpos.le
+  have hfiberTerm :
+      (fiberBound : ℝ) * (Twobites.paperT2 ε2 n / Real.log (n : ℝ)) ≤
+        ((1 + ε2) * Twobites.paperS n) * (Twobites.paperT2 ε2 n / Real.log (n : ℝ)) := by
+    exact mul_le_mul_of_nonneg_right hfiberBound htermNonneg
+  have hdegreeTerm :
+      Real.log (n : ℝ) * degreeBound ≤
+        Real.log (n : ℝ) * ((1 + ε2) * Twobites.paperP β n * Twobites.paperM n) := by
+    exact mul_le_mul_of_nonneg_left hdegreeBound hlogpos.le
+  have hpaper :
+      ((1 + ε2) * Twobites.paperS n) * (Twobites.paperT2 ε2 n / Real.log (n : ℝ)) +
+          Real.log (n : ℝ) * ((1 + ε2) * Twobites.paperP β n * Twobites.paperM n) ≤
+        Twobites.paperT1 n := by
+    exact Twobites.paperSection4Bound_le_paperT1_of_two_le_loglog_of_fiberScale
+      hn hβ0 hβ hε2low hε2 hloglog hfiberScale
+  have hbound :
+      (fiberBound : ℝ) * (Twobites.paperT2 ε2 n / Real.log (n : ℝ)) +
+          Real.log (n : ℝ) * degreeBound ≤
+        Twobites.paperT1 n := by
+    linarith
+  exact C.baseImage_inter_HPart_subset_section4F2_of_goodEventD_of_section4_bound hD I hbound
+
+theorem section4F1_card_le_two_mul_card_div_log
+    (C : ConstructionData n m) (I : Finset (Fin n)) (hn : 1 < n) :
+    ((C.section4F1 I).card : ℝ) ≤ 2 * (I.card : ℝ) / Real.log (n : ℝ) := by
+  have hlogpos : 0 < Real.log (n : ℝ) := Twobites.paperLog_pos hn
+  have hbase := C.section4F1_card_mul_log_le_two_mul_card I
+  exact (le_div_iff₀ hlogpos).2 (by simpa [mul_comm, mul_left_comm, mul_assoc] using hbase)
+
+theorem section4F2_card_le_card_LPart_union_HPart_of_paper
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ)) :
+    (C.section4F2 I ε).card ≤ (C.LPart I ε ∪ C.HPart I).card := by
+  exact C.section4F2_card_le_card_LPart_union_HPart_of_log_pos_of_paperT3_le_paperT2 I
+    (Twobites.paperLog_pos hn) (Twobites.paperT3_le_paperT2 (Nat.le_of_lt hn) hε)
+
+theorem section4F2_card_le_card_LPart_add_card_HPart_of_paper
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ)) :
+    (C.section4F2 I ε).card ≤ (C.LPart I ε).card + (C.HPart I).card := by
+  exact (C.section4F2_card_le_card_LPart_union_HPart_of_paper I hn hε).trans
+    (Finset.card_union_le _ _)
 
 theorem cast_choose_two_le_half_mul_of_le {a : ℕ} {T : ℝ} (hT : (a : ℝ) ≤ T) :
     ((a.choose 2 : ℕ) : ℝ) ≤ (a : ℝ) * T / 2 := by
