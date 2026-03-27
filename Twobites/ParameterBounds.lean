@@ -342,6 +342,31 @@ theorem paperT1_nonneg_of_loglog_nonneg {n : ℕ}
   unfold paperT1
   exact div_nonneg (Real.sqrt_nonneg _) hloglog
 
+theorem paperT1_mul_loglog_eq_sqrt {n : ℕ}
+    (hloglog : Real.log (Real.log (n : ℝ)) ≠ 0) :
+    paperT1 n * Real.log (Real.log (n : ℝ)) = Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+  unfold paperT1
+  field_simp [hloglog]
+
+theorem paperK_eq_mul_loglog_mul_paperT1 {κ : ℝ} {n : ℕ}
+    (hloglog : Real.log (Real.log (n : ℝ)) ≠ 0) :
+    paperK κ n = κ * Real.log (Real.log (n : ℝ)) * paperT1 n := by
+  rw [paperK, ← paperT1_mul_loglog_eq_sqrt hloglog]
+  ring
+
+theorem paperK_div_paperT1_eq_mul_loglog {κ : ℝ} {n : ℕ}
+    (hn : 1 < n) (hloglog : 0 < Real.log (Real.log (n : ℝ))) :
+    paperK κ n / paperT1 n = κ * Real.log (Real.log (n : ℝ)) := by
+  have hsqrt :
+      0 < Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    apply Real.sqrt_pos.2
+    exact mul_pos (by exact_mod_cast (lt_trans Nat.zero_lt_one hn)) (paperLog_pos hn)
+  have hT1 : 0 < paperT1 n := by
+    unfold paperT1
+    exact div_pos hsqrt hloglog
+  apply (div_eq_iff hT1.ne').2
+  exact paperK_eq_mul_loglog_mul_paperT1 hloglog.ne'
+
 theorem paperK_pos {κ : ℝ} (hκ : 0 < κ) {n : ℕ} (hn : 1 < n) : 0 < paperK κ n := by
   unfold paperK
   refine mul_pos hκ ?_
