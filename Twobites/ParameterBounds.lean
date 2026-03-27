@@ -752,6 +752,17 @@ theorem paperK_sq (κ : ℝ) {n : ℕ} (hn : 1 ≤ n) :
   unfold paperK
   rw [mul_pow, Real.sq_sqrt harg]
 
+theorem half_add_one_mul_paperK_le_eps_mul_paperKSq_of_le
+    {κ α ε : ℝ} {n : ℕ} (hn : 1 < n)
+    (hcoeff : α * (paperK κ n + 1) ≤ 2 * ε * κ * paperK κ n) :
+    ((paperK κ n + 1) / 2) * paperK α n ≤ ε * paperK κ n ^ 2 := by
+  have hsqrt :
+      0 < Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    apply Real.sqrt_pos.2
+    exact mul_pos (by exact_mod_cast (lt_trans Nat.zero_lt_one hn)) (paperLog_pos hn)
+  unfold paperK at hcoeff ⊢
+  nlinarith [hsqrt]
+
 end
 
 end Twobites
