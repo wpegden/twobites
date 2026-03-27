@@ -584,6 +584,10 @@ theorem paperKNat_le_paperK_add_one {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) :
     (paperKNat κ n : ℝ) ≤ paperK κ n + 1 := by
   exact (paperKNat_lt_paperK_add_one hκ n).le
 
+theorem nat_le_paperKNat_of_le_paperK {a : ℕ} {κ : ℝ} {n : ℕ}
+    (h : (a : ℝ) ≤ paperK κ n) : a ≤ paperKNat κ n := by
+  exact_mod_cast h.trans (Nat.le_ceil (paperK κ n))
+
 theorem one_le_paperKNat {κ : ℝ} (hκ : 0 < κ) {n : ℕ} (hn : 1 < n) :
     1 ≤ paperKNat κ n := by
   unfold paperKNat
