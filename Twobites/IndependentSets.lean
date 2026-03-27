@@ -6039,6 +6039,100 @@ def paperSection4OpenPairTarget (C : ConstructionData n m) (I : Finset (Fin n)) 
     (cap : ℕ) : ℝ :=
   (C.paperSection4OpenPairTargetNat I κ cap : ℕ)
 
+theorem paperSection4OpenPairTarget_lower_bound_of_targetBounds
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap blueBound redBound : ℕ}
+    (hblue : C.paperHugeBlueCrossTargetNat I κ cap ≤ blueBound)
+    (hred : C.paperHugeRedCrossTargetNat I κ cap ≤ redBound) :
+    (((C.redImage I).card.choose 2 : ℕ) : ℝ) + (((C.blueImage I).card.choose 2 : ℕ) : ℝ) -
+        (blueBound : ℝ) - (redBound : ℝ) ≤
+      C.paperSection4OpenPairTarget I κ cap := by
+  let totalChoose := (C.redImage I).card.choose 2 + (C.blueImage I).card.choose 2
+  let totalTarget := C.paperHugeBlueCrossTargetNat I κ cap + C.paperHugeRedCrossTargetNat I κ cap
+  let totalBound := blueBound + redBound
+  have htargetLeBound : totalTarget ≤ totalBound := by
+    dsimp [totalTarget, totalBound]
+    exact Nat.add_le_add hblue hred
+  have hsplit :
+      (((C.redImage I).card.choose 2 : ℕ) : ℝ) + (((C.blueImage I).card.choose 2 : ℕ) : ℝ) -
+          (blueBound : ℝ) - (redBound : ℝ) =
+        (totalChoose : ℝ) - (totalBound : ℝ) := by
+    dsimp [totalChoose, totalBound]
+    rw [Nat.cast_add, Nat.cast_add]
+    ring
+  by_cases hle : totalTarget ≤ totalChoose
+  · have hle' :
+        C.paperHugeBlueCrossTargetNat I κ cap + C.paperHugeRedCrossTargetNat I κ cap ≤
+          (C.redImage I).card.choose 2 + (C.blueImage I).card.choose 2 := by
+      simpa [totalChoose, totalTarget] using hle
+    have htarget :
+        C.paperSection4OpenPairTarget I κ cap = (totalChoose : ℝ) - (totalTarget : ℝ) := by
+      unfold paperSection4OpenPairTarget paperSection4OpenPairTargetNat totalChoose totalTarget
+      rw [Nat.sub_sub, Nat.cast_sub hle', Nat.cast_add]
+    have htargetLeBoundR : (totalTarget : ℝ) ≤ (totalBound : ℝ) := by
+      exact_mod_cast htargetLeBound
+    rw [hsplit]
+    calc
+      (totalChoose : ℝ) - (totalBound : ℝ) ≤ (totalChoose : ℝ) - (totalTarget : ℝ) := by
+        linarith
+      _ = C.paperSection4OpenPairTarget I κ cap := htarget.symm
+  · have hzero : C.paperSection4OpenPairTarget I κ cap = 0 := by
+      have hlt : totalChoose < totalTarget := Nat.lt_of_not_ge hle
+      have hle' :
+          (C.redImage I).card.choose 2 + (C.blueImage I).card.choose 2 ≤
+            C.paperHugeBlueCrossTargetNat I κ cap + C.paperHugeRedCrossTargetNat I κ cap := by
+        simpa [totalChoose, totalTarget] using hlt.le
+      unfold paperSection4OpenPairTarget paperSection4OpenPairTargetNat
+      rw [Nat.sub_sub, Nat.sub_eq_zero_of_le hle', Nat.cast_zero]
+    have hnonpos :
+        (((C.redImage I).card.choose 2 : ℕ) : ℝ) + (((C.blueImage I).card.choose 2 : ℕ) : ℝ) -
+            (blueBound : ℝ) - (redBound : ℝ) ≤
+          0 := by
+      have hlt : totalChoose < totalTarget := Nat.lt_of_not_ge hle
+      have hlt' : (totalChoose : ℝ) < (totalBound : ℝ) := by
+        exact_mod_cast (lt_of_lt_of_le hlt htargetLeBound)
+      rw [hsplit]
+      linarith
+    nlinarith [hzero]
+
+theorem paperSection4OpenPairTarget_lower_bound_of_blueLeft_of_redLeft
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap : ℕ} :
+    (((C.redImage I).card.choose 2 : ℕ) : ℝ) + (((C.blueImage I).card.choose 2 : ℕ) : ℝ) -
+        ((((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ)) -
+        ((((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ)) ≤
+      C.paperSection4OpenPairTarget I κ cap := by
+  exact
+    C.paperSection4OpenPairTarget_lower_bound_of_targetBounds (I := I)
+      (blueBound := (Twobites.paperKNat κ n - (C.redImage I).card).choose 2)
+      (redBound := (Twobites.paperKNat κ n - (C.blueImage I).card).choose 2)
+      (by simp [paperHugeBlueCrossTargetNat])
+      (by simp [paperHugeRedCrossTargetNat])
+
+theorem paperSection4OpenPairTarget_lower_bound_of_blueLeft_of_redRight
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap : ℕ} :
+    (((C.redImage I).card.choose 2 : ℕ) : ℝ) + (((C.blueImage I).card.choose 2 : ℕ) : ℝ) -
+        ((((Twobites.paperKNat κ n - (C.redImage I).card).choose 2 : ℕ) : ℝ)) -
+        C.paperHugeRedCrossRightTarget I κ cap ≤
+      C.paperSection4OpenPairTarget I κ cap := by
+  exact
+    C.paperSection4OpenPairTarget_lower_bound_of_targetBounds (I := I)
+      (blueBound := (Twobites.paperKNat κ n - (C.redImage I).card).choose 2)
+      (redBound := C.paperHugeRedCrossRightTargetNat I κ cap)
+      (by simp [paperHugeBlueCrossTargetNat])
+      (by simp [paperHugeRedCrossTargetNat])
+
+theorem paperSection4OpenPairTarget_lower_bound_of_blueRight_of_redLeft
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap : ℕ} :
+    (((C.redImage I).card.choose 2 : ℕ) : ℝ) + (((C.blueImage I).card.choose 2 : ℕ) : ℝ) -
+        C.paperHugeBlueCrossRightTarget I κ cap -
+        ((((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ)) ≤
+      C.paperSection4OpenPairTarget I κ cap := by
+  exact
+    C.paperSection4OpenPairTarget_lower_bound_of_targetBounds (I := I)
+      (blueBound := C.paperHugeBlueCrossRightTargetNat I κ cap)
+      (redBound := (Twobites.paperKNat κ n - (C.blueImage I).card).choose 2)
+      (by simp [paperHugeBlueCrossTargetNat])
+      (by simp [paperHugeRedCrossTargetNat])
+
 theorem paperHugeBlueCrossTargetNat_cast_le_paperKSq
     (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap : ℕ}
     (hκ : 0 ≤ κ) (hk : 1 ≤ Twobites.paperK κ n) :
