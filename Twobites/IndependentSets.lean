@@ -751,6 +751,43 @@ theorem HPart_card_lt_mul_mul_loglog_of_goodEventD_of_lt_of_le
   rw [Twobites.paperK_div_paperT1_eq_mul_loglog hn hloglog] at hcard
   simpa [mul_assoc] using hcard
 
+theorem HPart_card_lt_mul_paperK_div_paperT1_of_goodEventD_of_two_mul_lt_of_choose_le
+    (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ B : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (htwo : 2 * Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊)
+    (hchoose : witnessSize.choose 2 * codegreeBound ≤ Twobites.paperKNat κ n)
+    (hbound :
+      (witnessSize : ℝ) ≤ B * (Twobites.paperK κ n / Twobites.paperT1 n)) :
+    ((C.HPart I).card : ℝ) < B * (Twobites.paperK κ n / Twobites.paperT1 n) := by
+  have hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound :=
+    Twobites.paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt htwo hchoose
+  exact C.HPart_card_lt_mul_paperK_div_paperT1_of_goodEventD_of_lt_of_le hD I hI hwitness hbound
+
+theorem HPart_card_lt_mul_mul_loglog_of_goodEventD_of_two_mul_lt_of_choose_le
+    (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ B : ℝ} {witnessSize : ℕ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (htwo : 2 * Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊)
+    (hchoose : witnessSize.choose 2 * codegreeBound ≤ Twobites.paperKNat κ n)
+    (hbound :
+      (witnessSize : ℝ) ≤ B * (Twobites.paperK κ n / Twobites.paperT1 n))
+    (hn : 1 < n) (hloglog : 0 < Real.log (Real.log (n : ℝ))) :
+    ((C.HPart I).card : ℝ) < B * κ * Real.log (Real.log (n : ℝ)) := by
+  have hwitness :
+      Twobites.paperKNat κ n < witnessSize * ⌈Twobites.paperT1 n⌉₊ -
+        witnessSize.choose 2 * codegreeBound :=
+    Twobites.paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt htwo hchoose
+  exact
+    C.HPart_card_lt_mul_mul_loglog_of_goodEventD_of_lt_of_le hD I hI hwitness hbound hn
+      hloglog
+
 theorem paperT1_lt_xCard_of_mem_HPart (C : ConstructionData n m) {I : Finset (Fin n)}
     {x : BaseVertex m} (hx : x ∈ C.HPart I) : Twobites.paperT1 n < (C.xCard I x : ℝ) :=
   (C.mem_HPart.1 hx).1

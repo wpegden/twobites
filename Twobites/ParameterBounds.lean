@@ -528,6 +528,14 @@ theorem paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_iff
       paperKNat κ n + witnessSize.choose 2 * codegreeBound < witnessSize * ⌈paperT1 n⌉₊ :=
   Nat.lt_sub_iff_add_lt
 
+theorem paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt
+    {κ : ℝ} {n witnessSize codegreeBound : ℕ}
+    (htwo : 2 * paperKNat κ n < witnessSize * ⌈paperT1 n⌉₊)
+    (hchoose : witnessSize.choose 2 * codegreeBound ≤ paperKNat κ n) :
+    paperKNat κ n < witnessSize * ⌈paperT1 n⌉₊ - witnessSize.choose 2 * codegreeBound := by
+  rw [paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_iff]
+  omega
+
 theorem paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_iff
     {κ ε : ℝ} {n witnessSize codegreeBound : ℕ} :
     paperKNat κ n < witnessSize * ⌈paperT2 ε n⌉₊ - witnessSize.choose 2 * codegreeBound ↔
