@@ -1066,6 +1066,11 @@ theorem three_loglog_codegCoeff_eq {κ q : ℝ} {n : ℕ} :
         Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) := by
   ring_nf
 
+theorem three_mul_paperK_two_mul_eq {ε κ : ℝ} {n : ℕ} :
+    (3 : ℝ) * paperK (2 * ε * κ) n = ε * (6 * paperK κ n) := by
+  unfold paperK
+  ring
+
 theorem three_loglog_diagCoeff_le {β κ ε : ℝ} {n : ℕ}
     (hn : 1 < n) (hκ : 0 ≤ κ) (hε : 0 ≤ ε) (hk : 1 ≤ paperK κ n)
     (hcoeff : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε * paperS n) :
