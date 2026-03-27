@@ -17569,6 +17569,112 @@ theorem paper_ri_eqLong_bound_of_outer_smallSum
       mul_le_mul_of_nonneg_right hmulK (Twobites.paperLog_pos hn).le
   exact hmass.trans (Real.exp_le_exp.mpr hcoeff)
 
+theorem paper_ri_eqLong_bound_largeSum_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε p outerMass x : ℝ} {N : ℕ}
+    (hn : 1 < n) (hε : 0 ≤ ε)
+    (hsum : 1 + ε / 2 ≤ x)
+    (hmass :
+      outerMass * C.section4ActualConditionedEventMass I ε p N ≤
+        Real.exp
+          (((x - 1) / 2 -
+              ((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * x -
+                    2 * ε ^ 3 * (1 + ε)) / 2)) *
+            Twobites.paperK (1 + ε) n * Real.log (n : ℝ))) :
+    outerMass * C.section4ActualConditionedEventMass I ε p N ≤
+      Real.exp
+        (-(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4 *
+          Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have hκ : 0 ≤ 1 + ε := by nlinarith
+  have hcoeff :
+      (((x - 1) / 2 -
+            ((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * x -
+                  2 * ε ^ 3 * (1 + ε)) / 2)) *
+          Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) ≤
+        (-(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4 *
+          Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    have hcoeff0 :
+        (x - 1) / 2 -
+            ((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * x -
+                  2 * ε ^ 3 * (1 + ε)) / 2) ≤
+          -(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4 := by
+      calc
+        (x - 1) / 2 -
+            ((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * x -
+                  2 * ε ^ 3 * (1 + ε)) / 2) =
+          -(ε * (x - 1 - ε ^ 2 - ε ^ 3)) / 2 :=
+            Twobites.paperRI_largeSumCoeff_eq
+        _ ≤ -(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4 :=
+          Twobites.paperRI_largeSumCoeff_le_final hε hsum
+    have hmulK :
+        ((x - 1) / 2 -
+              ((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * x -
+                    2 * ε ^ 3 * (1 + ε)) / 2)) *
+            Twobites.paperK (1 + ε) n ≤
+          (-(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4) *
+            Twobites.paperK (1 + ε) n := by
+      exact mul_le_mul_of_nonneg_right hcoeff0 (Twobites.paperK_nonneg hκ n)
+    exact mul_le_mul_of_nonneg_right hmulK (Twobites.paperLog_pos hn).le
+  exact hmass.trans (Real.exp_le_exp.mpr hcoeff)
+
+theorem paper_ri_eqLong_bound_nearOne_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε p outerMass xR xB : ℝ} {N : ℕ}
+    (hn : 1 < n) (hε : 0 ≤ ε)
+    (hεsmall : 8 * (1 + ε) ^ 2 ≤ (9 : ℝ))
+    (hsumLower : 1 - ε / 2 ≤ xR + xB)
+    (hsumUpper : xR + xB ≤ 1 + ε / 2)
+    (hblue : xB ≤ xR)
+    (hmass :
+      outerMass * C.section4ActualConditionedEventMass I ε p N ≤
+        Real.exp
+          ((-(1 - xR - xB) / 2 -
+                (1 / (4 * (1 + ε))) *
+                  (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+                    xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) *
+            Twobites.paperK (1 + ε) n * Real.log (n : ℝ))) :
+    outerMass * C.section4ActualConditionedEventMass I ε p N ≤
+      Real.exp
+        ((ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε))) *
+          Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have hκ : 0 ≤ 1 + ε := by nlinarith
+  have hcoeff :
+      ((-(1 - xR - xB) / 2 -
+              (1 / (4 * (1 + ε))) *
+                (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+                  xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) *
+          Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) ≤
+        ((ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε))) *
+          Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    have hcoeff0 :
+        -(1 - xR - xB) / 2 -
+            (1 / (4 * (1 + ε))) *
+              (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+                xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2) ≤
+          ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε)) := by
+      calc
+        -(1 - xR - xB) / 2 -
+            (1 / (4 * (1 + ε))) *
+              (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+                xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2) =
+          (1 / (8 * (1 + ε))) *
+            (2 * xB - 1 - (4 * ε ^ 2 + 2 * ε) * (xR + xB - 1) - 2 * ε * xR +
+              4 * ε ^ 3 * (1 + ε) ^ 2) :=
+            Twobites.paperRI_nearOne_mixedCoeff_eq hε
+        _ ≤ ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε)) :=
+          Twobites.paperRI_nearOne_mixedCoeff_le_final hε hεsmall hsumLower hsumUpper hblue
+    have hmulK :
+        (-(1 - xR - xB) / 2 -
+              (1 / (4 * (1 + ε))) *
+                (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+                  xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) *
+            Twobites.paperK (1 + ε) n ≤
+          (ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε))) *
+            Twobites.paperK (1 + ε) n := by
+      exact mul_le_mul_of_nonneg_right hcoeff0 (Twobites.paperK_nonneg hκ n)
+    exact mul_le_mul_of_nonneg_right hmulK (Twobites.paperLog_pos hn).le
+  exact hmass.trans (Real.exp_le_exp.mpr hcoeff)
+
 end
 
 end ConstructionData

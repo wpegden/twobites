@@ -1899,6 +1899,66 @@ theorem paperRI_eqLongCoeff_neg_of_nearOne
     _ < 0 :=
       paperRI_nearOne_finalCoeff_neg hε hneg
 
+theorem paperRI_eqLongExp_neg_of_smallSum
+    {ε x : ℝ} {n : ℕ}
+    (hn : 1 < n) (hε : 0 < ε) (hsum : x ≤ 1 - ε / 2) :
+    (-(1 - x) / 2) * paperK (1 + ε) n * Real.log (n : ℝ) < 0 := by
+  have hcoeff : -(1 - x) / 2 < (0 : ℝ) := paperRI_eqLongCoeff_neg_of_smallSum hε hsum
+  have hkpos : 0 < paperK (1 + ε) n := by
+    have hκ : 0 < 1 + ε := by nlinarith
+    exact paperK_pos hκ hn
+  have hlogpos : 0 < Real.log (n : ℝ) := paperLog_pos hn
+  have hfac : 0 < paperK (1 + ε) n * Real.log (n : ℝ) := by
+    exact mul_pos hkpos hlogpos
+  nlinarith [mul_neg_of_neg_of_pos hcoeff hfac]
+
+theorem paperRI_eqLongExp_neg_of_largeSum
+    {ε x : ℝ} {n : ℕ}
+    (hn : 1 < n) (hε : 0 < ε) (hpos : 0 < 1 - 2 * ε - 2 * ε ^ 2)
+    (hsum : 1 + ε / 2 ≤ x) :
+    ((x - 1) / 2 -
+        ((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * x - 2 * ε ^ 3 * (1 + ε)) / 2)) *
+      paperK (1 + ε) n * Real.log (n : ℝ) < 0 := by
+  have hcoeff :
+      (x - 1) / 2 -
+          ((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * x - 2 * ε ^ 3 * (1 + ε)) / 2) <
+        (0 : ℝ) := paperRI_eqLongCoeff_neg_of_largeSum hε hpos hsum
+  have hkpos : 0 < paperK (1 + ε) n := by
+    have hκ : 0 < 1 + ε := by nlinarith
+    exact paperK_pos hκ hn
+  have hlogpos : 0 < Real.log (n : ℝ) := paperLog_pos hn
+  have hfac : 0 < paperK (1 + ε) n * Real.log (n : ℝ) := by
+    exact mul_pos hkpos hlogpos
+  nlinarith [mul_neg_of_neg_of_pos hcoeff hfac]
+
+theorem paperRI_eqLongExp_neg_of_nearOne
+    {ε xR xB : ℝ} {n : ℕ}
+    (hn : 1 < n) (hε : 0 < ε)
+    (hεsmall : 8 * (1 + ε) ^ 2 ≤ (9 : ℝ))
+    (hsumLower : 1 - ε / 2 ≤ xR + xB)
+    (hsumUpper : xR + xB ≤ 1 + ε / 2)
+    (hblue : xB ≤ xR)
+    (hneg : -1 + ε + 22 * ε ^ 2 < 0) :
+    (-(1 - xR - xB) / 2 -
+        (1 / (4 * (1 + ε))) *
+          (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+            xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) *
+      paperK (1 + ε) n * Real.log (n : ℝ) < 0 := by
+  have hcoeff :
+      -(1 - xR - xB) / 2 -
+          (1 / (4 * (1 + ε))) *
+            (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+              xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2) <
+        (0 : ℝ) :=
+    paperRI_eqLongCoeff_neg_of_nearOne hε hεsmall hsumLower hsumUpper hblue hneg
+  have hkpos : 0 < paperK (1 + ε) n := by
+    have hκ : 0 < 1 + ε := by nlinarith
+    exact paperK_pos hκ hn
+  have hlogpos : 0 < Real.log (n : ℝ) := paperLog_pos hn
+  have hfac : 0 < paperK (1 + ε) n * Real.log (n : ℝ) := by
+    exact mul_pos hkpos hlogpos
+  nlinarith [mul_neg_of_neg_of_pos hcoeff hfac]
+
 end
 
 end Twobites
