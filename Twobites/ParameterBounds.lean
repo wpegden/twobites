@@ -2194,6 +2194,157 @@ theorem paperRIOuterEventMass_le_exp_of_logChooseFormula_le
   · exact paperRI_logChoose_le hlBpos hlB
   · exact htotal
 
+theorem paperRI_ratioLog_le_of_two_mul_le
+    {m lR lB k : ℕ} (hmpos : 0 < m) (hkpos : 0 < k)
+    (hlRpos : 0 < lR) (hlBpos : 0 < lB)
+    (hhalf : 2 * k ≤ m * m + 1) :
+    (k : ℝ) *
+        (Real.log (((lR * lB : ℕ) : ℝ)) -
+          Real.log (((m * m + 1 - k : ℕ) : ℝ))) ≤
+      (k : ℝ) *
+        (Real.log (lR : ℝ) + Real.log (lB : ℝ) -
+          2 * Real.log (m : ℝ) + Real.log (2 : ℝ)) := by
+  have hmposR : 0 < (m : ℝ) := by
+    exact_mod_cast hmpos
+  have hlRposR : 0 < (lR : ℝ) := by
+    exact_mod_cast hlRpos
+  have hlBposR : 0 < (lB : ℝ) := by
+    exact_mod_cast hlBpos
+  have hdenNat : 0 < m * m + 1 - k := by
+    omega
+  have hdenPos : 0 < (((m * m + 1 - k : ℕ) : ℝ)) := by
+    exact_mod_cast hdenNat
+  have hnumEq :
+      Real.log (((lR * lB : ℕ) : ℝ)) = Real.log (lR : ℝ) + Real.log (lB : ℝ) := by
+    norm_num [Real.log_mul, hlRposR.ne', hlBposR.ne']
+  have hhalfReal :
+      ((m : ℝ) ^ 2) / 2 ≤ (((m * m + 1 - k : ℕ) : ℝ)) := by
+    have hnat : m * m ≤ 2 * (m * m + 1 - k) := by
+      omega
+    have hcast : (m * m : ℝ) ≤ 2 * (((m * m + 1 - k : ℕ) : ℝ)) := by
+      exact_mod_cast hnat
+    nlinarith
+  have hdenLogLower :
+      2 * Real.log (m : ℝ) - Real.log (2 : ℝ) ≤
+        Real.log (((m * m + 1 - k : ℕ) : ℝ)) := by
+    have hlog :
+        Real.log (((m : ℝ) ^ 2) / 2) ≤ Real.log (((m * m + 1 - k : ℕ) : ℝ)) := by
+      exact Real.log_le_log (by positivity) hhalfReal
+    have hlogEq :
+        Real.log (((m : ℝ) ^ 2) / 2) = 2 * Real.log (m : ℝ) - Real.log (2 : ℝ) := by
+      rw [Real.log_div (pow_ne_zero 2 hmposR.ne') (by norm_num : (2 : ℝ) ≠ 0), Real.log_pow]
+      ring
+    linarith
+  have hcore :
+      Real.log (((lR * lB : ℕ) : ℝ)) - Real.log (((m * m + 1 - k : ℕ) : ℝ)) ≤
+        Real.log (lR : ℝ) + Real.log (lB : ℝ) -
+          2 * Real.log (m : ℝ) + Real.log (2 : ℝ) := by
+    rw [hnumEq]
+    linarith
+  exact mul_le_mul_of_nonneg_left hcore (by positivity)
+
+theorem paperRIOuterEventMass_le_exp_of_logChooseRatioFormula_le
+    {m lR lB k : ℕ} (hk : k ≤ m * m) (hkpos : 0 < k)
+    (hlR : lR ≤ m) (hlB : lB ≤ m) (hkprod : k ≤ lR * lB)
+    (hhalf : 2 * k ≤ m * m + 1)
+    {outerExp : ℝ}
+    (htotal :
+      (lR : ℝ) * (1 + Real.log (m : ℝ) - Real.log (lR : ℝ)) +
+          (lB : ℝ) * (1 + Real.log (m : ℝ) - Real.log (lB : ℝ)) +
+          (k : ℝ) *
+            (Real.log (lR : ℝ) + Real.log (lB : ℝ) -
+              2 * Real.log (m : ℝ) + Real.log (2 : ℝ)) ≤
+        outerExp) :
+    paperRIOuterEventMass m lR lB k ≤ Real.exp outerExp := by
+  have hmulpos : 0 < lR * lB := lt_of_lt_of_le hkpos hkprod
+  have hlRpos : 0 < lR := by
+    refine Nat.pos_of_ne_zero ?_
+    intro hR
+    subst hR
+    simp at hmulpos
+  have hlBpos : 0 < lB := by
+    refine Nat.pos_of_ne_zero ?_
+    intro hB
+    subst hB
+    simp at hmulpos
+  have hmpos : 0 < m := by
+    exact lt_of_lt_of_le hlRpos hlR
+  apply paperRIOuterEventMass_le_exp_of_logChooseFormula_le hk hkpos hlR hlB hkprod
+  have hratio :=
+    paperRI_ratioLog_le_of_two_mul_le hmpos hkpos hlRpos hlBpos hhalf
+  linarith
+
+theorem paperRI_outerLogChooseRatioFormula_eq_scaled
+    {m lR lB k : ℕ} {xR xB : ℝ}
+    (hkpos : 0 < k)
+    (hlRk : (lR : ℝ) = xR * (k : ℝ))
+    (hlBk : (lB : ℝ) = xB * (k : ℝ))
+    (hxRpos : 0 < xR) (hxBpos : 0 < xB) :
+    (lR : ℝ) * (1 + Real.log (m : ℝ) - Real.log (lR : ℝ)) +
+          (lB : ℝ) * (1 + Real.log (m : ℝ) - Real.log (lB : ℝ)) +
+          (k : ℝ) *
+            (Real.log (lR : ℝ) + Real.log (lB : ℝ) -
+              2 * Real.log (m : ℝ) + Real.log (2 : ℝ)) =
+        ((xR + xB - 2) * (k : ℝ)) * Real.log (m : ℝ) +
+          ((2 - xR - xB) * (k : ℝ)) * Real.log (k : ℝ) +
+          ((1 - xR) * (k : ℝ)) * Real.log xR +
+          ((1 - xB) * (k : ℝ)) * Real.log xB +
+          (xR + xB) * (k : ℝ) +
+          (k : ℝ) * Real.log (2 : ℝ) := by
+  have hkposR : 0 < (k : ℝ) := by
+    exact_mod_cast hkpos
+  have hlogR : Real.log (lR : ℝ) = Real.log xR + Real.log (k : ℝ) := by
+    rw [hlRk, Real.log_mul hxRpos.ne' hkposR.ne']
+  have hlogB : Real.log (lB : ℝ) = Real.log xB + Real.log (k : ℝ) := by
+    rw [hlBk, Real.log_mul hxBpos.ne' hkposR.ne']
+  rw [hlogR, hlogB, hlRk, hlBk]
+  ring
+
+theorem paperRIOuterEventMass_le_exp_of_scaledLogs
+    {m lR lB k : ℕ} {xR xB : ℝ}
+    (hk : k ≤ m * m) (hkpos : 0 < k)
+    (hlR : lR ≤ m) (hlB : lB ≤ m) (hkprod : k ≤ lR * lB)
+    (hhalf : 2 * k ≤ m * m + 1)
+    (hlRk : (lR : ℝ) = xR * (k : ℝ))
+    (hlBk : (lB : ℝ) = xB * (k : ℝ))
+    (hxRpos : 0 < xR) (hxBpos : 0 < xB) :
+    paperRIOuterEventMass m lR lB k ≤
+      Real.exp
+        (((xR + xB - 2) * (k : ℝ)) * Real.log (m : ℝ) +
+          ((2 - xR - xB) * (k : ℝ)) * Real.log (k : ℝ) +
+          ((1 - xR) * (k : ℝ)) * Real.log xR +
+          ((1 - xB) * (k : ℝ)) * Real.log xB +
+          (xR + xB) * (k : ℝ) +
+          (k : ℝ) * Real.log (2 : ℝ)) := by
+  apply paperRIOuterEventMass_le_exp_of_logChooseRatioFormula_le hk hkpos hlR hlB hkprod hhalf
+  rw [paperRI_outerLogChooseRatioFormula_eq_scaled hkpos hlRk hlBk hxRpos hxBpos]
+
+theorem paperRIOuterEventMass_le_exp_of_scaledLogs_one
+    {m lR lB k : ℕ} {xR xB : ℝ}
+    (hk : k ≤ m * m) (hkpos : 0 < k)
+    (hlR : lR ≤ m) (hlB : lB ≤ m) (hkprod : k ≤ lR * lB)
+    (hhalf : 2 * k ≤ m * m + 1)
+    (hlRk : (lR : ℝ) = xR * (k : ℝ))
+    (hlBk : (lB : ℝ) = xB * (k : ℝ))
+    (hxRpos : 0 < xR) (hxBpos : 0 < xB) :
+    paperRIOuterEventMass m lR lB k ≤
+      Real.exp
+        (((xR + xB - 2) * (k : ℝ)) * Real.log (m : ℝ) +
+          ((2 - xR - xB) * (k : ℝ)) * Real.log (k : ℝ) +
+          ((1 - xR) * (k : ℝ)) * Real.log xR +
+          ((1 - xB) * (k : ℝ)) * Real.log xB +
+          (1 + xR + xB) * (k : ℝ)) := by
+  have hbase :=
+    paperRIOuterEventMass_le_exp_of_scaledLogs hk hkpos hlR hlB hkprod hhalf
+      hlRk hlBk hxRpos hxBpos
+  refine hbase.trans ?_
+  apply Real.exp_le_exp.mpr
+  have hlog2 : Real.log (2 : ℝ) ≤ 1 := by
+    have htmp := Real.log_le_sub_one_of_pos (by positivity : 0 < (2 : ℝ))
+    nlinarith
+  have hk0 : 0 ≤ (k : ℝ) := by positivity
+  nlinarith
+
 theorem paperRI_smallSumCoeff_le
     {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
     -(1 - x) / 2 ≤ -ε / 4 := by
