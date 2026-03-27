@@ -8448,6 +8448,79 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_coarseBranchPieceBounds
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hκ : 1 ≤ κ)
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hε1 : 0 ≤ ε1)
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ6R :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + 6 * κ + δsumGap + δgapR ≤ κ)
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ6B :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + 6 * κ + δsumGap + δgapB ≤ κ) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  have hκ0 : 0 ≤ κ := by linarith
+  have hdegPiece :
+      Twobites.paperHugeWitnessDegreeBranchParam ε1 κ βdeg n ≤ 3 * κ := by
+    exact
+      Twobites.paperHugeWitnessDegreeBranchParam_le_three_mul_of_diagScale
+        hε1pos hn hκ0 hdiagScale
+  have hcodegPiece :
+      Twobites.paperHugeWitnessCodegBranchParam ε1 κ qcodeg n ≤ 3 * κ := by
+    exact
+      Twobites.paperHugeWitnessCodegBranchParam_le_three_mul_of_codegScale
+        hε1pos hcodegScale
+  exact
+    C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_branchwisePieceBranchParamBound
+      (δdegBlue := 3 * κ) (δcodegBlue := 3 * κ) (δblue := 6 * κ) (δdegRed := 3 * κ)
+      (δcodegRed := 3 * κ) (δred := 6 * κ) hD I hI hred hblue hblueCap hblueCapWeight
+      hredCap hredCapWeight hn hκ hρR hρB hβ hε2 hT1 hε1pos hε1le hloglogGap hε1
+      hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound hcodegBound hdegPiece
+      hcodegPiece (by nlinarith) hgap2R hκ6R hdegPiece hcodegPiece (by nlinarith) hgap2B
+      hκ6B
+
+set_option linter.style.longLine false in
+theorem
     paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_branchParamBound
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)

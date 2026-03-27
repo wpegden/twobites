@@ -1432,6 +1432,52 @@ theorem paperHugeWitnessBranchParam_le_of_pieceBranchParamBounds
   rw [paperHugeWitnessBranchParam_eq_add]
   exact (add_le_add hdeg hcodeg).trans hsum
 
+theorem paperHugeWitnessDegreeBranchParam_le_three_mul_of_diagScale
+    {ε1 κ β : ℝ} {n : ℕ} (hε1 : 0 < ε1) (hn : 1 < n) (hκ : 0 ≤ κ)
+    (hdiagScale : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε1 * paperS n) :
+    paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ 3 * κ := by
+  have hcoeff : paperHugeWitnessDegreeCoeff κ β n ≤ ε1 * κ := by
+    simpa [paperHugeWitnessDegreeCoeff] using
+      (three_loglog_split_first_le (β := β) (κ := κ) (ε := ε1) hn hκ hdiagScale)
+  have hmul : (ε1 / 3) * (3 * κ) = ε1 * κ := by ring
+  have hcoeff' : paperHugeWitnessDegreeCoeff κ β n ≤ (ε1 / 3) * (3 * κ) := by
+    rw [hmul]
+    exact hcoeff
+  exact
+    paperHugeWitnessDegreeBranchParam_le_of_coeff_le hε1 hcoeff'
+
+theorem paperHugeWitnessCodegBranchParam_le_three_mul_of_codegScale
+    {ε1 κ q : ℝ} {n : ℕ} (hε1 : 0 < ε1)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ) :
+    paperHugeWitnessCodegBranchParam ε1 κ q n ≤ 3 * κ := by
+  have hcoeff : paperHugeWitnessCodegCoeff κ q n ≤ ε1 * κ := by
+    unfold paperHugeWitnessCodegCoeff
+    rw [three_loglog_codegCoeff_eq]
+    exact hcodegScale
+  have hmul : (ε1 / 3) * (3 * κ) = ε1 * κ := by ring
+  have hcoeff' : paperHugeWitnessCodegCoeff κ q n ≤ (ε1 / 3) * (3 * κ) := by
+    rw [hmul]
+    exact hcoeff
+  exact
+    paperHugeWitnessCodegBranchParam_le_of_coeff_le hε1 hcoeff'
+
+theorem paperHugeWitnessBranchParam_le_six_mul_of_diagScale_of_codegScale
+    {ε1 κ β q : ℝ} {n : ℕ} (hε1 : 0 < ε1) (hn : 1 < n) (hκ : 0 ≤ κ)
+    (hdiagScale : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε1 * paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ) :
+    paperHugeWitnessBranchParam ε1 κ β q n ≤ 6 * κ := by
+  refine
+    paperHugeWitnessBranchParam_le_of_pieceBranchParamBounds
+      (paperHugeWitnessDegreeBranchParam_le_three_mul_of_diagScale hε1 hn hκ hdiagScale)
+      (paperHugeWitnessCodegBranchParam_le_three_mul_of_codegScale hε1 hcodegScale) ?_
+  nlinarith
+
 theorem paperHugeWitnessCoeff_le_of_le_of_le {κ β q a b : ℝ} {n : ℕ}
     (hfirst :
       ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n ≤ a)
