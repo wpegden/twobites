@@ -1059,6 +1059,13 @@ theorem three_loglog_split_first_le {β κ ε : ℝ} {n : ℕ}
     exact mul_le_mul_of_nonneg_left hcoeff' hκ
   simpa [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hmul
 
+theorem three_loglog_codegCoeff_eq {κ q : ℝ} {n : ℕ} :
+    ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) =
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) := by
+  ring_nf
+
 theorem three_loglog_diagCoeff_le {β κ ε : ℝ} {n : ℕ}
     (hn : 1 < n) (hκ : 0 ≤ κ) (hε : 0 ≤ ε) (hk : 1 ≤ paperK κ n)
     (hcoeff : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε * paperS n) :
