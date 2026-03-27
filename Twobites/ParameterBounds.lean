@@ -1292,6 +1292,36 @@ theorem paperHugeWitnessBranchParam_le_of_le_of_le_of_add_le
     paperHugeWitnessBranchParam_le_of_coeff_le hε1
       ((paperHugeWitnessCoeff_le_of_le_of_le hfirst hsecond).trans hsum)
 
+theorem paperHugeWitnessCoeff_le_eps_third_mul_of_piece_bounds
+    {ε1 κ β q δdeg δcodeg δbranch : ℝ} {n : ℕ}
+    (hε1 : 0 ≤ ε1)
+    (hfirst :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n ≤ (ε1 / 3) * δdeg)
+    (hsecond :
+      ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤ (ε1 / 3) * δcodeg)
+    (hsum : δdeg + δcodeg ≤ δbranch) :
+    paperHugeWitnessCoeff κ β q n ≤ (ε1 / 3) * δbranch := by
+  calc
+    paperHugeWitnessCoeff κ β q n ≤ (ε1 / 3) * δdeg + (ε1 / 3) * δcodeg := by
+      exact paperHugeWitnessCoeff_le_of_le_of_le hfirst hsecond
+    _ = (ε1 / 3) * (δdeg + δcodeg) := by ring
+    _ ≤ (ε1 / 3) * δbranch := by
+      exact mul_le_mul_of_nonneg_left hsum (by positivity)
+
+theorem paperHugeWitnessBranchParam_le_of_piece_bounds
+    {ε1 κ β q δdeg δcodeg δbranch : ℝ} {n : ℕ} (hε1 : 0 < ε1)
+    (hfirst :
+      ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n ≤ (ε1 / 3) * δdeg)
+    (hsecond :
+      ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤ (ε1 / 3) * δcodeg)
+    (hsum : δdeg + δcodeg ≤ δbranch) :
+    paperHugeWitnessBranchParam ε1 κ β q n ≤ δbranch := by
+  exact
+    paperHugeWitnessBranchParam_le_of_coeff_le hε1
+      (paperHugeWitnessCoeff_le_eps_third_mul_of_piece_bounds hε1.le hfirst hsecond hsum)
+
 theorem three_mul_paperK_le_eps_mul_of_le_two_eps_mul_of_six_mul_paperK_le
     {δ κ ε rhs : ℝ} {n : ℕ} (hδ : δ ≤ 2 * ε * κ) (hsmall : 6 * paperK κ n ≤ rhs)
     (hε : 0 ≤ ε) :
