@@ -1816,6 +1816,37 @@ theorem paperRI_nearOne_finalCoeff_neg
     nlinarith
   exact div_neg_of_neg_of_pos hnum hden
 
+theorem paperRI_smallSumCoeff_le
+    {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
+    -(1 - x) / 2 ≤ -ε / 4 := by
+  nlinarith
+
+theorem paperRI_smallSumCoeff_neg {ε : ℝ} (hε : 0 < ε) :
+    -ε / 4 < (0 : ℝ) := by
+  nlinarith
+
+theorem paperRI_largeSumCoeff_eq
+    {ε x : ℝ} :
+    (x - 1) / 2 -
+        ((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * x - 2 * ε ^ 3 * (1 + ε)) / 2) =
+      -(ε * (x - 1 - ε ^ 2 - ε ^ 3)) / 2 := by
+  ring
+
+theorem paperRI_largeSumCoeff_le_final
+    {ε x : ℝ} (hε0 : 0 ≤ ε) (hsum : 1 + ε / 2 ≤ x) :
+    -(ε * (x - 1 - ε ^ 2 - ε ^ 3)) / 2 ≤
+      -(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4 := by
+  nlinarith
+
+theorem paperRI_largeSum_finalCoeff_neg
+    {ε : ℝ} (hε : 0 < ε) (hpos : 0 < 1 - 2 * ε - 2 * ε ^ 2) :
+    -(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4 < (0 : ℝ) := by
+  have hsq : 0 < ε ^ 2 := by positivity
+  have hnum : -(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) < 0 := by
+    nlinarith
+  have hden : (0 : ℝ) < 4 := by positivity
+  exact div_neg_of_neg_of_pos hnum hden
+
 end
 
 end Twobites
