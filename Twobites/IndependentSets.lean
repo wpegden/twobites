@@ -7004,8 +7004,7 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_loglogSlack_of_diagCoeff
                 ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
   have hκ0 : 0 ≤ κ := by linarith
   have hloglog : 0 < Real.log (Real.log (n : ℝ)) := by
-    have hdivpos : 0 < 2 / η := by positivity
-    linarith
+    exact Twobites.loglog_pos_of_two_div_le hη hloglogGap
   have hgapWitness : 2 ≤ η * (κ * Real.log (Real.log (n : ℝ))) :=
     Twobites.two_le_eta_mul_mul_loglog_of_two_div_loglog_le hκ hη hloglogGap
   exact
@@ -7154,8 +7153,7 @@ theorem
                 ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
   have hκ0 : 0 ≤ κ := by linarith
   have hloglog : 0 < Real.log (Real.log (n : ℝ)) := by
-    have hdivpos : 0 < 2 / ε1 := by positivity
-    linarith
+    exact Twobites.loglog_pos_of_two_div_le hε1pos hloglogGap
   have hβdeg : 0 ≤ βdeg := Twobites.nonneg_of_le_paperP_mul_paperM hn hdegBound
   have hqcodeg : 0 ≤ qcodeg := Twobites.nonneg_of_natCast_le hcodegBound
   have hB0 :
@@ -7246,8 +7244,7 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_le_of_codeg
                 ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
   have hκ0 : 0 ≤ κ := by linarith
   have hloglog : 0 < Real.log (Real.log (n : ℝ)) := by
-    have hdivpos : 0 < 2 / ε1 := by positivity
-    linarith
+    exact Twobites.loglog_pos_of_two_div_le hε1pos hloglogGap
   have hgapWitness : 2 ≤ ε1 * (κ * Real.log (Real.log (n : ℝ))) :=
     Twobites.two_le_eta_mul_mul_loglog_of_two_div_loglog_le hκ hε1pos hloglogGap
   have hwitnessBoundBase :
@@ -7343,8 +7340,7 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_le_of_split
                 ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
   have hκ0 : 0 ≤ κ := by linarith
   have hloglog : 0 < Real.log (Real.log (n : ℝ)) := by
-    have hdivpos : 0 < 2 / ε1 := by positivity
-    linarith
+    exact Twobites.loglog_pos_of_two_div_le hε1pos hloglogGap
   have hB0 : 0 ≤ B := by
     have hfac : 0 ≤ 2 + ε1 := by linarith
     have hbase :
@@ -7441,8 +7437,7 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three
                 ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
   have hκ0 : 0 ≤ κ := by linarith
   have hloglog : 0 < Real.log (Real.log (n : ℝ)) := by
-    have hdivpos : 0 < 2 / ε1 := by positivity
-    linarith
+    exact Twobites.loglog_pos_of_two_div_le hε1pos hloglogGap
   have hκloglog : 0 ≤ κ * Real.log (Real.log (n : ℝ)) := by
     exact mul_nonneg hκ0 hloglog.le
   have hB :
@@ -7520,10 +7515,7 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_di
               (1 + ε1) *
                 ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
   have hloglogOne : 1 ≤ Real.log (Real.log (n : ℝ)) := by
-    have htwo : (2 : ℝ) ≤ 2 / ε1 := by
-      refine (le_div_iff₀ hε1pos).2 ?_
-      nlinarith
-    linarith
+    exact Twobites.one_le_loglog_of_two_div_le_of_le_one hε1pos hε1le hloglogGap
   have hk : 1 ≤ Twobites.paperK κ n := by
     have hT1leK : Twobites.paperT1 n ≤ Twobites.paperK κ n :=
       Twobites.paperT1_le_paperK hloglogOne hκ

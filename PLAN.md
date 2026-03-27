@@ -129,7 +129,8 @@
     - in the huge cross-term bridge, keep separate the union-size slack and the projected-codegree overlap slack; the capped/right-branch comparison should only pay a quadratic penalty on the overlap slack, not on the full combined error
     - the direct witness theorem `paper_huge_deterministic_of_witnessSplitRightErrorBounds` is now in place and the canonical helper chain `...of_realErrorBound` / `...of_coeffBound` / `...of_rightSmall` / `...of_paramDeficit` has been rethreaded through `paperHuge*CrossWitnessRightSplitErrorProp`
     - the paper-scale split right-branch arithmetic is now formalized both at general witness scale `B` and at the specialization `B = 3 * κ * log log n`, via `splitRightCoeff_le_eps_mul_choose_two_of_sum_le_of_three_mul_le` and `splitRightCoeff_le_eps_mul_cap_choose_two_add_choose_two_of_sum_le_of_three_mul_le`, so the canonical huge-case wrappers no longer need the ruled-out combined-error right-smallness target
-    - the remaining huge-case frontier is the later large-`n` threshold/comparison arithmetic in `ParameterBounds.lean` that still feeds the final paper-scale wrapper chain
+    - the threshold comparison `t_2 ≤ t_1` is now discharged directly from the large-`n` hypothesis `2 ≤ log log n`, and the later huge wrappers now use reusable `log log n` positivity/lower-bound lemmas instead of local ad hoc derivations
+    - the remaining huge-case frontier is the still-missing lower bound `2 < t_1` together with the final coefficient/gap specializations in `ParameterBounds.lean` that feed the last paper-scale wrapper chain
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
