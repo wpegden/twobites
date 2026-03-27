@@ -1213,11 +1213,30 @@ theorem one_le_paperSNat (n : ℕ) : 1 ≤ paperSNat n := by
 theorem paperSNat_ne_zero (n : ℕ) : paperSNat n ≠ 0 := by
   exact Nat.ne_of_gt (Nat.succ_le_iff.mp (one_le_paperSNat n))
 
+theorem paperSNat_eq_ceil_of_pos {n : ℕ} (hn : 1 < n) :
+    paperSNat n = ⌈paperS n⌉₊ := by
+  unfold paperSNat
+  have hceil : 1 ≤ ⌈paperS n⌉₊ := by
+    rw [Nat.one_le_ceil_iff]
+    exact paperS_pos hn
+  exact max_eq_right hceil
+
 theorem paperS_le_paperSNat (n : ℕ) : paperS n ≤ paperSNat n := by
   have hceil : paperS n ≤ (⌈paperS n⌉₊ : ℝ) := Nat.le_ceil (paperS n)
   have hmax : ((⌈paperS n⌉₊ : ℕ) : ℝ) ≤ paperSNat n := by
     exact_mod_cast (Nat.le_max_right 1 ⌈paperS n⌉₊)
   exact hceil.trans hmax
+
+theorem paperSNat_lt_paperS_add_one {n : ℕ} (hn : 1 < n) :
+    (paperSNat n : ℝ) < paperS n + 1 := by
+  rw [paperSNat_eq_ceil_of_pos hn]
+  exact Nat.ceil_lt_add_one (paperS_nonneg n)
+
+theorem paperSNat_le_two_mul_paperS_of_one_le {n : ℕ}
+    (hn : 1 < n) (hS : 1 ≤ paperS n) :
+    (paperSNat n : ℝ) ≤ 2 * paperS n := by
+  have hlt : (paperSNat n : ℝ) < paperS n + 1 := paperSNat_lt_paperS_add_one hn
+  nlinarith
 
 theorem paperMNat_mul_paperSNat_le (n : ℕ) : paperMNat n * paperSNat n ≤ n := by
   unfold paperMNat
@@ -1235,6 +1254,32 @@ theorem div_paperSNat_le_paperM {n : ℕ} (hn : 1 < n) :
 
 theorem paperMNat_le_paperM {n : ℕ} (hn : 1 < n) : (paperMNat n : ℝ) ≤ paperM n := by
   exact (paperMNat_cast_le_div n).trans (div_paperSNat_le_paperM hn)
+
+theorem div_paperSNat_lt_paperMNat_add_one (n : ℕ) :
+    (n : ℝ) / paperSNat n < (paperMNat n : ℝ) + 1 := by
+  have hspos : 0 < paperSNat n := Nat.succ_le_iff.mp (one_le_paperSNat n)
+  have hsposR : 0 < (paperSNat n : ℝ) := by
+    exact_mod_cast hspos
+  have hmod : (n % paperSNat n : ℝ) < paperSNat n := by
+    exact_mod_cast (Nat.mod_lt n hspos)
+  have hdecomp :
+      (paperSNat n : ℝ) * (paperMNat n : ℝ) + (n % paperSNat n : ℝ) = (n : ℝ) := by
+    unfold paperMNat
+    exact_mod_cast (Nat.div_add_mod n (paperSNat n))
+  have hlt : (n : ℝ) < (paperSNat n : ℝ) * ((paperMNat n : ℝ) + 1) := by
+    calc
+      (n : ℝ) = (paperSNat n : ℝ) * (paperMNat n : ℝ) + (n % paperSNat n : ℝ) := hdecomp.symm
+      _ < (paperSNat n : ℝ) * (paperMNat n : ℝ) + (paperSNat n : ℝ) := by
+        gcongr
+      _ = (paperSNat n : ℝ) * ((paperMNat n : ℝ) + 1) := by
+        ring
+  exact (div_lt_iff₀ hsposR).2 <| by
+    simpa [mul_add, add_mul, add_comm, add_left_comm, add_assoc,
+      mul_comm, mul_left_comm, mul_assoc] using hlt
+
+theorem div_paperSNat_sub_one_lt_paperMNat (n : ℕ) :
+    (n : ℝ) / paperSNat n - 1 < (paperMNat n : ℝ) := by
+  linarith [div_paperSNat_lt_paperMNat_add_one n]
 
 theorem paperK_le_paperKNat (κ : ℝ) (n : ℕ) : paperK κ n ≤ paperKNat κ n := by
   unfold paperKNat
@@ -1525,6 +1570,137 @@ theorem paperKNat_log_le {κ : ℝ} {n : ℕ}
           (Real.log (n : ℝ) + Real.log (Real.log (n : ℝ))) / 2 := by
       rw [paperK_log_eq hκ hn]
       ring
+
+theorem four_le_log_of_two_le_loglog {n : ℕ}
+    (hn : 1 < n) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
+    4 ≤ Real.log (n : ℝ) := by
+  have hlogpos : 0 < Real.log (n : ℝ) := paperLog_pos hn
+  have hexp2_le : Real.exp 2 ≤ Real.log (n : ℝ) := by
+    exact (Real.le_log_iff_exp_le hlogpos).1 hloglog
+  have hfour_lt : (4 : ℝ) < Real.exp 2 := by
+    rw [show (2 : ℝ) = 1 + 1 by norm_num, Real.exp_add]
+    nlinarith [Real.exp_one_gt_two]
+  linarith
+
+theorem one_le_paperS_of_two_le_loglog {n : ℕ}
+    (hn : 1 < n) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
+    1 ≤ paperS n := by
+  unfold paperS
+  have hfour : 4 ≤ Real.log (n : ℝ) :=
+    four_le_log_of_two_le_loglog hn hloglog
+  nlinarith
+
+theorem paperSNat_le_two_mul_paperS_of_two_le_loglog {n : ℕ}
+    (hn : 1 < n) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
+    (paperSNat n : ℝ) ≤ 2 * paperS n := by
+  exact paperSNat_le_two_mul_paperS_of_one_le hn
+    (one_le_paperS_of_two_le_loglog hn hloglog)
+
+theorem four_le_paperM_of_two_le_loglog {n : ℕ}
+    (hn : 1 < n) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
+    4 ≤ paperM n := by
+  have hn1 : 1 ≤ n := Nat.succ_le_of_lt (lt_trans Nat.zero_lt_one hn)
+  have hlog_nonneg : 0 ≤ Real.log (n : ℝ) := by
+    exact Real.log_nonneg (by exact_mod_cast hn1)
+  have hlog_pos : 0 < Real.log (n : ℝ) := paperLog_pos hn
+  have hexp2_le : Real.exp 2 ≤ Real.log (n : ℝ) := by
+    exact (Real.le_log_iff_exp_le hlog_pos).1 hloglog
+  have hseven_lt : (7 : ℝ) < Real.exp 2 := by
+    rw [show (2 : ℝ) = 1 + 1 by norm_num, Real.exp_add]
+    nlinarith [Real.exp_one_gt_d9]
+  have hlog_ge_seven : 7 ≤ Real.log (n : ℝ) := by
+    linarith
+  let x : ℝ := Real.log (n : ℝ)
+  have hsum := Real.sum_le_exp_of_nonneg hlog_nonneg 6
+  have hsum' :
+      1 + x + x ^ 2 / 2 + x ^ 3 / 6 + x ^ 4 / 24 + x ^ 5 / 120 ≤ Real.exp x := by
+    simpa [x, Finset.sum_range_succ] using hsum
+  have hpoly :
+      4 * (x * x) ≤ 1 + x + (x * x) / 2 + (x * x * x) / 6 +
+        (x * x * x * x) / 24 + (x * x * x * x * x) / 120 := by
+    have hx0 : 0 ≤ x := by
+      linarith
+    have hx3_lower : 7 * (x * x) ≤ x * x * x := by
+      nlinarith
+    have hx5_lower : (343 : ℝ) * (x * x) ≤ x * x * x * x * x := by
+      calc
+        (343 : ℝ) * (x * x) = 49 * (7 * (x * x)) := by
+          ring
+        _ ≤ 49 * (x * x * x) := by
+          gcongr
+        _ ≤ (x * x) * (x * x * x) := by
+          nlinarith
+        _ = x * x * x * x * x := by
+          ring
+    have hmain :
+        4 * (x * x) ≤ (x * x) / 2 + (x * x * x) / 6 + (x * x * x * x * x) / 120 := by
+      have hcoeff : (4 : ℝ) ≤ (1 / 2 : ℝ) + 7 / 6 + 343 / 120 := by
+        norm_num
+      calc
+        4 * (x * x) ≤ (((1 / 2 : ℝ) + 7 / 6 + 343 / 120) * (x * x)) := by
+          gcongr
+        _ = (x * x) / 2 + (7 * (x * x)) / 6 + (343 * (x * x)) / 120 := by
+          ring
+        _ ≤ (x * x) / 2 + (x * x * x) / 6 + (x * x * x * x * x) / 120 := by
+          gcongr
+    have hrest : 0 ≤ 1 + x + (x * x * x * x) / 24 := by
+      nlinarith
+    linarith
+  have hmain : 4 * x ^ 2 ≤ Real.exp x := by
+    calc
+      4 * x ^ 2 = 4 * (x * x) := by
+        ring
+      _ ≤ 1 + x + (x * x) / 2 + (x * x * x) / 6 +
+            (x * x * x * x) / 24 + (x * x * x * x * x) / 120 :=
+        hpoly
+      _ = 1 + x + x ^ 2 / 2 + x ^ 3 / 6 + x ^ 4 / 24 + x ^ 5 / 120 := by
+        ring
+      _ ≤ Real.exp x := hsum'
+  have hmain' : 4 * Real.log (n : ℝ) ^ 2 ≤ Real.exp (Real.log (n : ℝ)) := by
+    simpa [x] using hmain
+  change 4 ≤ (n : ℝ) / (Real.log (n : ℝ) ^ 2)
+  rw [Real.exp_log (by exact_mod_cast (lt_trans Nat.zero_lt_one hn))] at hmain'
+  exact (le_div_iff₀ (show 0 < Real.log (n : ℝ) ^ 2 by positivity)).2 hmain'
+
+theorem paperM_div_two_le_div_paperSNat_of_two_le_loglog {n : ℕ}
+    (hn : 1 < n) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
+    paperM n / 2 ≤ (n : ℝ) / paperSNat n := by
+  have hspos : 0 < paperS n := paperS_pos hn
+  calc
+    paperM n / 2 = (n : ℝ) / (2 * paperS n) := by
+      unfold paperM
+      field_simp [hspos.ne']
+    _ ≤ (n : ℝ) / paperSNat n := by
+      exact div_le_div_of_nonneg_left (Nat.cast_nonneg n)
+        (by exact_mod_cast (Nat.succ_le_iff.mp (one_le_paperSNat n)))
+        (paperSNat_le_two_mul_paperS_of_two_le_loglog hn hloglog)
+
+theorem paperM_div_four_lt_paperMNat_of_two_le_loglog {n : ℕ}
+    (hn : 1 < n) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
+    paperM n / 4 < (paperMNat n : ℝ) := by
+  have hhalf : paperM n / 2 ≤ (n : ℝ) / paperSNat n :=
+    paperM_div_two_le_div_paperSNat_of_two_le_loglog hn hloglog
+  have hsub : (n : ℝ) / paperSNat n - 1 < (paperMNat n : ℝ) :=
+    div_paperSNat_sub_one_lt_paperMNat n
+  have hmid : paperM n / 2 - 1 < (paperMNat n : ℝ) := by
+    linarith
+  have hfour : 4 ≤ paperM n := four_le_paperM_of_two_le_loglog hn hloglog
+  have hquarter : paperM n / 4 ≤ paperM n / 2 - 1 := by
+    nlinarith
+  exact lt_of_le_of_lt hquarter hmid
+
+theorem paperM_log_sub_log_four_le_log_paperMNat_of_two_le_loglog {n : ℕ}
+    (hn : 1 < n) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
+    Real.log (paperM n) - Real.log (4 : ℝ) ≤ Real.log (paperMNat n : ℝ) := by
+  have hlt : paperM n / 4 < (paperMNat n : ℝ) :=
+    paperM_div_four_lt_paperMNat_of_two_le_loglog hn hloglog
+  have hleftpos : 0 < paperM n / 4 := by
+    exact div_pos (paperM_pos hn) (by norm_num)
+  calc
+    Real.log (paperM n) - Real.log (4 : ℝ) = Real.log (paperM n / 4) := by
+      rw [Real.log_div (paperM_pos hn).ne' (by norm_num : (4 : ℝ) ≠ 0)]
+    _ ≤ Real.log (paperMNat n : ℝ) := by
+      exact Real.log_le_log hleftpos hlt.le
 
 theorem nat_le_paperKNat_of_le_paperK {a : ℕ} {κ : ℝ} {n : ℕ}
     (h : (a : ℝ) ≤ paperK κ n) : a ≤ paperKNat κ n := by
@@ -2401,6 +2577,70 @@ theorem paperRIOuterEventMass_le_exp_of_scaledLogs_one
     nlinarith
   have hk0 : 0 ≤ (k : ℝ) := by positivity
   nlinarith
+
+theorem paperRIOuterEventMass_le_exp_of_paperParameterLogs
+    {ε xR xB : ℝ} {n lR lB : ℕ}
+    (hn : 1 < n)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hε : 0 ≤ ε)
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (hsum2 : xR + xB ≤ 2)
+    (hk : paperKNat (1 + ε) n ≤ paperMNat n * paperMNat n)
+    (hlR : lR ≤ paperMNat n) (hlB : lB ≤ paperMNat n)
+    (hkprod : paperKNat (1 + ε) n ≤ lR * lB)
+    (hhalf : 2 * paperKNat (1 + ε) n ≤ paperMNat n * paperMNat n + 1)
+    (hlRk : (lR : ℝ) = xR * (paperKNat (1 + ε) n : ℝ))
+    (hlBk : (lB : ℝ) = xB * (paperKNat (1 + ε) n : ℝ))
+    (hxRpos : 0 < xR) (hxBpos : 0 < xB) :
+    paperRIOuterEventMass (paperMNat n) lR lB (paperKNat (1 + ε) n) ≤
+      Real.exp
+        ((((xR + xB - 2) * (paperKNat (1 + ε) n : ℝ)) *
+              (Real.log (n : ℝ) - 2 * Real.log (Real.log (n : ℝ)) - Real.log (4 : ℝ))) +
+          (((2 - xR - xB) * (paperKNat (1 + ε) n : ℝ)) *
+              (Real.log (2 : ℝ) + Real.log (1 + ε) +
+                (Real.log (n : ℝ) + Real.log (Real.log (n : ℝ))) / 2)) +
+          ((1 - xR) * (paperKNat (1 + ε) n : ℝ)) * Real.log xR +
+          ((1 - xB) * (paperKNat (1 + ε) n : ℝ)) * Real.log xB +
+          (1 + xR + xB) * (paperKNat (1 + ε) n : ℝ)) := by
+  have hκ : 0 < 1 + ε := by
+    linarith
+  have hbase :=
+    paperRIOuterEventMass_le_exp_of_scaledLogs_one
+      (m := paperMNat n) (k := paperKNat (1 + ε) n)
+      hk (Nat.succ_le_iff.mp (one_le_paperKNat hκ hn)) hlR hlB hkprod hhalf
+      hlRk hlBk hxRpos hxBpos
+  refine hbase.trans ?_
+  apply Real.exp_le_exp.mpr
+  have hcoefM_nonpos :
+      ((xR + xB - 2) * (paperKNat (1 + ε) n : ℝ)) ≤ 0 := by
+    have hkNat_nonneg : 0 ≤ (paperKNat (1 + ε) n : ℝ) := by
+      positivity
+    nlinarith
+  have hcoefK_nonneg :
+      0 ≤ ((2 - xR - xB) * (paperKNat (1 + ε) n : ℝ)) := by
+    have hkNat_nonneg : 0 ≤ (paperKNat (1 + ε) n : ℝ) := by
+      positivity
+    nlinarith
+  have hlogM :
+      ((xR + xB - 2) * (paperKNat (1 + ε) n : ℝ)) * Real.log (paperMNat n : ℝ) ≤
+        ((xR + xB - 2) * (paperKNat (1 + ε) n : ℝ)) *
+          (Real.log (paperM n) - Real.log (4 : ℝ)) := by
+    exact
+      mul_le_mul_of_nonpos_left
+        (paperM_log_sub_log_four_le_log_paperMNat_of_two_le_loglog hn hloglog) hcoefM_nonpos
+  have hlogK :
+      ((2 - xR - xB) * (paperKNat (1 + ε) n : ℝ)) * Real.log (paperKNat (1 + ε) n : ℝ) ≤
+        ((2 - xR - xB) * (paperKNat (1 + ε) n : ℝ)) *
+          (Real.log (2 : ℝ) + Real.log (1 + ε) +
+            (Real.log (n : ℝ) + Real.log (Real.log (n : ℝ))) / 2) := by
+    exact mul_le_mul_of_nonneg_left (paperKNat_log_le hκ hn hkone) hcoefK_nonneg
+  have hlogM' :
+      ((xR + xB - 2) * (paperKNat (1 + ε) n : ℝ)) *
+          (Real.log (paperM n) - Real.log (4 : ℝ)) =
+        ((xR + xB - 2) * (paperKNat (1 + ε) n : ℝ)) *
+          (Real.log (n : ℝ) - 2 * Real.log (Real.log (n : ℝ)) - Real.log (4 : ℝ)) := by
+    rw [paperM_log_eq hn]
+  linarith
 
 theorem paperRI_smallSumCoeff_le
     {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
