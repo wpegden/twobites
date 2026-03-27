@@ -1,4 +1,5 @@
 import Mathlib.Algebra.Order.Floor.Semiring
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Nat.Choose.Cast
@@ -1431,6 +1432,62 @@ theorem paperHugeWitnessBranchParam_le_of_pieceBranchParamBounds
     paperHugeWitnessBranchParam ε1 κ β q n ≤ δbranch := by
   rw [paperHugeWitnessBranchParam_eq_add]
   exact (add_le_add hdeg hcodeg).trans hsum
+
+theorem paperHugeWitnessDegreeBranchParam_eventually_le
+    {ε1 κ β δ : ℝ} (hε1 : 0 < ε1) (hκ : 0 ≤ κ) (hβ : 0 ≤ β) (hδ : 0 < δ) :
+    ∃ N : ℕ, ∀ ⦃n : ℕ⦄, N ≤ n → paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ δ := by
+  let c : ℝ := (9 * κ * β) / ε1
+  have hc : 0 ≤ c := by
+    dsimp [c]
+    positivity
+  have hratio :
+      Filter.Tendsto
+        (fun n : ℕ =>
+          Real.log (Real.log (n : ℝ)) / (Real.log (n : ℝ)) ^ (2 : ℝ))
+        Filter.atTop (nhds 0) := by
+    have hlo :
+        (fun n : ℕ => Real.log (Real.log (n : ℝ))) =o[Filter.atTop]
+          (fun n : ℕ => (Real.log (n : ℝ)) ^ (2 : ℝ)) := by
+      simpa [pow_one] using
+        ((isLittleO_log_rpow_rpow_atTop (r := (1 : ℝ)) (s := (2 : ℝ)) (by positivity)).comp_tendsto
+          (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop))
+    simpa using hlo.tendsto_div_nhds_zero
+  have htendsto :
+      Filter.Tendsto
+        (fun n : ℕ =>
+          c * (Real.log (Real.log (n : ℝ)) / (Real.log (n : ℝ)) ^ (2 : ℝ)))
+        Filter.atTop (nhds 0) := by
+    simpa [c] using hratio.const_mul c
+  have hlogevent : ∀ᶠ n : ℕ in Filter.atTop, 2 ≤ Real.log (n : ℝ) := by
+    exact (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop).eventually_ge_atTop 2
+  rcases Metric.tendsto_atTop.mp htendsto δ hδ with ⟨N1, hN1⟩
+  rcases Filter.eventually_atTop.1 hlogevent with ⟨N0, hN0⟩
+  refine ⟨max N0 N1, ?_⟩
+  intro n hn
+  have hn0 : N0 ≤ n := le_trans (le_max_left _ _) hn
+  have hn1 : N1 ≤ n := le_trans (le_max_right _ _) hn
+  have hlog2 : 2 ≤ Real.log (n : ℝ) := hN0 n hn0
+  have hlog1 : 1 ≤ Real.log (n : ℝ) := by
+    linarith
+  have hloglog_nonneg : 0 ≤ Real.log (Real.log (n : ℝ)) := by
+    exact Real.log_nonneg hlog1
+  have hratio_nonneg :
+      0 ≤ Real.log (Real.log (n : ℝ)) / (Real.log (n : ℝ)) ^ (2 : ℝ) := by
+    exact div_nonneg hloglog_nonneg (by positivity)
+  have hlt_abs :
+      |c| * (|Real.log (Real.log (n : ℝ))| / (Real.log (n : ℝ)) ^ (2 : ℝ)) < δ := by
+    simpa [Real.dist_eq] using hN1 n hn1
+  have hlt :
+      c * (Real.log (Real.log (n : ℝ)) / (Real.log (n : ℝ)) ^ (2 : ℝ)) < δ := by
+    simpa [abs_of_nonneg hc, abs_of_nonneg hloglog_nonneg] using hlt_abs
+  have hEq :
+      paperHugeWitnessDegreeBranchParam ε1 κ β n =
+        c * (Real.log (Real.log (n : ℝ)) / (Real.log (n : ℝ)) ^ (2 : ℝ)) := by
+    simp [paperHugeWitnessDegreeBranchParam, paperHugeWitnessDegreeCoeff, paperS, c,
+      div_eq_mul_inv]
+    ring
+  rw [hEq]
+  exact le_of_lt hlt
 
 theorem paperHugeWitnessDegreeBranchParam_le_three_mul_of_diagScale
     {ε1 κ β : ℝ} {n : ℕ} (hε1 : 0 < ε1) (hn : 1 < n) (hκ : 0 ≤ κ)
