@@ -8059,6 +8059,21 @@ theorem redImage_card_add_paperCapNat_le_paperKNat_of_card_le_of_one_le_gap_of_l
       exact Twobites.paperKNat_add_paperCapNat_le_paperKNat_of_one_le_gap_of_le
         hn hρ hβ hε2 hgap hκ
 
+theorem redImage_card_add_paperCapNat_add_paperKNat_le_paperKNat_of_card_le_of_two_le_gap_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ η κ : ℝ}
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρ n)
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ)
+    (hgap : 2 ≤ Twobites.paperK η n) (hκ : ρ + (1 + ε2) * β + δ + η ≤ κ) :
+    (C.redImage I).card + Twobites.paperCapNat β ε2 n + Twobites.paperKNat δ n ≤
+      Twobites.paperKNat κ n := by
+  calc
+    (C.redImage I).card + Twobites.paperCapNat β ε2 n + Twobites.paperKNat δ n ≤
+        Twobites.paperKNat ρ n + Twobites.paperCapNat β ε2 n + Twobites.paperKNat δ n := by
+      omega
+    _ ≤ Twobites.paperKNat κ n := by
+      exact Twobites.paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_of_two_le_gap_of_le
+        hn hρ hβ hε2 hδ hgap hκ
+
 theorem blueImage_card_add_paperCapNat_le_paperKNat_of_card_le_of_one_le_gap_of_le
     (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ κ : ℝ}
     (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρ n)
@@ -8073,6 +8088,21 @@ theorem blueImage_card_add_paperCapNat_le_paperKNat_of_card_le_of_one_le_gap_of_
       exact Twobites.paperKNat_add_paperCapNat_le_paperKNat_of_one_le_gap_of_le
         hn hρ hβ hε2 hgap hκ
 
+theorem blueImage_card_add_paperCapNat_add_paperKNat_le_paperKNat_of_card_le_of_two_le_gap_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ η κ : ℝ}
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρ n)
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ)
+    (hgap : 2 ≤ Twobites.paperK η n) (hκ : ρ + (1 + ε2) * β + δ + η ≤ κ) :
+    (C.blueImage I).card + Twobites.paperCapNat β ε2 n + Twobites.paperKNat δ n ≤
+      Twobites.paperKNat κ n := by
+  calc
+    (C.blueImage I).card + Twobites.paperCapNat β ε2 n + Twobites.paperKNat δ n ≤
+        Twobites.paperKNat ρ n + Twobites.paperCapNat β ε2 n + Twobites.paperKNat δ n := by
+      omega
+    _ ≤ Twobites.paperKNat κ n := by
+      exact Twobites.paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_of_two_le_gap_of_le
+        hn hρ hβ hε2 hδ hgap hκ
+
 theorem redImage_card_le_card (C : ConstructionData n m) (I : Finset (Fin n)) :
     (C.redImage I).card ≤ I.card := by
   simpa [ConstructionData.redImage] using
@@ -8082,6 +8112,30 @@ theorem blueImage_card_le_card (C : ConstructionData n m) (I : Finset (Fin n)) :
     (C.blueImage I).card ≤ I.card := by
   simpa [ConstructionData.blueImage] using
     (Finset.card_image_le (s := I) (f := C.blueProj))
+
+theorem paperKNat_le_paperKNat_sub_redImage_card_sub_paperCapNat_of_card_le_of_two_le_gap_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ η κ : ℝ}
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρ n)
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ)
+    (hgap : 2 ≤ Twobites.paperK η n) (hκ : ρ + (1 + ε2) * β + δ + η ≤ κ) :
+    Twobites.paperKNat δ n ≤
+      Twobites.paperKNat κ n - (C.redImage I).card - Twobites.paperCapNat β ε2 n := by
+  have hsum :=
+    C.redImage_card_add_paperCapNat_add_paperKNat_le_paperKNat_of_card_le_of_two_le_gap_of_le
+      I hred hn hρ hβ hε2 hδ hgap hκ
+  omega
+
+theorem paperKNat_le_paperKNat_sub_blueImage_card_sub_paperCapNat_of_card_le_of_two_le_gap_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρ β ε2 δ η κ : ℝ}
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρ n)
+    (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ)
+    (hgap : 2 ≤ Twobites.paperK η n) (hκ : ρ + (1 + ε2) * β + δ + η ≤ κ) :
+    Twobites.paperKNat δ n ≤
+      Twobites.paperKNat κ n - (C.blueImage I).card - Twobites.paperCapNat β ε2 n := by
+  have hsum :=
+    C.blueImage_card_add_paperCapNat_add_paperKNat_le_paperKNat_of_card_le_of_two_le_gap_of_le
+      I hblue hn hρ hβ hε2 hδ hgap hκ
+  omega
 
 theorem paper_risi_hLossGap_of_blueLeft_of_redRight_subGap_of_card_le_of_one_le_gap_of_le
     (C : ConstructionData n m) (I : Finset (Fin n)) {ρB β ε2 δ κ ε1 : ℝ}
@@ -8218,6 +8272,70 @@ theorem paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_card_le_of_one_l
   exact
     C.paper_risi_hLossGap_of_blueRight_of_redLeft_subGap_of_card_le_of_one_le_gap_of_le
       I hI hred hn hρR hβ hε2 hgapCap hκ hLoss'
+
+theorem paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_card_le_of_two_le_gap_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρB β ε2 δ η κ ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hn : 0 < n) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ)
+    (hgap2 : 2 ≤ Twobites.paperK η n) (hκ : ρB + (1 + ε2) * β + δ + η ≤ κ)
+    (hLoss :
+      (paperRISILossNat κ ε1 n : ℝ) +
+          (((Twobites.paperKNat κ n -
+                ((C.redImage I).card + (C.blueImage I).card) : ℕ) : ℕ) : ℝ) *
+            ((Twobites.paperKNat κ n : ℝ) - 1) ≤
+        (Twobites.paperCapNat β ε2 n : ℝ) * (Twobites.paperKNat δ n : ℝ)) :
+    paperRISILossNat κ ε1 n ≤
+      C.paperSection4OpenPairTargetNat I κ (Twobites.paperCapNat β ε2 n) := by
+  have hgapCap :
+      1 ≤ Twobites.paperK (δ + η) n := by
+    rw [← Twobites.paperK_add (κ₁ := δ) (κ₂ := η) n]
+    have hδK : 0 ≤ Twobites.paperK δ n := Twobites.paperK_nonneg hδ n
+    linarith
+  have hκCap : ρB + (1 + ε2) * β + (δ + η) ≤ κ := by
+    linarith
+  have hgap :
+      Twobites.paperKNat δ n ≤
+        Twobites.paperKNat κ n - (C.blueImage I).card - Twobites.paperCapNat β ε2 n := by
+    exact
+      C.paperKNat_le_paperKNat_sub_blueImage_card_sub_paperCapNat_of_card_le_of_two_le_gap_of_le
+        I hblue hn hρB hβ hε2 hδ hgap2 hκ
+  exact
+    C.paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_card_le_of_one_le_gap_of_le
+      I (ρB := ρB) (β := β) (ε2 := ε2) (δ := δ + η) (κ := κ) (ε1 := ε1)
+      (gap := Twobites.paperKNat δ n) hI hblue hn hρB hβ hε2 hgapCap hκCap hgap hLoss
+
+theorem paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_card_le_of_two_le_gap_of_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ρR β ε2 δ η κ ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hn : 0 < n) (hρR : 0 ≤ ρR) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ)
+    (hgap2 : 2 ≤ Twobites.paperK η n) (hκ : ρR + (1 + ε2) * β + δ + η ≤ κ)
+    (hLoss :
+      (paperRISILossNat κ ε1 n : ℝ) +
+          (((Twobites.paperKNat κ n -
+                ((C.redImage I).card + (C.blueImage I).card) : ℕ) : ℕ) : ℝ) *
+            ((Twobites.paperKNat κ n : ℝ) - 1) ≤
+        (Twobites.paperCapNat β ε2 n : ℝ) * (Twobites.paperKNat δ n : ℝ)) :
+    paperRISILossNat κ ε1 n ≤
+      C.paperSection4OpenPairTargetNat I κ (Twobites.paperCapNat β ε2 n) := by
+  have hgapCap :
+      1 ≤ Twobites.paperK (δ + η) n := by
+    rw [← Twobites.paperK_add (κ₁ := δ) (κ₂ := η) n]
+    have hδK : 0 ≤ Twobites.paperK δ n := Twobites.paperK_nonneg hδ n
+    linarith
+  have hκCap : ρR + (1 + ε2) * β + (δ + η) ≤ κ := by
+    linarith
+  have hgap :
+      Twobites.paperKNat δ n ≤
+        Twobites.paperKNat κ n - (C.redImage I).card - Twobites.paperCapNat β ε2 n := by
+    exact
+      C.paperKNat_le_paperKNat_sub_redImage_card_sub_paperCapNat_of_card_le_of_two_le_gap_of_le
+        I hred hn hρR hβ hε2 hδ hgap2 hκ
+  exact
+    C.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_card_le_of_one_le_gap_of_le
+      I (ρR := ρR) (β := β) (ε2 := ε2) (δ := δ + η) (κ := κ) (ε1 := ε1)
+      (gap := Twobites.paperKNat δ n) hI hred hn hρR hβ hε2 hgapCap hκCap hgap hLoss
 
 theorem paper_huge_blue_cross_deterministic_of_paperCapNat_of_witnessErrorBounds_of_additiveCapBase
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
