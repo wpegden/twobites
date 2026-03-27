@@ -299,6 +299,69 @@ def unrevealedBasePairSet (C : ConstructionData n m) (I : Finset (Fin n))
   classical
   exact (C.basePairSet I).filter fun p => p.1 ∉ A ∧ p.2 ∉ A
 
+/-- Canonical unrevealed red pairs after querying `A`, matching the red part of the paper's
+`E_I`. -/
+def unrevealedRedBasePairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (Fin m × Fin m) := by
+  classical
+  exact (C.redBasePairSet I).filter fun p => Sum.inl p.1 ∉ A ∧ Sum.inl p.2 ∉ A
+
+/-- Canonical unrevealed blue pairs after querying `A`, matching the blue part of the paper's
+`E_I`. -/
+def unrevealedBlueBasePairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (Fin m × Fin m) := by
+  classical
+  exact (C.blueBasePairSet I).filter fun p => Sum.inr p.1 ∉ A ∧ Sum.inr p.2 ∉ A
+
+/-- The red same-color `ClosedPairPlus` contribution `⋃_i {N^+(r_i) choose 2}` on canonical red
+pairs. -/
+def redBaseClosedPlusPair (C : ConstructionData n m) (I : Finset (Fin n)) (p : Fin m × Fin m) :
+    Prop :=
+  ∃ r ∈ C.redImage I,
+    C.redBase.Adj r p.1 ∧ C.redBase.Adj r p.2 ∧ r < p.1 ∧ r < p.2
+
+/-- The blue same-color `ClosedPairPlus` contribution `⋃_i {N^+(b_i) choose 2}` on canonical blue
+pairs. -/
+def blueBaseClosedPlusPair (C : ConstructionData n m) (I : Finset (Fin n)) (p : Fin m × Fin m) :
+    Prop :=
+  ∃ b ∈ C.blueImage I,
+    C.blueBase.Adj b p.1 ∧ C.blueBase.Adj b p.2 ∧ b < p.1 ∧ b < p.2
+
+/-- The paper's `T_R`: unrevealed red pairs after removing the red same-color `ClosedPairPlus`
+part. -/
+def section4TRedPairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (Fin m × Fin m) := by
+  classical
+  exact (C.unrevealedRedBasePairSet I A).filter fun p => ¬ C.redBaseClosedPlusPair I p
+
+/-- The paper's `T_B`: unrevealed blue pairs after removing the blue same-color `ClosedPairPlus`
+part. -/
+def section4TBluePairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (Fin m × Fin m) := by
+  classical
+  exact (C.unrevealedBlueBasePairSet I A).filter fun p => ¬ C.blueBaseClosedPlusPair I p
+
+/-- The combined same-color `ClosedPairPlus` predicate on canonical base pairs. -/
+def sameColorClosedPlusBasePair (C : ConstructionData n m) (I : Finset (Fin n))
+    (p : BaseVertex m × BaseVertex m) : Prop :=
+  match p.1, p.2 with
+  | Sum.inl r, Sum.inl r' => C.redBaseClosedPlusPair I (r, r')
+  | Sum.inr b, Sum.inr b' => C.blueBaseClosedPlusPair I (b, b')
+  | _, _ => False
+
+/-- The combined `T_I = T_R ∪ T_B` object used in the proof of `lem:RISI`. -/
+def section4TPairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
+  classical
+  exact (C.unrevealedBasePairSet I A).filter fun p => ¬ C.sameColorClosedPlusBasePair I p
+
+/-- The unrevealed same-color pairs removed from `E_I` by the same-color `ClosedPairPlus`
+contribution before defining `T_R ∪ T_B`. -/
+def sameColorClosedPlusBasePairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
+  classical
+  exact (C.unrevealedBasePairSet I A).filter fun p => C.sameColorClosedPlusBasePair I p
+
 /-- The paper's closed-pair predicate `C(I)`, expressed on ordered pairs of distinct vertices of
 `I`. -/
 def ClosedPair (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) : Prop :=
@@ -501,6 +564,48 @@ def OpenPairPlus (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) :
   classical
   simp [unrevealedBasePairSet]
 
+@[simp] theorem mem_unrevealedRedBasePairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {p : Fin m × Fin m} :
+    p ∈ C.unrevealedRedBasePairSet I A ↔
+      p ∈ C.redBasePairSet I ∧ Sum.inl p.1 ∉ A ∧ Sum.inl p.2 ∉ A := by
+  classical
+  simp [unrevealedRedBasePairSet]
+
+@[simp] theorem mem_unrevealedBlueBasePairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {p : Fin m × Fin m} :
+    p ∈ C.unrevealedBlueBasePairSet I A ↔
+      p ∈ C.blueBasePairSet I ∧ Sum.inr p.1 ∉ A ∧ Sum.inr p.2 ∉ A := by
+  classical
+  simp [unrevealedBlueBasePairSet]
+
+@[simp] theorem mem_section4TRedPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {p : Fin m × Fin m} :
+    p ∈ C.section4TRedPairSet I A ↔
+      p ∈ C.unrevealedRedBasePairSet I A ∧ ¬ C.redBaseClosedPlusPair I p := by
+  classical
+  simp [section4TRedPairSet]
+
+@[simp] theorem mem_section4TBluePairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {p : Fin m × Fin m} :
+    p ∈ C.section4TBluePairSet I A ↔
+      p ∈ C.unrevealedBlueBasePairSet I A ∧ ¬ C.blueBaseClosedPlusPair I p := by
+  classical
+  simp [section4TBluePairSet]
+
+@[simp] theorem mem_section4TPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {p : BaseVertex m × BaseVertex m} :
+    p ∈ C.section4TPairSet I A ↔
+      p ∈ C.unrevealedBasePairSet I A ∧ ¬ C.sameColorClosedPlusBasePair I p := by
+  classical
+  simp [section4TPairSet]
+
+@[simp] theorem mem_sameColorClosedPlusBasePairSet (C : ConstructionData n m)
+    {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {p : BaseVertex m × BaseVertex m} :
+    p ∈ C.sameColorClosedPlusBasePairSet I A ↔
+      p ∈ C.unrevealedBasePairSet I A ∧ C.sameColorClosedPlusBasePair I p := by
+  classical
+  simp [sameColorClosedPlusBasePairSet]
+
 @[simp] theorem mem_baseOpenPairSet_inl_inl (C : ConstructionData n m) {I : Finset (Fin n)}
     {r r' : Fin m} :
     (Sum.inl r, Sum.inl r') ∈ C.baseOpenPairSet I ↔ (r, r') ∈ C.redBaseOpenPairSet I := by
@@ -512,6 +617,13 @@ def OpenPairPlus (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) :
     (Sum.inl r, Sum.inl r') ∈ C.basePairSet I ↔ (r, r') ∈ C.redBasePairSet I := by
   classical
   simp [basePairSet]
+
+@[simp] theorem mem_section4TPairSet_inl_inl (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {r r' : Fin m} :
+    (Sum.inl r, Sum.inl r') ∈ C.section4TPairSet I A ↔
+      (r, r') ∈ C.section4TRedPairSet I A := by
+  classical
+  simp [section4TPairSet, section4TRedPairSet, sameColorClosedPlusBasePair]
 
 @[simp] theorem mem_revealedBaseArcSet_inl_inl {A B : Finset (BaseVertex m)} {r r' : Fin m} :
     (Sum.inl r, Sum.inl r') ∈ revealedBaseArcSet A B ↔
@@ -549,6 +661,13 @@ def OpenPairPlus (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) :
   classical
   simp [basePairSet]
 
+@[simp] theorem mem_section4TPairSet_inr_inr (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {b b' : Fin m} :
+    (Sum.inr b, Sum.inr b') ∈ C.section4TPairSet I A ↔
+      (b, b') ∈ C.section4TBluePairSet I A := by
+  classical
+  simp [section4TPairSet, section4TBluePairSet, sameColorClosedPlusBasePair]
+
 @[simp] theorem not_mem_baseOpenPairSet_inl_inr (C : ConstructionData n m) {I : Finset (Fin n)}
     {r : Fin m} {b : Fin m} :
     (Sum.inl r, Sum.inr b) ∉ C.baseOpenPairSet I := by
@@ -561,6 +680,12 @@ def OpenPairPlus (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) :
   classical
   simp [basePairSet]
 
+@[simp] theorem not_mem_section4TPairSet_inl_inr (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {r : Fin m} {b : Fin m} :
+    (Sum.inl r, Sum.inr b) ∉ C.section4TPairSet I A := by
+  classical
+  simp [section4TPairSet, sameColorClosedPlusBasePair]
+
 @[simp] theorem not_mem_baseOpenPairSet_inr_inl (C : ConstructionData n m) {I : Finset (Fin n)}
     {b : Fin m} {r : Fin m} :
     (Sum.inr b, Sum.inl r) ∉ C.baseOpenPairSet I := by
@@ -572,6 +697,12 @@ def OpenPairPlus (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) :
     (Sum.inr b, Sum.inl r) ∉ C.basePairSet I := by
   classical
   simp [basePairSet]
+
+@[simp] theorem not_mem_section4TPairSet_inr_inl (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {b : Fin m} {r : Fin m} :
+    (Sum.inr b, Sum.inl r) ∉ C.section4TPairSet I A := by
+  classical
+  simp [section4TPairSet, sameColorClosedPlusBasePair]
 
 theorem swap_not_mem_redBaseOpenPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
     {r r' : Fin m} (h : (r, r') ∈ C.redBaseOpenPairSet I) :
@@ -2601,6 +2732,46 @@ theorem openPair_lower_bound_sub_section4_budget_le_unrevealedBasePairSet_sectio
   exact
     (C.openPair_lower_bound_sub_section4_budget_le_unrevealed_section4F I hopen).trans
       (C.unrevealedBaseOpenPairSet_card_le_unrevealedBasePairSet_card I (C.section4F I ε))
+
+theorem unrevealedBasePair_lower_bound_sub_sameColorClosedPlus_le_section4TPairSet
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    {N M : ℕ}
+    (hN : N ≤ (C.unrevealedBasePairSet I A).card)
+    (hM : (C.sameColorClosedPlusBasePairSet I A).card ≤ M) :
+    N - M ≤ (C.section4TPairSet I A).card := by
+  classical
+  have hpart := Finset.card_filter_add_card_filter_not
+    (s := C.unrevealedBasePairSet I A) (p := fun p => C.sameColorClosedPlusBasePair I p)
+  have hPlus :
+      ((C.unrevealedBasePairSet I A).filter fun p => C.sameColorClosedPlusBasePair I p).card =
+        (C.sameColorClosedPlusBasePairSet I A).card := by
+    unfold sameColorClosedPlusBasePairSet
+    rfl
+  have hT :
+      ((C.unrevealedBasePairSet I A).filter fun p => ¬ C.sameColorClosedPlusBasePair I p).card =
+        (C.section4TPairSet I A).card := by
+    unfold section4TPairSet
+    rfl
+  rw [hPlus, hT] at hpart
+  omega
+
+theorem openPair_lower_bound_sub_section4_budget_sub_sameColorClosedPlus_le_section4TPairSet
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ} {N M : ℕ}
+    (hopen : N ≤ (C.baseOpenPairSet I).card)
+    (hM : (C.sameColorClosedPlusBasePairSet I (C.section4F I ε)).card ≤ M) :
+    N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card - M ≤
+      (C.section4TPairSet I (C.section4F I ε)).card := by
+  classical
+  have hbase :
+      N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card ≤
+        (C.unrevealedBasePairSet I (C.section4F I ε)).card :=
+    C.openPair_lower_bound_sub_section4_budget_le_unrevealedBasePairSet_section4F I hopen
+  have hT :
+      N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card - M ≤
+        (C.section4TPairSet I (C.section4F I ε)).card :=
+    C.unrevealedBasePair_lower_bound_sub_sameColorClosedPlus_le_section4TPairSet
+      I (C.section4F I ε) hbase hM
+  exact hT
 
 theorem section4RevealPairSet_card_le_section4_budget (C : ConstructionData n m)
     (I : Finset (Fin n)) {ε : ℝ} :
