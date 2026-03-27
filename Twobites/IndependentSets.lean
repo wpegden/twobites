@@ -4297,6 +4297,50 @@ theorem projectionPairCount_sum_baseImage_le_partPairCount_LMS_add_huge_of_thres
             C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) := by
         rw [C.partPairCount_filter_isRed_add_partPairCount_filter_isBlue]
 
+theorem cast_partPairCount_LMS_le_sum_of_thresholds
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ} {L M S : ℝ}
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hL : ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤ L)
+    (hM : ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤ M)
+    (hS : ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤ S) :
+    ((C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) : ℕ) : ℝ) ≤
+      L + M + S := by
+  have hMS :
+      C.partPairCount I (C.MPart I ε ∪ C.SPart I ε) =
+        C.partPairCount I (C.MPart I ε) + C.partPairCount I (C.SPart I ε) := by
+    exact C.partPairCount_union_of_disjoint I (C.disjoint_MPart_SPart I ε)
+  have hLMSDisj :
+      Disjoint (C.LPart I ε) (C.MPart I ε ∪ C.SPart I ε) := by
+    refine Finset.disjoint_left.2 ?_
+    intro x hxL hxMS
+    rcases Finset.mem_union.1 hxMS with hxM | hxS
+    · exact (Finset.disjoint_left.1 (C.disjoint_LPart_MPart I ε)) hxL hxM
+    · exact (Finset.disjoint_left.1 (C.disjoint_LPart_SPart I ht32)) hxL hxS
+  have hUnion :
+      C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) =
+        C.partPairCount I (C.LPart I ε) + C.partPairCount I (C.MPart I ε) +
+          C.partPairCount I (C.SPart I ε) := by
+    calc
+      C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) =
+          C.partPairCount I (C.LPart I ε ∪ (C.MPart I ε ∪ C.SPart I ε)) := by
+            rw [Finset.union_assoc]
+      _ = C.partPairCount I (C.LPart I ε) + C.partPairCount I (C.MPart I ε ∪ C.SPart I ε) := by
+            exact C.partPairCount_union_of_disjoint I hLMSDisj
+      _ = C.partPairCount I (C.LPart I ε) +
+            (C.partPairCount I (C.MPart I ε) + C.partPairCount I (C.SPart I ε)) := by
+            rw [hMS]
+      _ = C.partPairCount I (C.LPart I ε) + C.partPairCount I (C.MPart I ε) +
+            C.partPairCount I (C.SPart I ε) := by
+            omega
+  have hUnionCast :
+      ((C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) : ℕ) : ℝ) =
+        ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) +
+          ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) +
+          ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) := by
+    exact_mod_cast hUnion
+  rw [hUnionCast]
+  linarith
+
 set_option linter.style.longLine false in
 theorem section4SecondStageLossNat_le_revealBudget_add_two_mul_partPairCount_LMS_add_huge
     (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
@@ -12508,6 +12552,66 @@ theorem
       (uRBound := uRBound) (uBBound := uBBound)
       hindep hp0 hp1
       (by simp [uRBound]) (by simp [uBBound]) hLossLeN' hTotal'
+
+set_option linter.style.longLine false in
+theorem
+    section4ActualConditionedEventMass_le_exp_of_indep_of_splitPartTotalError
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε p totalError revealError largeError mediumError smallError hugeRedError hugeBlueError : ℝ}
+    {N : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        N)
+    (hReveal :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤ revealError)
+    (hLarge : ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤ largeError)
+    (hMedium : ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤ mediumError)
+    (hSmall : ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤ smallError)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        hugeRedError)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        hugeBlueError)
+    (hTotal :
+      revealError + 3 * (largeError + mediumError + smallError) + hugeRedError + hugeBlueError ≤
+        totalError) :
+    C.section4ActualConditionedEventMass I ε p N ≤ Real.exp (p * totalError - p * (N : ℝ)) := by
+  have hLMS :
+      ((C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) : ℕ) : ℝ) ≤
+        largeError + mediumError + smallError := by
+    exact C.cast_partPairCount_LMS_le_sum_of_thresholds I ht32 hLarge hMedium hSmall
+  have hTotal' :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+            3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+            C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) ≤
+        totalError := by
+    have hCast :
+        (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+              3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+              C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+              C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) =
+          (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) +
+            3 * ((C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) : ℕ) : ℝ) +
+            ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) +
+            ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) := by
+      norm_num
+    rw [hCast]
+    nlinarith
+  exact
+    C.section4ActualConditionedEventMass_le_exp_of_indep_of_LMS_totalError
+      (I := I) (ε := ε) (p := p) (N := N)
+      hindep hp0 hp1 hHsubset ht21 ht32 hLossLeN hTotal'
 
 end
 
