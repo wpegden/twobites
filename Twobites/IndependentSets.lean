@@ -8520,6 +8520,100 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_eventualTwoEpsBranchPieceBounds_of_extraDeficit
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB δextraR δextraB : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hn : 1 < n) (hκ : 1 ≤ κ)
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hε1 : 0 ≤ ε1)
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (N : ℕ)
+    (hbranchwiseLarge :
+      ∀ ⦃m : ℕ⦄, N ≤ m →
+        Twobites.paperHugeWitnessDegreeBranchParam ε1 κ βdeg m ≤ ε1 * κ ∧
+          Twobites.paperHugeWitnessCodegBranchParam ε1 κ qcodeg m ≤ ε1 * κ ∧
+            Twobites.paperHugeWitnessDegreeBranchParam ε1 κ βdeg m ≤ ε1 * κ ∧
+              Twobites.paperHugeWitnessCodegBranchParam ε1 κ qcodeg m ≤ ε1 * κ)
+    (hN : N ≤ n)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hextraR : 2 * ε1 * κ ≤ δextraR)
+    (hκextraR :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + δextraR + δsumGap + δgapR ≤ κ)
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hextraB : 2 * ε1 * κ ≤ δextraB)
+    (hκextraB :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + δextraB + δsumGap + δgapB ≤ κ) :
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+            (1 + ε1) *
+              ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
+  have hκ4R :
+      ρR + (1 + ε2) * β + 4 * ε1 * κ + δsumGap + δgapR ≤ κ := by
+    have hκextraR' :
+        ρR + (1 + ε2) * β + (2 * ε1 * κ + δextraR) + δsumGap + δgapR ≤ κ := by
+      simpa [add_assoc, add_left_comm, add_comm] using hκextraR
+    nlinarith
+  have hκ4B :
+      ρB + (1 + ε2) * β + 4 * ε1 * κ + δsumGap + δgapB ≤ κ := by
+    have hκextraB' :
+        ρB + (1 + ε2) * β + (2 * ε1 * κ + δextraB) + δsumGap + δgapB ≤ κ := by
+      simpa [add_assoc, add_left_comm, add_comm] using hκextraB
+    nlinarith
+  have hbranchSum : ε1 * κ + ε1 * κ ≤ 2 * ε1 * κ := by
+    exact le_of_eq (by ring)
+  have hfour : 4 * ε1 * κ = 2 * ε1 * κ + 2 * ε1 * κ := by
+    ring
+  have hκ3R :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + (2 * ε1 * κ) + δsumGap + δgapR ≤ κ := by
+    simpa [hfour, add_assoc, add_left_comm, add_comm] using hκ4R
+  have hκ3B :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + (2 * ε1 * κ) + δsumGap + δgapB ≤ κ := by
+    simpa [hfour, add_assoc, add_left_comm, add_comm] using hκ4B
+  exact
+    C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_eventualBranchwisePieceBranchParamBounds
+      (δdegBlue := ε1 * κ) (δcodegBlue := ε1 * κ) (δblue := 2 * ε1 * κ)
+      (δdegRed := ε1 * κ) (δcodegRed := ε1 * κ) (δred := 2 * ε1 * κ)
+      hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR hρB
+      hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegScale hsumGap hdegBound
+      hchooseCodegBound hcodegBound N hbranchwiseLarge hN hbranchSum hgap2R hκ3R
+      hbranchSum hgap2B hκ3B
+
+set_option linter.style.longLine false in
+theorem
     paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_eventualTwoEpsBranchPieceBounds
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
@@ -8576,27 +8670,24 @@ theorem
         (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
             (1 + ε1) *
               ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
-          (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+    (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
               (1 + ε1) *
                 ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
-  have hbranchSum : ε1 * κ + ε1 * κ ≤ 2 * ε1 * κ := by
-    exact le_of_eq (by ring)
   have hfour : 4 * ε1 * κ = 2 * ε1 * κ + 2 * ε1 * κ := by
     ring
-  have hκ3R :
+  have hκextraR :
       ρR + (1 + ε2) * β + 2 * ε1 * κ + (2 * ε1 * κ) + δsumGap + δgapR ≤ κ := by
     simpa [hfour, add_assoc, add_left_comm, add_comm] using hκ4R
-  have hκ3B :
+  have hκextraB :
       ρB + (1 + ε2) * β + 2 * ε1 * κ + (2 * ε1 * κ) + δsumGap + δgapB ≤ κ := by
     simpa [hfour, add_assoc, add_left_comm, add_comm] using hκ4B
   exact
-    C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_eventualBranchwisePieceBranchParamBounds
-      (δdegBlue := ε1 * κ) (δcodegBlue := ε1 * κ) (δblue := 2 * ε1 * κ)
-      (δdegRed := ε1 * κ) (δcodegRed := ε1 * κ) (δred := 2 * ε1 * κ)
+    C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_eventualTwoEpsBranchPieceBounds_of_extraDeficit
+      (δextraR := 2 * ε1 * κ) (δextraB := 2 * ε1 * κ)
       hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR hρB
-      hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegScale hsumGap hdegBound
-      hchooseCodegBound hcodegBound N hbranchwiseLarge hN hbranchSum hgap2R hκ3R
-      hbranchSum hgap2B hκ3B
+      hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegScale hsumGap
+      hdegBound hchooseCodegBound hcodegBound N hbranchwiseLarge hN hgap2R
+      (by linarith) hκextraR hgap2B (by linarith) hκextraB
 
 set_option linter.style.longLine false in
 theorem
