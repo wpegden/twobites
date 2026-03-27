@@ -1877,6 +1877,13 @@ theorem paperHugeWitness_four_eps_budget_of_extraDeficit
     ρ + (1 + ε2) * β + 4 * ε1 * κ + δsumGap + δgap ≤ κ := by
   nlinarith [four_eps_mul_le_two_eps_mul_add_of_two_eps_mul_le hextra]
 
+theorem paperHugeWitness_two_eps_budget_of_four_eps_budget
+    {ρ β ε1 ε2 κ δsumGap δgap : ℝ}
+    (hκ :
+      ρ + (1 + ε2) * β + 4 * ε1 * κ + δsumGap + δgap ≤ κ) :
+    ρ + (1 + ε2) * β + 2 * ε1 * κ + (2 * ε1 * κ) + δsumGap + δgap ≤ κ := by
+  nlinarith
+
 theorem not_six_mul_paperK_le_cross_residual
     {ρ β ε2 κ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) :
     ¬ 6 * paperK κ n ≤
