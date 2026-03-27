@@ -469,6 +469,21 @@ def section4UBlueCondPairSet (C : ConstructionData n m) (I : Finset (Fin n))
       C.blueProj v = p.1 ∧ C.blueProj w = p.2 ∧
         v ≠ w ∧ C.OpenPairOn I A v w ∧ C.OpenPairPlus I v w
 
+/-- The combined conditioned `U_R ∪ U_B` object used in the exact Section 4 event count. -/
+def section4UCondPairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
+  classical
+  exact
+    ((C.section4URedCondPairSet I A).image fun p => (Sum.inl p.1, Sum.inl p.2)) ∪
+      ((C.section4UBlueCondPairSet I A).image fun p => (Sum.inr p.1, Sum.inr p.2))
+
+/-- The residual part of `T_I` after removing the exact conditioned `U_R ∪ U_B` pairs. Under the
+independence event, these are the pairs that must be non-edges in the second-stage exposure. -/
+def section4TRemainingPairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
+  classical
+  exact (C.section4TPairSet I A).filter fun p => p ∉ C.section4UCondPairSet I A
+
 @[simp] theorem mem_X_red (C : ConstructionData n m) {I : Finset (Fin n)} {r : Fin m}
     {v : Fin n} : v ∈ C.X I (Sum.inl r) ↔ v ∈ I ∧ C.redBase.Adj r (C.redProj v) := by
   classical
@@ -723,6 +738,22 @@ def section4UBlueCondPairSet (C : ConstructionData n m) (I : Finset (Fin n))
   classical
   simp [section4UBlueCondPairSet, and_left_comm, and_assoc]
 
+@[simp] theorem mem_section4UCondPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {p : BaseVertex m × BaseVertex m} :
+    p ∈ C.section4UCondPairSet I A ↔
+      p ∈
+          ((C.section4URedCondPairSet I A).image fun q => (Sum.inl q.1, Sum.inl q.2)) ∪
+            ((C.section4UBlueCondPairSet I A).image fun q => (Sum.inr q.1, Sum.inr q.2)) := by
+  classical
+  simp [section4UCondPairSet]
+
+@[simp] theorem mem_section4TRemainingPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {p : BaseVertex m × BaseVertex m} :
+    p ∈ C.section4TRemainingPairSet I A ↔
+      p ∈ C.section4TPairSet I A ∧ p ∉ C.section4UCondPairSet I A := by
+  classical
+  simp [section4TRemainingPairSet]
+
 @[simp] theorem mem_baseOpenPairSet_inl_inl (C : ConstructionData n m) {I : Finset (Fin n)}
     {r r' : Fin m} :
     (Sum.inl r, Sum.inl r') ∈ C.baseOpenPairSet I ↔ (r, r') ∈ C.redBaseOpenPairSet I := by
@@ -748,6 +779,31 @@ def section4UBlueCondPairSet (C : ConstructionData n m) (I : Finset (Fin n))
       (r, r') ∈ C.section4URedPairSet I A := by
   classical
   simp [section4UPairSet]
+
+@[simp] theorem mem_section4UCondPairSet_inl_inl (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {r r' : Fin m} :
+    (Sum.inl r, Sum.inl r') ∈ C.section4UCondPairSet I A ↔
+      (r, r') ∈ C.section4URedCondPairSet I A := by
+  classical
+  simp [section4UCondPairSet]
+
+@[simp] theorem mem_section4TRemainingPairSet_inl_inl (C : ConstructionData n m)
+    {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {r r' : Fin m} :
+    (Sum.inl r, Sum.inl r') ∈ C.section4TRemainingPairSet I A ↔
+      (r, r') ∈ C.section4TRedPairSet I A ∧
+        (r, r') ∉ C.section4URedCondPairSet I A := by
+  classical
+  constructor
+  · intro h
+    rcases C.mem_section4TRemainingPairSet.1 h with ⟨hT, hNotU⟩
+    refine ⟨C.mem_section4TPairSet_inl_inl.1 hT, ?_⟩
+    intro hU
+    exact hNotU (C.mem_section4UCondPairSet_inl_inl.2 hU)
+  · rintro ⟨hT, hNotU⟩
+    refine C.mem_section4TRemainingPairSet.2 ?_
+    refine ⟨C.mem_section4TPairSet_inl_inl.2 hT, ?_⟩
+    intro hU
+    exact hNotU (C.mem_section4UCondPairSet_inl_inl.1 hU)
 
 @[simp] theorem mem_revealedBaseArcSet_inl_inl {A B : Finset (BaseVertex m)} {r r' : Fin m} :
     (Sum.inl r, Sum.inl r') ∈ revealedBaseArcSet A B ↔
@@ -799,6 +855,31 @@ def section4UBlueCondPairSet (C : ConstructionData n m) (I : Finset (Fin n))
   classical
   simp [section4UPairSet]
 
+@[simp] theorem mem_section4UCondPairSet_inr_inr (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {b b' : Fin m} :
+    (Sum.inr b, Sum.inr b') ∈ C.section4UCondPairSet I A ↔
+      (b, b') ∈ C.section4UBlueCondPairSet I A := by
+  classical
+  simp [section4UCondPairSet]
+
+@[simp] theorem mem_section4TRemainingPairSet_inr_inr (C : ConstructionData n m)
+    {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {b b' : Fin m} :
+    (Sum.inr b, Sum.inr b') ∈ C.section4TRemainingPairSet I A ↔
+      (b, b') ∈ C.section4TBluePairSet I A ∧
+        (b, b') ∉ C.section4UBlueCondPairSet I A := by
+  classical
+  constructor
+  · intro h
+    rcases C.mem_section4TRemainingPairSet.1 h with ⟨hT, hNotU⟩
+    refine ⟨C.mem_section4TPairSet_inr_inr.1 hT, ?_⟩
+    intro hU
+    exact hNotU (C.mem_section4UCondPairSet_inr_inr.2 hU)
+  · rintro ⟨hT, hNotU⟩
+    refine C.mem_section4TRemainingPairSet.2 ?_
+    refine ⟨C.mem_section4TPairSet_inr_inr.2 hT, ?_⟩
+    intro hU
+    exact hNotU (C.mem_section4UCondPairSet_inr_inr.1 hU)
+
 @[simp] theorem not_mem_baseOpenPairSet_inl_inr (C : ConstructionData n m) {I : Finset (Fin n)}
     {r : Fin m} {b : Fin m} :
     (Sum.inl r, Sum.inr b) ∉ C.baseOpenPairSet I := by
@@ -823,6 +904,18 @@ def section4UBlueCondPairSet (C : ConstructionData n m) (I : Finset (Fin n))
   classical
   simp [section4UPairSet]
 
+@[simp] theorem not_mem_section4UCondPairSet_inl_inr (C : ConstructionData n m)
+    {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {r : Fin m} {b : Fin m} :
+    (Sum.inl r, Sum.inr b) ∉ C.section4UCondPairSet I A := by
+  classical
+  simp [section4UCondPairSet]
+
+@[simp] theorem not_mem_section4TRemainingPairSet_inl_inr (C : ConstructionData n m)
+    {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {r : Fin m} {b : Fin m} :
+    (Sum.inl r, Sum.inr b) ∉ C.section4TRemainingPairSet I A := by
+  classical
+  simp [section4TRemainingPairSet]
+
 @[simp] theorem not_mem_baseOpenPairSet_inr_inl (C : ConstructionData n m) {I : Finset (Fin n)}
     {b : Fin m} {r : Fin m} :
     (Sum.inr b, Sum.inl r) ∉ C.baseOpenPairSet I := by
@@ -846,6 +939,18 @@ def section4UBlueCondPairSet (C : ConstructionData n m) (I : Finset (Fin n))
     (Sum.inr b, Sum.inl r) ∉ C.section4UPairSet I A := by
   classical
   simp [section4UPairSet]
+
+@[simp] theorem not_mem_section4UCondPairSet_inr_inl (C : ConstructionData n m)
+    {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {b : Fin m} {r : Fin m} :
+    (Sum.inr b, Sum.inl r) ∉ C.section4UCondPairSet I A := by
+  classical
+  simp [section4UCondPairSet]
+
+@[simp] theorem not_mem_section4TRemainingPairSet_inr_inl (C : ConstructionData n m)
+    {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {b : Fin m} {r : Fin m} :
+    (Sum.inr b, Sum.inl r) ∉ C.section4TRemainingPairSet I A := by
+  classical
+  simp [section4TRemainingPairSet]
 
 theorem sym2_mk_injective_of_lt {α : Type*} [LinearOrder α] {a b c d : α}
     (hab : a < b) (hcd : c < d) (h : Sym2.mk (a, b) = Sym2.mk (c, d)) :
@@ -3152,6 +3257,115 @@ theorem openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_le_
   exact
     C.openPair_lower_bound_sub_section4_budget_sub_sameColorClosedPlus_le_section4TPairSet I
       hopen (C.sameColorClosedPlusBasePairSet_card_le_projectionPairCount_sum I (C.section4F I ε))
+
+theorem section4UCondPairSet_card_eq (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) :
+    (C.section4UCondPairSet I A).card =
+      (C.section4URedCondPairSet I A).card + (C.section4UBlueCondPairSet I A).card := by
+  classical
+  let sR : Finset (BaseVertex m × BaseVertex m) :=
+    (C.section4URedCondPairSet I A).image fun p => (Sum.inl p.1, Sum.inl p.2)
+  let sB : Finset (BaseVertex m × BaseVertex m) :=
+    (C.section4UBlueCondPairSet I A).image fun p => (Sum.inr p.1, Sum.inr p.2)
+  have hsR :
+      sR.card = (C.section4URedCondPairSet I A).card := by
+    dsimp [sR]
+    simpa using
+      (Finset.card_image_of_injective (s := C.section4URedCondPairSet I A)
+        (f := fun p => (Sum.inl p.1, Sum.inl p.2))
+        (by
+          intro a b hab
+          cases a
+          cases b
+          cases hab
+          rfl))
+  have hsB :
+      sB.card = (C.section4UBlueCondPairSet I A).card := by
+    dsimp [sB]
+    simpa using
+      (Finset.card_image_of_injective (s := C.section4UBlueCondPairSet I A)
+        (f := fun p => (Sum.inr p.1, Sum.inr p.2))
+        (by
+          intro a b hab
+          cases a
+          cases b
+          cases hab
+          rfl))
+  have hdisj : Disjoint sR sB := by
+    refine Finset.disjoint_left.2 ?_
+    intro p hpR hpB
+    rcases Finset.mem_image.1 hpR with ⟨qR, _, hqR⟩
+    rcases Finset.mem_image.1 hpB with ⟨qB, _, hqB⟩
+    rcases qR with ⟨r, r'⟩
+    rcases qB with ⟨b, b'⟩
+    have hfst : (Sum.inl r : BaseVertex m) = Sum.inr b := by
+      simpa [hqR, hqB] using congrArg Prod.fst (hqR.trans hqB.symm)
+    cases hfst
+  calc
+    (C.section4UCondPairSet I A).card = (sR ∪ sB).card := by
+      rfl
+    _ = sR.card + sB.card := Finset.card_union_of_disjoint hdisj
+    _ = (C.section4URedCondPairSet I A).card + (C.section4UBlueCondPairSet I A).card := by
+      rw [hsR, hsB]
+
+theorem section4UCondPairSet_subset_section4TPairSet (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    C.section4UCondPairSet I A ⊆ C.section4TPairSet I A := by
+  intro p hp
+  rw [section4UCondPairSet] at hp
+  rcases Finset.mem_union.1 hp with hR | hB
+  · rcases Finset.mem_image.1 hR with ⟨q, hq, rfl⟩
+    exact
+      (C.mem_section4TPairSet_inl_inl.2 <|
+        (C.mem_section4URedPairSet.1 (C.mem_section4URedCondPairSet.1 hq).1).1)
+  · rcases Finset.mem_image.1 hB with ⟨q, hq, rfl⟩
+    exact
+      (C.mem_section4TPairSet_inr_inr.2 <|
+        (C.mem_section4UBluePairSet.1 (C.mem_section4UBlueCondPairSet.1 hq).1).1)
+
+theorem section4TRemainingPairSet_card_eq (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) :
+    (C.section4TRemainingPairSet I A).card =
+      (C.section4TPairSet I A).card -
+        (C.section4URedCondPairSet I A).card -
+          (C.section4UBlueCondPairSet I A).card := by
+  classical
+  have hpart :=
+    Finset.card_filter_add_card_filter_not (s := C.section4TPairSet I A)
+      (p := fun p => p ∈ C.section4UCondPairSet I A)
+  have hfilter :
+      (C.section4TPairSet I A).filter (fun p => p ∈ C.section4UCondPairSet I A) =
+        C.section4UCondPairSet I A := by
+    apply Finset.ext
+    intro p
+    constructor
+    · intro hp
+      exact (Finset.mem_filter.1 hp).2
+    · intro hp
+      exact Finset.mem_filter.2 ⟨C.section4UCondPairSet_subset_section4TPairSet I A hp, hp⟩
+  rw [show (C.section4TPairSet I A).filter
+      (fun p => p ∉ C.section4UCondPairSet I A) = C.section4TRemainingPairSet I A by
+      rfl] at hpart
+  rw [hfilter, C.section4UCondPairSet_card_eq] at hpart
+  omega
+
+theorem section4TRemainingPairSet_card_eq_of_card_eq_condCounts
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    {uR uB : ℕ}
+    (huR : (C.section4URedCondPairSet I A).card = uR)
+    (huB : (C.section4UBlueCondPairSet I A).card = uB) :
+    (C.section4TRemainingPairSet I A).card = (C.section4TPairSet I A).card - uR - uB := by
+  rw [C.section4TRemainingPairSet_card_eq I A, huR, huB]
+
+theorem section4TPairSet_lower_bound_sub_condCounts_le_section4TRemainingPairSet
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    {N R B : ℕ}
+    (hT : N ≤ (C.section4TPairSet I A).card)
+    (hR : (C.section4URedCondPairSet I A).card ≤ R)
+    (hB : (C.section4UBlueCondPairSet I A).card ≤ B) :
+    N - R - B ≤ (C.section4TRemainingPairSet I A).card := by
+  rw [C.section4TRemainingPairSet_card_eq I A]
+  omega
 
 theorem section4RevealPairSet_card_le_section4_budget (C : ConstructionData n m)
     (I : Finset (Fin n)) {ε : ℝ} :
@@ -10562,6 +10776,91 @@ theorem section4UBlueCondPairSet_card_le_blueProjectionPairCount_of_indep
         C.blueProjectionPairCount I
           ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl) :=
       C.blueOppositeWitnessBiUnion_card_le_blueProjectionPairCount I A
+
+set_option linter.style.longLine false in
+theorem
+    section4TPairSet_lower_bound_sub_oppositeProjectionCounts_of_indep_le_section4TRemainingPairSet
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {N : ℕ}
+    (hT : N ≤ (C.section4TPairSet I A).card)
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w) :
+    N -
+        C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr) -
+        C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl) ≤
+      (C.section4TRemainingPairSet I A).card := by
+  exact
+    C.section4TPairSet_lower_bound_sub_condCounts_le_section4TRemainingPairSet I A hT
+      (C.section4URedCondPairSet_card_le_redProjectionPairCount_of_indep hindep)
+      (C.section4UBlueCondPairSet_card_le_blueProjectionPairCount_of_indep hindep)
+
+set_option linter.style.longLine false in
+theorem
+    section4TPairSet_lower_bound_sub_oppositeProjectionCounts_of_indep_le_card_sub_uR_sub_uB
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {N uR uB : ℕ}
+    (hT : N ≤ (C.section4TPairSet I A).card)
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (huR : (C.section4URedCondPairSet I A).card = uR)
+    (huB : (C.section4UBlueCondPairSet I A).card = uB) :
+    N -
+        C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr) -
+        C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl) ≤
+      (C.section4TPairSet I A).card - uR - uB := by
+  have hbase :=
+    C.section4TPairSet_lower_bound_sub_oppositeProjectionCounts_of_indep_le_section4TRemainingPairSet
+      hT hindep
+  rw [C.section4TRemainingPairSet_card_eq_of_card_eq_condCounts I A huR huB] at hbase
+  exact hbase
+
+set_option linter.style.longLine false in
+theorem
+    openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_sub_oppositeProjectionCounts_le_section4TRemainingPairSet
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ} {N : ℕ}
+    (hopen : N ≤ (C.baseOpenPairSet I).card)
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w) :
+    N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+        (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+        C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+        C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) ≤
+      (C.section4TRemainingPairSet I (C.section4F I ε)).card := by
+  exact
+    C.section4TPairSet_lower_bound_sub_oppositeProjectionCounts_of_indep_le_section4TRemainingPairSet
+      (A := C.section4F I ε)
+      (C.openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_le_section4TPairSet
+        I hopen)
+      hindep
+
+set_option linter.style.longLine false in
+theorem
+    openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_sub_oppositeProjectionCounts_le_card_sub_uR_sub_uB
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ} {N uR uB : ℕ}
+    (hopen : N ≤ (C.baseOpenPairSet I).card)
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (huR : (C.section4URedCondPairSet I (C.section4F I ε)).card = uR)
+    (huB : (C.section4UBlueCondPairSet I (C.section4F I ε)).card = uB) :
+    N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+        (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+        C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+        C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) ≤
+      (C.section4TPairSet I (C.section4F I ε)).card - uR - uB := by
+  exact
+    C.section4TPairSet_lower_bound_sub_oppositeProjectionCounts_of_indep_le_card_sub_uR_sub_uB
+      (A := C.section4F I ε)
+      (C.openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_le_section4TPairSet
+        I hopen)
+      hindep huR huB
 
 end
 
