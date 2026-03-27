@@ -133,6 +133,8 @@
     - the large-`n` lower bound `2 < t_1` is now proved directly from `2 ≤ log log n` via `two_lt_paperT1_of_two_le_loglog` / `two_lt_paperT1_of_two_div_le_of_le_one`, and the later `(2 + ε₁)` paperHugeWitness wrappers no longer carry `hT1` as an external assumption
     - the later collapsed paperHugeWitness wrappers are now formally understood to be dead ends: `not_three_mul_paperK_three_loglog_codegCoeff_le_cross_residual`, `not_three_mul_paperK_two_mul_le_cross_residual`, and `not_six_mul_paperK_le_cross_residual` show that the `...of_split` / `...of_doubleEps` / `...of_kSmall` right-smallness hypotheses cannot hold in the paper regime
     - the viable huge-case endpoint is therefore `paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale`, with an explicit `δsplit` still carried through the final gap assumptions; the next proof frontier moves upward into the Section 4 reveal-process and independence-number argument rather than further collapsing the huge-case coefficient package
+    - the first Section 4 infrastructure is now in place in `IndependentSets.lean`: `baseImage`, `baseFiber`, `baseNeighborSet`, `section4F0/F1/F2/F`, and `OpenPairOn` / `OpenPairPlusOn` provide a checked language for “revealed” and “unrevealed” pairs that can be reused in the `lem:RISI` formalization
+    - the next concrete subgoal is to prove the paper’s deterministic `F₂` inclusions and size bounds, then express the unrevealed-open-pair count as an `OpenPairOn` lower bound combining the large/medium/small/huge deterministic lemmas with the new reveal-set bookkeeping
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound

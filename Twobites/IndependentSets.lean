@@ -164,6 +164,53 @@ def blueProjectionUnion (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : Finset (Fin m) :=
   A.biUnion fun x => C.blueProjectionImage I x
 
+/-- The Section 4 base-vertex image `π_R(I) ∪ π_B(I)` inside `V_R ∪ V_B`. -/
+def baseImage (C : ConstructionData n m) (I : Finset (Fin n)) : Finset (BaseVertex m) := by
+  classical
+  exact Finset.univ.filter fun x =>
+    match x with
+    | Sum.inl r => r ∈ C.redImage I
+    | Sum.inr b => b ∈ C.blueImage I
+
+/-- The fiber `F(v)` from Section 4, expressed uniformly on `V_R ∪ V_B`. -/
+def baseFiber (C : ConstructionData n m) : BaseVertex m → Finset (Fin n)
+  | Sum.inl r => C.redFiber r
+  | Sum.inr b => C.blueFiber b
+
+/-- The base-graph neighborhood `N(v)` from Section 4, expressed uniformly on `V_R ∪ V_B`. -/
+def baseNeighborSet (C : ConstructionData n m) : BaseVertex m → Finset (BaseVertex m) := by
+  classical
+  intro x
+  cases x with
+  | inl r =>
+      exact (Finset.univ.filter fun r' : Fin m => C.redBase.Adj r r').image Sum.inl
+  | inr b =>
+      exact (Finset.univ.filter fun b' : Fin m => C.blueBase.Adj b b').image Sum.inr
+
+/-- Section 4's first revealed set `F_0 = (V_R ∪ V_B) \setminus (π_R(I) ∪ π_B(I))`. -/
+def section4F0 (C : ConstructionData n m) (I : Finset (Fin n)) : Finset (BaseVertex m) := by
+  classical
+  exact Finset.univ \ C.baseImage I
+
+/-- Section 4's second revealed set `F_1 = {v ∈ π_R(I) ∪ π_B(I) : |F(v) ∩ I| > log n}`. -/
+def section4F1 (C : ConstructionData n m) (I : Finset (Fin n)) : Finset (BaseVertex m) := by
+  classical
+  exact (C.baseImage I).filter fun x =>
+    Real.log (n : ℝ) < (((C.baseFiber x ∩ I).card : ℕ) : ℝ)
+
+/-- Section 4's third revealed set `F_2 = {v ∈ π_R(I) ∪ π_B(I) : |N(v) ∩ F_1| > t_2 / log n}`. -/
+def section4F2 (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
+    Finset (BaseVertex m) := by
+  classical
+  exact (C.baseImage I).filter fun x =>
+    Twobites.paperT2 ε n / Real.log (n : ℝ) <
+      (((C.baseNeighborSet x ∩ C.section4F1 I).card : ℕ) : ℝ)
+
+/-- The total Section 4 revealed base-vertex set `F = F_0 ∪ F_1 ∪ F_2`. -/
+def section4F (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
+    Finset (BaseVertex m) :=
+  C.section4F0 I ∪ C.section4F1 I ∪ C.section4F2 I ε
+
 /-- The paper's closed-pair predicate `C(I)`, expressed on ordered pairs of distinct vertices of
 `I`. -/
 def ClosedPair (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) : Prop :=
@@ -183,6 +230,16 @@ def ClosedPairOn (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (Ba
 def ClosedPairPlusOn (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
     (v w : Fin n) : Prop :=
   v ∈ I ∧ w ∈ I ∧ v ≠ w ∧ ∃ x ∈ A, v ∈ C.XPlus I x ∧ w ∈ C.XPlus I x
+
+/-- The open-pair predicate after only revealing closed pairs witnessed inside `A ⊆ V_R ∪ V_B`. -/
+def OpenPairOn (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    (v w : Fin n) : Prop :=
+  v ∈ I ∧ w ∈ I ∧ v ≠ w ∧ ¬ C.ClosedPairOn I A v w
+
+/-- The forward-neighborhood analogue of `OpenPairOn`. -/
+def OpenPairPlusOn (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    (v w : Fin n) : Prop :=
+  v ∈ I ∧ w ∈ I ∧ v ≠ w ∧ ¬ C.ClosedPairPlusOn I A v w
 
 /-- The paper's open-pair predicate `O(I)`. -/
 def OpenPair (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) : Prop :=
@@ -242,6 +299,96 @@ def OpenPairPlus (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) :
     x ∈ C.SPart I ε ↔ (C.xCard I x : ℝ) ≤ Twobites.paperT3 ε n := by
   classical
   simp [SPart]
+
+@[simp] theorem mem_baseImage_inl (C : ConstructionData n m) {I : Finset (Fin n)} {r : Fin m} :
+    Sum.inl r ∈ C.baseImage I ↔ r ∈ C.redImage I := by
+  classical
+  simp [baseImage]
+
+@[simp] theorem mem_baseImage_inr (C : ConstructionData n m) {I : Finset (Fin n)} {b : Fin m} :
+    Sum.inr b ∈ C.baseImage I ↔ b ∈ C.blueImage I := by
+  classical
+  simp [baseImage]
+
+@[simp] theorem mem_baseFiber_inl (C : ConstructionData n m) {r : Fin m} {v : Fin n} :
+    v ∈ C.baseFiber (Sum.inl r) ↔ C.redProj v = r := by
+  simp [baseFiber]
+
+@[simp] theorem mem_baseFiber_inr (C : ConstructionData n m) {b : Fin m} {v : Fin n} :
+    v ∈ C.baseFiber (Sum.inr b) ↔ C.blueProj v = b := by
+  simp [baseFiber]
+
+@[simp] theorem mem_baseNeighborSet_inl_inl (C : ConstructionData n m) {r r' : Fin m} :
+    Sum.inl r' ∈ C.baseNeighborSet (Sum.inl r) ↔ C.redBase.Adj r r' := by
+  classical
+  simp [baseNeighborSet]
+
+@[simp] theorem not_mem_baseNeighborSet_inl_inr (C : ConstructionData n m) {r b : Fin m} :
+    Sum.inr b ∉ C.baseNeighborSet (Sum.inl r) := by
+  classical
+  simp [baseNeighborSet]
+
+@[simp] theorem mem_baseNeighborSet_inr_inr (C : ConstructionData n m) {b b' : Fin m} :
+    Sum.inr b' ∈ C.baseNeighborSet (Sum.inr b) ↔ C.blueBase.Adj b b' := by
+  classical
+  simp [baseNeighborSet]
+
+@[simp] theorem not_mem_baseNeighborSet_inr_inl (C : ConstructionData n m) {b r : Fin m} :
+    Sum.inl r ∉ C.baseNeighborSet (Sum.inr b) := by
+  classical
+  simp [baseNeighborSet]
+
+@[simp] theorem mem_section4F0 (C : ConstructionData n m) {I : Finset (Fin n)}
+    {x : BaseVertex m} :
+    x ∈ C.section4F0 I ↔ x ∈ (Finset.univ : Finset (BaseVertex m)) ∧ x ∉ C.baseImage I := by
+  classical
+  simp [section4F0]
+
+@[simp] theorem mem_section4F1 (C : ConstructionData n m) {I : Finset (Fin n)}
+    {x : BaseVertex m} :
+    x ∈ C.section4F1 I ↔
+      x ∈ C.baseImage I ∧
+        Real.log (n : ℝ) < (((C.baseFiber x ∩ I).card : ℕ) : ℝ) := by
+  classical
+  simp [section4F1]
+
+@[simp] theorem mem_section4F2 (C : ConstructionData n m) {I : Finset (Fin n)} {ε : ℝ}
+    {x : BaseVertex m} :
+    x ∈ C.section4F2 I ε ↔
+      x ∈ C.baseImage I ∧
+        Twobites.paperT2 ε n / Real.log (n : ℝ) <
+          (((C.baseNeighborSet x ∩ C.section4F1 I).card : ℕ) : ℝ) := by
+  classical
+  simp [section4F2]
+
+@[simp] theorem mem_section4F (C : ConstructionData n m) {I : Finset (Fin n)} {ε : ℝ}
+    {x : BaseVertex m} :
+    x ∈ C.section4F I ε ↔ x ∈ C.section4F0 I ∨ x ∈ C.section4F1 I ∨ x ∈ C.section4F2 I ε := by
+  classical
+  simp [section4F, or_left_comm]
+
+theorem section4F1_subset_baseImage (C : ConstructionData n m) (I : Finset (Fin n)) :
+    C.section4F1 I ⊆ C.baseImage I := by
+  intro x hx
+  exact (C.mem_section4F1).1 hx |>.1
+
+theorem section4F2_subset_baseImage (C : ConstructionData n m) (I : Finset (Fin n)) (ε : ℝ) :
+    C.section4F2 I ε ⊆ C.baseImage I := by
+  intro x hx
+  exact (C.mem_section4F2).1 hx |>.1
+
+theorem section4F0_disjoint_baseImage (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Disjoint (C.section4F0 I) (C.baseImage I) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro x hx0 hxI
+  exact (C.mem_section4F0.1 hx0).2 hxI
+
+theorem section4F0_union_baseImage (C : ConstructionData n m) (I : Finset (Fin n)) :
+    C.section4F0 I ∪ C.baseImage I = Finset.univ := by
+  classical
+  ext x
+  simp [section4F0]
 
 theorem mem_I_of_mem_X (C : ConstructionData n m) {I : Finset (Fin n)} {x : BaseVertex m}
     {v : Fin n} (hv : v ∈ C.X I x) : v ∈ I := by
@@ -7993,6 +8140,38 @@ theorem closedPairPlusOn_to_closedPairOn (C : ConstructionData n m) {I : Finset 
   rcases h with ⟨hvI, hwI, hvw, x, hxA, hvX, hwX⟩
   exact ⟨hvI, hwI, hvw, x, hxA, C.mem_X_of_mem_XPlus hvX, C.mem_X_of_mem_XPlus hwX⟩
 
+theorem openPairOn_mono (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A B : Finset (BaseVertex m)} (hAB : A ⊆ B) {v w : Fin n} :
+    C.OpenPairOn I B v w → C.OpenPairOn I A v w := by
+  rintro ⟨hvI, hwI, hvw, hopen⟩
+  refine ⟨hvI, hwI, hvw, ?_⟩
+  intro hclosed
+  exact hopen (C.closedPairOn_mono hAB hclosed)
+
+theorem openPairPlusOn_mono (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A B : Finset (BaseVertex m)} (hAB : A ⊆ B) {v w : Fin n} :
+    C.OpenPairPlusOn I B v w → C.OpenPairPlusOn I A v w := by
+  rintro ⟨hvI, hwI, hvw, hopen⟩
+  refine ⟨hvI, hwI, hvw, ?_⟩
+  intro hclosed
+  exact hopen (C.closedPairPlusOn_mono hAB hclosed)
+
+theorem openPairOn_of_openPair (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {v w : Fin n} (h : C.OpenPair I v w) :
+    C.OpenPairOn I A v w := by
+  rcases h with ⟨hvI, hwI, hvw, hopen⟩
+  refine ⟨hvI, hwI, hvw, ?_⟩
+  intro hclosed
+  exact hopen (C.closedPairOn_to_closedPair hclosed)
+
+theorem openPairPlusOn_of_openPairPlus (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {v w : Fin n} (h : C.OpenPairPlus I v w) :
+    C.OpenPairPlusOn I A v w := by
+  rcases h with ⟨hvI, hwI, hvw, hopen⟩
+  refine ⟨hvI, hwI, hvw, ?_⟩
+  intro hclosed
+  exact hopen (C.closedPairPlusOn_to_closedPairPlus hclosed)
+
 theorem closedPairOn_univ_iff_closedPair (C : ConstructionData n m) {I : Finset (Fin n)}
     {v w : Fin n} : C.ClosedPairOn I Finset.univ v w ↔ C.ClosedPair I v w := by
   constructor
@@ -8006,6 +8185,24 @@ theorem closedPairPlusOn_univ_iff_closedPairPlus (C : ConstructionData n m) {I :
   · exact C.closedPairPlusOn_to_closedPairPlus
   · rintro ⟨hvI, hwI, hvw, x, hvX, hwX⟩
     exact ⟨hvI, hwI, hvw, x, by simp, hvX, hwX⟩
+
+theorem openPairOn_univ_iff_openPair (C : ConstructionData n m) {I : Finset (Fin n)}
+    {v w : Fin n} : C.OpenPairOn I Finset.univ v w ↔ C.OpenPair I v w := by
+  constructor
+  · rintro ⟨hvI, hwI, hvw, hopen⟩
+    refine ⟨hvI, hwI, hvw, ?_⟩
+    intro hclosed
+    exact hopen ((C.closedPairOn_univ_iff_closedPair).2 hclosed)
+  · exact C.openPairOn_of_openPair
+
+theorem openPairPlusOn_univ_iff_openPairPlus (C : ConstructionData n m) {I : Finset (Fin n)}
+    {v w : Fin n} : C.OpenPairPlusOn I Finset.univ v w ↔ C.OpenPairPlus I v w := by
+  constructor
+  · rintro ⟨hvI, hwI, hvw, hopen⟩
+    refine ⟨hvI, hwI, hvw, ?_⟩
+    intro hclosed
+    exact hopen ((C.closedPairPlusOn_univ_iff_closedPairPlus).2 hclosed)
+  · exact C.openPairPlusOn_of_openPairPlus
 
 theorem closedPair_of_redMonochromaticDeletionWitness (C : ConstructionData n m)
     {I : Finset (Fin n)} {u v w : Fin n} (hvI : v ∈ I) (hwI : w ∈ I) (hvw : v ≠ w)
