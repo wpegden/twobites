@@ -536,6 +536,19 @@ theorem paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_of_two_le_gap
       exact paperKNat_add_two_le_paperKNat_of_two_le_gap hσ hgap
     _ = paperKNat (ρ + (1 + ε2) * β + δ + η) n := by ring_nf
 
+theorem paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_of_two_le_gap_of_le
+    {ρ β ε2 δ η κ : ℝ} {n : ℕ} (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β)
+    (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ) (hgap : 2 ≤ paperK η n)
+    (hκ : ρ + (1 + ε2) * β + δ + η ≤ κ) :
+    paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n ≤ paperKNat κ n := by
+  calc
+    paperKNat ρ n + paperCapNat β ε2 n + paperKNat δ n ≤
+        paperKNat (ρ + (1 + ε2) * β + δ + η) n := by
+      exact paperKNat_add_paperCapNat_add_paperKNat_le_paperKNat_of_two_le_gap
+        hn hρ hβ hε2 hδ hgap
+    _ ≤ paperKNat κ n := by
+      exact paperKNat_le_paperKNat_of_le hκ
+
 theorem paperKNat_add_paperCapNat_le_paperKNat_of_one_le_gap_of_le
     {ρ β ε2 δ κ : ℝ} {n : ℕ} (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β)
     (hε2 : -1 ≤ ε2) (hgap : 1 ≤ paperK δ n)
