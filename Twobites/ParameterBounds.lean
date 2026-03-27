@@ -1919,6 +1919,48 @@ theorem paperHugeWitnessFourEpsRhoBudget_half_one_add_eps_of_x_le
     nlinarith
   exact paperHugeWitnessFourEpsRhoBudget_half_one_add_eps_of_rho_le hρ' hsmall
 
+theorem paperHugeWitness_crossSmall_of_twoEpsThreshold_of_rhoBudget
+    {ρ β κ ε1 ε2 βdeg qcodeg δsumGap δgap : ℝ} {n : ℕ}
+    (hn : 1 < n) (hκ : 1 ≤ κ) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hε1pos : 0 < ε1) (hε1 : 0 ≤ ε1) (hβdeg : 0 ≤ βdeg) (hqcodeg : 0 ≤ qcodeg)
+    (hlarge : paperHugeWitnessTwoEpsBranchPieceThreshold ε1 κ βdeg qcodeg ≤ n)
+    (hsumGap : 1 ≤ paperK δsumGap n) (hgap2 : 2 ≤ paperK δgap n)
+    (hρbudget : ρ ≤ paperHugeWitnessFourEpsRhoBudget β ε1 ε2 κ δsumGap δgap) :
+    (3 : ℝ) * paperK (paperHugeWitnessCoeff κ βdeg qcodeg n) n ≤
+      ε1 *
+        (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+  let δbranch : ℝ := paperHugeWitnessBranchParam ε1 κ βdeg qcodeg n
+  have hκ0 : 0 ≤ κ := by linarith
+  have hκpos : 0 < κ := by linarith
+  have hcoeffSmall :
+      paperHugeWitnessCoeff κ βdeg qcodeg n ≤ (ε1 / 3) * δbranch := by
+    dsimp [δbranch]
+    exact paperHugeWitnessCoeff_le_eps_third_mul_branchParam hε1pos
+  have hbranchwise :=
+    paperHugeWitnessTwoEpsBranchPieceThreshold_spec hε1pos hκpos hβdeg hqcodeg hlarge
+  rcases hbranchwise with ⟨hdeg, hcodeg, _, _⟩
+  have hδbranch : δbranch ≤ 2 * ε1 * κ := by
+    dsimp [δbranch]
+    exact paperHugeWitnessBranchParam_le_of_pieceBranchParamBounds hdeg hcodeg (by nlinarith)
+  have hκ4 :
+      ρ + (1 + ε2) * β + 4 * ε1 * κ + δsumGap + δgap ≤ κ := by
+    exact paperHugeWitness_four_eps_budget_of_rho_le hρbudget
+  have hκ2 :
+      ρ + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgap ≤ κ := by
+    nlinarith
+  have hdoubleEps : 0 ≤ 2 * ε1 * κ := by nlinarith
+  have hresidualAux :
+      paperK (2 * ε1 * κ) n ≤
+        (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    exact
+      paperK_le_cross_residual_sub_one_of_nonneg_of_gap1_gap2_of_le
+        hn hρ hβ hε2 hdoubleEps hsumGap hgap2 hκ2
+  have hresidual :
+      paperK δbranch n ≤
+        (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    exact (paperK_le_paperK_of_le hδbranch).trans hresidualAux
+  exact three_mul_paperK_paperHugeWitnessCoeff_le_of_le_mul_of_le hε1 hcoeffSmall hresidual
+
 theorem not_six_mul_paperK_le_cross_residual
     {ρ β ε2 κ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) :
     ¬ 6 * paperK κ n ≤
