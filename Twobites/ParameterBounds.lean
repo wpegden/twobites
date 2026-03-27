@@ -1884,6 +1884,20 @@ theorem paperHugeWitness_two_eps_budget_of_four_eps_budget
     ρ + (1 + ε2) * β + 2 * ε1 * κ + (2 * ε1 * κ) + δsumGap + δgap ≤ κ := by
   nlinarith
 
+/-- The maximum projection parameter `ρ` compatible with the sharpened huge-case budget
+`ρ + (1 + ε₂)β + 4 ε₁ κ + δsumGap + δgap ≤ κ`. -/
+def paperHugeWitnessFourEpsRhoBudget
+    (β ε1 ε2 κ δsumGap δgap : ℝ) : ℝ :=
+  κ - ((1 + ε2) * β + 4 * ε1 * κ + δsumGap + δgap)
+
+theorem paperHugeWitness_four_eps_budget_of_rho_le
+    {ρ β ε1 ε2 κ δsumGap δgap : ℝ}
+    (hρ :
+      ρ ≤ paperHugeWitnessFourEpsRhoBudget β ε1 ε2 κ δsumGap δgap) :
+    ρ + (1 + ε2) * β + 4 * ε1 * κ + δsumGap + δgap ≤ κ := by
+  unfold paperHugeWitnessFourEpsRhoBudget at hρ
+  linarith
+
 theorem not_six_mul_paperK_le_cross_residual
     {ρ β ε2 κ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) :
     ¬ 6 * paperK κ n ≤
