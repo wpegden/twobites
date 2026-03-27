@@ -180,6 +180,36 @@ theorem cast_mul_le_paperK_of_le_of_le_paperP_mul_paperM
     _ = paperK (((bound : ℕ) : ℝ) * β / paperS n) n := by
       simpa using mul_paperP_mul_paperM_eq_paperK_div_paperS (c := (bound : ℝ)) hn
 
+theorem paperK_ratio_eq {x : ℝ} {n : ℕ} (hn : 1 < n) :
+    paperK (x / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n = x := by
+  let s : ℝ := Real.sqrt ((n : ℝ) * Real.log (n : ℝ))
+  have hs : 0 < s := by
+    dsimp [s]
+    apply Real.sqrt_pos.2
+    exact mul_pos (by exact_mod_cast (lt_trans Nat.zero_lt_one hn)) (paperLog_pos hn)
+  calc
+    paperK (x / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n = (x / s) * s := by
+      simp [paperK, s]
+    _ = x := by
+      field_simp [hs.ne']
+
+theorem cast_choose_mul_le_paperK_of_le_of_le
+    {w bound projCodegreeBound : ℕ} {q : ℝ} {n : ℕ}
+    (hw : w ≤ bound) (hn : 1 < n)
+    (hproj : (projCodegreeBound : ℝ) ≤ q) :
+    ((w.choose 2 * projCodegreeBound : ℕ) : ℝ) ≤
+      paperK ((((bound.choose 2 : ℕ) : ℝ) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
+  have hchoose : w.choose 2 ≤ bound.choose 2 := Nat.choose_le_choose 2 hw
+  calc
+    ((w.choose 2 * projCodegreeBound : ℕ) : ℝ) = (w.choose 2 : ℝ) * (projCodegreeBound : ℝ) := by
+      norm_num
+    _ ≤ (bound.choose 2 : ℝ) * (projCodegreeBound : ℝ) := by
+      gcongr
+    _ ≤ (bound.choose 2 : ℝ) * q := by
+      exact mul_le_mul_of_nonneg_left hproj (by positivity)
+    _ = paperK ((((bound.choose 2 : ℕ) : ℝ) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
+      rw [paperK_ratio_eq hn]
+
 theorem paperK_nonneg {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) : 0 ≤ paperK κ n := by
   unfold paperK
   exact mul_nonneg hκ (Real.sqrt_nonneg _)
