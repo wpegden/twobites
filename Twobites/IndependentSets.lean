@@ -2,6 +2,8 @@ import Twobites.Construction
 import Twobites.ParameterBounds
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Powerset
+import Mathlib.Data.Finset.Prod
 import Mathlib.Data.Finset.Union
 import Mathlib.Data.Sym.Card
 import Mathlib.Data.Nat.Choose.Cast
@@ -483,6 +485,35 @@ def section4TRemainingPairSet (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
   classical
   exact (C.section4TPairSet I A).filter fun p => p ∉ C.section4UCondPairSet I A
+
+/-- Candidate red opposite-color witness choices of size `uR` for the conditioned `U_R`
+event-counting layer. -/
+def section4URedChoiceSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (uR : ℕ) : Finset (Finset (Sym2 (Fin m))) :=
+  (C.redOppositeWitnessBiUnion I A).powersetCard uR
+
+/-- Candidate blue opposite-color witness choices of size `uB` for the conditioned `U_B`
+event-counting layer. -/
+def section4UBlueChoiceSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (uB : ℕ) : Finset (Finset (Sym2 (Fin m))) :=
+  (C.blueOppositeWitnessBiUnion I A).powersetCard uB
+
+/-- The finite family of conditioned `(U_R,U_B)` witness choices of prescribed sizes. -/
+def section4UChoiceSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (uR uB : ℕ) :
+    Finset (Finset (Sym2 (Fin m)) × Finset (Sym2 (Fin m))) :=
+  C.section4URedChoiceSet I A uR ×ˢ C.section4UBlueChoiceSet I A uB
+
+/-- The Bernoulli mass of a second-stage exposure pattern with `uR + uB` chosen edges and
+`remaining` forced non-edges. -/
+def section4BernoulliMass (p : ℝ) (uR uB remaining : ℕ) : ℝ :=
+  p ^ (uR + uB) * (1 - p) ^ remaining
+
+/-- The counted-event upper bound obtained by choosing a red/blue witness pattern and then forcing
+all residual `T \ U` pairs to be non-edges. -/
+def section4ChoiceMass (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (p : ℝ) (uR uB remaining : ℕ) : ℝ :=
+  ((C.section4UChoiceSet I A uR uB).card : ℝ) * section4BernoulliMass p uR uB remaining
 
 @[simp] theorem mem_X_red (C : ConstructionData n m) {I : Finset (Fin n)} {r : Fin m}
     {v : Fin n} : v ∈ C.X I (Sum.inl r) ↔ v ∈ I ∧ C.redBase.Adj r (C.redProj v) := by
@@ -10777,6 +10808,165 @@ theorem section4UBlueCondPairSet_card_le_blueProjectionPairCount_of_indep
           ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl) :=
       C.blueOppositeWitnessBiUnion_card_le_blueProjectionPairCount I A
 
+theorem section4URedCondPairSet_image_sym2_card_eq
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    ((C.section4URedCondPairSet I A).image Sym2.mk).card =
+      (C.section4URedCondPairSet I A).card := by
+  have hstrict :
+      ∀ p ∈ C.section4URedCondPairSet I A, p.1 < p.2 := by
+    intro p hp
+    have hpU := (C.mem_section4URedCondPairSet.1 hp).1
+    have hpT := (C.mem_section4URedPairSet.1 hpU).1
+    have hpUn := (C.mem_section4TRedPairSet.1 hpT).1
+    exact (C.mem_redBasePairSet.1 ((C.mem_unrevealedRedBasePairSet.1 hpUn).1)).2.2
+  exact card_image_sym2_mk_of_strictPairSet _ hstrict
+
+theorem section4UBlueCondPairSet_image_sym2_card_eq
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    ((C.section4UBlueCondPairSet I A).image Sym2.mk).card =
+      (C.section4UBlueCondPairSet I A).card := by
+  have hstrict :
+      ∀ p ∈ C.section4UBlueCondPairSet I A, p.1 < p.2 := by
+    intro p hp
+    have hpU := (C.mem_section4UBlueCondPairSet.1 hp).1
+    have hpT := (C.mem_section4UBluePairSet.1 hpU).1
+    have hpUn := (C.mem_section4TBluePairSet.1 hpT).1
+    exact (C.mem_blueBasePairSet.1 ((C.mem_unrevealedBlueBasePairSet.1 hpUn).1)).2.2
+  exact card_image_sym2_mk_of_strictPairSet _ hstrict
+
+@[simp] theorem section4URedChoiceSet_card_eq (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) (uR : ℕ) :
+    (C.section4URedChoiceSet I A uR).card = (C.redOppositeWitnessBiUnion I A).card.choose uR := by
+  simp [section4URedChoiceSet]
+
+@[simp] theorem section4UBlueChoiceSet_card_eq (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) (uB : ℕ) :
+    (C.section4UBlueChoiceSet I A uB).card =
+      (C.blueOppositeWitnessBiUnion I A).card.choose uB := by
+  simp [section4UBlueChoiceSet]
+
+@[simp] theorem section4UChoiceSet_card_eq (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) (uR uB : ℕ) :
+    (C.section4UChoiceSet I A uR uB).card =
+      (C.redOppositeWitnessBiUnion I A).card.choose uR *
+        (C.blueOppositeWitnessBiUnion I A).card.choose uB := by
+  simp [section4UChoiceSet]
+
+theorem section4URedCondPairSet_image_sym2_mem_section4URedChoiceSet_of_card_eq_of_indep
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uR : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (huR : (C.section4URedCondPairSet I A).card = uR) :
+    (C.section4URedCondPairSet I A).image Sym2.mk ∈ C.section4URedChoiceSet I A uR := by
+  refine Finset.mem_powersetCard.2 ?_
+  constructor
+  · exact C.section4URedCondPairSet_image_sym2_subset_redOppositeWitnessBiUnion_of_indep hindep
+  · rw [C.section4URedCondPairSet_image_sym2_card_eq, huR]
+
+theorem section4UBlueCondPairSet_image_sym2_mem_section4UBlueChoiceSet_of_card_eq_of_indep
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uB : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (huB : (C.section4UBlueCondPairSet I A).card = uB) :
+    (C.section4UBlueCondPairSet I A).image Sym2.mk ∈ C.section4UBlueChoiceSet I A uB := by
+  refine Finset.mem_powersetCard.2 ?_
+  constructor
+  · exact C.section4UBlueCondPairSet_image_sym2_subset_blueOppositeWitnessBiUnion_of_indep hindep
+  · rw [C.section4UBlueCondPairSet_image_sym2_card_eq, huB]
+
+theorem section4UCondPair_images_mem_section4UChoiceSet_of_card_eq_of_indep
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uR uB : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (huR : (C.section4URedCondPairSet I A).card = uR)
+    (huB : (C.section4UBlueCondPairSet I A).card = uB) :
+    ((C.section4URedCondPairSet I A).image Sym2.mk,
+        (C.section4UBlueCondPairSet I A).image Sym2.mk) ∈
+      C.section4UChoiceSet I A uR uB := by
+  simp [section4UChoiceSet,
+    C.section4URedCondPairSet_image_sym2_mem_section4URedChoiceSet_of_card_eq_of_indep
+      hindep huR,
+    C.section4UBlueCondPairSet_image_sym2_mem_section4UBlueChoiceSet_of_card_eq_of_indep
+      hindep huB]
+
+theorem section4URedChoiceSet_card_le_choose_redProjectionPairCount
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uR : ℕ} :
+    (C.section4URedChoiceSet I A uR).card ≤
+      (C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr)).choose uR := by
+  rw [C.section4URedChoiceSet_card_eq]
+  exact Nat.choose_le_choose uR (C.redOppositeWitnessBiUnion_card_le_redProjectionPairCount I A)
+
+theorem section4UBlueChoiceSet_card_le_choose_blueProjectionPairCount
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uB : ℕ} :
+    (C.section4UBlueChoiceSet I A uB).card ≤
+      (C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl)).choose uB := by
+  rw [C.section4UBlueChoiceSet_card_eq]
+  exact Nat.choose_le_choose uB
+    (C.blueOppositeWitnessBiUnion_card_le_blueProjectionPairCount I A)
+
+theorem section4UChoiceSet_card_le_choose_mul_choose
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uR uB : ℕ} :
+    (C.section4UChoiceSet I A uR uB).card ≤
+      (C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr)).choose uR *
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl)).choose uB := by
+  rw [C.section4UChoiceSet_card_eq]
+  exact Nat.mul_le_mul
+    (Nat.choose_le_choose uR (C.redOppositeWitnessBiUnion_card_le_redProjectionPairCount I A))
+    (Nat.choose_le_choose uB (C.blueOppositeWitnessBiUnion_card_le_blueProjectionPairCount I A))
+
+theorem one_sub_pow_le_one_sub_pow_of_le {p : ℝ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) {m n : ℕ} (hmn : m ≤ n) :
+    (1 - p) ^ n ≤ (1 - p) ^ m := by
+  refine pow_le_pow_of_le_one ?_ ?_ hmn
+  · linarith
+  · linarith
+
+theorem section4ChoiceMass_le_of_choiceBound_of_le_remaining
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {p : ℝ} {uR uB remaining R B L : ℕ}
+    (hchoice : (C.section4UChoiceSet I A uR uB).card ≤ R.choose uR * B.choose uB)
+    (hremaining : L ≤ remaining) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    C.section4ChoiceMass I A p uR uB remaining ≤
+      ((((R.choose uR : ℕ) : ℝ) * p ^ uR) *
+          (((B.choose uB : ℕ) : ℝ) * p ^ uB)) *
+        (1 - p) ^ L := by
+  have hchoice' :
+      ((C.section4UChoiceSet I A uR uB).card : ℝ) ≤
+        (((R.choose uR * B.choose uB : ℕ) : ℝ)) := by
+    exact_mod_cast hchoice
+  have hpow : 0 ≤ p ^ (uR + uB) := pow_nonneg hp0 _
+  have hone : 0 ≤ (1 - p) ^ remaining := by
+    have hsub : 0 ≤ 1 - p := by linarith
+    exact pow_nonneg hsub _
+  have hfirst :
+      ((C.section4UChoiceSet I A uR uB).card : ℝ) * p ^ (uR + uB) ≤
+        (((R.choose uR * B.choose uB : ℕ) : ℝ)) * p ^ (uR + uB) := by
+    exact mul_le_mul_of_nonneg_right hchoice' hpow
+  have hsecond :
+      (1 - p) ^ remaining ≤ (1 - p) ^ L :=
+    one_sub_pow_le_one_sub_pow_of_le hp0 hp1 hremaining
+  have hbase :
+      (((C.section4UChoiceSet I A uR uB).card : ℝ) * p ^ (uR + uB)) * (1 - p) ^ remaining ≤
+        ((((R.choose uR * B.choose uB : ℕ) : ℝ)) * p ^ (uR + uB)) * (1 - p) ^ L := by
+    exact mul_le_mul hfirst hsecond hone (by positivity)
+  calc
+    C.section4ChoiceMass I A p uR uB remaining =
+        (((C.section4UChoiceSet I A uR uB).card : ℝ) * p ^ (uR + uB)) *
+          (1 - p) ^ remaining := by
+      simp [section4ChoiceMass, section4BernoulliMass, mul_assoc]
+    _ ≤ ((((R.choose uR * B.choose uB : ℕ) : ℝ)) * p ^ (uR + uB)) *
+          (1 - p) ^ L := hbase
+    _ =
+        ((((R.choose uR : ℕ) : ℝ) * p ^ uR) *
+            (((B.choose uB : ℕ) : ℝ) * p ^ uB)) *
+          (1 - p) ^ L := by
+      rw [pow_add, Nat.cast_mul]
+      ring
+
 set_option linter.style.longLine false in
 theorem
     section4TPairSet_lower_bound_sub_oppositeProjectionCounts_of_indep_le_section4TRemainingPairSet
@@ -10861,6 +11051,70 @@ theorem
       (C.openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_le_section4TPairSet
         I hopen)
       hindep huR huB
+
+set_option linter.style.longLine false in
+theorem
+    openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_sub_oppositeProjectionCounts_le_section4ChoiceMass
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p : ℝ} {N uR uB : ℕ}
+    (hopen : N ≤ (C.baseOpenPairSet I).card)
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (huR : (C.section4URedCondPairSet I (C.section4F I ε)).card = uR)
+    (huB : (C.section4UBlueCondPairSet I (C.section4F I ε)).card = uB)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    C.section4ChoiceMass I (C.section4F I ε) p uR uB
+        ((C.section4TRemainingPairSet I (C.section4F I ε)).card) ≤
+      ((((C.redProjectionPairCount I
+              ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)).choose uR :
+            ℝ) *
+          p ^ uR) *
+        (((C.blueProjectionPairCount I
+              ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)).choose uB :
+            ℝ) *
+          p ^ uB)) *
+        (1 - p) ^
+          (N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+            (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+              C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+            C.redProjectionPairCount I
+              ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+            C.blueProjectionPairCount I
+              ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) := by
+  have hchoice :
+      (C.section4UChoiceSet I (C.section4F I ε) uR uB).card ≤
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)).choose uR *
+          (C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)).choose uB :=
+    C.section4UChoiceSet_card_le_choose_mul_choose
+      (I := I) (A := C.section4F I ε)
+  have hremaining :
+      N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) ≤
+        (C.section4TRemainingPairSet I (C.section4F I ε)).card := by
+    have hbase :=
+      C.openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_sub_oppositeProjectionCounts_le_card_sub_uR_sub_uB
+        I hopen hindep huR huB
+    calc
+      N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+              (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+                C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+            C.redProjectionPairCount I
+              ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) ≤
+          (C.section4TPairSet I (C.section4F I ε)).card - uR - uB := hbase
+      _ = (C.section4TRemainingPairSet I (C.section4F I ε)).card := by
+        symm
+        exact C.section4TRemainingPairSet_card_eq_of_card_eq_condCounts
+          I (C.section4F I ε) huR huB
+  exact
+    C.section4ChoiceMass_le_of_choiceBound_of_le_remaining hchoice hremaining hp0 hp1
 
 end
 
