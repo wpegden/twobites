@@ -367,6 +367,13 @@ theorem paperK_div_paperT1_eq_mul_loglog {κ : ℝ} {n : ℕ}
   apply (div_eq_iff hT1.ne').2
   exact paperK_eq_mul_loglog_mul_paperT1 hloglog.ne'
 
+theorem le_mul_mul_loglog_of_le_mul_paperK_div_paperT1 {x a κ : ℝ} {n : ℕ}
+    (h : x ≤ a * (paperK κ n / paperT1 n))
+    (hn : 1 < n) (hloglog : 0 < Real.log (Real.log (n : ℝ))) :
+    x ≤ a * κ * Real.log (Real.log (n : ℝ)) := by
+  rw [paperK_div_paperT1_eq_mul_loglog hn hloglog] at h
+  simpa [mul_assoc] using h
+
 theorem paperK_pos {κ : ℝ} (hκ : 0 < κ) {n : ℕ} (hn : 1 < n) : 0 < paperK κ n := by
   unfold paperK
   refine mul_pos hκ ?_
