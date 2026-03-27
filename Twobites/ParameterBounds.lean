@@ -1112,6 +1112,21 @@ theorem three_mul_paperK_two_mul_eq {ε κ : ℝ} {n : ℕ} :
   unfold paperK
   ring
 
+theorem cross_residual_sub_one_le_paperK
+    {ρ β ε2 κ : ℝ} {n : ℕ} (hκ : 0 ≤ κ) :
+    (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) ≤
+      paperK κ n := by
+  have hsub_nat :
+      paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n ≤ paperKNat κ n := by
+    omega
+  have hsub_cast :
+      (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ)) ≤
+        paperKNat κ n := by
+    exact_mod_cast hsub_nat
+  have hkceil : (paperKNat κ n : ℝ) ≤ paperK κ n + 1 :=
+    paperKNat_le_paperK_add_one hκ n
+  linarith
+
 theorem not_six_mul_paperK_le_cross_residual
     {ρ β ε2 κ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) :
     ¬ 6 * paperK κ n ≤
@@ -1129,11 +1144,42 @@ theorem not_six_mul_paperK_le_cross_residual
     exact_mod_cast hsub_nat
   have hres_le :
       (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) ≤
-        paperK κ n := by
-    have hkceil : (paperKNat κ n : ℝ) ≤ paperK κ n + 1 :=
-      paperKNat_le_paperK_add_one hκ0 n
-    linarith
+        paperK κ n := cross_residual_sub_one_le_paperK hκ0
   have : 6 * paperK κ n ≤ paperK κ n := hsmall.trans hres_le
+  linarith
+
+theorem not_three_mul_paperK_add_nonneg_le_cross_residual
+    {ρ β ε2 κ ε δ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) (hε : 0 < ε)
+    (hδ : 0 ≤ δ) :
+    ¬ (3 : ℝ) * paperK (ε * κ + δ) n ≤
+        ε *
+          ((((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1)) := by
+  intro hsmall
+  have hκ0 : 0 ≤ κ := by linarith
+  have hκpos : 0 < κ := by linarith
+  have hkpos : 0 < paperK κ n := paperK_pos hκpos hn
+  have hmono :
+      paperK (ε * κ) n ≤ paperK (ε * κ + δ) n := by
+    exact paperK_le_paperK_of_le (by linarith)
+  have hscaled :
+      ε * (3 * paperK κ n) ≤
+        ε * ((((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1)) := by
+    calc
+      ε * (3 * paperK κ n) = (3 : ℝ) * paperK (ε * κ) n := by
+        unfold paperK
+        ring
+      _ ≤ (3 : ℝ) * paperK (ε * κ + δ) n := by
+        exact mul_le_mul_of_nonneg_left hmono (by positivity)
+      _ ≤ ε *
+            ((((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1)) := hsmall
+  have hthree :
+      3 * paperK κ n ≤
+        (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+    nlinarith
+  have hres_le :
+      (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) ≤
+        paperK κ n := cross_residual_sub_one_le_paperK hκ0
+  have : 3 * paperK κ n ≤ paperK κ n := hthree.trans hres_le
   linarith
 
 theorem three_loglog_diagCoeff_le {β κ ε : ℝ} {n : ℕ}
