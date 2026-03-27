@@ -1489,6 +1489,150 @@ theorem paperHugeWitnessDegreeBranchParam_eventually_le
   rw [hEq]
   exact le_of_lt hlt
 
+theorem paperHugeWitnessCodegBranchParam_eventually_le
+    {ε1 κ q δ : ℝ} (hε1 : 0 < ε1) (hq : 0 ≤ q) (hδ : 0 < δ) :
+    ∃ N : ℕ, ∀ ⦃n : ℕ⦄, N ≤ n → paperHugeWitnessCodegBranchParam ε1 κ q n ≤ δ := by
+  let c : ℝ := (((27 : ℝ) / 2) * κ ^ 2 * q) / ε1
+  have hc : 0 ≤ c := by
+    dsimp [c]
+    positivity
+  have hsmall :
+      Filter.Tendsto
+        (fun n : ℕ => c * (((Real.log (n : ℝ)) ^ (2 : ℝ)) / ((n : ℝ) ^ (1 / 4 : ℝ))))
+        Filter.atTop (nhds 0) := by
+    have hlo :
+        Filter.Tendsto
+          (fun n : ℕ => ((Real.log (n : ℝ)) ^ (2 : ℝ)) / ((n : ℝ) ^ (1 / 4 : ℝ)))
+          Filter.atTop (nhds 0) := by
+      have hlo' :
+          (fun n : ℕ => (Real.log (n : ℝ)) ^ (2 : ℝ)) =o[Filter.atTop]
+            (fun n : ℕ => (n : ℝ) ^ (1 / 4 : ℝ)) := by
+        simpa using
+          ((isLittleO_log_rpow_rpow_atTop (r := (2 : ℝ)) (s := (1 / 4 : ℝ))
+            (by positivity)).comp_tendsto tendsto_natCast_atTop_atTop)
+      simpa using hlo'.tendsto_div_nhds_zero
+    simpa [c] using hlo.const_mul c
+  have hlogevent : ∀ᶠ n : ℕ in Filter.atTop, 2 ≤ Real.log (n : ℝ) := by
+    exact (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop).eventually_ge_atTop 2
+  rcases Metric.tendsto_atTop.mp hsmall δ hδ with ⟨N1, hN1⟩
+  rcases Filter.eventually_atTop.1 hlogevent with ⟨N0, hN0⟩
+  refine ⟨max N0 N1, ?_⟩
+  intro n hn
+  have hn0 : N0 ≤ n := le_trans (le_max_left _ _) hn
+  have hn1 : N1 ≤ n := le_trans (le_max_right _ _) hn
+  have hlog2 : 2 ≤ Real.log (n : ℝ) := hN0 n hn0
+  have hlog1 : 1 ≤ Real.log (n : ℝ) := by
+    linarith
+  have hlog_nonneg : 0 ≤ Real.log (n : ℝ) := by
+    linarith
+  have hlogsq_nonneg : 0 ≤ (Real.log (n : ℝ)) ^ (2 : ℝ) := by
+    positivity
+  have hn_nonneg : 0 ≤ (n : ℝ) := by
+    positivity
+  have hloglog_nonneg : 0 ≤ Real.log (Real.log (n : ℝ)) := by
+    exact Real.log_nonneg hlog1
+  have hcomp_num :
+      (Real.log (Real.log (n : ℝ))) ^ (2 : ℝ) ≤ (Real.log (n : ℝ)) ^ (2 : ℝ) := by
+    have hloglog_le : Real.log (Real.log (n : ℝ)) ≤ Real.log (n : ℝ) := by
+      exact Real.log_le_self hlog_nonneg
+    exact Real.rpow_le_rpow hloglog_nonneg hloglog_le (by positivity)
+  have hn_one : 1 ≤ (n : ℝ) := by
+    have hlog_le : Real.log (n : ℝ) ≤ (n : ℝ) := Real.log_le_self hn_nonneg
+    nlinarith
+  have hn_pos : 0 < (n : ℝ) := lt_of_lt_of_le zero_lt_one hn_one
+  have hpow_den_pos : 0 < (n : ℝ) ^ (1 / 4 : ℝ) := by
+    exact Real.rpow_pos_of_pos hn_pos _
+  have hpow_den_nonneg : 0 ≤ (n : ℝ) ^ (1 / 4 : ℝ) := hpow_den_pos.le
+  have hcomp_den : (n : ℝ) ^ (1 / 4 : ℝ) ≤ Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    have hpow_le : (n : ℝ) ^ (1 / 4 : ℝ) ≤ (n : ℝ) ^ (1 / 2 : ℝ) := by
+      have hquarter_le_half : (1 / 4 : ℝ) ≤ (1 / 2 : ℝ) := by
+        norm_num
+      exact Real.rpow_le_rpow_of_exponent_le hn_one hquarter_le_half
+    have hsqrt_eq :
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) =
+          ((n : ℝ) * Real.log (n : ℝ)) ^ (1 / 2 : ℝ) := by
+      rw [Real.sqrt_eq_rpow]
+    have hbase : (n : ℝ) ≤ (n : ℝ) * Real.log (n : ℝ) := by
+      nlinarith
+    have hmul_le :
+        (n : ℝ) ^ (1 / 2 : ℝ) ≤ ((n : ℝ) * Real.log (n : ℝ)) ^ (1 / 2 : ℝ) := by
+      exact Real.rpow_le_rpow hn_nonneg hbase (by positivity)
+    exact hpow_le.trans (by simpa [hsqrt_eq] using hmul_le)
+  have hcomp_div :
+      ((Real.log (Real.log (n : ℝ))) ^ (2 : ℝ)) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        ((Real.log (n : ℝ)) ^ (2 : ℝ)) / ((n : ℝ) ^ (1 / 4 : ℝ)) := by
+    exact div_le_div₀ hlogsq_nonneg hcomp_num hpow_den_pos hcomp_den
+  have hlt_abs :
+      |c| * ((Real.log (n : ℝ)) ^ (2 : ℝ) / |(n : ℝ) ^ (1 / 4 : ℝ)|) < δ := by
+    simpa [Real.dist_eq] using hN1 n hn1
+  have habs_den : |(n : ℝ) ^ (1 / 4 : ℝ)| = (n : ℝ) ^ (1 / 4 : ℝ) := by
+    exact abs_of_nonneg hpow_den_nonneg
+  rw [habs_den] at hlt_abs
+  have hlt_upper :
+      c * (((Real.log (n : ℝ)) ^ (2 : ℝ)) / ((n : ℝ) ^ (1 / 4 : ℝ))) < δ := by
+    simpa [abs_of_nonneg hc, abs_of_nonneg hlogsq_nonneg] using hlt_abs
+  have hEq :
+      paperHugeWitnessCodegBranchParam ε1 κ q n =
+        c * (((Real.log (Real.log (n : ℝ))) ^ (2 : ℝ)) /
+          Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) := by
+    simp [paperHugeWitnessCodegBranchParam, paperHugeWitnessCodegCoeff, c, div_eq_mul_inv]
+    ring_nf
+  rw [hEq]
+  have hmono :
+      c * (((Real.log (Real.log (n : ℝ))) ^ (2 : ℝ)) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+        c * (((Real.log (n : ℝ)) ^ (2 : ℝ)) / ((n : ℝ) ^ (1 / 4 : ℝ))) := by
+    exact mul_le_mul_of_nonneg_left hcomp_div hc
+  exact le_of_lt (lt_of_le_of_lt hmono hlt_upper)
+
+theorem paperHugeWitnessBranchwisePieceBranchParamBounds_eventually_le
+    {ε1 κ β q δdegBlue δcodegBlue δdegRed δcodegRed : ℝ}
+    (hε1 : 0 < ε1) (hκ : 0 ≤ κ) (hβ : 0 ≤ β) (hq : 0 ≤ q)
+    (hδdegBlue : 0 < δdegBlue) (hδcodegBlue : 0 < δcodegBlue)
+    (hδdegRed : 0 < δdegRed) (hδcodegRed : 0 < δcodegRed) :
+    ∃ N : ℕ, ∀ ⦃n : ℕ⦄, N ≤ n →
+      paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ δdegBlue ∧
+        paperHugeWitnessCodegBranchParam ε1 κ q n ≤ δcodegBlue ∧
+          paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ δdegRed ∧
+            paperHugeWitnessCodegBranchParam ε1 κ q n ≤ δcodegRed := by
+  rcases paperHugeWitnessDegreeBranchParam_eventually_le hε1 hκ hβ hδdegBlue with
+    ⟨NdegBlue, hdegBlue⟩
+  rcases paperHugeWitnessCodegBranchParam_eventually_le hε1 hq hδcodegBlue with
+    ⟨NcodegBlue, hcodegBlue⟩
+  rcases paperHugeWitnessDegreeBranchParam_eventually_le hε1 hκ hβ hδdegRed with
+    ⟨NdegRed, hdegRed⟩
+  rcases paperHugeWitnessCodegBranchParam_eventually_le hε1 hq hδcodegRed with
+    ⟨NcodegRed, hcodegRed⟩
+  refine ⟨max (max NdegBlue NcodegBlue) (max NdegRed NcodegRed), ?_⟩
+  intro n hn
+  have hBlue : max NdegBlue NcodegBlue ≤ n := le_trans (le_max_left _ _) hn
+  have hRed : max NdegRed NcodegRed ≤ n := le_trans (le_max_right _ _) hn
+  have hNdegBlue : NdegBlue ≤ n := le_trans (le_max_left _ _) hBlue
+  have hNcodegBlue : NcodegBlue ≤ n := le_trans (le_max_right _ _) hBlue
+  have hNdegRed : NdegRed ≤ n := le_trans (le_max_left _ _) hRed
+  have hNcodegRed : NcodegRed ≤ n := le_trans (le_max_right _ _) hRed
+  exact ⟨hdegBlue hNdegBlue, hcodegBlue hNcodegBlue, hdegRed hNdegRed, hcodegRed hNcodegRed⟩
+
+theorem paperHugeWitnessBranchwiseBranchParamBounds_eventually_le
+    {ε1 κ β q δdegBlue δcodegBlue δblue δdegRed δcodegRed δred : ℝ}
+    (hε1 : 0 < ε1) (hκ : 0 ≤ κ) (hβ : 0 ≤ β) (hq : 0 ≤ q)
+    (hδdegBlue : 0 < δdegBlue) (hδcodegBlue : 0 < δcodegBlue)
+    (hblueBranchSum : δdegBlue + δcodegBlue ≤ δblue)
+    (hδdegRed : 0 < δdegRed) (hδcodegRed : 0 < δcodegRed)
+    (hredBranchSum : δdegRed + δcodegRed ≤ δred) :
+    ∃ N : ℕ, ∀ ⦃n : ℕ⦄, N ≤ n →
+      paperHugeWitnessBranchParam ε1 κ β q n ≤ δblue ∧
+        paperHugeWitnessBranchParam ε1 κ β q n ≤ δred := by
+  rcases
+      paperHugeWitnessBranchwisePieceBranchParamBounds_eventually_le hε1 hκ hβ hq
+        hδdegBlue hδcodegBlue hδdegRed hδcodegRed with
+    ⟨N, hN⟩
+  refine ⟨N, ?_⟩
+  intro n hn
+  rcases hN hn with ⟨hdegBlue, hcodegBlue, hdegRed, hcodegRed⟩
+  exact
+    ⟨paperHugeWitnessBranchParam_le_of_pieceBranchParamBounds hdegBlue hcodegBlue hblueBranchSum,
+      paperHugeWitnessBranchParam_le_of_pieceBranchParamBounds hdegRed hcodegRed hredBranchSum⟩
+
 theorem paperHugeWitnessDegreeBranchParam_le_three_mul_of_diagScale
     {ε1 κ β : ℝ} {n : ℕ} (hε1 : 0 < ε1) (hn : 1 < n) (hκ : 0 ≤ κ)
     (hdiagScale : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε1 * paperS n) :
