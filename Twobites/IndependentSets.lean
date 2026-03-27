@@ -515,6 +515,68 @@ def section4ChoiceMass (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) (p : ℝ) (uR uB remaining : ℕ) : ℝ :=
   ((C.section4UChoiceSet I A uR uB).card : ℝ) * section4BernoulliMass p uR uB remaining
 
+/-- The finite counted-event mass of the exact size-`(u_R,u_B)` witness family. -/
+def section4ChoiceEventMass (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (p : ℝ) (uR uB remaining : ℕ) : ℝ := by
+  exact
+    Finset.sum (C.section4UChoiceSet I A uR uB) fun outcome =>
+      section4BernoulliMass p outcome.1.card outcome.2.card remaining
+
+/-- The finite index set for the possible `(u_R,u_B)` counts used in the summed `lem:RISI`
+estimate. -/
+def section4CountIndexSet (uRMax uBMax : ℕ) : Finset (ℕ × ℕ) :=
+  Finset.range (uRMax + 1) ×ˢ Finset.range (uBMax + 1)
+
+/-- The summed counted-event mass over all admissible `(u_R,u_B)` values. -/
+def section4ChoiceEventMassSum (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (p : ℝ) (remaining uRMax uBMax : ℕ) : ℝ := by
+  exact
+    Finset.sum (section4CountIndexSet uRMax uBMax) fun uv =>
+      C.section4ChoiceEventMass I A p uv.1 uv.2 remaining
+
+/-- The corresponding summed upper-bound expression after replacing the actual witness-family
+cardinalities by projection-pair counts. -/
+def section4ProjectionChoiceMassSum (p : ℝ) (remaining uRMax uBMax : ℕ) : ℝ := by
+  exact
+    Finset.sum (section4CountIndexSet uRMax uBMax) fun uv =>
+      ((((uRMax.choose uv.1 : ℕ) : ℝ) * p ^ uv.1) *
+          (((uBMax.choose uv.2 : ℕ) : ℝ) * p ^ uv.2)) *
+        (1 - p) ^ remaining
+
+/-- The exact conditioned second-stage witness outcome produced by the current independent-set
+configuration. -/
+def section4UCondChoiceOutcome (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) :
+    Finset (Sym2 (Fin m)) × Finset (Sym2 (Fin m)) :=
+  ((C.section4URedCondPairSet I A).image Sym2.mk,
+    (C.section4UBlueCondPairSet I A).image Sym2.mk)
+
+/-- The singleton counted-event object corresponding to the actual conditioned second-stage outcome
+having prescribed red/blue witness counts. -/
+def section4UCondChoiceEvent (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (uR uB : ℕ) :
+    Finset (Finset (Sym2 (Fin m)) × Finset (Sym2 (Fin m))) :=
+  if (C.section4URedCondPairSet I A).card = uR ∧
+      (C.section4UBlueCondPairSet I A).card = uB then
+    {C.section4UCondChoiceOutcome I A}
+  else
+    ∅
+
+/-- The counted mass of the exact conditioned second-stage event with prescribed `(u_R,u_B)`
+counts. -/
+def section4UCondChoiceEventMass (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (p : ℝ) (uR uB remaining : ℕ) : ℝ := by
+  exact
+    Finset.sum (C.section4UCondChoiceEvent I A uR uB) fun outcome =>
+      section4BernoulliMass p outcome.1.card outcome.2.card remaining
+
+/-- The summed mass of the actual conditioned event over all admissible `(u_R,u_B)` values. -/
+def section4UCondChoiceEventMassSum (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) (p : ℝ) (remaining uRMax uBMax : ℕ) : ℝ := by
+  exact
+    Finset.sum (section4CountIndexSet uRMax uBMax) fun uv =>
+      C.section4UCondChoiceEventMass I A p uv.1 uv.2 remaining
+
 @[simp] theorem mem_X_red (C : ConstructionData n m) {I : Finset (Fin n)} {r : Fin m}
     {v : Fin n} : v ∈ C.X I (Sum.inl r) ↔ v ∈ I ∧ C.redBase.Adj r (C.redProj v) := by
   classical
@@ -10889,6 +10951,26 @@ theorem section4UCondPair_images_mem_section4UChoiceSet_of_card_eq_of_indep
     C.section4UBlueCondPairSet_image_sym2_mem_section4UBlueChoiceSet_of_card_eq_of_indep
       hindep huB]
 
+@[simp] theorem section4UCondChoiceOutcome_fst_card_eq
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.section4UCondChoiceOutcome I A).1.card = (C.section4URedCondPairSet I A).card := by
+  simp [section4UCondChoiceOutcome, C.section4URedCondPairSet_image_sym2_card_eq]
+
+@[simp] theorem section4UCondChoiceOutcome_snd_card_eq
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.section4UCondChoiceOutcome I A).2.card = (C.section4UBlueCondPairSet I A).card := by
+  simp [section4UCondChoiceOutcome, C.section4UBlueCondPairSet_image_sym2_card_eq]
+
+theorem section4UCondChoiceOutcome_mem_section4UChoiceSet_of_card_eq_of_indep
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uR uB : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (huR : (C.section4URedCondPairSet I A).card = uR)
+    (huB : (C.section4UBlueCondPairSet I A).card = uB) :
+    C.section4UCondChoiceOutcome I A ∈ C.section4UChoiceSet I A uR uB := by
+  simpa [section4UCondChoiceOutcome] using
+    C.section4UCondPair_images_mem_section4UChoiceSet_of_card_eq_of_indep hindep huR huB
+
 theorem section4URedChoiceSet_card_le_choose_redProjectionPairCount
     (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} {uR : ℕ} :
     (C.section4URedChoiceSet I A uR).card ≤
@@ -10966,6 +11048,157 @@ theorem section4ChoiceMass_le_of_choiceBound_of_le_remaining
           (1 - p) ^ L := by
       rw [pow_add, Nat.cast_mul]
       ring
+
+theorem section4BernoulliMass_eq_of_mem_section4UChoiceSet
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {p : ℝ} {uR uB remaining : ℕ}
+    {outcome : Finset (Sym2 (Fin m)) × Finset (Sym2 (Fin m))}
+    (houtcome : outcome ∈ C.section4UChoiceSet I A uR uB) :
+    section4BernoulliMass p outcome.1.card outcome.2.card remaining =
+      section4BernoulliMass p uR uB remaining := by
+  rcases Finset.mem_product.1 houtcome with ⟨hR, hB⟩
+  have hRc : outcome.1.card = uR := (Finset.mem_powersetCard.1 hR).2
+  have hBc : outcome.2.card = uB := (Finset.mem_powersetCard.1 hB).2
+  simp [section4BernoulliMass, hRc, hBc]
+
+theorem section4ChoiceEventMass_eq_section4ChoiceMass
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    (p : ℝ) (uR uB remaining : ℕ) :
+    C.section4ChoiceEventMass I A p uR uB remaining =
+      C.section4ChoiceMass I A p uR uB remaining := by
+  classical
+  unfold section4ChoiceEventMass
+  calc
+    Finset.sum (C.section4UChoiceSet I A uR uB) (fun outcome =>
+        section4BernoulliMass p outcome.1.card outcome.2.card remaining) =
+      Finset.sum (C.section4UChoiceSet I A uR uB) (fun _outcome =>
+        section4BernoulliMass p uR uB remaining) := by
+        refine Finset.sum_congr rfl ?_
+        intro outcome houtcome
+        exact C.section4BernoulliMass_eq_of_mem_section4UChoiceSet houtcome
+    _ = ((C.section4UChoiceSet I A uR uB).card : ℝ) *
+          section4BernoulliMass p uR uB remaining := by
+        rw [Finset.sum_const, nsmul_eq_mul]
+    _ = C.section4ChoiceMass I A p uR uB remaining := by
+        simp [section4ChoiceMass]
+
+theorem section4ChoiceEventMass_le_projectionChoiceMass
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {p : ℝ} {uR uB remaining : ℕ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    C.section4ChoiceEventMass I A p uR uB remaining ≤
+      ((((C.redProjectionPairCount I
+              ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr)).choose uR :
+            ℝ) *
+          p ^ uR) *
+        (((C.blueProjectionPairCount I
+              ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl)).choose uB :
+            ℝ) *
+          p ^ uB)) *
+        (1 - p) ^ remaining := by
+  rw [C.section4ChoiceEventMass_eq_section4ChoiceMass]
+  exact
+    C.section4ChoiceMass_le_of_choiceBound_of_le_remaining
+      (C.section4UChoiceSet_card_le_choose_mul_choose (I := I) (A := A)) (le_rfl) hp0 hp1
+
+theorem section4ChoiceEventMassSum_le_projectionChoiceMassSum
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {p : ℝ} {remaining : ℕ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    C.section4ChoiceEventMassSum I A p remaining
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr))
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl)) ≤
+      section4ProjectionChoiceMassSum p remaining
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr))
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl)) := by
+  unfold section4ChoiceEventMassSum section4ProjectionChoiceMassSum
+  exact Finset.sum_le_sum fun uv : ℕ × ℕ => fun _ =>
+    C.section4ChoiceEventMass_le_projectionChoiceMass
+      (I := I) (A := A) (remaining := remaining) (uR := uv.1) (uB := uv.2) hp0 hp1
+
+theorem section4BernoulliMass_nonneg {p : ℝ} {uR uB remaining : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    0 ≤ section4BernoulliMass p uR uB remaining := by
+  unfold section4BernoulliMass
+  have hsub : 0 ≤ 1 - p := by linarith
+  exact mul_nonneg (pow_nonneg hp0 _) (pow_nonneg hsub _)
+
+theorem section4ChoiceEventMass_nonneg
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {p : ℝ} {uR uB remaining : ℕ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    0 ≤ C.section4ChoiceEventMass I A p uR uB remaining := by
+  unfold section4ChoiceEventMass
+  exact Finset.sum_nonneg fun _ _ => section4BernoulliMass_nonneg hp0 hp1
+
+theorem section4UCondChoiceEventMass_le_section4ChoiceEventMass_of_indep
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {p : ℝ} {uR uB remaining : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    C.section4UCondChoiceEventMass I A p uR uB remaining ≤
+      C.section4ChoiceEventMass I A p uR uB remaining := by
+  by_cases hcount :
+      (C.section4URedCondPairSet I A).card = uR ∧
+        (C.section4UBlueCondPairSet I A).card = uB
+  · rcases hcount with ⟨huR, huB⟩
+    have hmem :
+        C.section4UCondChoiceOutcome I A ∈ C.section4UChoiceSet I A uR uB :=
+      C.section4UCondChoiceOutcome_mem_section4UChoiceSet_of_card_eq_of_indep hindep huR huB
+    have hsingle' :
+        section4BernoulliMass p
+            (C.section4UCondChoiceOutcome I A).1.card
+            (C.section4UCondChoiceOutcome I A).2.card remaining ≤
+          C.section4ChoiceEventMass I A p uR uB remaining := by
+      unfold section4ChoiceEventMass
+      simpa using
+        (Finset.single_le_sum
+          (f := fun outcome =>
+            section4BernoulliMass p outcome.1.card outcome.2.card remaining)
+          (fun _ _ => section4BernoulliMass_nonneg hp0 hp1) hmem)
+    have hsingle :
+        section4BernoulliMass p uR uB remaining ≤
+          C.section4ChoiceEventMass I A p uR uB remaining := by
+      calc
+        section4BernoulliMass p uR uB remaining =
+            section4BernoulliMass p
+              (C.section4URedCondPairSet I A).card
+              (C.section4UBlueCondPairSet I A).card remaining := by
+          simp [huR, huB]
+        _ = section4BernoulliMass p
+              (C.section4UCondChoiceOutcome I A).1.card
+              (C.section4UCondChoiceOutcome I A).2.card remaining := by
+          unfold section4UCondChoiceOutcome
+          rw [C.section4URedCondPairSet_image_sym2_card_eq,
+            C.section4UBlueCondPairSet_image_sym2_card_eq]
+        _ ≤ C.section4ChoiceEventMass I A p uR uB remaining := hsingle'
+    have hactual :
+        C.section4UCondChoiceEventMass I A p uR uB remaining =
+          section4BernoulliMass p uR uB remaining := by
+      simp [section4UCondChoiceEventMass, section4UCondChoiceEvent, huR, huB]
+    rw [hactual]
+    exact hsingle
+  · have hzero :
+        C.section4UCondChoiceEventMass I A p uR uB remaining = 0 := by
+      simp [section4UCondChoiceEventMass, section4UCondChoiceEvent, hcount]
+    rw [hzero]
+    exact C.section4ChoiceEventMass_nonneg hp0 hp1
+
+theorem section4UCondChoiceEventMassSum_le_section4ChoiceEventMassSum_of_indep
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {p : ℝ} {remaining uRMax uBMax : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    C.section4UCondChoiceEventMassSum I A p remaining uRMax uBMax ≤
+      C.section4ChoiceEventMassSum I A p remaining uRMax uBMax := by
+  unfold section4UCondChoiceEventMassSum section4ChoiceEventMassSum
+  exact Finset.sum_le_sum fun uv : ℕ × ℕ => fun _ =>
+    C.section4UCondChoiceEventMass_le_section4ChoiceEventMass_of_indep
+      (I := I) (A := A) (p := p) (uR := uv.1) (uB := uv.2)
+      (remaining := remaining) hindep hp0 hp1
 
 set_option linter.style.longLine false in
 theorem
@@ -11115,6 +11348,113 @@ theorem
           I (C.section4F I ε) huR huB
   exact
     C.section4ChoiceMass_le_of_choiceBound_of_le_remaining hchoice hremaining hp0 hp1
+
+set_option linter.style.longLine false in
+theorem
+    section4ChoiceEventMassSum_section4F_le_projectionChoiceMassSum
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p : ℝ} {N : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    C.section4ChoiceEventMassSum I (C.section4F I ε) p
+        (N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl))
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr))
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) ≤
+      section4ProjectionChoiceMassSum p
+        (N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl))
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr))
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) := by
+  exact
+    C.section4ChoiceEventMassSum_le_projectionChoiceMassSum
+      (I := I) (A := C.section4F I ε) hp0 hp1
+
+set_option linter.style.longLine false in
+theorem
+    section4UCondChoiceEventMassSum_section4F_le_projectionChoiceMassSum_of_indep
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p : ℝ} {N : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    C.section4UCondChoiceEventMassSum I (C.section4F I ε) p
+        (N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl))
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr))
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) ≤
+      section4ProjectionChoiceMassSum p
+        (N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl))
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr))
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) := by
+  calc
+    C.section4UCondChoiceEventMassSum I (C.section4F I ε) p
+        (N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl))
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr))
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) ≤
+      C.section4ChoiceEventMassSum I (C.section4F I ε) p
+        (N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl))
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr))
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) := by
+      exact
+        C.section4UCondChoiceEventMassSum_le_section4ChoiceEventMassSum_of_indep
+          (I := I) (A := C.section4F I ε) hindep hp0 hp1
+    _ ≤ section4ProjectionChoiceMassSum p
+        (N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl))
+        (C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr))
+        (C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) := by
+      exact C.section4ChoiceEventMassSum_section4F_le_projectionChoiceMassSum
+        (I := I) (ε := ε) (N := N) hp0 hp1
 
 end
 
