@@ -130,7 +130,8 @@
     - the direct witness theorem `paper_huge_deterministic_of_witnessSplitRightErrorBounds` is now in place and the canonical helper chain `...of_realErrorBound` / `...of_coeffBound` / `...of_rightSmall` / `...of_paramDeficit` has been rethreaded through `paperHuge*CrossWitnessRightSplitErrorProp`
     - the paper-scale split right-branch arithmetic is now formalized both at general witness scale `B` and at the specialization `B = 3 * κ * log log n`, via `splitRightCoeff_le_eps_mul_choose_two_of_sum_le_of_three_mul_le` and `splitRightCoeff_le_eps_mul_cap_choose_two_add_choose_two_of_sum_le_of_three_mul_le`, so the canonical huge-case wrappers no longer need the ruled-out combined-error right-smallness target
     - the threshold comparison `t_2 ≤ t_1` is now discharged directly from the large-`n` hypothesis `2 ≤ log log n`, and the later huge wrappers now use reusable `log log n` positivity/lower-bound lemmas instead of local ad hoc derivations
-    - the remaining huge-case frontier is the still-missing lower bound `2 < t_1` together with the final coefficient/gap specializations in `ParameterBounds.lean` that feed the last paper-scale wrapper chain
+    - the large-`n` lower bound `2 < t_1` is now proved directly from `2 ≤ log log n` via `two_lt_paperT1_of_two_le_loglog` / `two_lt_paperT1_of_two_div_le_of_le_one`, and the later `(2 + ε₁)` paperHugeWitness wrappers no longer carry `hT1` as an external assumption
+    - the remaining huge-case frontier is now the final coefficient/gap specializations in `ParameterBounds.lean` together with the last asymptotic wrappers beyond the paperHugeWitness chain
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound

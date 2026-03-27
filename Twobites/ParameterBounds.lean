@@ -516,6 +516,14 @@ theorem one_le_loglog_of_two_div_le_of_le_one {η : ℝ} {n : ℕ}
     exact (le_div_iff₀ hη).2 (by linarith)
   linarith
 
+theorem two_le_loglog_of_two_div_le_of_le_one {η : ℝ} {n : ℕ}
+    (hη : 0 < η) (hηle : η ≤ 1)
+    (hloglog : 2 / η ≤ Real.log (Real.log (n : ℝ))) :
+    2 ≤ Real.log (Real.log (n : ℝ)) := by
+  have htwo : (2 : ℝ) ≤ 2 / η := by
+    exact (le_div_iff₀ hη).2 (by linarith)
+  linarith
+
 theorem two_le_eta_mul_paperK_div_paperT1_of_two_div_loglog_le {κ η : ℝ} {n : ℕ}
     (hn : 1 < n) (hκ : 1 ≤ κ) (hη : 0 < η)
     (hloglog : 2 / η ≤ Real.log (Real.log (n : ℝ))) :
@@ -711,6 +719,66 @@ theorem ceil_paperT2_le_ceil_paperT1_of_two_le_loglog {ε : ℝ} {n : ℕ} (hn :
     ⌈paperT2 ε n⌉₊ ≤ ⌈paperT1 n⌉₊ := by
   apply Nat.ceil_le.2
   exact (paperT2_le_paperT1_of_two_le_loglog hn hε hloglog).trans (Nat.le_ceil _)
+
+theorem two_lt_paperT1_of_two_le_loglog {n : ℕ}
+    (hn : 1 < n) (hloglog : 2 ≤ Real.log (Real.log (n : ℝ))) :
+    2 < paperT1 n := by
+  have hn1 : 1 ≤ n := Nat.succ_le_of_lt (lt_trans Nat.zero_lt_one hn)
+  have hn0 : 0 < (n : ℝ) := by
+    exact_mod_cast (lt_trans Nat.zero_lt_one hn)
+  have hlog_nonneg : 0 ≤ Real.log (n : ℝ) := by
+    exact Real.log_nonneg (by exact_mod_cast hn1)
+  have hnot_le_one : ¬ Real.log (n : ℝ) ≤ 1 := by
+    intro hle
+    have hnonpos : Real.log (Real.log (n : ℝ)) ≤ 0 := Real.log_nonpos hlog_nonneg hle
+    linarith
+  have hlog_pos : 0 < Real.log (n : ℝ) := by
+    linarith
+  have hloglog_pos : 0 < Real.log (Real.log (n : ℝ)) := by
+    linarith
+  have hexp2_le : Real.exp 2 ≤ Real.log (n : ℝ) := by
+    exact (Real.le_log_iff_exp_le hlog_pos).1 hloglog
+  have hexp2_gt_four : 4 < Real.exp 2 := by
+    rw [show (2 : ℝ) = 1 + 1 by norm_num, Real.exp_add]
+    nlinarith [Real.exp_one_gt_two]
+  have hn_gt_five : 5 < (n : ℝ) := by
+    have hupper : Real.log (n : ℝ) ≤ (n : ℝ) - 1 := Real.log_le_sub_one_of_pos hn0
+    linarith [lt_of_lt_of_le hexp2_gt_four hexp2_le, hupper]
+  have hsqrt_n_gt_two : 2 < Real.sqrt (n : ℝ) := by
+    rw [Real.lt_sqrt (by norm_num)]
+    linarith
+  have hsqrt_log_ge_loglog :
+      Real.log (Real.log (n : ℝ)) ≤ Real.sqrt (Real.log (n : ℝ)) :=
+    loglog_le_sqrt_log_of_two_le_loglog hlog_nonneg hloglog
+  have hratio_ge_one :
+      1 ≤ Real.sqrt (Real.log (n : ℝ)) / Real.log (Real.log (n : ℝ)) := by
+    rwa [one_le_div hloglog_pos]
+  have hmul_ge :
+      Real.sqrt (n : ℝ) ≤
+        Real.sqrt (n : ℝ) *
+          (Real.sqrt (Real.log (n : ℝ)) / Real.log (Real.log (n : ℝ))) := by
+    simpa [one_mul] using
+      mul_le_mul_of_nonneg_left hratio_ge_one (Real.sqrt_nonneg (n : ℝ))
+  have hrewrite :
+      paperT1 n =
+        Real.sqrt (n : ℝ) *
+          (Real.sqrt (Real.log (n : ℝ)) / Real.log (Real.log (n : ℝ))) := by
+    unfold paperT1
+    rw [Real.sqrt_mul (Nat.cast_nonneg n)]
+    ring
+  calc
+    2 < Real.sqrt (n : ℝ) := hsqrt_n_gt_two
+    _ ≤ Real.sqrt (n : ℝ) *
+          (Real.sqrt (Real.log (n : ℝ)) / Real.log (Real.log (n : ℝ))) := hmul_ge
+    _ = paperT1 n := by rw [hrewrite]
+
+theorem two_lt_paperT1_of_two_div_le_of_le_one {η : ℝ} {n : ℕ}
+    (hn : 1 < n) (hη : 0 < η) (hηle : η ≤ 1)
+    (hloglog : 2 / η ≤ Real.log (Real.log (n : ℝ))) :
+    2 < paperT1 n := by
+  exact
+    two_lt_paperT1_of_two_le_loglog hn
+      (two_le_loglog_of_two_div_le_of_le_one hη hηle hloglog)
 
 theorem ceil_paperT1_lt_paperT1_add_one {n : ℕ} (hT1 : 0 ≤ paperT1 n) :
     (⌈paperT1 n⌉₊ : ℝ) < paperT1 n + 1 := by

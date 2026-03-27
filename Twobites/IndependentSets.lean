@@ -7393,7 +7393,7 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three
         C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
     (hn : 1 < n) (hκ : 1 ≤ κ)
     (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
-    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
     (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
     (hε1 : 0 ≤ ε1)
     (hdiagCoeff :
@@ -7445,6 +7445,10 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three
         3 * κ * Real.log (Real.log (n : ℝ)) := by
     have hconst : 2 + ε1 ≤ 3 := by linarith
     nlinarith
+  have hT1 : 2 < Twobites.paperT1 n := by
+    exact
+      Twobites.two_lt_paperT1_of_two_div_le_of_le_one
+        hn hε1pos hε1le hloglogGap
   exact
     C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_le_of_splitCoeff
       (B := 3 * κ * Real.log (Real.log (n : ℝ))) hD I hI hred hblue hblueCap
@@ -7474,7 +7478,7 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_di
         C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
     (hn : 1 < n) (hκ : 1 ≤ κ)
     (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
-    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
     (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
     (hε1 : 0 ≤ ε1)
     (hdiagScale :
@@ -7516,6 +7520,10 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_di
                 ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) := by
   have hloglogOne : 1 ≤ Real.log (Real.log (n : ℝ)) := by
     exact Twobites.one_le_loglog_of_two_div_le_of_le_one hε1pos hε1le hloglogGap
+  have hT1 : 2 < Twobites.paperT1 n := by
+    exact
+      Twobites.two_lt_paperT1_of_two_div_le_of_le_one
+        hn hε1pos hε1le hloglogGap
   have hk : 1 ≤ Twobites.paperK κ n := by
     have hT1leK : Twobites.paperT1 n ≤ Twobites.paperK κ n :=
       Twobites.paperT1_le_paperK hloglogOne hκ
@@ -7529,7 +7537,7 @@ theorem paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_di
   exact
     C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three
       hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR
-      hρB hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagCoeff hsplit hsumGap
+      hρB hβ hε2 hε1pos hε1le hloglogGap hε1 hdiagCoeff hsplit hsumGap
       hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B
       hκ2B hredCrossSmall
 
@@ -7556,7 +7564,7 @@ theorem
         C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
     (hn : 1 < n) (hκ : 1 ≤ κ)
     (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
-    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
     (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
     (hε1 : 0 ≤ ε1)
     (hdiagScale :
@@ -7609,7 +7617,7 @@ theorem
   exact
     C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale
       hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR
-      hρB hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale hsplit hsumGap
+      hρB hβ hε2 hε1pos hε1le hloglogGap hε1 hdiagScale hsplit hsumGap
       hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B
       hκ2B hredCrossSmall
 
@@ -7636,7 +7644,7 @@ theorem
         C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
     (hn : 1 < n) (hκ : 1 ≤ κ)
     (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
-    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
     (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
     (hε1 : 0 ≤ ε1)
     (hdiagScale :
@@ -7685,7 +7693,7 @@ theorem
   exact
     C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegCoeff
       hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR
-      hρB hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegCoeff
+      hρB hβ hε2 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegCoeff
       hsplitGap hsumGap hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R
       hblueCrossSmall hgap2B hκ2B hredCrossSmall
 
@@ -7713,7 +7721,7 @@ theorem
         C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
     (hn : 1 < n) (hκ : 1 ≤ κ)
     (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
-    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
     (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
     (hε1 : 0 ≤ ε1)
     (hdiagScale :
@@ -7755,7 +7763,7 @@ theorem
   simpa [add_assoc, add_left_comm, add_comm] using
     C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale
       (δsplit := ε1 * κ + δcodeg) hD I hI hred hblue hblueCap hblueCapWeight hredCap
-      hredCapWeight hn hκ hρR hρB hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale
+      hredCapWeight hn hκ hρR hρB hβ hε2 hε1pos hε1le hloglogGap hε1 hdiagScale
       hcodegScale (le_rfl : ε1 * κ + δcodeg ≤ ε1 * κ + δcodeg) hsumGap hdegBound
       hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
       hredCrossSmall
@@ -7784,7 +7792,7 @@ theorem
         C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
     (hn : 1 < n) (hκ : 1 ≤ κ)
     (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
-    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
     (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
     (hε1 : 0 ≤ ε1)
     (hdiagScale :
@@ -7845,7 +7853,7 @@ theorem
   simpa [hsplitEq, add_assoc, add_left_comm, add_comm] using
     C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_split
       (δcodeg := ε1 * κ) hD I hI hred hblue hblueCap hblueCapWeight hredCap
-      hredCapWeight hn hκ hρR hρB hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale
+      hredCapWeight hn hκ hρR hρB hβ hε2 hε1pos hε1le hloglogGap hε1 hdiagScale
       hcodegScale hsumGap hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R'
       hblueCrossSmall' hgap2B hκ2B' hredCrossSmall'
 
@@ -7873,7 +7881,7 @@ theorem
         C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
     (hn : 1 < n) (hκ : 1 ≤ κ)
     (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
-    (hT1 : 2 < Twobites.paperT1 n) (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
     (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
     (hε1 : 0 ≤ ε1)
     (hdiagScale :
@@ -7927,7 +7935,7 @@ theorem
   exact
     C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps
       hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR hρB
-      hβ hε2 hT1 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegScale hsumGap hdegBound
+      hβ hε2 hε1pos hε1le hloglogGap hε1 hdiagScale hcodegScale hsumGap hdegBound
       hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall' hgap2B hκ2B
       hredCrossSmall'
 
