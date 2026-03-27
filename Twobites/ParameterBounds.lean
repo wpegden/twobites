@@ -240,6 +240,35 @@ theorem cast_choose_mul_le_paperK_of_le_of_le
     _ = paperK ((((bound.choose 2 : ℕ) : ℝ) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
       rw [paperK_ratio_eq hn]
 
+theorem cast_choose_mul_le_paperK_of_real_bound
+    {w projCodegreeBound : ℕ} {B q : ℝ} {n : ℕ}
+    (hB : (w : ℝ) ≤ B) (hn : 1 < n)
+    (hproj : (projCodegreeBound : ℝ) ≤ q) :
+    ((w.choose 2 * projCodegreeBound : ℕ) : ℝ) ≤
+      paperK (((B ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
+  have hchoose : (w.choose 2 : ℝ) ≤ B ^ 2 / 2 := by
+    rw [Nat.cast_choose_two]
+    nlinarith [hB]
+  calc
+    ((w.choose 2 * projCodegreeBound : ℕ) : ℝ) = (w.choose 2 : ℝ) * (projCodegreeBound : ℝ) := by
+      norm_num
+    _ ≤ (B ^ 2 / 2) * (projCodegreeBound : ℝ) := by
+      gcongr
+    _ ≤ (B ^ 2 / 2) * q := by
+      exact mul_le_mul_of_nonneg_left hproj (by positivity)
+    _ = paperK (((B ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
+      rw [paperK_ratio_eq hn]
+
+theorem choose_mul_le_paperKNat_of_real_bound
+    {w projCodegreeBound : ℕ} {B q : ℝ} {n : ℕ}
+    (hB : (w : ℝ) ≤ B) (hn : 1 < n)
+    (hproj : (projCodegreeBound : ℝ) ≤ q) :
+    w.choose 2 * projCodegreeBound ≤
+      paperKNat (((B ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) n := by
+  unfold paperKNat
+  exact_mod_cast
+    (cast_choose_mul_le_paperK_of_real_bound hB hn hproj).trans (Nat.le_ceil _)
+
 theorem paperK_nonneg {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) : 0 ≤ paperK κ n := by
   unfold paperK
   exact mul_nonneg hκ (Real.sqrt_nonneg _)
