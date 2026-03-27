@@ -8401,6 +8401,60 @@ theorem paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOne
       (δ := ε * (1 - ε) / 8) (η := ε * (1 - ε) / 8) (κ := 1 + ε) (ε1 := ε1)
       hI hred hn hρR (by norm_num) (by norm_num) hδ hgap2 hκ hLoss
 
+theorem paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_paperNearOne_of_two_div_le_loglog
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hblue :
+      (C.blueImage I).card ≤ Twobites.paperKNat (((1 + ε) * (2 + ε)) / 4) n)
+    (hn : 1 < n) (hε0 : 0 < ε) (hε1 : ε < 1)
+    (hloglog : 2 / (ε * (1 - ε) / 8) ≤ Real.log (Real.log (n : ℝ)))
+    (hLoss :
+      (paperRISILossNat (1 + ε) ε1 n : ℝ) +
+          (((Twobites.paperKNat (1 + ε) n -
+                ((C.redImage I).card + (C.blueImage I).card) : ℕ) : ℕ) : ℝ) *
+            ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) ≤
+        (Twobites.paperCapNat (1 / 2) 0 n : ℝ) *
+          (Twobites.paperKNat (ε * (1 - ε) / 8) n : ℝ)) :
+    paperRISILossNat (1 + ε) ε1 n ≤
+      C.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+  have hηpos : 0 < ε * (1 - ε) / 8 := by
+    nlinarith
+  have hηle : ε * (1 - ε) / 8 ≤ 1 := by
+    nlinarith
+  have hgap2 : 2 ≤ Twobites.paperK (ε * (1 - ε) / 8) n :=
+    Twobites.two_le_paperK_of_two_div_le_of_le_one hn hηpos hηle hloglog
+  exact
+    C.paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_paperNearOne
+      I hI hblue (show 0 < n by exact Nat.lt_trans Nat.zero_lt_one hn) hε0.le hε1.le hgap2
+      hLoss
+
+theorem paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOne_of_two_div_le_loglog
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hred :
+      (C.redImage I).card ≤ Twobites.paperKNat (((1 + ε) * (2 + ε)) / 4) n)
+    (hn : 1 < n) (hε0 : 0 < ε) (hε1 : ε < 1)
+    (hloglog : 2 / (ε * (1 - ε) / 8) ≤ Real.log (Real.log (n : ℝ)))
+    (hLoss :
+      (paperRISILossNat (1 + ε) ε1 n : ℝ) +
+          (((Twobites.paperKNat (1 + ε) n -
+                ((C.redImage I).card + (C.blueImage I).card) : ℕ) : ℕ) : ℝ) *
+            ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) ≤
+        (Twobites.paperCapNat (1 / 2) 0 n : ℝ) *
+          (Twobites.paperKNat (ε * (1 - ε) / 8) n : ℝ)) :
+    paperRISILossNat (1 + ε) ε1 n ≤
+      C.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+  have hηpos : 0 < ε * (1 - ε) / 8 := by
+    nlinarith
+  have hηle : ε * (1 - ε) / 8 ≤ 1 := by
+    nlinarith
+  have hgap2 : 2 ≤ Twobites.paperK (ε * (1 - ε) / 8) n :=
+    Twobites.two_le_paperK_of_two_div_le_of_le_one hn hηpos hηle hloglog
+  exact
+    C.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOne
+      I hI hred (show 0 < n by exact Nat.lt_trans Nat.zero_lt_one hn) hε0.le hε1.le hgap2
+      hLoss
+
 theorem paper_huge_blue_cross_deterministic_of_paperCapNat_of_witnessErrorBounds_of_additiveCapBase
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)

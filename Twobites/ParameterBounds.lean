@@ -923,6 +923,28 @@ theorem two_lt_paperT1_of_two_div_le_of_le_one {η : ℝ} {n : ℕ}
     two_lt_paperT1_of_two_le_loglog hn
       (two_le_loglog_of_two_div_le_of_le_one hη hηle hloglog)
 
+theorem two_le_paperK_of_two_div_le_of_le_one {η : ℝ} {n : ℕ}
+    (hn : 1 < n) (hη : 0 < η) (hηle : η ≤ 1)
+    (hloglog : 2 / η ≤ Real.log (Real.log (n : ℝ))) :
+    2 ≤ paperK η n := by
+  have hllpos : 0 < Real.log (Real.log (n : ℝ)) :=
+    loglog_pos_of_two_div_le hη hloglog
+  have hratio : 2 ≤ paperK η n / paperT1 n := by
+    rw [paperK_div_paperT1_eq_mul_loglog hn hllpos]
+    exact two_le_mul_of_two_div_le hη hloglog
+  have hT1gt : 2 < paperT1 n :=
+    two_lt_paperT1_of_two_div_le_of_le_one hn hη hηle hloglog
+  have hT1ge : 1 ≤ paperT1 n := by
+    linarith
+  have hT1pos : 0 < paperT1 n := by
+    linarith
+  have hprod : (2 : ℝ) ≤ (paperK η n / paperT1 n) * paperT1 n := by
+    nlinarith
+  calc
+    (2 : ℝ) ≤ (paperK η n / paperT1 n) * paperT1 n := hprod
+    _ = paperK η n := by
+      field_simp [hT1pos.ne']
+
 theorem ceil_paperT1_lt_paperT1_add_one {n : ℕ} (hT1 : 0 ≤ paperT1 n) :
     (⌈paperT1 n⌉₊ : ℝ) < paperT1 n + 1 := by
   exact Nat.ceil_lt_add_one hT1
