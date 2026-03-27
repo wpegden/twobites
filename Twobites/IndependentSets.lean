@@ -225,6 +225,27 @@ pair-counting object. -/
 def revealedBasePairSet (A B : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
   exact revealedBaseArcSet A B
 
+/-- Canonical red pairs inside `π_R(I)`, counted with the order `r < r'`. -/
+def redBasePairSet (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Finset (Fin m × Fin m) := by
+  classical
+  exact ((C.redImage I).product (C.redImage I)).filter fun p => p.1 < p.2
+
+/-- Canonical blue pairs inside `π_B(I)`, counted with the order `b < b'`. -/
+def blueBasePairSet (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Finset (Fin m × Fin m) := by
+  classical
+  exact ((C.blueImage I).product (C.blueImage I)).filter fun p => p.1 < p.2
+
+/-- The paper's same-color pair object inside `π_R(I) ∪ π_B(I)`, before distinguishing edges from
+non-edges. -/
+def basePairSet (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Finset (BaseVertex m × BaseVertex m) := by
+  classical
+  exact
+    ((C.redBasePairSet I).image fun p => (Sum.inl p.1, Sum.inl p.2)) ∪
+      ((C.blueBasePairSet I).image fun p => (Sum.inr p.1, Sum.inr p.2))
+
 /-- Section 4's ordered overcount of revealed pairs coming from the queried vertices `A`. -/
 def section4RevealArcSet (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) :=
@@ -271,6 +292,12 @@ def unrevealedBaseOpenPairSet (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
   classical
   exact (C.baseOpenPairSet I).filter fun p => p.1 ∉ A ∧ p.2 ∉ A
+
+/-- The paper's unrevealed same-color pair object after querying the vertices of `A`. -/
+def unrevealedBasePairSet (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (BaseVertex m × BaseVertex m) := by
+  classical
+  exact (C.basePairSet I).filter fun p => p.1 ∉ A ∧ p.2 ∉ A
 
 /-- The paper's closed-pair predicate `C(I)`, expressed on ordered pairs of distinct vertices of
 `I`. -/
@@ -435,12 +462,26 @@ def OpenPairPlus (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) :
   classical
   simp [redBaseOpenPairSet, and_left_comm, and_assoc]
 
+@[simp] theorem mem_redBasePairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {r r' : Fin m} :
+    (r, r') ∈ C.redBasePairSet I ↔
+      r ∈ C.redImage I ∧ r' ∈ C.redImage I ∧ r < r' := by
+  classical
+  simp [redBasePairSet, and_assoc]
+
 @[simp] theorem mem_blueBaseOpenPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
     {b b' : Fin m} :
     (b, b') ∈ C.blueBaseOpenPairSet I ↔
       b ∈ C.blueImage I ∧ b' ∈ C.blueImage I ∧ b < b' ∧ ¬ C.blueBase.Adj b b' := by
   classical
   simp [blueBaseOpenPairSet, and_left_comm, and_assoc]
+
+@[simp] theorem mem_blueBasePairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {b b' : Fin m} :
+    (b, b') ∈ C.blueBasePairSet I ↔
+      b ∈ C.blueImage I ∧ b' ∈ C.blueImage I ∧ b < b' := by
+  classical
+  simp [blueBasePairSet, and_assoc]
 
 @[simp] theorem mem_revealedBaseOpenPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
     {A : Finset (BaseVertex m)} {p : BaseVertex m × BaseVertex m} :
@@ -454,11 +495,23 @@ def OpenPairPlus (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) :
   classical
   simp [unrevealedBaseOpenPairSet]
 
+@[simp] theorem mem_unrevealedBasePairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {A : Finset (BaseVertex m)} {p : BaseVertex m × BaseVertex m} :
+    p ∈ C.unrevealedBasePairSet I A ↔ p ∈ C.basePairSet I ∧ p.1 ∉ A ∧ p.2 ∉ A := by
+  classical
+  simp [unrevealedBasePairSet]
+
 @[simp] theorem mem_baseOpenPairSet_inl_inl (C : ConstructionData n m) {I : Finset (Fin n)}
     {r r' : Fin m} :
     (Sum.inl r, Sum.inl r') ∈ C.baseOpenPairSet I ↔ (r, r') ∈ C.redBaseOpenPairSet I := by
   classical
   simp [baseOpenPairSet]
+
+@[simp] theorem mem_basePairSet_inl_inl (C : ConstructionData n m) {I : Finset (Fin n)}
+    {r r' : Fin m} :
+    (Sum.inl r, Sum.inl r') ∈ C.basePairSet I ↔ (r, r') ∈ C.redBasePairSet I := by
+  classical
+  simp [basePairSet]
 
 @[simp] theorem mem_revealedBaseArcSet_inl_inl {A B : Finset (BaseVertex m)} {r r' : Fin m} :
     (Sum.inl r, Sum.inl r') ∈ revealedBaseArcSet A B ↔
@@ -490,17 +543,35 @@ def OpenPairPlus (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) :
   classical
   simp [baseOpenPairSet]
 
+@[simp] theorem mem_basePairSet_inr_inr (C : ConstructionData n m) {I : Finset (Fin n)}
+    {b b' : Fin m} :
+    (Sum.inr b, Sum.inr b') ∈ C.basePairSet I ↔ (b, b') ∈ C.blueBasePairSet I := by
+  classical
+  simp [basePairSet]
+
 @[simp] theorem not_mem_baseOpenPairSet_inl_inr (C : ConstructionData n m) {I : Finset (Fin n)}
     {r : Fin m} {b : Fin m} :
     (Sum.inl r, Sum.inr b) ∉ C.baseOpenPairSet I := by
   classical
   simp [baseOpenPairSet]
 
+@[simp] theorem not_mem_basePairSet_inl_inr (C : ConstructionData n m) {I : Finset (Fin n)}
+    {r : Fin m} {b : Fin m} :
+    (Sum.inl r, Sum.inr b) ∉ C.basePairSet I := by
+  classical
+  simp [basePairSet]
+
 @[simp] theorem not_mem_baseOpenPairSet_inr_inl (C : ConstructionData n m) {I : Finset (Fin n)}
     {b : Fin m} {r : Fin m} :
     (Sum.inr b, Sum.inl r) ∉ C.baseOpenPairSet I := by
   classical
   simp [baseOpenPairSet]
+
+@[simp] theorem not_mem_basePairSet_inr_inl (C : ConstructionData n m) {I : Finset (Fin n)}
+    {b : Fin m} {r : Fin m} :
+    (Sum.inr b, Sum.inl r) ∉ C.basePairSet I := by
+  classical
+  simp [basePairSet]
 
 theorem swap_not_mem_redBaseOpenPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
     {r r' : Fin m} (h : (r, r') ∈ C.redBaseOpenPairSet I) :
@@ -689,6 +760,31 @@ theorem openPair_lower_bound_sub_reveal_budget_le_unrevealed
     N - (C.revealedBaseOpenPairSet I A).card ≤ (C.unrevealedBaseOpenPairSet I A).card := by
   have hsub := C.baseOpenPairSet_card_sub_revealed_le_unrevealed I A
   omega
+
+theorem mem_basePairSet_of_mem_baseOpenPairSet (C : ConstructionData n m) {I : Finset (Fin n)}
+    {p : BaseVertex m × BaseVertex m} (h : p ∈ C.baseOpenPairSet I) : p ∈ C.basePairSet I := by
+  rcases p with ⟨x, y⟩
+  cases x <;> cases y
+  · rcases (C.mem_redBaseOpenPairSet.1 ((C.mem_baseOpenPairSet_inl_inl).1 h)) with
+      ⟨hr, hr', hlt, -⟩
+    exact (C.mem_basePairSet_inl_inl).2 ((C.mem_redBasePairSet).2 ⟨hr, hr', hlt⟩)
+  · exact (C.not_mem_baseOpenPairSet_inl_inr).elim h
+  · exact (C.not_mem_baseOpenPairSet_inr_inl).elim h
+  · rcases (C.mem_blueBaseOpenPairSet.1 ((C.mem_baseOpenPairSet_inr_inr).1 h)) with
+      ⟨hb, hb', hlt, -⟩
+    exact (C.mem_basePairSet_inr_inr).2 ((C.mem_blueBasePairSet).2 ⟨hb, hb', hlt⟩)
+
+theorem unrevealedBaseOpenPairSet_subset_unrevealedBasePairSet (C : ConstructionData n m)
+    (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    C.unrevealedBaseOpenPairSet I A ⊆ C.unrevealedBasePairSet I A := by
+  intro p hp
+  rcases (C.mem_unrevealedBaseOpenPairSet.1 hp) with ⟨hpOpen, hp1, hp2⟩
+  exact (C.mem_unrevealedBasePairSet.2 ⟨C.mem_basePairSet_of_mem_baseOpenPairSet hpOpen, hp1, hp2⟩)
+
+theorem unrevealedBaseOpenPairSet_card_le_unrevealedBasePairSet_card
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.unrevealedBaseOpenPairSet I A).card ≤ (C.unrevealedBasePairSet I A).card := by
+  exact Finset.card_le_card (C.unrevealedBaseOpenPairSet_subset_unrevealedBasePairSet I A)
 
 theorem mem_section4F_iff_mem_union_of_mem_baseImage (C : ConstructionData n m)
     {I : Finset (Fin n)} {ε : ℝ} {x : BaseVertex m} (hxBase : x ∈ C.baseImage I) :
@@ -2496,6 +2592,15 @@ theorem openPair_lower_bound_sub_section4_budget_le_unrevealed_section4F
         I.card * (C.section4F1 I ∪ C.section4F2 I ε).card :=
     C.revealedBaseOpenPairSet_card_le_section4_budget_of_section4F I ε
   omega
+
+theorem openPair_lower_bound_sub_section4_budget_le_unrevealedBasePairSet_section4F
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ} {N : ℕ}
+    (hopen : N ≤ (C.baseOpenPairSet I).card) :
+    N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card ≤
+      (C.unrevealedBasePairSet I (C.section4F I ε)).card := by
+  exact
+    (C.openPair_lower_bound_sub_section4_budget_le_unrevealed_section4F I hopen).trans
+      (C.unrevealedBaseOpenPairSet_card_le_unrevealedBasePairSet_card I (C.section4F I ε))
 
 theorem section4RevealPairSet_card_le_section4_budget (C : ConstructionData n m)
     (I : Finset (Fin n)) {ε : ℝ} :
