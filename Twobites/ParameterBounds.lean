@@ -1659,6 +1659,48 @@ theorem paperHugeWitnessBranchwiseBranchParamBounds_eventually_le_two_eps_mul
     paperHugeWitnessBranchwiseBranchParamBounds_eventually_le
       hε1 hκ.le hβ hq hδ hδ hsum hδ hδ hsum
 
+/-- A canonical large-`n` threshold for the concrete huge-case specialization
+`δdeg = δcodeg = ε₁ κ`. When the positivity assumptions fail we return `0`; the specification
+lemma below is used only under the paper's usual hypotheses. -/
+noncomputable def paperHugeWitnessTwoEpsBranchPieceThreshold (ε1 κ β q : ℝ) : ℕ :=
+  if h : 0 < ε1 ∧ 0 < κ ∧ 0 ≤ β ∧ 0 ≤ q then
+    Classical.choose
+      (paperHugeWitnessBranchwisePieceBranchParamBounds_eventually_le_eps_mul
+        h.1 h.2.1 h.2.2.1 h.2.2.2)
+  else
+    0
+
+theorem paperHugeWitnessTwoEpsBranchPieceThreshold_spec
+    {ε1 κ β q : ℝ} (hε1 : 0 < ε1) (hκ : 0 < κ) (hβ : 0 ≤ β) (hq : 0 ≤ q) :
+    ∀ ⦃n : ℕ⦄, paperHugeWitnessTwoEpsBranchPieceThreshold ε1 κ β q ≤ n →
+      paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ ε1 * κ ∧
+        paperHugeWitnessCodegBranchParam ε1 κ q n ≤ ε1 * κ ∧
+          paperHugeWitnessDegreeBranchParam ε1 κ β n ≤ ε1 * κ ∧
+            paperHugeWitnessCodegBranchParam ε1 κ q n ≤ ε1 * κ := by
+  classical
+  intro n hn
+  let h : 0 < ε1 ∧ 0 < κ ∧ 0 ≤ β ∧ 0 ≤ q := ⟨hε1, hκ, hβ, hq⟩
+  have hspec :
+      ∀ ⦃m : ℕ⦄,
+        Classical.choose
+            (paperHugeWitnessBranchwisePieceBranchParamBounds_eventually_le_eps_mul
+              hε1 hκ hβ hq) ≤
+          m →
+          paperHugeWitnessDegreeBranchParam ε1 κ β m ≤ ε1 * κ ∧
+            paperHugeWitnessCodegBranchParam ε1 κ q m ≤ ε1 * κ ∧
+              paperHugeWitnessDegreeBranchParam ε1 κ β m ≤ ε1 * κ ∧
+                paperHugeWitnessCodegBranchParam ε1 κ q m ≤ ε1 * κ :=
+    Classical.choose_spec
+      (paperHugeWitnessBranchwisePieceBranchParamBounds_eventually_le_eps_mul
+        hε1 hκ hβ hq)
+  have hn' :
+      Classical.choose
+          (paperHugeWitnessBranchwisePieceBranchParamBounds_eventually_le_eps_mul
+            hε1 hκ hβ hq) ≤
+        n := by
+    simpa [paperHugeWitnessTwoEpsBranchPieceThreshold, h] using hn
+  simpa using hspec hn'
+
 theorem paperHugeWitnessDegreeBranchParam_le_three_mul_of_diagScale
     {ε1 κ β : ℝ} {n : ℕ} (hε1 : 0 < ε1) (hn : 1 < n) (hκ : 0 ≤ κ)
     (hdiagScale : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε1 * paperS n) :
@@ -1821,6 +1863,19 @@ theorem paperK_le_cross_residual_sub_one_of_nonneg_of_gap1_gap2_of_le
     paperK δ n ≤ paperKNat δ n := Nat.le_ceil _
     _ ≤ (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
       linarith
+
+theorem four_eps_mul_le_two_eps_mul_add_of_two_eps_mul_le
+    {ε1 κ δextra : ℝ} (hextra : 2 * ε1 * κ ≤ δextra) :
+    4 * ε1 * κ ≤ 2 * ε1 * κ + δextra := by
+  nlinarith
+
+theorem paperHugeWitness_four_eps_budget_of_extraDeficit
+    {ρ β ε1 ε2 κ δextra δsumGap δgap : ℝ}
+    (hextra : 2 * ε1 * κ ≤ δextra)
+    (hκ :
+      ρ + (1 + ε2) * β + 2 * ε1 * κ + δextra + δsumGap + δgap ≤ κ) :
+    ρ + (1 + ε2) * β + 4 * ε1 * κ + δsumGap + δgap ≤ κ := by
+  nlinarith [four_eps_mul_le_two_eps_mul_add_of_two_eps_mul_le hextra]
 
 theorem not_six_mul_paperK_le_cross_residual
     {ρ β ε2 κ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) :
