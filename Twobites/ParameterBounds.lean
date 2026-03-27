@@ -58,12 +58,27 @@ def paperKNat (κ : ℝ) (n : ℕ) : ℕ :=
 def paperHugeWitnessNat (κ : ℝ) (n : ℕ) : ℕ :=
   ⌈2 * (paperK κ n / paperT1 n)⌉₊ + 1
 
+/-- The huge-case witness contribution coming from the union-size / degree term. -/
+def paperHugeWitnessDegreeCoeff (κ β : ℝ) (n : ℕ) : ℝ :=
+  ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n
+
+/-- The huge-case witness contribution coming from the projected-codegree term. -/
+def paperHugeWitnessCodegCoeff (κ q : ℝ) (n : ℕ) : ℝ :=
+  ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+    Real.sqrt ((n : ℝ) * Real.log (n : ℝ)))
+
 /-- The Section 3 witness-error coefficient obtained from the huge-part union-size and
 projected-codegree estimates. -/
 def paperHugeWitnessCoeff (κ β q : ℝ) (n : ℕ) : ℝ :=
-  ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n +
-    ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
-      Real.sqrt ((n : ℝ) * Real.log (n : ℝ)))
+  paperHugeWitnessDegreeCoeff κ β n + paperHugeWitnessCodegCoeff κ q n
+
+/-- The branch-deficit parameter attached to the union-size / degree witness term. -/
+def paperHugeWitnessDegreeBranchParam (ε1 κ β : ℝ) (n : ℕ) : ℝ :=
+  (3 / ε1) * paperHugeWitnessDegreeCoeff κ β n
+
+/-- The branch-deficit parameter attached to the projected-codegree witness term. -/
+def paperHugeWitnessCodegBranchParam (ε1 κ q : ℝ) (n : ℕ) : ℝ :=
+  (3 / ε1) * paperHugeWitnessCodegCoeff κ q n
 
 /-- The branch-deficit parameter obtained by dividing the exact Section 3 witness-error
 coefficient by the smallness factor `ε₁ / 3`. -/
@@ -1220,17 +1235,104 @@ theorem three_mul_paperK_paperHugeWitnessCoeff_le_of_le_mul_of_le
     _ ≤ ε * rhs := by
       exact mul_le_mul_of_nonneg_left hsmall hε
 
+theorem paperHugeWitnessDegreeCoeff_nonneg {κ β : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hβ : 0 ≤ β)
+    (hloglog : 0 ≤ Real.log (Real.log (n : ℝ))) :
+    0 ≤ paperHugeWitnessDegreeCoeff κ β n := by
+  unfold paperHugeWitnessDegreeCoeff
+  refine div_nonneg ?_ (paperS_nonneg n)
+  exact mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hκ) hloglog) hβ
+
+theorem paperHugeWitnessCodegCoeff_nonneg {κ q : ℝ} {n : ℕ}
+    (hq : 0 ≤ q) :
+    0 ≤ paperHugeWitnessCodegCoeff κ q n := by
+  unfold paperHugeWitnessCodegCoeff
+  refine div_nonneg ?_ (Real.sqrt_nonneg _)
+  have hsq : 0 ≤ (3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2 := by positivity
+  exact mul_nonneg hsq hq
+
 theorem paperHugeWitnessCoeff_nonneg {κ β q : ℝ} {n : ℕ}
     (hκ : 0 ≤ κ) (hβ : 0 ≤ β) (hq : 0 ≤ q)
     (hloglog : 0 ≤ Real.log (Real.log (n : ℝ))) :
     0 ≤ paperHugeWitnessCoeff κ β q n := by
+  rw [paperHugeWitnessCoeff]
+  exact add_nonneg
+    (paperHugeWitnessDegreeCoeff_nonneg hκ hβ hloglog)
+    (paperHugeWitnessCodegCoeff_nonneg hq)
+
+theorem paperHugeWitnessDegreeBranchParam_nonneg {ε1 κ β : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1) (hκ : 0 ≤ κ) (hβ : 0 ≤ β)
+    (hloglog : 0 ≤ Real.log (Real.log (n : ℝ))) :
+    0 ≤ paperHugeWitnessDegreeBranchParam ε1 κ β n := by
+  unfold paperHugeWitnessDegreeBranchParam
+  exact mul_nonneg (by positivity) (paperHugeWitnessDegreeCoeff_nonneg hκ hβ hloglog)
+
+theorem paperHugeWitnessCodegBranchParam_nonneg {ε1 κ q : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1) (hq : 0 ≤ q) :
+    0 ≤ paperHugeWitnessCodegBranchParam ε1 κ q n := by
+  unfold paperHugeWitnessCodegBranchParam
+  exact mul_nonneg (by positivity) (paperHugeWitnessCodegCoeff_nonneg hq)
+
+theorem paperHugeWitnessBranchParam_eq_add {ε1 κ β q : ℝ} {n : ℕ} :
+    paperHugeWitnessBranchParam ε1 κ β q n =
+      paperHugeWitnessDegreeBranchParam ε1 κ β n +
+        paperHugeWitnessCodegBranchParam ε1 κ q n := by
+  unfold paperHugeWitnessBranchParam paperHugeWitnessCoeff
+    paperHugeWitnessDegreeBranchParam paperHugeWitnessCodegBranchParam
+  ring
+
+theorem paperHugeWitnessDegreeCoeff_le_eps_third_mul_branchParam {ε1 κ β : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1) :
+    paperHugeWitnessDegreeCoeff κ β n ≤
+      (ε1 / 3) * paperHugeWitnessDegreeBranchParam ε1 κ β n := by
+  have hε1_ne : ε1 ≠ 0 := ne_of_gt hε1
+  have hmul : (ε1 / 3) * (3 / ε1) = 1 := by
+    field_simp [hε1_ne]
+  refine le_of_eq ?_
+  unfold paperHugeWitnessDegreeBranchParam
+  calc
+    paperHugeWitnessDegreeCoeff κ β n = 1 * paperHugeWitnessDegreeCoeff κ β n := by ring
+    _ = ((ε1 / 3) * (3 / ε1)) * paperHugeWitnessDegreeCoeff κ β n := by rw [hmul]
+    _ = (ε1 / 3) * ((3 / ε1) * paperHugeWitnessDegreeCoeff κ β n) := by ring
+
+theorem paperHugeWitnessCodegCoeff_le_eps_third_mul_branchParam {ε1 κ q : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1) :
+    paperHugeWitnessCodegCoeff κ q n ≤
+      (ε1 / 3) * paperHugeWitnessCodegBranchParam ε1 κ q n := by
+  have hε1_ne : ε1 ≠ 0 := ne_of_gt hε1
+  have hmul : (ε1 / 3) * (3 / ε1) = 1 := by
+    field_simp [hε1_ne]
+  refine le_of_eq ?_
+  unfold paperHugeWitnessCodegBranchParam
+  calc
+    paperHugeWitnessCodegCoeff κ q n = 1 * paperHugeWitnessCodegCoeff κ q n := by ring
+    _ = ((ε1 / 3) * (3 / ε1)) * paperHugeWitnessCodegCoeff κ q n := by rw [hmul]
+    _ = (ε1 / 3) * ((3 / ε1) * paperHugeWitnessCodegCoeff κ q n) := by ring
+
+theorem paperHugeWitnessCoeff_le_of_exact_piece_branchParam
+    {ε1 κ β q : ℝ} {n : ℕ} (hε1 : 0 < ε1) :
+    paperHugeWitnessCoeff κ β q n ≤
+      (ε1 / 3) *
+        (paperHugeWitnessDegreeBranchParam ε1 κ β n +
+          paperHugeWitnessCodegBranchParam ε1 κ q n) := by
+  have hfirst :
+      paperHugeWitnessDegreeCoeff κ β n ≤
+        (ε1 / 3) * paperHugeWitnessDegreeBranchParam ε1 κ β n := by
+    exact paperHugeWitnessDegreeCoeff_le_eps_third_mul_branchParam hε1
+  have hsecond :
+      paperHugeWitnessCodegCoeff κ q n ≤
+        (ε1 / 3) * paperHugeWitnessCodegBranchParam ε1 κ q n := by
+    exact paperHugeWitnessCodegCoeff_le_eps_third_mul_branchParam hε1
   unfold paperHugeWitnessCoeff
-  refine add_nonneg ?_ ?_
-  · refine div_nonneg ?_ (paperS_nonneg n)
-    exact mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hκ) hloglog) hβ
-  · refine div_nonneg ?_ (Real.sqrt_nonneg _)
-    have hsq : 0 ≤ (3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2 := by positivity
-    exact mul_nonneg hsq hq
+  calc
+    paperHugeWitnessDegreeCoeff κ β n + paperHugeWitnessCodegCoeff κ q n ≤
+        (ε1 / 3) * paperHugeWitnessDegreeBranchParam ε1 κ β n +
+          (ε1 / 3) * paperHugeWitnessCodegBranchParam ε1 κ q n := by
+      exact add_le_add hfirst hsecond
+    _ = (ε1 / 3) *
+          (paperHugeWitnessDegreeBranchParam ε1 κ β n +
+            paperHugeWitnessCodegBranchParam ε1 κ q n) := by
+      ring
 
 theorem paperHugeWitnessBranchParam_nonneg {ε1 κ β q : ℝ} {n : ℕ}
     (hε1 : 0 < ε1) (hκ : 0 ≤ κ) (hβ : 0 ≤ β) (hq : 0 ≤ q)
@@ -1276,7 +1378,11 @@ theorem paperHugeWitnessCoeff_le_of_le_of_le {κ β q a b : ℝ} {n : ℕ}
       ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
         Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤ b) :
     paperHugeWitnessCoeff κ β q n ≤ a + b := by
-  unfold paperHugeWitnessCoeff
+  have hfirst' : paperHugeWitnessDegreeCoeff κ β n ≤ a := by
+    simpa [paperHugeWitnessDegreeCoeff] using hfirst
+  have hsecond' : paperHugeWitnessCodegCoeff κ q n ≤ b := by
+    simpa [paperHugeWitnessCodegCoeff] using hsecond
+  rw [paperHugeWitnessCoeff]
   linarith
 
 theorem paperHugeWitnessBranchParam_le_of_le_of_le_of_add_le
