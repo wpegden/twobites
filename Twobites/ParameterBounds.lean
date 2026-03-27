@@ -303,6 +303,37 @@ theorem splitCoeff_le_of_bound_le {bound n : ℕ} {β q B : ℝ}
       nlinarith [mul_le_mul_of_nonneg_right hchoose hq]
   linarith
 
+theorem diagCoeffTerm_le_of_le {κ β B₁ B₂ : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hβ : 0 ≤ β) (hB : B₁ ≤ B₂) :
+    (B₁ * β / paperS n) * (paperK κ n + 1) ≤
+      (B₂ * β / paperS n) * (paperK κ n + 1) := by
+  have hfac : 0 ≤ (β / paperS n) * (paperK κ n + 1) := by
+    refine mul_nonneg ?_ ?_
+    · exact div_nonneg hβ (paperS_nonneg n)
+    · have hk : 0 ≤ paperK κ n := paperK_nonneg hκ n
+      linarith
+  calc
+    (B₁ * β / paperS n) * (paperK κ n + 1) =
+        B₁ * ((β / paperS n) * (paperK κ n + 1)) := by ring
+    _ ≤ B₂ * ((β / paperS n) * (paperK κ n + 1)) := by
+      exact mul_le_mul_of_nonneg_right hB hfac
+    _ = (B₂ * β / paperS n) * (paperK κ n + 1) := by ring
+
+theorem splitCoeffReal_le_of_le {β q B₁ B₂ : ℝ} {n : ℕ}
+    (hB₁ : 0 ≤ B₁) (hB : B₁ ≤ B₂) (hβ : 0 ≤ β) (hq : 0 ≤ q) :
+    (B₁ * β) / paperS n + ((B₁ ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+      (B₂ * β) / paperS n + ((B₂ ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+  have hfirst : (B₁ * β) / paperS n ≤ (B₂ * β) / paperS n := by
+    exact div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hB hβ) (paperS_nonneg n)
+  have hsq : B₁ ^ 2 ≤ B₂ ^ 2 := by
+    nlinarith
+  have hsecond :
+      ((B₁ ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+        ((B₂ ^ 2 / 2) * q) / Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    refine div_le_div_of_nonneg_right ?_ (Real.sqrt_nonneg _)
+    exact mul_le_mul_of_nonneg_right (by nlinarith) hq
+  linarith
+
 theorem paperK_le_paperK_of_le {κ₁ κ₂ : ℝ} {n : ℕ} (hκ : κ₁ ≤ κ₂) :
     paperK κ₁ n ≤ paperK κ₂ n := by
   unfold paperK
