@@ -1071,6 +1071,30 @@ theorem three_mul_paperK_two_mul_eq {ε κ : ℝ} {n : ℕ} :
   unfold paperK
   ring
 
+theorem not_six_mul_paperK_le_cross_residual
+    {ρ β ε2 κ : ℝ} {n : ℕ} (hn : 1 < n) (hκ : 1 ≤ κ) :
+    ¬ 6 * paperK κ n ≤
+        (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) := by
+  intro hsmall
+  have hκ0 : 0 ≤ κ := by linarith
+  have hκpos : 0 < κ := by linarith
+  have hkpos : 0 < paperK κ n := paperK_pos hκpos hn
+  have hsub_nat :
+      paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n ≤ paperKNat κ n := by
+    omega
+  have hsub_cast :
+      (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ)) ≤
+        paperKNat κ n := by
+    exact_mod_cast hsub_nat
+  have hres_le :
+      (((paperKNat κ n - paperKNat ρ n - paperCapNat β ε2 n : ℕ) : ℝ) - 1) ≤
+        paperK κ n := by
+    have hkceil : (paperKNat κ n : ℝ) ≤ paperK κ n + 1 :=
+      paperKNat_le_paperK_add_one hκ0 n
+    linarith
+  have : 6 * paperK κ n ≤ paperK κ n := hsmall.trans hres_le
+  linarith
+
 theorem three_loglog_diagCoeff_le {β κ ε : ℝ} {n : ℕ}
     (hn : 1 < n) (hκ : 0 ≤ κ) (hε : 0 ≤ ε) (hk : 1 ≤ paperK κ n)
     (hcoeff : 3 * β * Real.log (Real.log (n : ℝ)) ≤ ε * paperS n) :
