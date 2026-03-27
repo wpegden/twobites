@@ -6186,6 +6186,24 @@ Section 4 target in `lem:RISI`. -/
 def paperRISILossNat (κ ε1 : ℝ) (n : ℕ) : ℕ :=
   ⌈9 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ + ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊
 
+theorem paperRISILossNat_le_natCeil_nineteen_mul_eps_mul_paperKSq_add_one
+    {κ ε1 : ℝ} (n : ℕ) (hε1 : 0 ≤ ε1) :
+    paperRISILossNat κ ε1 n ≤ ⌈19 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ + 1 := by
+  have h9 :
+      0 ≤ 9 * (ε1 * Twobites.paperK κ n ^ 2) := by
+    nlinarith [sq_nonneg (Twobites.paperK κ n)]
+  have h10 :
+      0 ≤ 10 * (ε1 * Twobites.paperK κ n ^ 2) := by
+    nlinarith [sq_nonneg (Twobites.paperK κ n)]
+  calc
+    paperRISILossNat κ ε1 n =
+        ⌈9 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ +
+          ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ := rfl
+    _ ≤ ⌈9 * (ε1 * Twobites.paperK κ n ^ 2) +
+          10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ + 1 := by
+      exact Twobites.natCeil_add_natCeil_le_natCeil_add_one h9 h10
+    _ = ⌈19 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ + 1 := by ring_nf
+
 theorem paperSection4Branch_blueLeft_redLeft_eq
     (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ}
     (hred : (C.redImage I).card ≤ Twobites.paperKNat κ n)
@@ -6327,6 +6345,55 @@ theorem paper_risi_hLossGap_of_blueLeft_of_redLeft_sumGap
             (((Twobites.paperKNat κ n - (C.blueImage I).card).choose 2 : ℕ) : ℝ) :=
           C.paperSection4Branch_blueLeft_redLeft_eq I hred hblue
   exact C.paper_risi_hLossGap_of_blueLeft_of_redLeft I (cap := cap) hBranch
+
+theorem paper_risi_hLossGap_of_blueLeft_of_redLeft_natGap
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ ε1 : ℝ} {cap gap : ℕ}
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat κ n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat κ n)
+    (hgap :
+      Twobites.paperKNat κ n + gap ≤ (C.redImage I).card + (C.blueImage I).card)
+    (hLoss : paperRISILossNat κ ε1 n ≤ gap * (Twobites.paperKNat κ n - 1)) :
+    paperRISILossNat κ ε1 n ≤ C.paperSection4OpenPairTargetNat I κ cap := by
+  have hsumNat :
+      gap ≤ (C.redImage I).card + (C.blueImage I).card - Twobites.paperKNat κ n := by
+    omega
+  have hsumLe :
+      Twobites.paperKNat κ n ≤ (C.redImage I).card + (C.blueImage I).card := by
+    omega
+  by_cases hknat : 1 ≤ Twobites.paperKNat κ n
+  · have hLossReal :
+        (paperRISILossNat κ ε1 n : ℝ) ≤
+          ((((C.redImage I).card + (C.blueImage I).card : ℕ) : ℝ) -
+              Twobites.paperKNat κ n) *
+            ((Twobites.paperKNat κ n : ℝ) - 1) := by
+      have hmulNat :
+          gap * (Twobites.paperKNat κ n - 1) ≤
+            ((C.redImage I).card + (C.blueImage I).card - Twobites.paperKNat κ n) *
+              (Twobites.paperKNat κ n - 1) := by
+        exact Nat.mul_le_mul_right (Twobites.paperKNat κ n - 1) hsumNat
+      calc
+        (paperRISILossNat κ ε1 n : ℝ) ≤
+            (gap * (Twobites.paperKNat κ n - 1) : ℕ) := by
+          exact_mod_cast hLoss
+        _ ≤
+            (((C.redImage I).card + (C.blueImage I).card - Twobites.paperKNat κ n) *
+                (Twobites.paperKNat κ n - 1) : ℕ) := by
+          exact_mod_cast hmulNat
+        _ =
+            ((((C.redImage I).card + (C.blueImage I).card : ℕ) : ℝ) -
+                Twobites.paperKNat κ n) *
+              ((Twobites.paperKNat κ n : ℝ) - 1) := by
+          rw [Nat.cast_mul, Nat.cast_sub hsumLe, Nat.cast_sub hknat]
+          ring
+    exact C.paper_risi_hLossGap_of_blueLeft_of_redLeft_sumGap I hred hblue hLossReal
+  · have hk0 : Twobites.paperKNat κ n = 0 := by omega
+    have hred0 : (C.redImage I).card = 0 := by omega
+    have hblue0 : (C.blueImage I).card = 0 := by omega
+    have hgap0 : gap = 0 := by omega
+    have hLoss0 : paperRISILossNat κ ε1 n = 0 := by
+      have : paperRISILossNat κ ε1 n ≤ 0 := by simpa [hk0, hgap0] using hLoss
+      omega
+    simp [hLoss0]
 
 theorem paper_risi_hLossGap_of_blueLeft_of_redRight_sumGap
     (C : ConstructionData n m) (I : Finset (Fin n)) {κ ε1 : ℝ} {cap : ℕ}
