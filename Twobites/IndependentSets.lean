@@ -6039,6 +6039,104 @@ def paperSection4OpenPairTarget (C : ConstructionData n m) (I : Finset (Fin n)) 
     (cap : ℕ) : ℝ :=
   (C.paperSection4OpenPairTargetNat I κ cap : ℕ)
 
+theorem paperHugeBlueCrossTargetNat_cast_le_paperKSq
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap : ℕ}
+    (hκ : 0 ≤ κ) (hk : 1 ≤ Twobites.paperK κ n) :
+    ((C.paperHugeBlueCrossTargetNat I κ cap : ℕ) : ℝ) ≤ Twobites.paperK κ n ^ 2 := by
+  have hsub :
+      Twobites.paperKNat κ n - (C.redImage I).card ≤ Twobites.paperKNat κ n := by
+    exact Nat.sub_le _ _
+  have htargetNat :
+      C.paperHugeBlueCrossTargetNat I κ cap ≤ (Twobites.paperKNat κ n).choose 2 := by
+    unfold paperHugeBlueCrossTargetNat
+    exact (Nat.min_le_left _ _).trans (Nat.choose_le_choose 2 hsub)
+  have htargetCast :
+      ((C.paperHugeBlueCrossTargetNat I κ cap : ℕ) : ℝ) ≤
+        (((Twobites.paperKNat κ n).choose 2 : ℕ) : ℝ) := by
+    exact_mod_cast htargetNat
+  have hceil : (Twobites.paperKNat κ n : ℝ) ≤ Twobites.paperK κ n + 1 :=
+    Twobites.paperKNat_le_paperK_add_one hκ n
+  have hknat_ge_one : 1 ≤ (Twobites.paperKNat κ n : ℝ) := by
+    exact hk.trans (Twobites.paperK_le_paperKNat κ n)
+  have hsub_le : (Twobites.paperKNat κ n : ℝ) - 1 ≤ Twobites.paperK κ n := by
+    linarith
+  have hmul :
+      (Twobites.paperKNat κ n : ℝ) * ((Twobites.paperKNat κ n : ℝ) - 1) ≤
+        (Twobites.paperK κ n + 1) * Twobites.paperK κ n := by
+    have hsub_nonneg : 0 ≤ (Twobites.paperKNat κ n : ℝ) - 1 := by
+      linarith
+    have hk1_nonneg : 0 ≤ Twobites.paperK κ n + 1 := by
+      linarith
+    exact mul_le_mul hceil hsub_le hsub_nonneg hk1_nonneg
+  have hchoose :
+      (((Twobites.paperKNat κ n).choose 2 : ℕ) : ℝ) ≤ Twobites.paperK κ n ^ 2 := by
+    rw [Nat.cast_choose_two]
+    have hdiv :
+        ((Twobites.paperKNat κ n : ℝ) * ((Twobites.paperKNat κ n : ℝ) - 1)) / 2 ≤
+          ((Twobites.paperK κ n + 1) * Twobites.paperK κ n) / 2 := by
+      exact div_le_div_of_nonneg_right hmul (by norm_num)
+    have hhalf :
+        ((Twobites.paperK κ n + 1) * Twobites.paperK κ n) / 2 ≤
+          Twobites.paperK κ n ^ 2 := by
+      nlinarith
+    exact hdiv.trans hhalf
+  exact htargetCast.trans hchoose
+
+theorem paperHugeRedCrossTargetNat_cast_le_paperKSq
+    (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap : ℕ}
+    (hκ : 0 ≤ κ) (hk : 1 ≤ Twobites.paperK κ n) :
+    ((C.paperHugeRedCrossTargetNat I κ cap : ℕ) : ℝ) ≤ Twobites.paperK κ n ^ 2 := by
+  have hsub :
+      Twobites.paperKNat κ n - (C.blueImage I).card ≤ Twobites.paperKNat κ n := by
+    exact Nat.sub_le _ _
+  have htargetNat :
+      C.paperHugeRedCrossTargetNat I κ cap ≤ (Twobites.paperKNat κ n).choose 2 := by
+    unfold paperHugeRedCrossTargetNat
+    exact (Nat.min_le_left _ _).trans (Nat.choose_le_choose 2 hsub)
+  have htargetCast :
+      ((C.paperHugeRedCrossTargetNat I κ cap : ℕ) : ℝ) ≤
+        (((Twobites.paperKNat κ n).choose 2 : ℕ) : ℝ) := by
+    exact_mod_cast htargetNat
+  have hceil : (Twobites.paperKNat κ n : ℝ) ≤ Twobites.paperK κ n + 1 :=
+    Twobites.paperKNat_le_paperK_add_one hκ n
+  have hknat_ge_one : 1 ≤ (Twobites.paperKNat κ n : ℝ) := by
+    exact hk.trans (Twobites.paperK_le_paperKNat κ n)
+  have hsub_le : (Twobites.paperKNat κ n : ℝ) - 1 ≤ Twobites.paperK κ n := by
+    linarith
+  have hmul :
+      (Twobites.paperKNat κ n : ℝ) * ((Twobites.paperKNat κ n : ℝ) - 1) ≤
+        (Twobites.paperK κ n + 1) * Twobites.paperK κ n := by
+    have hsub_nonneg : 0 ≤ (Twobites.paperKNat κ n : ℝ) - 1 := by
+      linarith
+    have hk1_nonneg : 0 ≤ Twobites.paperK κ n + 1 := by
+      linarith
+    exact mul_le_mul hceil hsub_le hsub_nonneg hk1_nonneg
+  have hchoose :
+      (((Twobites.paperKNat κ n).choose 2 : ℕ) : ℝ) ≤ Twobites.paperK κ n ^ 2 := by
+    rw [Nat.cast_choose_two]
+    have hdiv :
+        ((Twobites.paperKNat κ n : ℝ) * ((Twobites.paperKNat κ n : ℝ) - 1)) / 2 ≤
+          ((Twobites.paperK κ n + 1) * Twobites.paperK κ n) / 2 := by
+      exact div_le_div_of_nonneg_right hmul (by norm_num)
+    have hhalf :
+        ((Twobites.paperK κ n + 1) * Twobites.paperK κ n) / 2 ≤
+          Twobites.paperK κ n ^ 2 := by
+      nlinarith
+    exact hdiv.trans hhalf
+  exact htargetCast.trans hchoose
+
+theorem four_mul_eps_mul_paperKSq_add_eps_mul_natTarget_le_ceil_five_mul_eps_mul_paperKSq
+    {κ ε1 : ℝ} {target : ℕ}
+    (hε1 : 0 ≤ ε1)
+    (htarget : ((target : ℕ) : ℝ) ≤ Twobites.paperK κ n ^ 2) :
+    4 * (ε1 * Twobites.paperK κ n ^ 2) + ε1 * ((target : ℕ) : ℝ) ≤
+      (⌈5 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ : ℝ) := by
+  have hbound :
+      4 * (ε1 * Twobites.paperK κ n ^ 2) + ε1 * ((target : ℕ) : ℝ) ≤
+        5 * (ε1 * Twobites.paperK κ n ^ 2) := by
+    nlinarith
+  exact hbound.trans (Nat.le_ceil _)
+
 theorem paperSection4OpenPairTargetNat_le_baseOpenPairSet_card_of_closedBounds
     (C : ConstructionData n m) (I : Finset (Fin n)) {κ : ℝ} {cap : ℕ}
     (hred :
