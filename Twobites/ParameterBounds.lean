@@ -65,6 +65,11 @@ def paperHugeWitnessCoeff (κ β q : ℝ) (n : ℕ) : ℝ :=
     ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
       Real.sqrt ((n : ℝ) * Real.log (n : ℝ)))
 
+/-- The branch-deficit parameter obtained by dividing the exact Section 3 witness-error
+coefficient by the smallness factor `ε₁ / 3`. -/
+def paperHugeWitnessBranchParam (ε1 κ β q : ℝ) (n : ℕ) : ℝ :=
+  (3 / ε1) * paperHugeWitnessCoeff κ β q n
+
 /-- A natural-number version of the huge-case cap `(1 + ε₂)pn`. -/
 def paperCapNat (β ε2 : ℝ) (n : ℕ) : ℕ :=
   ⌈paperCap β ε2 n⌉₊
@@ -1214,6 +1219,40 @@ theorem three_mul_paperK_paperHugeWitnessCoeff_le_of_le_mul_of_le
       exact three_mul_paperK_le_mul_paperK_of_le_mul hcoeff
     _ ≤ ε * rhs := by
       exact mul_le_mul_of_nonneg_left hsmall hε
+
+theorem paperHugeWitnessCoeff_nonneg {κ β q : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hβ : 0 ≤ β) (hq : 0 ≤ q)
+    (hloglog : 0 ≤ Real.log (Real.log (n : ℝ))) :
+    0 ≤ paperHugeWitnessCoeff κ β q n := by
+  unfold paperHugeWitnessCoeff
+  refine add_nonneg ?_ ?_
+  · refine div_nonneg ?_ (paperS_nonneg n)
+    exact mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hκ) hloglog) hβ
+  · refine div_nonneg ?_ (Real.sqrt_nonneg _)
+    have hsq : 0 ≤ (3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2 := by positivity
+    exact mul_nonneg hsq hq
+
+theorem paperHugeWitnessBranchParam_nonneg {ε1 κ β q : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1) (hκ : 0 ≤ κ) (hβ : 0 ≤ β) (hq : 0 ≤ q)
+    (hloglog : 0 ≤ Real.log (Real.log (n : ℝ))) :
+    0 ≤ paperHugeWitnessBranchParam ε1 κ β q n := by
+  unfold paperHugeWitnessBranchParam
+  exact
+    mul_nonneg (by positivity) (paperHugeWitnessCoeff_nonneg hκ hβ hq hloglog)
+
+theorem paperHugeWitnessCoeff_le_eps_third_mul_branchParam {ε1 κ β q : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1) :
+    paperHugeWitnessCoeff κ β q n ≤
+      (ε1 / 3) * paperHugeWitnessBranchParam ε1 κ β q n := by
+  have hε1_ne : ε1 ≠ 0 := ne_of_gt hε1
+  have hmul : (ε1 / 3) * (3 / ε1) = 1 := by
+    field_simp [hε1_ne]
+  refine le_of_eq ?_
+  unfold paperHugeWitnessBranchParam
+  calc
+    paperHugeWitnessCoeff κ β q n = 1 * paperHugeWitnessCoeff κ β q n := by ring
+    _ = ((ε1 / 3) * (3 / ε1)) * paperHugeWitnessCoeff κ β q n := by rw [hmul]
+    _ = (ε1 / 3) * ((3 / ε1) * paperHugeWitnessCoeff κ β q n) := by ring
 
 theorem three_mul_paperK_le_eps_mul_of_le_two_eps_mul_of_six_mul_paperK_le
     {δ κ ε rhs : ℝ} {n : ℕ} (hδ : δ ≤ 2 * ε * κ) (hsmall : 6 * paperK κ n ≤ rhs)
