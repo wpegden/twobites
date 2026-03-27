@@ -788,6 +788,39 @@ theorem HPart_card_lt_mul_mul_loglog_of_goodEventD_of_two_mul_lt_of_choose_le
     C.HPart_card_lt_mul_mul_loglog_of_goodEventD_of_lt_of_le hD I hI hwitness hbound hn
       hloglog
 
+theorem HPart_card_lt_two_mul_paperK_div_paperT1_add_two_of_goodEventD_of_paperHugeWitness
+    (C : ConstructionData n m)
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n)) {κ : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 0 ≤ κ) (hT1 : 2 < Twobites.paperT1 n)
+    (hchoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n) :
+    ((C.HPart I).card : ℝ) < 2 * (Twobites.paperK κ n / Twobites.paperT1 n) + 2 := by
+  have htwo :
+      2 * Twobites.paperKNat κ n <
+        Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ :=
+    Twobites.two_mul_paperKNat_lt_paperHugeWitnessNat_mul_ceil_paperT1 hκ hT1
+  have hbound :
+      (Twobites.paperHugeWitnessNat κ n : ℝ) ≤
+        2 * (Twobites.paperK κ n / Twobites.paperT1 n) + 2 := by
+    exact Twobites.paperHugeWitnessNat_le_two_mul_paperK_div_paperT1_add_two hκ (by linarith)
+  have hcard :
+      ((C.HPart I).card : ℝ) < (Twobites.paperHugeWitnessNat κ n : ℝ) :=
+    by
+      have hwitness :
+          Twobites.paperKNat κ n <
+            Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ -
+              (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound :=
+        Twobites.paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt htwo hchoose
+      have hnat :
+          (C.HPart I).card < Twobites.paperHugeWitnessNat κ n :=
+        C.HPart_card_lt_of_goodEventD_of_lt hD I (lt_of_le_of_lt hI hwitness)
+      exact_mod_cast hnat
+  exact hcard.trans_le hbound
+
 theorem paperT1_lt_xCard_of_mem_HPart (C : ConstructionData n m) {I : Finset (Fin n)}
     {x : BaseVertex m} (hx : x ∈ C.HPart I) : Twobites.paperT1 n < (C.xCard I x : ℝ) :=
   (C.mem_HPart.1 hx).1
