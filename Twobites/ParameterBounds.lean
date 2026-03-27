@@ -3,6 +3,7 @@ import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Monotone
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Data.Nat.Choose.Bounds
 import Mathlib.Data.Nat.Choose.Cast
 import Mathlib.Data.Nat.Cast.Order.Field
 import Mathlib.Data.Real.Sqrt
@@ -1815,6 +1816,68 @@ theorem paperRI_nearOne_finalCoeff_neg
   have hnum : ε * (-1 + ε + 22 * ε ^ 2) < 0 := by
     nlinarith
   exact div_neg_of_neg_of_pos hnum hden
+
+/-- The combinatorial outer bound from the opening lines of Paper Lemma `lem:RI`. This packages
+the counting term for the event `\mathcal S_{I,\ell_R,\ell_B}` before it is simplified
+asymptotically. -/
+def paperRIOuterCombBound (m lR lB k : ℕ) : ℝ :=
+  ((m.choose lR : ℝ) * (m.choose lB : ℝ) * ((lR * lB).choose k : ℝ)) / ((m * m).choose k : ℝ)
+
+/-- The raw binomial-ratio estimate behind the first finite counting step in Paper Lemma `lem:RI`.
+It is the exact comparison obtained by bounding the numerator with `choose_le_pow_div` and the
+denominator with `pow_le_choose`. -/
+theorem paperRI_outerChooseRatio_le_pow_ratio
+    {m lR lB k : ℕ} (hk : k ≤ m * m) :
+    (((lR * lB).choose k : ℝ) / ((m * m).choose k : ℝ)) ≤
+      (((lR * lB : ℕ) : ℝ) ^ k) / (((m * m + 1 - k : ℕ) : ℝ) ^ k) := by
+  let num : ℝ := ((lR * lB).choose k : ℝ)
+  let den : ℝ := ((m * m).choose k : ℝ)
+  let up : ℝ := (((lR * lB : ℕ) : ℝ) ^ k) / ((Nat.factorial k : ℕ) : ℝ)
+  let low : ℝ := ((((m * m + 1 - k : ℕ) ^ k : ℕ) : ℝ) / ((Nat.factorial k : ℕ) : ℝ))
+  have hnum : num ≤ up := by
+    simp [num, up]
+    simpa using (Nat.choose_le_pow_div (α := ℝ) k (lR * lB))
+  have hlow : low ≤ den := by
+    simp [den, low]
+    simpa [Nat.mul_comm] using (Nat.pow_le_choose (α := ℝ) k (m * m))
+  have hnum_nonneg : 0 ≤ num := by positivity
+  have hbaseNat : 0 < m * m + 1 - k := by
+    omega
+  have hlow_pos : 0 < low := by
+    have hbase : 0 < (((m * m + 1 - k : ℕ) ^ k : ℕ) : ℝ) := by
+      exact_mod_cast (show 0 < (m * m + 1 - k : ℕ) ^ k by exact Nat.pow_pos hbaseNat)
+    have hfact : 0 < (((Nat.factorial k : ℕ) : ℝ)) := by
+      positivity
+    exact div_pos hbase hfact
+  have h1 : num / den ≤ num / low := by
+    exact div_le_div_of_nonneg_left hnum_nonneg hlow_pos hlow
+  have h2 : num / low ≤ up / low := by
+    exact div_le_div_of_nonneg_right hnum hlow_pos.le
+  have h3 : up / low = ((((lR * lB : ℕ) : ℝ) ^ k) / ((((m * m + 1 - k : ℕ) : ℝ) ^ k))) := by
+    simp [up, low, div_eq_mul_inv]
+    field_simp
+  exact h1.trans (h2.trans (by simpa [num, den] using h3.le))
+
+/-- The previous ratio estimate lifted to the full combinatorial outer bound from Paper Lemma
+`lem:RI`. This is still a finite exact bound, before the later exponent simplifications. -/
+theorem paperRIOuterCombBound_le_choose_choose_mul_pow_ratio
+    {m lR lB k : ℕ} (hk : k ≤ m * m) :
+    paperRIOuterCombBound m lR lB k ≤
+      (m.choose lR : ℝ) * (m.choose lB : ℝ) *
+        ((((lR * lB : ℕ) : ℝ) ^ k) / ((((m * m + 1 - k : ℕ) : ℝ) ^ k))) := by
+  have hchoose_nonneg : 0 ≤ (m.choose lR : ℝ) * (m.choose lB : ℝ) := by
+    positivity
+  have hden_ne : (((m * m).choose k : ℕ) : ℝ) ≠ 0 := by
+    exact_mod_cast (Nat.choose_pos hk).ne'
+  calc
+    paperRIOuterCombBound m lR lB k =
+        ((m.choose lR : ℝ) * (m.choose lB : ℝ)) *
+          ((((lR * lB).choose k : ℝ) / ((m * m).choose k : ℝ))) := by
+      unfold paperRIOuterCombBound
+      field_simp [hden_ne]
+    _ ≤ (m.choose lR : ℝ) * (m.choose lB : ℝ) *
+          ((((lR * lB : ℕ) : ℝ) ^ k) / ((((m * m + 1 - k : ℕ) : ℝ) ^ k))) := by
+      exact mul_le_mul_of_nonneg_left (paperRI_outerChooseRatio_le_pow_ratio hk) hchoose_nonneg
 
 theorem paperRI_smallSumCoeff_le
     {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
