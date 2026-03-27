@@ -377,6 +377,38 @@ theorem le_mul_mul_loglog_of_le_mul_paperK_div_paperT1 {x a κ : ℝ} {n : ℕ}
   rw [paperK_div_paperT1_eq_mul_loglog hn hloglog] at h
   simpa [mul_assoc] using h
 
+theorem two_le_mul_of_two_div_le {η x : ℝ} (hη : 0 < η) (hx : 2 / η ≤ x) :
+    2 ≤ η * x := by
+  have hmul : η * (2 / η) ≤ η * x := by
+    exact mul_le_mul_of_nonneg_left hx hη.le
+  have hleft : η * (2 / η) = 2 := by
+    field_simp [hη.ne']
+  linarith
+
+theorem two_le_eta_mul_mul_loglog_of_two_div_loglog_le {κ η : ℝ} {n : ℕ}
+    (hκ : 1 ≤ κ) (hη : 0 < η)
+    (hloglog : 2 / η ≤ Real.log (Real.log (n : ℝ))) :
+    2 ≤ η * (κ * Real.log (Real.log (n : ℝ))) := by
+  have hllpos : 0 < Real.log (Real.log (n : ℝ)) := by
+    have hdivpos : 0 < 2 / η := by positivity
+    linarith
+  have hbase : 2 ≤ η * Real.log (Real.log (n : ℝ)) :=
+    two_le_mul_of_two_div_le hη hloglog
+  have hmono : η * Real.log (Real.log (n : ℝ)) ≤ η * (κ * Real.log (Real.log (n : ℝ))) := by
+    gcongr
+    nlinarith
+  exact hbase.trans hmono
+
+theorem two_le_eta_mul_paperK_div_paperT1_of_two_div_loglog_le {κ η : ℝ} {n : ℕ}
+    (hn : 1 < n) (hκ : 1 ≤ κ) (hη : 0 < η)
+    (hloglog : 2 / η ≤ Real.log (Real.log (n : ℝ))) :
+    2 ≤ η * (paperK κ n / paperT1 n) := by
+  have hllpos : 0 < Real.log (Real.log (n : ℝ)) := by
+    have hdivpos : 0 < 2 / η := by positivity
+    linarith
+  rw [paperK_div_paperT1_eq_mul_loglog hn hllpos]
+  exact two_le_eta_mul_mul_loglog_of_two_div_loglog_le hκ hη hloglog
+
 theorem paperK_pos {κ : ℝ} (hκ : 0 < κ) {n : ℕ} (hn : 1 < n) : 0 < paperK κ n := by
   unfold paperK
   refine mul_pos hκ ?_
