@@ -1913,6 +1913,35 @@ theorem section4F2_card_le_card_LPart_add_card_HPart_of_paper
   exact (C.section4F2_card_le_card_LPart_union_HPart_of_paper I hn hε).trans
     (Finset.card_union_le _ _)
 
+theorem section4F1_union_section4F2_card_le_two_mul_card_div_log_add_card_LPart_add_card_HPart
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ)) :
+    ((C.section4F1 I ∪ C.section4F2 I ε).card : ℝ) ≤
+      2 * (I.card : ℝ) / Real.log (n : ℝ) +
+        ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ) := by
+  have hunion :
+      ((C.section4F1 I ∪ C.section4F2 I ε).card : ℝ) ≤
+        ((C.section4F1 I).card : ℝ) + ((C.section4F2 I ε).card : ℝ) := by
+    exact_mod_cast (Finset.card_union_le (C.section4F1 I) (C.section4F2 I ε))
+  have hF1 : ((C.section4F1 I).card : ℝ) ≤ 2 * (I.card : ℝ) / Real.log (n : ℝ) :=
+    C.section4F1_card_le_two_mul_card_div_log I hn
+  have hF2 : ((C.section4F2 I ε).card : ℝ) ≤
+      ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ) := by
+    exact_mod_cast C.section4F2_card_le_card_LPart_add_card_HPart_of_paper I hn hε
+  linarith
+
+theorem card_mul_section4F1_union_section4F2_card_le_two_mul_card_sq_div_log_add_card_mul_parts
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε : ℝ}
+    (hn : 1 < n) (hε : ε ≤ (1 / 4 : ℝ)) :
+    (I.card : ℝ) * ((C.section4F1 I ∪ C.section4F2 I ε).card : ℝ) ≤
+      (I.card : ℝ) *
+        (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+          ((C.LPart I ε).card : ℝ) + ((C.HPart I).card : ℝ)) := by
+  have hcard :=
+    C.section4F1_union_section4F2_card_le_two_mul_card_div_log_add_card_LPart_add_card_HPart
+      I hn hε
+  exact mul_le_mul_of_nonneg_left hcard (by positivity)
+
 theorem cast_choose_two_le_half_mul_of_le {a : ℕ} {T : ℝ} (hT : (a : ℝ) ≤ T) :
     ((a.choose 2 : ℕ) : ℝ) ≤ (a : ℝ) * T / 2 := by
   have ha : 0 ≤ (a : ℝ) := by
