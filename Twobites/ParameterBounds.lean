@@ -1254,6 +1254,21 @@ theorem paperHugeWitnessCoeff_le_eps_third_mul_branchParam {ε1 κ β q : ℝ} {
     _ = ((ε1 / 3) * (3 / ε1)) * paperHugeWitnessCoeff κ β q n := by rw [hmul]
     _ = (ε1 / 3) * ((3 / ε1) * paperHugeWitnessCoeff κ β q n) := by ring
 
+theorem paperHugeWitnessBranchParam_le_of_coeff_le {ε1 κ β q δ : ℝ} {n : ℕ}
+    (hε1 : 0 < ε1)
+    (hcoeff : paperHugeWitnessCoeff κ β q n ≤ (ε1 / 3) * δ) :
+    paperHugeWitnessBranchParam ε1 κ β q n ≤ δ := by
+  have hε1_ne : ε1 ≠ 0 := ne_of_gt hε1
+  have hfac : 0 ≤ 3 / ε1 := by positivity
+  have hmul : (3 / ε1) * (ε1 / 3) = 1 := by
+    field_simp [hε1_ne]
+  unfold paperHugeWitnessBranchParam
+  calc
+    (3 / ε1) * paperHugeWitnessCoeff κ β q n ≤ (3 / ε1) * ((ε1 / 3) * δ) := by
+      exact mul_le_mul_of_nonneg_left hcoeff hfac
+    _ = ((3 / ε1) * (ε1 / 3)) * δ := by ring
+    _ = δ := by rw [hmul, one_mul]
+
 theorem three_mul_paperK_le_eps_mul_of_le_two_eps_mul_of_six_mul_paperK_le
     {δ κ ε rhs : ℝ} {n : ℕ} (hδ : δ ≤ 2 * ε * κ) (hsmall : 6 * paperK κ n ≤ rhs)
     (hε : 0 ≤ ε) :
