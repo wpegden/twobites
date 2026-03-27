@@ -2017,6 +2017,65 @@ theorem paperRIOuterEventMass_le_choose_choose_mul_pow_ratio
   exact (paperRIOuterEventMass_le_outerCombBound).trans
     (paperRIOuterCombBound_le_choose_choose_mul_pow_ratio hk)
 
+/-- The simplified choose/power-ratio upper bound for the outer event mass in Paper Lemma
+`lem:RI`. This is the exact finite term that later gets converted into the manuscript's
+exponential `eq:long` exponent. -/
+def paperRIOuterPowRatioBound (m lR lB k : ℕ) : ℝ :=
+  (m.choose lR : ℝ) * (m.choose lB : ℝ) *
+    ((((lR * lB : ℕ) : ℝ) ^ k) / ((((m * m + 1 - k : ℕ) : ℝ) ^ k)))
+
+theorem paperRIOuterEventMass_le_powRatioBound
+    {m lR lB k : ℕ} (hk : k ≤ m * m) :
+    paperRIOuterEventMass m lR lB k ≤ paperRIOuterPowRatioBound m lR lB k := by
+  simpa [paperRIOuterPowRatioBound] using
+    (paperRIOuterEventMass_le_choose_choose_mul_pow_ratio (m := m) (lR := lR)
+      (lB := lB) (k := k) hk)
+
+theorem paperRIOuterPowRatioBound_pos
+    {m lR lB k : ℕ} (hk : k ≤ m * m) (hkpos : 0 < k)
+    (hlR : lR ≤ m) (hlB : lB ≤ m) (hkprod : k ≤ lR * lB) :
+    0 < paperRIOuterPowRatioBound m lR lB k := by
+  have hchooseR : 0 < (m.choose lR : ℝ) := by
+    exact_mod_cast Nat.choose_pos hlR
+  have hchooseB : 0 < (m.choose lB : ℝ) := by
+    exact_mod_cast Nat.choose_pos hlB
+  have hprodBaseNat : 0 < lR * lB := by
+    omega
+  have hprodBase : 0 < ((lR * lB : ℕ) : ℝ) := by
+    exact_mod_cast hprodBaseNat
+  have hnum : 0 < (((lR * lB : ℕ) : ℝ) ^ k) := by
+    exact pow_pos hprodBase k
+  have hdenBaseNat : 0 < m * m + 1 - k := by
+    omega
+  have hden : 0 < ((((m * m + 1 - k : ℕ) : ℝ) ^ k)) := by
+    exact_mod_cast (show 0 < (m * m + 1 - k : ℕ) ^ k by exact Nat.pow_pos hdenBaseNat)
+  unfold paperRIOuterPowRatioBound
+  exact mul_pos (mul_pos hchooseR hchooseB) (div_pos hnum hden)
+
+theorem paperRIOuterEventMass_le_exp_log_powRatioBound
+    {m lR lB k : ℕ} (hk : k ≤ m * m) (hkpos : 0 < k)
+    (hlR : lR ≤ m) (hlB : lB ≤ m) (hkprod : k ≤ lR * lB) :
+    paperRIOuterEventMass m lR lB k ≤
+      Real.exp (Real.log (paperRIOuterPowRatioBound m lR lB k)) := by
+  have hmass :
+      paperRIOuterEventMass m lR lB k ≤ paperRIOuterPowRatioBound m lR lB k :=
+    paperRIOuterEventMass_le_powRatioBound hk
+  have hpos :
+      0 < paperRIOuterPowRatioBound m lR lB k :=
+    paperRIOuterPowRatioBound_pos hk hkpos hlR hlB hkprod
+  simpa [Real.exp_log hpos] using hmass
+
+theorem paperRIOuterEventMass_le_exp_of_log_powRatioBound_le
+    {m lR lB k : ℕ} (hk : k ≤ m * m) (hkpos : 0 < k)
+    (hlR : lR ≤ m) (hlB : lB ≤ m) (hkprod : k ≤ lR * lB)
+    {outerExp : ℝ}
+    (hlog :
+      Real.log (paperRIOuterPowRatioBound m lR lB k) ≤ outerExp) :
+    paperRIOuterEventMass m lR lB k ≤ Real.exp outerExp := by
+  exact
+    (paperRIOuterEventMass_le_exp_log_powRatioBound hk hkpos hlR hlB hkprod).trans
+      (Real.exp_le_exp.mpr hlog)
+
 theorem paperRI_smallSumCoeff_le
     {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
     -(1 - x) / 2 ≤ -ε / 4 := by
