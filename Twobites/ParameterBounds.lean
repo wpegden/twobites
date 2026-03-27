@@ -1277,6 +1277,17 @@ theorem paperK_add {κ₁ κ₂ : ℝ} (n : ℕ) :
   unfold paperK
   ring
 
+theorem mul_paperK_eq_paperK_mul {a κ : ℝ} {n : ℕ} :
+    a * paperK κ n = paperK (a * κ) n := by
+  unfold paperK
+  ring
+
+theorem le_paperKNat_of_cast_le_paperK {a : ℕ} {κ : ℝ} {n : ℕ}
+    (h : (a : ℝ) ≤ paperK κ n) :
+    a ≤ paperKNat κ n := by
+  have h' : (a : ℝ) ≤ paperKNat κ n := h.trans (Nat.le_ceil _)
+  exact_mod_cast h'
+
 theorem paperKNat_add_paperCapNat_le_paperKNat_add_one {ρ β ε2 : ℝ} {n : ℕ}
     (hn : 0 < n) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) :
     paperKNat ρ n + paperCapNat β ε2 n ≤ paperKNat (ρ + (1 + ε2) * β) n + 1 := by
@@ -1712,6 +1723,98 @@ theorem three_loglog_diagCoeff_le {β κ ε : ℝ} {n : ℕ}
     _ ≤ (ε * κ) * (2 * paperK κ n) := by
       exact mul_le_mul_of_nonneg_left hk2 (mul_nonneg hε hκ)
     _ = 2 * ε * κ * paperK κ n := by ring
+
+theorem paperRI_nearOne_blueCoeff_le_of_symm_of_sum_le
+    {ε xR xB : ℝ} (hblue : xB ≤ xR) (hsum : xR + xB ≤ 1 + ε / 2) :
+    xB ≤ (2 + ε) / 4 := by
+  nlinarith
+
+theorem paperRI_nearOne_mixedCoeff_eq
+    {ε xR xB : ℝ} (hε0 : 0 ≤ ε) :
+    -(1 - xR - xB) / 2 -
+        (1 / (4 * (1 + ε))) *
+          (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+            xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2) =
+      (1 / (8 * (1 + ε))) *
+        (2 * xB - 1 - (4 * ε ^ 2 + 2 * ε) * (xR + xB - 1) - 2 * ε * xR +
+          4 * ε ^ 3 * (1 + ε) ^ 2) := by
+  have hε : 1 + ε ≠ 0 := by nlinarith
+  field_simp [hε]
+  ring
+
+theorem paperRI_nearOne_mixedCoeff_le_final
+    {ε xR xB : ℝ}
+    (hε0 : 0 ≤ ε)
+    (hεsmall : 8 * (1 + ε) ^ 2 ≤ (9 : ℝ))
+    (hsumLower : 1 - ε / 2 ≤ xR + xB)
+    (hsumUpper : xR + xB ≤ 1 + ε / 2)
+    (hblue : xB ≤ xR) :
+    (1 / (8 * (1 + ε))) *
+        (2 * xB - 1 - (4 * ε ^ 2 + 2 * ε) * (xR + xB - 1) - 2 * ε * xR +
+          4 * ε ^ 3 * (1 + ε) ^ 2) ≤
+      ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε)) := by
+  have hnum :
+      2 * xB - 1 - (4 * ε ^ 2 + 2 * ε) * (xR + xB - 1) - 2 * ε * xR +
+          4 * ε ^ 3 * (1 + ε) ^ 2 ≤
+        ε * (-1 + ε + 22 * ε ^ 2) / 2 := by
+    have hxB :
+        xB ≤ (2 + ε) / 4 :=
+      paperRI_nearOne_blueCoeff_le_of_symm_of_sum_le hblue hsumUpper
+    have hstep1 :
+        -2 * ε * xR + 4 * ε ^ 3 * (1 + ε) ^ 2 ≤
+          -2 * ε * xB + 9 * ε ^ 3 := by
+      have hleft : 0 ≤ 2 * ε * (xR - xB) := by
+        nlinarith
+      have hcoef : 4 * (1 + ε) ^ 2 - 9 ≤ 0 := by
+        nlinarith
+      have hε3 : 0 ≤ ε ^ 3 := by
+        positivity
+      have hright : ε ^ 3 * (4 * (1 + ε) ^ 2 - 9) ≤ 0 := by
+        exact mul_nonpos_of_nonneg_of_nonpos hε3 hcoef
+      nlinarith
+    have hstep2 :
+        -(4 * ε ^ 2 + 2 * ε) * (xR + xB - 1) ≤ ε ^ 2 + 2 * ε ^ 3 := by
+      nlinarith
+    calc
+      2 * xB - 1 - (4 * ε ^ 2 + 2 * ε) * (xR + xB - 1) - 2 * ε * xR +
+          4 * ε ^ 3 * (1 + ε) ^ 2 ≤
+        2 * xB - 1 + (ε ^ 2 + 2 * ε ^ 3) + (-2 * ε * xB + 9 * ε ^ 3) := by
+          linarith
+      _ = 2 * (1 - ε) * xB - 1 + ε ^ 2 + 11 * ε ^ 3 := by ring
+      _ ≤ 2 * (1 - ε) * ((2 + ε) / 4) - 1 + ε ^ 2 + 11 * ε ^ 3 := by
+          nlinarith
+      _ = ε * (-1 + ε + 22 * ε ^ 2) / 2 := by ring
+  have hden : 0 < 8 * (1 + ε) := by
+    nlinarith
+  have hdiv :
+      (2 * xB - 1 - (4 * ε ^ 2 + 2 * ε) * (xR + xB - 1) - 2 * ε * xR +
+            4 * ε ^ 3 * (1 + ε) ^ 2) /
+          (8 * (1 + ε)) ≤
+        ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε)) := by
+    have htmp :
+        (2 * xB - 1 - (4 * ε ^ 2 + 2 * ε) * (xR + xB - 1) - 2 * ε * xR +
+              4 * ε ^ 3 * (1 + ε) ^ 2) /
+            (8 * (1 + ε)) ≤
+          (ε * (-1 + ε + 22 * ε ^ 2) / 2) / (8 * (1 + ε)) := by
+      exact div_le_div_of_nonneg_right hnum (by linarith)
+    calc
+      (2 * xB - 1 - (4 * ε ^ 2 + 2 * ε) * (xR + xB - 1) - 2 * ε * xR +
+            4 * ε ^ 3 * (1 + ε) ^ 2) /
+          (8 * (1 + ε)) ≤
+        (ε * (-1 + ε + 22 * ε ^ 2) / 2) / (8 * (1 + ε)) := htmp
+      _ = ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε)) := by
+        field_simp [hden.ne']
+        ring
+  simpa [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hdiv
+
+theorem paperRI_nearOne_finalCoeff_neg
+    {ε : ℝ} (hε : 0 < ε) (hneg : -1 + ε + 22 * ε ^ 2 < 0) :
+    ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε)) < 0 := by
+  have hden : 0 < 16 * (1 + ε) := by
+    nlinarith
+  have hnum : ε * (-1 + ε + 22 * ε ^ 2) < 0 := by
+    nlinarith
+  exact div_neg_of_neg_of_pos hnum hden
 
 end
 

@@ -17,6 +17,7 @@
 - `reference.tex:639` (`lem:RISI`): `U_B` should be `T_B ∩ E(G_B)`, not `T_B ∩ E(G_R)`.
 - `reference.tex:663` (`lem:RISI`): `T_I` should be `T_R ∪ T_B`, or the sentence should simply say that every unrevealed open pair lies in `T_R ∪ T_B` and must be a non-edge.
 - `reference.tex:668-669` (`lem:RISI`): `f(\ell_r,\ell_B)` should be `f(\ell_R,\ell_B)`.
+- `reference.tex:731` (`lem:RI`, middle regime): after substituting `β = 1/2` and `κ = 1 + ε`, the exact expansion of the second-line coefficient gives `4 ε^3 (1 + ε)^2`, not `8 ε^3 (1 + ε)^2`. This does not affect the asymptotic sign argument, but the checked arithmetic uses the smaller coefficient.
 - `reference.tex:746` (proof of Theorem `main`): `P(B_I \cap \mathcal R)` should be `P(\mathcal B_I \cap \mathcal R)`.
 - Main asymptotic check: after simplifying the exponent in the three cases of `lem:RI`, the coefficient is negative for sufficiently small `ε`; the delicate middle regime (`1 - ε/2 < x_R + x_B < 1 + ε/2`) was checked separately during this paper-check pass and did not reveal a gap.
 
