@@ -561,6 +561,34 @@ theorem paperHugeWitnessNat_le_two_mul_paperK_div_paperT1_add_two {κ : ℝ} {n 
     (paperHugeWitnessNat κ n : ℝ) ≤ 2 * (paperK κ n / paperT1 n) + 2 := by
   exact (paperHugeWitnessNat_lt_two_mul_paperK_div_paperT1_add_two hκ hT1).le
 
+theorem paperHugeWitnessNat_le_two_mul_mul_loglog_add_two {κ : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hn : 1 < n) (hloglog : 0 < Real.log (Real.log (n : ℝ))) :
+    (paperHugeWitnessNat κ n : ℝ) ≤ 2 * κ * Real.log (Real.log (n : ℝ)) + 2 := by
+  have hT1 : 0 < paperT1 n := by
+    unfold paperT1
+    refine div_pos ?_ hloglog
+    apply Real.sqrt_pos.2
+    exact mul_pos (by exact_mod_cast (lt_trans Nat.zero_lt_one hn)) (paperLog_pos hn)
+  calc
+    (paperHugeWitnessNat κ n : ℝ) ≤ 2 * (paperK κ n / paperT1 n) + 2 := by
+      exact paperHugeWitnessNat_le_two_mul_paperK_div_paperT1_add_two hκ hT1
+    _ = 2 * κ * Real.log (Real.log (n : ℝ)) + 2 := by
+      rw [paperK_div_paperT1_eq_mul_loglog hn hloglog]
+      ring
+
+theorem paperHugeWitnessNat_splitCoeff_le_of_loglog {κ β q : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hn : 1 < n) (hloglog : 0 < Real.log (Real.log (n : ℝ)))
+    (hβ : 0 ≤ β) (hq : 0 ≤ q) :
+    (((paperHugeWitnessNat κ n : ℕ) : ℝ) * β) / paperS n +
+        ((((paperHugeWitnessNat κ n).choose 2 : ℕ) : ℝ) * q) /
+          Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) ≤
+      ((2 * κ * Real.log (Real.log (n : ℝ)) + 2) * β) / paperS n +
+        (((2 * κ * Real.log (Real.log (n : ℝ)) + 2) ^ 2 / 2) * q) /
+          Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+  exact
+    splitCoeff_le_of_bound_le (bound := paperHugeWitnessNat κ n) (n := n)
+      hn (paperHugeWitnessNat_le_two_mul_mul_loglog_add_two hκ hn hloglog) hβ hq
+
 theorem two_mul_paperKNat_lt_paperHugeWitnessNat_mul_ceil_paperT1 {κ : ℝ} {n : ℕ}
     (hκ : 0 ≤ κ) (hT1 : 2 < paperT1 n) :
     2 * paperKNat κ n < paperHugeWitnessNat κ n * ⌈paperT1 n⌉₊ := by
