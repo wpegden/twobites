@@ -2076,6 +2076,51 @@ theorem paperRIOuterEventMass_le_exp_of_log_powRatioBound_le
     (paperRIOuterEventMass_le_exp_log_powRatioBound hk hkpos hlR hlB hkprod).trans
       (Real.exp_le_exp.mpr hlog)
 
+theorem paperRIOuterPowRatioBound_log_eq
+    {m lR lB k : ℕ} (hk : k ≤ m * m) (hkpos : 0 < k)
+    (hlR : lR ≤ m) (hlB : lB ≤ m) (hkprod : k ≤ lR * lB) :
+    Real.log (paperRIOuterPowRatioBound m lR lB k) =
+      Real.log (m.choose lR : ℝ) + Real.log (m.choose lB : ℝ) +
+        ((k : ℝ) * Real.log (((lR * lB : ℕ) : ℝ)) -
+          (k : ℝ) * Real.log (((m * m + 1 - k : ℕ) : ℝ))) := by
+  have hchooseR : 0 < (m.choose lR : ℝ) := by
+    exact_mod_cast Nat.choose_pos hlR
+  have hchooseB : 0 < (m.choose lB : ℝ) := by
+    exact_mod_cast Nat.choose_pos hlB
+  have hprodBaseNat : 0 < lR * lB := by
+    omega
+  have hprodBase : 0 < (((lR * lB : ℕ) : ℝ)) := by
+    exact_mod_cast hprodBaseNat
+  have hnum : 0 < ((((lR * lB : ℕ) : ℝ) ^ k)) := by
+    exact pow_pos hprodBase k
+  have hdenBaseNat : 0 < m * m + 1 - k := by
+    omega
+  have hdenBase : 0 < (((m * m + 1 - k : ℕ) : ℝ)) := by
+    exact_mod_cast hdenBaseNat
+  have hden : 0 < ((((m * m + 1 - k : ℕ) : ℝ) ^ k)) := by
+    exact pow_pos hdenBase k
+  unfold paperRIOuterPowRatioBound
+  rw [Real.log_mul (mul_ne_zero hchooseR.ne' hchooseB.ne') (div_ne_zero hnum.ne' hden.ne'),
+    Real.log_mul hchooseR.ne' hchooseB.ne',
+    Real.log_div hnum.ne' hden.ne',
+    Real.log_pow, Real.log_pow]
+
+theorem paperRIOuterEventMass_le_exp_of_chooseLogs_le
+    {m lR lB k : ℕ} (hk : k ≤ m * m) (hkpos : 0 < k)
+    (hlR : lR ≤ m) (hlB : lB ≤ m) (hkprod : k ≤ lR * lB)
+    {redLog blueLog outerExp : ℝ}
+    (hred : Real.log (m.choose lR : ℝ) ≤ redLog)
+    (hblue : Real.log (m.choose lB : ℝ) ≤ blueLog)
+    (htotal :
+      redLog + blueLog +
+          ((k : ℝ) * Real.log (((lR * lB : ℕ) : ℝ)) -
+            (k : ℝ) * Real.log (((m * m + 1 - k : ℕ) : ℝ))) ≤
+        outerExp) :
+    paperRIOuterEventMass m lR lB k ≤ Real.exp outerExp := by
+  apply paperRIOuterEventMass_le_exp_of_log_powRatioBound_le hk hkpos hlR hlB hkprod
+  rw [paperRIOuterPowRatioBound_log_eq hk hkpos hlR hlB hkprod]
+  linarith
+
 theorem paperRI_smallSumCoeff_le
     {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
     -(1 - x) / 2 ≤ -ε / 4 := by
