@@ -11118,6 +11118,132 @@ theorem section4ChoiceEventMassSum_le_projectionChoiceMassSum
     C.section4ChoiceEventMass_le_projectionChoiceMass
       (I := I) (A := A) (remaining := remaining) (uR := uv.1) (uB := uv.2) hp0 hp1
 
+theorem section4ProjectionChoiceMassSum_eq_closedForm
+    (p : ℝ) (remaining uRMax uBMax : ℕ) :
+    section4ProjectionChoiceMassSum p remaining uRMax uBMax =
+      ((1 + p) ^ uRMax) * ((1 + p) ^ uBMax) * (1 - p) ^ remaining := by
+  let f : ℕ → ℝ := fun uR => ((uRMax.choose uR : ℕ) : ℝ) * p ^ uR
+  let g : ℕ → ℝ := fun uB => ((uBMax.choose uB : ℕ) : ℝ) * p ^ uB
+  let c : ℝ := (1 - p) ^ remaining
+  have hR :
+      Finset.sum (Finset.range (uRMax + 1)) f = (1 + p) ^ uRMax := by
+    calc
+      Finset.sum (Finset.range (uRMax + 1)) f =
+          Finset.sum (Finset.range (uRMax + 1))
+            (fun uR => p ^ uR * 1 ^ (uRMax - uR) * ((uRMax.choose uR : ℕ) : ℝ)) := by
+          refine Finset.sum_congr rfl ?_
+          intro uR huR
+          simp [f]
+          ring
+      _ = (p + 1) ^ uRMax := by
+          simpa [add_comm] using (add_pow p (1 : ℝ) uRMax).symm
+      _ = (1 + p) ^ uRMax := by rw [add_comm]
+  have hB :
+      Finset.sum (Finset.range (uBMax + 1)) g = (1 + p) ^ uBMax := by
+    calc
+      Finset.sum (Finset.range (uBMax + 1)) g =
+          Finset.sum (Finset.range (uBMax + 1))
+            (fun uB => p ^ uB * 1 ^ (uBMax - uB) * ((uBMax.choose uB : ℕ) : ℝ)) := by
+          refine Finset.sum_congr rfl ?_
+          intro uB huB
+          simp [g]
+          ring
+      _ = (p + 1) ^ uBMax := by
+          simpa [add_comm] using (add_pow p (1 : ℝ) uBMax).symm
+      _ = (1 + p) ^ uBMax := by rw [add_comm]
+  calc
+    section4ProjectionChoiceMassSum p remaining uRMax uBMax =
+        Finset.sum (Finset.range (uRMax + 1))
+          (fun uR =>
+            Finset.sum (Finset.range (uBMax + 1)) fun uB => (f uR * g uB) * c) := by
+      unfold section4ProjectionChoiceMassSum section4CountIndexSet
+      rw [Finset.sum_product]
+    _ = (Finset.sum (Finset.range (uRMax + 1)) f) *
+          (Finset.sum (Finset.range (uBMax + 1)) g) * c := by
+      calc
+        Finset.sum (Finset.range (uRMax + 1))
+            (fun uR =>
+              Finset.sum (Finset.range (uBMax + 1)) fun uB => (f uR * g uB) * c) =
+            Finset.sum (Finset.range (uRMax + 1))
+              (fun uR => f uR * Finset.sum (Finset.range (uBMax + 1)) (fun uB => g uB * c)) := by
+          refine Finset.sum_congr rfl ?_
+          intro uR huR
+          calc
+            Finset.sum (Finset.range (uBMax + 1)) (fun uB => (f uR * g uB) * c) =
+                Finset.sum (Finset.range (uBMax + 1)) (fun uB => f uR * (g uB * c)) := by
+              refine Finset.sum_congr rfl ?_
+              intro uB huB
+              ring
+            _ = f uR * Finset.sum (Finset.range (uBMax + 1)) (fun uB => g uB * c) := by
+              rw [Finset.mul_sum]
+        _ = Finset.sum (Finset.range (uRMax + 1))
+              (fun uR => f uR * (Finset.sum (Finset.range (uBMax + 1)) g * c)) := by
+          refine Finset.sum_congr rfl ?_
+          intro uR huR
+          rw [Finset.sum_mul]
+        _ = Finset.sum (Finset.range (uRMax + 1)) f *
+              (Finset.sum (Finset.range (uBMax + 1)) g * c) := by
+          rw [← Finset.sum_mul]
+        _ = Finset.sum (Finset.range (uRMax + 1)) f *
+              Finset.sum (Finset.range (uBMax + 1)) g * c := by
+          ring
+    _ = ((1 + p) ^ uRMax) * ((1 + p) ^ uBMax) * (1 - p) ^ remaining := by
+      simp [hR, hB, c]
+
+theorem section4ProjectionChoiceMassSum_le_exp
+    {p : ℝ} {remaining uRMax uBMax : ℕ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    section4ProjectionChoiceMassSum p remaining uRMax uBMax ≤
+      Real.exp (p * (uRMax : ℝ) + p * (uBMax : ℝ) - p * (remaining : ℝ)) := by
+  have honep_nonneg : 0 ≤ 1 + p := by linarith
+  have hsub_nonneg : 0 ≤ 1 - p := by linarith
+  have hR :
+      (1 + p) ^ uRMax ≤ Real.exp (p * (uRMax : ℝ)) := by
+    have hbase : 1 + p ≤ Real.exp p := by simpa [add_comm] using Real.add_one_le_exp p
+    calc
+      (1 + p) ^ uRMax ≤ (Real.exp p) ^ uRMax := pow_le_pow_left₀ honep_nonneg hbase _
+      _ = Real.exp (p * (uRMax : ℝ)) := by
+        rw [← Real.exp_nat_mul]
+        ring
+  have hB :
+      (1 + p) ^ uBMax ≤ Real.exp (p * (uBMax : ℝ)) := by
+    have hbase : 1 + p ≤ Real.exp p := by simpa [add_comm] using Real.add_one_le_exp p
+    calc
+      (1 + p) ^ uBMax ≤ (Real.exp p) ^ uBMax := pow_le_pow_left₀ honep_nonneg hbase _
+      _ = Real.exp (p * (uBMax : ℝ)) := by
+        rw [← Real.exp_nat_mul]
+        ring
+  have hremaining :
+      (1 - p) ^ remaining ≤ Real.exp (-p * (remaining : ℝ)) := by
+    calc
+      (1 - p) ^ remaining ≤ (Real.exp (-p)) ^ remaining := by
+        exact pow_le_pow_left₀ hsub_nonneg (Real.one_sub_le_exp_neg p) _
+      _ = Real.exp ((remaining : ℝ) * (-p)) := by rw [← Real.exp_nat_mul]
+      _ = Real.exp (-p * (remaining : ℝ)) := by ring
+  have hpair :
+      ((1 + p) ^ uRMax) * ((1 + p) ^ uBMax) ≤
+        Real.exp (p * (uRMax : ℝ)) * Real.exp (p * (uBMax : ℝ)) := by
+    exact
+      (mul_le_mul_of_nonneg_right hR (pow_nonneg honep_nonneg _)).trans
+        (mul_le_mul_of_nonneg_left hB (by positivity))
+  have htriple :
+      (((1 + p) ^ uRMax) * ((1 + p) ^ uBMax)) * (1 - p) ^ remaining ≤
+        (Real.exp (p * (uRMax : ℝ)) * Real.exp (p * (uBMax : ℝ))) *
+          Real.exp (-p * (remaining : ℝ)) := by
+    exact
+      (mul_le_mul_of_nonneg_right hpair (pow_nonneg hsub_nonneg _)).trans
+        (mul_le_mul_of_nonneg_left hremaining (by positivity))
+  calc
+    section4ProjectionChoiceMassSum p remaining uRMax uBMax =
+        (((1 + p) ^ uRMax) * ((1 + p) ^ uBMax)) * (1 - p) ^ remaining := by
+      simpa [mul_assoc] using
+        (section4ProjectionChoiceMassSum_eq_closedForm p remaining uRMax uBMax)
+    _ ≤ (Real.exp (p * (uRMax : ℝ)) * Real.exp (p * (uBMax : ℝ))) *
+          Real.exp (-p * (remaining : ℝ)) := htriple
+    _ = Real.exp (p * (uRMax : ℝ) + p * (uBMax : ℝ) - p * (remaining : ℝ)) := by
+      rw [← Real.exp_add, ← Real.exp_add]
+      congr 1
+      ring
+
 theorem section4BernoulliMass_nonneg {p : ℝ} {uR uB remaining : ℕ}
     (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     0 ≤ section4BernoulliMass p uR uB remaining := by
@@ -11455,6 +11581,55 @@ theorem
           ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) := by
       exact C.section4ChoiceEventMassSum_section4F_le_projectionChoiceMassSum
         (I := I) (ε := ε) (N := N) hp0 hp1
+
+set_option linter.style.longLine false in
+theorem
+    section4UCondChoiceEventMassSum_section4F_le_exp_of_indep
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p : ℝ} {N : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    let remainingNat :=
+      N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+        (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+        C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+        C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    let uRNat :=
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+    let uBNat :=
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    C.section4UCondChoiceEventMassSum I (C.section4F I ε) p remainingNat uRNat uBNat ≤
+      Real.exp (p * (uRNat : ℝ) + p * (uBNat : ℝ) - p * (remainingNat : ℝ)) := by
+  let remainingNat :=
+    N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+      (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+        C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+  let uRNat :=
+    C.redProjectionPairCount I
+      ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+  let uBNat :=
+    C.blueProjectionPairCount I
+      ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+  change
+    C.section4UCondChoiceEventMassSum I (C.section4F I ε) p remainingNat uRNat uBNat ≤
+      Real.exp (p * (uRNat : ℝ) + p * (uBNat : ℝ) - p * (remainingNat : ℝ))
+  calc
+    C.section4UCondChoiceEventMassSum I (C.section4F I ε) p remainingNat uRNat uBNat ≤
+      section4ProjectionChoiceMassSum p remainingNat uRNat uBNat := by
+      exact C.section4UCondChoiceEventMassSum_section4F_le_projectionChoiceMassSum_of_indep
+        (I := I) (ε := ε) (N := N) hindep hp0 hp1
+    _ ≤ Real.exp (p * (uRNat : ℝ) + p * (uBNat : ℝ) - p * (remainingNat : ℝ)) := by
+      exact section4ProjectionChoiceMassSum_le_exp
+        (p := p) (remaining := remainingNat) (uRMax := uRNat) (uBMax := uBNat) hp0 hp1
 
 end
 
