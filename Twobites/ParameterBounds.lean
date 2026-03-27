@@ -2121,6 +2121,79 @@ theorem paperRIOuterEventMass_le_exp_of_chooseLogs_le
   rw [paperRIOuterPowRatioBound_log_eq hk hkpos hlR hlB hkprod]
   linarith
 
+theorem choose_cast_le_exp_mul_div_pow
+    {m l : ℕ} (hlpos : 0 < l) :
+    (m.choose l : ℝ) ≤ Real.exp (l : ℝ) * (((m : ℝ) / l) ^ l) := by
+  have hlposR : 0 < (l : ℝ) := by
+    exact_mod_cast hlpos
+  have hdiv_nonneg : 0 ≤ (m : ℝ) / l := by
+    exact div_nonneg (Nat.cast_nonneg m) hlposR.le
+  calc
+    (m.choose l : ℝ) ≤ (m : ℝ) ^ l / ((l.factorial : ℕ) : ℝ) := by
+      simpa using (Nat.choose_le_pow_div (α := ℝ) l m)
+    _ = (((m : ℝ) / l) ^ l) * (((l : ℝ) ^ l) / ((l.factorial : ℕ) : ℝ)) := by
+      rw [div_pow]
+      field_simp [hlposR.ne']
+    _ ≤ (((m : ℝ) / l) ^ l) * Real.exp (l : ℝ) := by
+      exact mul_le_mul_of_nonneg_left
+        (Real.pow_div_factorial_le_exp (l : ℝ) (by positivity) l)
+        (pow_nonneg hdiv_nonneg _)
+    _ = Real.exp (l : ℝ) * (((m : ℝ) / l) ^ l) := by ring
+
+theorem paperRI_logChoose_le
+    {m l : ℕ} (hlpos : 0 < l) (hlm : l ≤ m) :
+    Real.log (m.choose l : ℝ) ≤ (l : ℝ) * (1 + Real.log (m : ℝ) - Real.log (l : ℝ)) := by
+  have hmposNat : 0 < m := lt_of_lt_of_le hlpos hlm
+  have hmpos : 0 < (m : ℝ) := by
+    exact_mod_cast hmposNat
+  have hlposR : 0 < (l : ℝ) := by
+    exact_mod_cast hlpos
+  have hchoosePos : 0 < (m.choose l : ℝ) := by
+    exact_mod_cast Nat.choose_pos hlm
+  have hratioPos : 0 < (((m : ℝ) / l) ^ l) := by
+    exact pow_pos (div_pos hmpos hlposR) l
+  have hbound :
+      (m.choose l : ℝ) ≤ Real.exp (l : ℝ) * (((m : ℝ) / l) ^ l) :=
+    choose_cast_le_exp_mul_div_pow (m := m) hlpos
+  calc
+    Real.log (m.choose l : ℝ) ≤ Real.log (Real.exp (l : ℝ) * (((m : ℝ) / l) ^ l)) := by
+      exact Real.log_le_log hchoosePos hbound
+    _ = (l : ℝ) + Real.log ((((m : ℝ) / l) ^ l)) := by
+      rw [Real.log_mul (Real.exp_ne_zero _) hratioPos.ne', Real.log_exp]
+    _ = (l : ℝ) + (l : ℝ) * Real.log ((m : ℝ) / l) := by
+      rw [Real.log_pow]
+    _ = (l : ℝ) + (l : ℝ) * (Real.log (m : ℝ) - Real.log (l : ℝ)) := by
+      rw [Real.log_div hmpos.ne' hlposR.ne']
+    _ = (l : ℝ) * (1 + Real.log (m : ℝ) - Real.log (l : ℝ)) := by
+      ring
+
+theorem paperRIOuterEventMass_le_exp_of_logChooseFormula_le
+    {m lR lB k : ℕ} (hk : k ≤ m * m) (hkpos : 0 < k)
+    (hlR : lR ≤ m) (hlB : lB ≤ m) (hkprod : k ≤ lR * lB)
+    {outerExp : ℝ}
+    (htotal :
+      (lR : ℝ) * (1 + Real.log (m : ℝ) - Real.log (lR : ℝ)) +
+          (lB : ℝ) * (1 + Real.log (m : ℝ) - Real.log (lB : ℝ)) +
+          ((k : ℝ) * Real.log (((lR * lB : ℕ) : ℝ)) -
+            (k : ℝ) * Real.log (((m * m + 1 - k : ℕ) : ℝ))) ≤
+        outerExp) :
+    paperRIOuterEventMass m lR lB k ≤ Real.exp outerExp := by
+  have hmulpos : 0 < lR * lB := lt_of_lt_of_le hkpos hkprod
+  have hlRpos : 0 < lR := by
+    refine Nat.pos_of_ne_zero ?_
+    intro hR
+    subst hR
+    simp at hmulpos
+  have hlBpos : 0 < lB := by
+    refine Nat.pos_of_ne_zero ?_
+    intro hB
+    subst hB
+    simp at hmulpos
+  apply paperRIOuterEventMass_le_exp_of_chooseLogs_le hk hkpos hlR hlB hkprod
+  · exact paperRI_logChoose_le hlRpos hlR
+  · exact paperRI_logChoose_le hlBpos hlB
+  · exact htotal
+
 theorem paperRI_smallSumCoeff_le
     {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
     -(1 - x) / 2 ≤ -ε / 4 := by
