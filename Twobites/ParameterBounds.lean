@@ -58,6 +58,13 @@ def paperKNat (κ : ℝ) (n : ℕ) : ℕ :=
 def paperHugeWitnessNat (κ : ℝ) (n : ℕ) : ℕ :=
   ⌈2 * (paperK κ n / paperT1 n)⌉₊ + 1
 
+/-- The Section 3 witness-error coefficient obtained from the huge-part union-size and
+projected-codegree estimates. -/
+def paperHugeWitnessCoeff (κ β q : ℝ) (n : ℕ) : ℝ :=
+  ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n +
+    ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
+      Real.sqrt ((n : ℝ) * Real.log (n : ℝ)))
+
 /-- A natural-number version of the huge-case cap `(1 + ε₂)pn`. -/
 def paperCapNat (β ε2 : ℝ) (n : ℕ) : ℕ :=
   ⌈paperCap β ε2 n⌉₊
@@ -1114,10 +1121,7 @@ theorem three_loglog_witnessCoeff_le_two_eps_mul {β κ ε q : ℝ} {n : ℕ}
       ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * q) /
         Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
       ε * κ) :
-    ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n +
-        ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
-          Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
-      2 * ε * κ := by
+    paperHugeWitnessCoeff κ β q n ≤ 2 * ε * κ := by
   have hfirst :
       ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n ≤ ε * κ := by
     exact three_loglog_split_first_le hn hκ hdiagScale
@@ -1127,6 +1131,7 @@ theorem three_loglog_witnessCoeff_le_two_eps_mul {β κ ε q : ℝ} {n : ℕ}
       ε * κ := by
     convert hcodegScale using 1
     ring_nf
+  unfold paperHugeWitnessCoeff
   calc
     ((3 * κ * Real.log (Real.log (n : ℝ))) * β) / paperS n +
         ((((3 * κ * Real.log (Real.log (n : ℝ))) ^ 2 / 2) * q) /
@@ -1139,6 +1144,18 @@ theorem three_mul_paperK_two_mul_eq {ε κ : ℝ} {n : ℕ} :
     (3 : ℝ) * paperK (2 * ε * κ) n = ε * (6 * paperK κ n) := by
   unfold paperK
   ring
+
+theorem three_mul_paperK_le_eps_mul_of_le_two_eps_mul_of_six_mul_paperK_le
+    {δ κ ε rhs : ℝ} {n : ℕ} (hδ : δ ≤ 2 * ε * κ) (hsmall : 6 * paperK κ n ≤ rhs)
+    (hε : 0 ≤ ε) :
+    (3 : ℝ) * paperK δ n ≤ ε * rhs := by
+  have hmono : paperK δ n ≤ paperK (2 * ε * κ) n := paperK_le_paperK_of_le hδ
+  calc
+    (3 : ℝ) * paperK δ n ≤ (3 : ℝ) * paperK (2 * ε * κ) n := by
+      exact mul_le_mul_of_nonneg_left hmono (by norm_num)
+    _ = ε * (6 * paperK κ n) := by rw [three_mul_paperK_two_mul_eq]
+    _ ≤ ε * rhs := by
+      exact mul_le_mul_of_nonneg_left hsmall hε
 
 theorem cross_residual_sub_one_le_paperK
     {ρ β ε2 κ : ℝ} {n : ℕ} (hκ : 0 ≤ κ) :
