@@ -100,6 +100,15 @@ theorem paperM_mul_paperS {n : ℕ} (hS : paperS n ≠ 0) :
     paperM n * paperS n = (n : ℝ) := by
   simpa [paperM] using (div_mul_cancel₀ (n : ℝ) hS)
 
+theorem paperM_log_eq {n : ℕ} (hn : 1 < n) :
+    Real.log (paperM n) = Real.log (n : ℝ) - 2 * Real.log (Real.log (n : ℝ)) := by
+  have hn0 : (n : ℝ) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt (lt_trans Nat.zero_lt_one hn))
+  have hlogpos : 0 < Real.log (n : ℝ) := paperLog_pos hn
+  rw [paperM, paperS]
+  rw [Real.log_div hn0 (pow_ne_zero 2 hlogpos.ne'), Real.log_pow]
+  ring
+
 theorem paperP_nonneg {β : ℝ} (hβ : 0 ≤ β) (n : ℕ) : 0 ≤ paperP β n := by
   unfold paperP
   exact mul_nonneg hβ (Real.sqrt_nonneg _)
@@ -1231,6 +1240,20 @@ theorem paperK_le_paperKNat (κ : ℝ) (n : ℕ) : paperK κ n ≤ paperKNat κ 
   unfold paperKNat
   exact Nat.le_ceil (paperK κ n)
 
+theorem paperK_log_eq {κ : ℝ} {n : ℕ} (hκ : 0 < κ) (hn : 1 < n) :
+    Real.log (paperK κ n) =
+      Real.log κ + (Real.log (n : ℝ) + Real.log (Real.log (n : ℝ))) / 2 := by
+  have hn0 : 0 < (n : ℝ) := by
+    exact_mod_cast (lt_trans Nat.zero_lt_one hn)
+  have hlogpos : 0 < Real.log (n : ℝ) := paperLog_pos hn
+  have hsqrtpos : 0 < Real.sqrt ((n : ℝ) * Real.log (n : ℝ)) := by
+    apply Real.sqrt_pos.2
+    exact mul_pos hn0 hlogpos
+  have hargnonneg : 0 ≤ (n : ℝ) * Real.log (n : ℝ) := by
+    exact mul_nonneg hn0.le hlogpos.le
+  rw [paperK, Real.log_mul hκ.ne' hsqrtpos.ne', Real.log_sqrt hargnonneg,
+    Real.log_mul hn0.ne' hlogpos.ne']
+
 theorem paperCap_le_paperCapNat (β ε2 : ℝ) (n : ℕ) : paperCap β ε2 n ≤ paperCapNat β ε2 n := by
   unfold paperCapNat
   exact Nat.le_ceil (paperCap β ε2 n)
@@ -1468,6 +1491,40 @@ theorem paperKNat_lt_paperK_add_one {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) :
 theorem paperKNat_le_paperK_add_one {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) :
     (paperKNat κ n : ℝ) ≤ paperK κ n + 1 := by
   exact (paperKNat_lt_paperK_add_one hκ n).le
+
+theorem paperKNat_log_le_log_two_add_paperK_log {κ : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hkone : 1 ≤ paperK κ n) :
+    Real.log (paperKNat κ n : ℝ) ≤ Real.log (2 : ℝ) + Real.log (paperK κ n) := by
+  have hnat : 1 ≤ paperKNat κ n := by
+    exact le_paperKNat_of_cast_le_paperK (by simpa using hkone)
+  have hnatR : (1 : ℝ) ≤ (paperKNat κ n : ℝ) := by
+    exact_mod_cast hnat
+  have hnatPos : 0 < (paperKNat κ n : ℝ) := by
+    exact lt_of_lt_of_le zero_lt_one hnatR
+  have hkpos : 0 < paperK κ n := by
+    linarith
+  have hceil : (paperKNat κ n : ℝ) ≤ 2 * paperK κ n := by
+    have hbase : (paperKNat κ n : ℝ) ≤ paperK κ n + 1 :=
+      paperKNat_le_paperK_add_one hκ n
+    nlinarith
+  calc
+    Real.log (paperKNat κ n : ℝ) ≤ Real.log (2 * paperK κ n) := by
+      exact Real.log_le_log hnatPos hceil
+    _ = Real.log (2 : ℝ) + Real.log (paperK κ n) := by
+      rw [Real.log_mul (by norm_num : (2 : ℝ) ≠ 0) hkpos.ne']
+
+theorem paperKNat_log_le {κ : ℝ} {n : ℕ}
+    (hκ : 0 < κ) (hn : 1 < n) (hkone : 1 ≤ paperK κ n) :
+    Real.log (paperKNat κ n : ℝ) ≤
+      Real.log (2 : ℝ) + Real.log κ +
+        (Real.log (n : ℝ) + Real.log (Real.log (n : ℝ))) / 2 := by
+  calc
+    Real.log (paperKNat κ n : ℝ) ≤ Real.log (2 : ℝ) + Real.log (paperK κ n) :=
+      paperKNat_log_le_log_two_add_paperK_log hκ.le hkone
+    _ = Real.log (2 : ℝ) + Real.log κ +
+          (Real.log (n : ℝ) + Real.log (Real.log (n : ℝ))) / 2 := by
+      rw [paperK_log_eq hκ hn]
+      ring
 
 theorem nat_le_paperKNat_of_le_paperK {a : ℕ} {κ : ℝ} {n : ℕ}
     (h : (a : ℝ) ≤ paperK κ n) : a ≤ paperKNat κ n := by
