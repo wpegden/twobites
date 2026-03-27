@@ -1930,6 +1930,28 @@ theorem paperHugeWitnessQuarterProjection_of_middleSum_of_blueLeRed
     ring
   simpa [hform] using hhalf
 
+theorem paperHugeWitnessQuarterX_of_middleSum_of_blueLeRed
+    {xR xB ε : ℝ}
+    (hblueLeRed : xB ≤ xR)
+    (hsum : xR + xB ≤ 1 + ε / 2) :
+    xB ≤ (1 / 2 : ℝ) + ε / 4 := by
+  have hhalf : xB ≤ (1 + ε / 2) / 2 := by
+    linarith
+  have hform : (1 + ε / 2) / 2 = (1 / 2 : ℝ) + ε / 4 := by
+    ring
+  simpa [hform] using hhalf
+
+theorem paperHugeWitnessQuarterProjection_of_xMiddleSum_of_blueLeRed
+    {ρB xR xB ε : ℝ}
+    (hε : 0 ≤ ε)
+    (hρB : ρB ≤ xB * (1 + ε))
+    (hblueLeRed : xB ≤ xR)
+    (hsum : xR + xB ≤ 1 + ε / 2) :
+    ρB ≤ (((1 / 2 : ℝ) + ε / 4) * (1 + ε)) := by
+  have hx : xB ≤ (1 / 2 : ℝ) + ε / 4 := by
+    exact paperHugeWitnessQuarterX_of_middleSum_of_blueLeRed hblueLeRed hsum
+  nlinarith
+
 theorem paperHugeWitness_crossSmall_of_twoEpsThreshold_of_rhoBudget
     {ρ β κ ε1 ε2 βdeg qcodeg δsumGap δgap : ℝ} {n : ℕ}
     (hn : 1 < n) (hκ : 1 ≤ κ) (hρ : 0 ≤ ρ) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
