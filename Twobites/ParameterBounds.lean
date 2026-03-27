@@ -57,6 +57,9 @@ def paperMNat (n : ℕ) : ℕ :=
 def paperKNat (κ : ℝ) (n : ℕ) : ℕ :=
   ⌈paperK κ n⌉₊
 
+def paperLargeWitnessNat (κ ε : ℝ) (n : ℕ) : ℕ :=
+  ⌈2 * (paperK κ n / paperT2 ε n)⌉₊ + 1
+
 def paperHugeWitnessNat (κ : ℝ) (n : ℕ) : ℕ :=
   ⌈2 * (paperK κ n / paperT1 n)⌉₊ + 1
 
@@ -980,6 +983,29 @@ theorem paperHugeWitnessNat_le_two_mul_paperK_div_paperT1_add_two {κ : ℝ} {n 
     (paperHugeWitnessNat κ n : ℝ) ≤ 2 * (paperK κ n / paperT1 n) + 2 := by
   exact (paperHugeWitnessNat_lt_two_mul_paperK_div_paperT1_add_two hκ hT1).le
 
+theorem paperLargeWitnessNat_lt_two_mul_paperK_div_paperT2_add_two {κ ε : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hT2 : 0 < paperT2 ε n) :
+    (paperLargeWitnessNat κ ε n : ℝ) < 2 * (paperK κ n / paperT2 ε n) + 2 := by
+  have hratio : 0 ≤ 2 * (paperK κ n / paperT2 ε n) := by
+    have hk : 0 ≤ paperK κ n := paperK_nonneg hκ n
+    have hdiv : 0 ≤ paperK κ n / paperT2 ε n := div_nonneg hk hT2.le
+    nlinarith
+  have hceil :
+      ((⌈2 * (paperK κ n / paperT2 ε n)⌉₊ : ℕ) : ℝ) <
+        2 * (paperK κ n / paperT2 ε n) + 1 := Nat.ceil_lt_add_one hratio
+  calc
+    (paperLargeWitnessNat κ ε n : ℝ) =
+        (⌈2 * (paperK κ n / paperT2 ε n)⌉₊ : ℝ) + 1 := by
+          unfold paperLargeWitnessNat
+          norm_num
+    _ < (2 * (paperK κ n / paperT2 ε n) + 1) + 1 := by linarith
+    _ = 2 * (paperK κ n / paperT2 ε n) + 2 := by ring
+
+theorem paperLargeWitnessNat_le_two_mul_paperK_div_paperT2_add_two {κ ε : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hT2 : 0 < paperT2 ε n) :
+    (paperLargeWitnessNat κ ε n : ℝ) ≤ 2 * (paperK κ n / paperT2 ε n) + 2 := by
+  exact (paperLargeWitnessNat_lt_two_mul_paperK_div_paperT2_add_two hκ hT2).le
+
 theorem paperHugeWitnessNat_le_two_mul_mul_loglog_add_two {κ : ℝ} {n : ℕ}
     (hκ : 0 ≤ κ) (hn : 1 < n) (hloglog : 0 < Real.log (Real.log (n : ℝ))) :
     (paperHugeWitnessNat κ n : ℝ) ≤ 2 * κ * Real.log (Real.log (n : ℝ)) + 2 := by
@@ -1082,11 +1108,64 @@ theorem two_mul_paperKNat_lt_paperHugeWitnessNat_mul_ceil_paperT1 {κ : ℝ} {n 
     exact this.trans_le hprod
   exact_mod_cast hlt
 
+theorem two_mul_paperKNat_lt_paperLargeWitnessNat_mul_ceil_paperT2 {κ ε : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hT2 : 2 < paperT2 ε n) :
+    2 * paperKNat κ n < paperLargeWitnessNat κ ε n * ⌈paperT2 ε n⌉₊ := by
+  have hT2pos : 0 < paperT2 ε n := by linarith
+  have hwitnessLower :
+      2 * (paperK κ n / paperT2 ε n) + 1 ≤ (paperLargeWitnessNat κ ε n : ℝ) := by
+    have hceil :
+        2 * (paperK κ n / paperT2 ε n) ≤
+          ((⌈2 * (paperK κ n / paperT2 ε n)⌉₊ : ℕ) : ℝ) :=
+      Nat.le_ceil _
+    calc
+      2 * (paperK κ n / paperT2 ε n) + 1 ≤
+          ((⌈2 * (paperK κ n / paperT2 ε n)⌉₊ : ℕ) : ℝ) + 1 := by
+            linarith
+      _ = (paperLargeWitnessNat κ ε n : ℝ) := by
+          unfold paperLargeWitnessNat
+          norm_num
+  have hprod :
+      2 * paperK κ n + paperT2 ε n ≤
+        ((paperLargeWitnessNat κ ε n * ⌈paperT2 ε n⌉₊ : ℕ) : ℝ) := by
+    have hceilT2 : paperT2 ε n ≤ (⌈paperT2 ε n⌉₊ : ℝ) := Nat.le_ceil _
+    have hmul :
+        (2 * (paperK κ n / paperT2 ε n) + 1) * paperT2 ε n ≤
+          (paperLargeWitnessNat κ ε n : ℝ) * (⌈paperT2 ε n⌉₊ : ℝ) := by
+      gcongr
+    have hrewrite :
+        (2 * (paperK κ n / paperT2 ε n) + 1) * paperT2 ε n =
+          2 * paperK κ n + paperT2 ε n := by
+      field_simp [hT2pos.ne']
+    simpa [Nat.cast_mul] using hrewrite ▸ hmul
+  have hceilk : ((2 * paperKNat κ n : ℕ) : ℝ) < 2 * paperK κ n + 2 := by
+    have hk : (paperKNat κ n : ℝ) < paperK κ n + 1 := by
+      exact Nat.ceil_lt_add_one (paperK_nonneg hκ n)
+    calc
+      ((2 * paperKNat κ n : ℕ) : ℝ) = 2 * (paperKNat κ n : ℝ) := by norm_num
+      _ < 2 * (paperK κ n + 1) := by gcongr
+      _ = 2 * paperK κ n + 2 := by ring
+  have hlt :
+      ((2 * paperKNat κ n : ℕ) : ℝ) <
+        ((paperLargeWitnessNat κ ε n * ⌈paperT2 ε n⌉₊ : ℕ) : ℝ) := by
+    have : ((2 * paperKNat κ n : ℕ) : ℝ) < 2 * paperK κ n + paperT2 ε n := by
+      linarith
+    exact this.trans_le hprod
+  exact_mod_cast hlt
+
 theorem paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_iff
     {κ ε : ℝ} {n witnessSize codegreeBound : ℕ} :
     paperKNat κ n < witnessSize * ⌈paperT2 ε n⌉₊ - witnessSize.choose 2 * codegreeBound ↔
       paperKNat κ n + witnessSize.choose 2 * codegreeBound < witnessSize * ⌈paperT2 ε n⌉₊ :=
   Nat.lt_sub_iff_add_lt
+
+theorem paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_of_two_mul_lt
+    {κ ε : ℝ} {n witnessSize codegreeBound : ℕ}
+    (htwo : 2 * paperKNat κ n < witnessSize * ⌈paperT2 ε n⌉₊)
+    (hchoose : witnessSize.choose 2 * codegreeBound ≤ paperKNat κ n) :
+    paperKNat κ n < witnessSize * ⌈paperT2 ε n⌉₊ - witnessSize.choose 2 * codegreeBound := by
+  rw [paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_iff]
+  omega
 
 theorem paperKNat_lt_mul_ceil_paperT3_sub_choose_mul_iff
     {κ ε : ℝ} {n witnessSize codegreeBound : ℕ} :
