@@ -2113,6 +2113,397 @@ theorem paperRI_largeSum_sectionExp_le_of_budget
     mul_le_mul_of_nonneg_right hcoeff hklog0
   exact hcombine.trans (by simpa [mul_assoc, mul_left_comm, mul_comm] using hmul)
 
+theorem paperP_half_mul_paperK_half_eq_quarter_log {n : ℕ} (hn : 1 < n) :
+    paperP (1 / 2) n * paperK (1 / 2) n = (1 / 4 : ℝ) * Real.log (n : ℝ) := by
+  rw [paperP_mul_paperK_eq_mul_log (β := (1 / 2 : ℝ)) (κ := (1 / 2 : ℝ)) hn]
+  ring
+
+theorem paperK_half_eq_div_paperK_one_add_eps {ε : ℝ} {n : ℕ} (hε0 : 0 ≤ ε) :
+    paperK (1 / 2 : ℝ) n = paperK (1 + ε) n / (2 * (1 + ε)) := by
+  have hden : (2 * (1 + ε) : ℝ) ≠ 0 := by nlinarith
+  unfold paperK
+  field_simp [hden]
+
+theorem paperPHalf_mul_signedNearOneSumGap_ge_main_sub_delta
+    {ε δ x : ℝ} {n : ℕ}
+    (hn : 1 < n) (hε0 : 0 ≤ ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hδ : 0 < δ) (hδle : δ ≤ 1)
+    (hloglog : 2 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (hxLower : -ε / 2 ≤ x) (hxUpper : x ≤ ε / 2) :
+    (((paperP (1 / 2) n) * x) * (paperKNat (1 + ε) n : ℝ) *
+        ((paperKNat (1 + ε) n : ℝ) - 1)) ≥
+      (x * ((1 + ε) / 2) - δ) * paperK (1 + ε) n * Real.log (n : ℝ) := by
+  by_cases hx0 : 0 ≤ x
+  · have hx1 : x ≤ 1 := by nlinarith
+    simpa [mul_assoc, mul_left_comm, mul_comm] using
+      (paperPHalf_mul_sumGapBranch_ge_main_sub_delta
+        (ε := ε) (δ := δ) (x := x) hn hε0 (by nlinarith) hδ hδle hloglog hkone hx0 hx1)
+  · have hx_nonpos : x ≤ 0 := by linarith
+    have hκ : 0 ≤ 1 + ε := by linarith
+    have hk0 : 0 ≤ paperK (1 + ε) n := paperK_nonneg hκ n
+    have hp0 : 0 ≤ paperP (1 / 2) n := paperP_nonneg (by norm_num) n
+    have hlog0 : 0 ≤ Real.log (n : ℝ) := (paperLog_pos hn).le
+    have hknat_pos : 1 ≤ (paperKNat (1 + ε) n : ℝ) := by
+      have hnat : 1 ≤ paperKNat (1 + ε) n := by
+        exact le_paperKNat_of_cast_le_paperK (by simpa using hkone)
+      exact_mod_cast hnat
+    have hknat_le :
+        (paperKNat (1 + ε) n : ℝ) ≤ paperK (1 + ε) n + 1 :=
+      paperKNat_le_paperK_add_one hκ n
+    have hknat_sub_le :
+        (paperKNat (1 + ε) n : ℝ) - 1 ≤ paperK (1 + ε) n := by
+      linarith
+    have hprod_le :
+        (paperKNat (1 + ε) n : ℝ) * ((paperKNat (1 + ε) n : ℝ) - 1) ≤
+          (paperK (1 + ε) n + 1) * paperK (1 + ε) n := by
+      nlinarith
+    have hscaled :
+        x * ((paperK (1 + ε) n + 1) * paperK (1 + ε) n) ≤
+          x * ((paperKNat (1 + ε) n : ℝ) * ((paperKNat (1 + ε) n : ℝ) - 1)) := by
+      exact mul_le_mul_of_nonpos_left hprod_le hx_nonpos
+    have hmul :=
+      mul_le_mul_of_nonneg_left hscaled hp0
+    have hdeltaK :
+        2 ≤ δ * paperK (1 + ε) n := by
+      calc
+        2 ≤ paperK δ n := two_le_paperK_of_two_div_le_of_le_one hn hδ hδle hloglog
+        _ ≤ paperK (δ * (1 + ε)) n := by
+          exact paperK_le_paperK_of_le (by nlinarith)
+        _ = δ * paperK (1 + ε) n := by
+          rw [← mul_paperK_eq_paperK_mul]
+    have hpk :
+        paperP (1 / 2) n * paperK (1 + ε) n =
+          ((1 + ε) / 2) * Real.log (n : ℝ) := by
+      rw [paperP_mul_paperK_eq_mul_log (β := (1 / 2 : ℝ)) (κ := 1 + ε) hn]
+      ring
+    have herror :
+        paperP (1 / 2) n * (x * paperK (1 + ε) n) ≥
+          -(δ * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+      have hcoeff :
+          x * ((1 + ε) / 2) ≥ (-1 / 4 : ℝ) := by
+        nlinarith
+      have hquarter :
+          ((1 / 4 : ℝ) * Real.log (n : ℝ)) ≤
+            δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+        calc
+          (1 / 4 : ℝ) * Real.log (n : ℝ) ≤ 2 * Real.log (n : ℝ) := by nlinarith
+          _ ≤ δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+            nlinarith
+      calc
+        paperP (1 / 2) n * (x * paperK (1 + ε) n) =
+            x * (paperP (1 / 2) n * paperK (1 + ε) n) := by
+          ring
+        _ = x * (((1 + ε) / 2) * Real.log (n : ℝ)) := by
+          rw [hpk]
+        _ ≥ (-1 / 4 : ℝ) * Real.log (n : ℝ) := by
+          nlinarith
+        _ ≥ -(δ * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+          nlinarith
+    have hmain :
+        paperP (1 / 2) n * (x * ((paperK (1 + ε) n + 1) * paperK (1 + ε) n)) ≥
+          (x * ((1 + ε) / 2) - δ) * paperK (1 + ε) n * Real.log (n : ℝ) := by
+      calc
+        paperP (1 / 2) n * (x * ((paperK (1 + ε) n + 1) * paperK (1 + ε) n)) =
+            x * (paperP (1 / 2) n * paperK (1 + ε) n ^ 2) +
+              paperP (1 / 2) n * (x * paperK (1 + ε) n) := by
+          ring
+        _ = x * (((1 + ε) / 2) * paperK (1 + ε) n * Real.log (n : ℝ)) +
+              paperP (1 / 2) n * (x * paperK (1 + ε) n) := by
+          rw [paperP_mul_paperK_sq_eq_mul_paperK_log (β := (1 / 2 : ℝ)) (κ := 1 + ε)
+              (Nat.succ_le_of_lt (lt_trans Nat.zero_lt_one hn))]
+          ring
+        _ ≥ x * (((1 + ε) / 2) * paperK (1 + ε) n * Real.log (n : ℝ)) -
+              (δ * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+          linarith
+        _ = (x * ((1 + ε) / 2) - δ) * paperK (1 + ε) n * Real.log (n : ℝ) := by
+          ring
+    have hleft :
+        paperP (1 / 2) n * (x * ((paperK (1 + ε) n + 1) * paperK (1 + ε) n)) ≤
+          ((paperP (1 / 2) n) * x) * (paperKNat (1 + ε) n : ℝ) *
+            ((paperKNat (1 + ε) n : ℝ) - 1) := by
+      simpa [mul_assoc, mul_left_comm, mul_comm] using hmul
+    exact hmain.trans hleft
+
+theorem paperPHalf_mul_nearOneCapResidual_ge_main_sub_delta
+    {ε δ xB : ℝ} {n : ℕ}
+    (hn : 1 < n) (hε0 : 0 ≤ ε) (_hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hδ : 0 < δ) (hδle : δ ≤ 1)
+    (hloglog : 2 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (_hxB0 : 0 ≤ xB) (hxB1 : xB ≤ 1)
+    (hresNonneg :
+      0 ≤ (1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ)) :
+    paperP (1 / 2) n * (paperCapNat (1 / 2) 0 n : ℝ) *
+        ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ)) ≥
+      ((((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε)) - δ) *
+        paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have hκ : 0 ≤ 1 + ε := by linarith
+  have hk0 : 0 ≤ paperK (1 + ε) n := paperK_nonneg hκ n
+  have hlog0 : 0 ≤ Real.log (n : ℝ) := (paperLog_pos hn).le
+  have hp0 : 0 ≤ paperP (1 / 2) n := paperP_nonneg (by norm_num) n
+  have hc0 : 0 ≤ paperK (1 / 2 : ℝ) n := paperK_nonneg (by norm_num) n
+  have hn0 : 0 < n := Nat.lt_trans Nat.zero_lt_one hn
+  have hcapEq : paperCap (1 / 2 : ℝ) 0 n = paperK (1 / 2 : ℝ) n := by
+    rw [paperCap_eq_mul_paperK hn0]
+    ring
+  have hcapLower :
+      paperK (1 / 2 : ℝ) n ≤ (paperCapNat (1 / 2) 0 n : ℝ) := by
+    calc
+      paperK (1 / 2 : ℝ) n = paperCap (1 / 2 : ℝ) 0 n := by rw [hcapEq]
+      _ ≤ (paperCapNat (1 / 2) 0 n : ℝ) := paperCap_le_paperCapNat (1 / 2 : ℝ) 0 n
+  have hcapUpper :
+      (paperCapNat (1 / 2) 0 n : ℝ) ≤ paperK (1 / 2 : ℝ) n + 1 := by
+    calc
+      (paperCapNat (1 / 2) 0 n : ℝ) ≤ paperCap (1 / 2 : ℝ) 0 n + 1 := by
+        exact paperCapNat_le_paperCap_add_one (β := (1 / 2 : ℝ)) (ε2 := 0)
+          (by norm_num) (by norm_num) n
+      _ = paperK (1 / 2 : ℝ) n + 1 := by rw [hcapEq]
+  have hkNatLower :
+      paperK (1 + ε) n ≤ (paperKNat (1 + ε) n : ℝ) := paperK_le_paperKNat (1 + ε) n
+  have hresLower :
+      (1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n - 1 ≤
+        (1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ) := by
+    nlinarith
+  have hprod1 :
+      paperK (1 / 2 : ℝ) n *
+          ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n - 1) ≤
+        paperK (1 / 2 : ℝ) n *
+          ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ)) := by
+    exact mul_le_mul_of_nonneg_left hresLower hc0
+  have hprod2 :
+      paperK (1 / 2 : ℝ) n *
+          ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ)) ≤
+        (paperCapNat (1 / 2) 0 n : ℝ) *
+          ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ)) := by
+    exact mul_le_mul_of_nonneg_right hcapLower hresNonneg
+  have hprod :
+      paperK (1 / 2 : ℝ) n *
+          ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n - 1) ≤
+        (paperCapNat (1 / 2) 0 n : ℝ) *
+          ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ)) := by
+    exact hprod1.trans hprod2
+  have hscaled := mul_le_mul_of_nonneg_left hprod hp0
+  have hdeltaK :
+      2 ≤ δ * paperK (1 + ε) n := by
+    calc
+      2 ≤ paperK δ n := two_le_paperK_of_two_div_le_of_le_one hn hδ hδle hloglog
+      _ ≤ paperK (δ * (1 + ε)) n := by
+        exact paperK_le_paperK_of_le (by nlinarith)
+      _ = δ * paperK (1 + ε) n := by
+        rw [← mul_paperK_eq_paperK_mul]
+  have hlogBound :
+      paperP (1 / 2) n * paperK (1 / 2 : ℝ) n ≤
+        δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+    calc
+      paperP (1 / 2) n * paperK (1 / 2 : ℝ) n = (1 / 4 : ℝ) * Real.log (n : ℝ) := by
+        exact paperP_half_mul_paperK_half_eq_quarter_log hn
+      _ ≤ 2 * Real.log (n : ℝ) := by nlinarith
+      _ ≤ δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+        nlinarith
+  have hcoeff_eq :
+      paperP (1 / 2) n * paperK (1 / 2 : ℝ) n *
+            ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n) =
+        (((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε))) *
+          paperK (1 + ε) n * Real.log (n : ℝ) := by
+    have hhalfEq : paperK (1 / 2 : ℝ) n = paperK (1 + ε) n / (2 * (1 + ε)) :=
+      paperK_half_eq_div_paperK_one_add_eps hε0
+    have hden : (2 * (1 + ε) : ℝ) ≠ 0 := by nlinarith
+    calc
+      paperP (1 / 2) n * paperK (1 / 2 : ℝ) n *
+            ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n) =
+          (paperP (1 / 2) n * paperK (1 / 2 : ℝ) n) *
+            ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n) := by
+          ring
+      _ = ((1 / 4 : ℝ) * Real.log (n : ℝ)) *
+            ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n) := by
+          rw [paperP_half_mul_paperK_half_eq_quarter_log hn]
+      _ = ((1 / 4 : ℝ) * Real.log (n : ℝ)) *
+            ((1 - xB) * paperK (1 + ε) n - paperK (1 + ε) n / (2 * (1 + ε))) := by
+          rw [hhalfEq]
+      _ = (((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε))) *
+            paperK (1 + ε) n * Real.log (n : ℝ) := by
+          field_simp [hden]
+  have hmain :
+      paperP (1 / 2) n * (paperK (1 / 2 : ℝ) n *
+            ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n - 1)) ≥
+        ((((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε)) - δ) *
+          paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    calc
+      paperP (1 / 2) n * (paperK (1 / 2 : ℝ) n *
+            ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n - 1)) =
+          paperP (1 / 2) n * paperK (1 / 2 : ℝ) n *
+            ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n) -
+            paperP (1 / 2) n * paperK (1 / 2 : ℝ) n := by
+        ring
+      _ ≥
+          (((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε))) *
+              paperK (1 + ε) n * Real.log (n : ℝ) -
+            δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+        linarith [hcoeff_eq, hlogBound]
+      _ = ((((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε)) - δ) *
+            paperK (1 + ε) n * Real.log (n : ℝ)) := by
+        ring
+  have hleft :
+      paperP (1 / 2) n * (paperK (1 / 2 : ℝ) n *
+            ((1 - xB) * paperK (1 + ε) n - paperK (1 / 2 : ℝ) n - 1)) ≤
+        paperP (1 / 2) n * (paperCapNat (1 / 2) 0 n : ℝ) *
+          ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ)) := by
+    simpa [mul_assoc, mul_left_comm, mul_comm] using hscaled
+  exact hmain.trans hleft
+
+theorem paperRI_nearOne_branchCoeff_eq
+    {ε xR xB : ℝ} (hε0 : 0 ≤ ε) :
+    ((xR + xB - 1) * ((1 + ε) / 2) +
+        (((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε)))) =
+      ε ^ 3 * (1 + ε) / 2 -
+        (-(1 / (4 * (1 + ε))) *
+          (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+            xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) := by
+  have hε1 : (1 + ε : ℝ) ≠ 0 := by nlinarith
+  field_simp [hε1]
+  ring
+
+theorem paperRI_nearOne_sectionExp_le_of_budget
+    {ε ε1 δ xR xB : ℝ} {n : ℕ}
+    (hn : 1 < n) (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hδ : 0 < δ) (hδle : δ ≤ 1)
+    (hloglog : 4 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (hε1 : 0 ≤ ε1)
+    (hsumLower : 1 - ε / 2 ≤ xR + xB)
+    (hsumUpper : xR + xB ≤ 1 + ε / 2)
+    (hxB0 : 0 ≤ xB) (hxB1 : xB ≤ 1)
+    (hresNonneg :
+      0 ≤ (1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ))
+    (hbudget : 11 * (1 + ε) * ε1 + 4 * δ ≤ (1 + ε) * ε ^ 3 / 2) :
+    paperP (1 / 2) n *
+        (12 * (ε1 * paperK (1 + ε) n ^ 2) +
+          (⌈10 * (ε1 * paperK (1 + ε) n ^ 2)⌉₊ : ℝ)) -
+      paperP (1 / 2) n *
+        ((((xR + xB - 1) * (paperKNat (1 + ε) n : ℝ)) *
+            ((paperKNat (1 + ε) n : ℝ) - 1)) +
+          (paperCapNat (1 / 2) 0 n : ℝ) *
+            ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ))) ≤
+      (((-(1 / (4 * (1 + ε))) *
+            (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+              xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) - 2 * δ) *
+        paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have hlog0 : 0 ≤ Real.log (n : ℝ) := (paperLog_pos hn).le
+  have hκ : 0 ≤ 1 + ε := by linarith
+  have hk0 : 0 ≤ paperK (1 + ε) n := paperK_nonneg hκ n
+  have hklog0 : 0 ≤ paperK (1 + ε) n * Real.log (n : ℝ) := mul_nonneg hk0 hlog0
+  have hdeltaLog :
+      2 / (δ / 2) ≤ Real.log (Real.log (n : ℝ)) := by
+    have hEq : 2 / (δ / 2) = (4 : ℝ) / δ := by
+      field_simp [hδ.ne']
+      ring
+    rw [hEq]
+    exact hloglog
+  have hloss :
+      paperP (1 / 2) n *
+          (12 * (ε1 * paperK (1 + ε) n ^ 2) +
+            (⌈10 * (ε1 * paperK (1 + ε) n ^ 2)⌉₊ : ℝ)) ≤
+        (11 * (1 + ε) * ε1) * paperK (1 + ε) n * Real.log (n : ℝ) +
+          paperP (1 / 2) n := by
+    exact paperPHalf_mul_lossBound_le hn hε1
+  have hp_le :
+      paperP (1 / 2) n ≤ (δ / 2) * paperK (1 + ε) n * Real.log (n : ℝ) := by
+    have hp1 : paperP (1 / 2) n ≤ 1 := paperPHalf_le_one hn
+    have hone :
+        1 ≤ (δ / 2) * paperK (1 + ε) n * Real.log (n : ℝ) := by
+      have hbase :
+          1 ≤ (δ / 4 : ℝ) * Real.log (n : ℝ) := by
+        have hbase' :
+            1 ≤ ((δ / 2) / 2) * Real.log (n : ℝ) := by
+          exact one_le_half_eta_mul_log_of_two_div_loglog_le hn
+            (by positivity : 0 < δ / 2) hdeltaLog
+        convert hbase' using 1
+        ring
+      calc
+        1 ≤ (δ / 4 : ℝ) * Real.log (n : ℝ) := hbase
+        _ ≤ (δ / 2) * paperK (1 + ε) n * Real.log (n : ℝ) := by
+          nlinarith [hkone, hlog0, hδ.le]
+    linarith
+  have hloss' :
+      paperP (1 / 2) n *
+          (12 * (ε1 * paperK (1 + ε) n ^ 2) +
+            (⌈10 * (ε1 * paperK (1 + ε) n ^ 2)⌉₊ : ℝ)) ≤
+        (11 * (1 + ε) * ε1 + δ / 2) * paperK (1 + ε) n * Real.log (n : ℝ) := by
+    linarith
+  have hsumBranch :
+      (((paperP (1 / 2) n) * (xR + xB - 1)) * (paperKNat (1 + ε) n : ℝ) *
+            ((paperKNat (1 + ε) n : ℝ) - 1)) ≥
+        (((xR + xB - 1) * ((1 + ε) / 2) - δ / 2) *
+          paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    exact paperPHalf_mul_signedNearOneSumGap_ge_main_sub_delta hn hε.le hεquarter
+      (by positivity : 0 < δ / 2) (by nlinarith [hδle]) hdeltaLog hkone
+      (by nlinarith) (by nlinarith)
+  have hcapBranch :
+      paperP (1 / 2) n * (paperCapNat (1 / 2) 0 n : ℝ) *
+          ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ)) ≥
+        ((((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε)) - δ / 2) *
+          paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    exact paperPHalf_mul_nearOneCapResidual_ge_main_sub_delta hn hε.le hεquarter
+      (by positivity : 0 < δ / 2) (by nlinarith [hδle]) hdeltaLog hkone hxB0 hxB1 hresNonneg
+  have hbranch :
+      paperP (1 / 2) n *
+          ((((xR + xB - 1) * (paperKNat (1 + ε) n : ℝ)) *
+              ((paperKNat (1 + ε) n : ℝ) - 1)) +
+            (paperCapNat (1 / 2) 0 n : ℝ) *
+              ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ))) ≥
+        (((xR + xB - 1) * ((1 + ε) / 2) +
+            (((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε))) - δ) *
+          paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    linarith
+  have hcoeff :
+      (11 * (1 + ε) * ε1 + δ / 2) -
+          (((xR + xB - 1) * ((1 + ε) / 2) +
+                (((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε))) - δ)) ≤
+        (-(1 / (4 * (1 + ε))) *
+            (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+              xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) - 2 * δ := by
+    have hbranchEq :=
+      paperRI_nearOne_branchCoeff_eq (xR := xR) (xB := xB) hε.le
+    nlinarith [hbudget]
+  have hcombine :
+      paperP (1 / 2) n *
+          (12 * (ε1 * paperK (1 + ε) n ^ 2) +
+            (⌈10 * (ε1 * paperK (1 + ε) n ^ 2)⌉₊ : ℝ)) -
+        paperP (1 / 2) n *
+          ((((xR + xB - 1) * (paperKNat (1 + ε) n : ℝ)) *
+              ((paperKNat (1 + ε) n : ℝ) - 1)) +
+            (paperCapNat (1 / 2) 0 n : ℝ) *
+              ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ))) ≤
+      (((11 * (1 + ε) * ε1 + δ / 2) -
+            (((xR + xB - 1) * ((1 + ε) / 2) +
+                  (((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε))) - δ))) *
+          paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    have hnegBranch :
+        -(paperP (1 / 2) n *
+            ((((xR + xB - 1) * (paperKNat (1 + ε) n : ℝ)) *
+                ((paperKNat (1 + ε) n : ℝ) - 1)) +
+              (paperCapNat (1 / 2) 0 n : ℝ) *
+                ((1 - xB) * (paperKNat (1 + ε) n : ℝ) - (paperCapNat (1 / 2) 0 n : ℝ)))) ≤
+          -((((xR + xB - 1) * ((1 + ε) / 2) +
+                (((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε))) - δ) *
+              paperK (1 + ε) n * Real.log (n : ℝ))) := by
+      exact neg_le_neg hbranch
+    have hadd := add_le_add hloss' hnegBranch
+    convert hadd using 1
+    ring
+  have hmul :
+      (((11 * (1 + ε) * ε1 + δ / 2) -
+            (((xR + xB - 1) * ((1 + ε) / 2) +
+                  (((1 + ε) - xB * (1 + ε) - (1 / 2 : ℝ)) / (4 * (1 + ε))) - δ))) *
+          paperK (1 + ε) n * Real.log (n : ℝ)) ≤
+        ((-(1 / (4 * (1 + ε))) *
+              (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+                xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) - 2 * δ) *
+          paperK (1 + ε) n * Real.log (n : ℝ) := by
+    convert (mul_le_mul_of_nonneg_right hcoeff hklog0) using 1 <;> ring
+  exact hcombine.trans hmul
+
 theorem half_add_one_mul_paperK_le_eps_mul_paperKSq_of_le
     {κ α ε : ℝ} {n : ℕ} (hn : 1 < n)
     (hcoeff : α * (paperK κ n + 1) ≤ 2 * ε * κ * paperK κ n) :
