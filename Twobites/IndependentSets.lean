@@ -17770,6 +17770,256 @@ theorem paper_ri_chooseOuterEventMass_le_exp_of_paperParameterLogs_of_images
       hxRpos hxBpos
   exact hbase.trans (Real.exp_le_exp.mpr houterExp)
 
+theorem redImage_scale_le_one_of_card_eq
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε xR : ℝ}
+    (hkone : 1 ≤ Twobites.paperK (1 + ε) n)
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hredEq : ((C.redImage I).card : ℝ) = xR * (Twobites.paperKNat (1 + ε) n : ℝ)) :
+    xR ≤ 1 := by
+  have hcard : (C.redImage I).card ≤ Twobites.paperKNat (1 + ε) n :=
+    (C.redImage_card_le_card I).trans hI
+  have hkpos : 0 < (Twobites.paperKNat (1 + ε) n : ℝ) := by
+    have hnat : 1 ≤ Twobites.paperKNat (1 + ε) n := by
+      exact Twobites.le_paperKNat_of_cast_le_paperK (by simpa using hkone)
+    exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hnat)
+  have hcardR : ((C.redImage I).card : ℝ) ≤ (Twobites.paperKNat (1 + ε) n : ℝ) := by
+    exact_mod_cast hcard
+  rw [hredEq] at hcardR
+  nlinarith
+
+theorem blueImage_scale_le_one_of_card_eq
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε xB : ℝ}
+    (hkone : 1 ≤ Twobites.paperK (1 + ε) n)
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hblueEq : ((C.blueImage I).card : ℝ) = xB * (Twobites.paperKNat (1 + ε) n : ℝ)) :
+    xB ≤ 1 := by
+  have hcard : (C.blueImage I).card ≤ Twobites.paperKNat (1 + ε) n :=
+    (C.blueImage_card_le_card I).trans hI
+  have hkpos : 0 < (Twobites.paperKNat (1 + ε) n : ℝ) := by
+    have hnat : 1 ≤ Twobites.paperKNat (1 + ε) n := by
+      exact Twobites.le_paperKNat_of_cast_le_paperK (by simpa using hkone)
+    exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hnat)
+  have hcardR : ((C.blueImage I).card : ℝ) ≤ (Twobites.paperKNat (1 + ε) n : ℝ) := by
+    exact_mod_cast hcard
+  rw [hblueEq] at hcardR
+  nlinarith
+
+/-- A cleaner version of the previous outer-event wrapper where the explicit exponent has already
+been rewritten into the main `((x_R+x_B-1)/2) k log n` term plus the remaining lower-order
+corrections, and the nonpositive `x \log x` pieces are dropped using the image-card scales
+`x_R,x_B ≤ 1`. -/
+theorem paper_ri_chooseOuterEventMass_le_exp_of_mainRemainder_of_images
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε xR xB outerExp : ℝ}
+    (hn : 1 < n)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hε : 0 ≤ ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hkone : 1 ≤ Twobites.paperK (1 + ε) n)
+    (hsum2 : xR + xB ≤ 2)
+    (hk : Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n)
+    (hredM : (C.redImage I).card ≤ Twobites.paperMNat n)
+    (hblueM : (C.blueImage I).card ≤ Twobites.paperMNat n)
+    (hkprod :
+      Twobites.paperKNat (1 + ε) n ≤ (C.redImage I).card * (C.blueImage I).card)
+    (hhalf :
+      2 * Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n + 1)
+    (hredEq : ((C.redImage I).card : ℝ) = xR * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hblueEq : ((C.blueImage I).card : ℝ) = xB * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hxRpos : 0 < xR) (hxBpos : 0 < xB)
+    (houterExp :
+      ((((xR + xB - 1) / 2) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) +
+          (((9 - 5 * (xR + xB)) / 2) * (Twobites.paperKNat (1 + ε) n : ℝ) *
+            Real.log (Real.log (n : ℝ))) +
+          (3 * (2 - xR - xB) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+          ((1 - xR - xB) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+          (2 + xR + xB) * (Twobites.paperKNat (1 + ε) n : ℝ)) ≤
+        outerExp) :
+    ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+        Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+          (C.blueImage I).card (Twobites.paperKNat (1 + ε) n) ≤
+      Real.exp outerExp := by
+  have hxRle : xR ≤ 1 := C.redImage_scale_le_one_of_card_eq I hkone hI hredEq
+  have hxBle : xB ≤ 1 := C.blueImage_scale_le_one_of_card_eq I hkone hI hblueEq
+  have hmain :
+      (((Twobites.paperKNat (1 + ε) n : ℝ) *
+            (1 - Real.log (1 + ε) +
+              (Real.log (n : ℝ) - Real.log (Real.log (n : ℝ))) / 2)) +
+          ((((xR + xB - 2) * (Twobites.paperKNat (1 + ε) n : ℝ)) *
+                (Real.log (n : ℝ) - 2 * Real.log (Real.log (n : ℝ)) -
+                  Real.log (4 : ℝ))) +
+            (((2 - xR - xB) * (Twobites.paperKNat (1 + ε) n : ℝ)) *
+                (Real.log (2 : ℝ) + Real.log (1 + ε) +
+                  (Real.log (n : ℝ) + Real.log (Real.log (n : ℝ))) / 2)) +
+            ((1 - xR) * (Twobites.paperKNat (1 + ε) n : ℝ)) * Real.log xR +
+            ((1 - xB) * (Twobites.paperKNat (1 + ε) n : ℝ)) * Real.log xB +
+            (1 + xR + xB) * (Twobites.paperKNat (1 + ε) n : ℝ))) ≤
+        outerExp := by
+    exact (Twobites.paperRI_chooseOuterExp_le_mainRemainder hxRpos hxRle hxBpos hxBle).trans
+      houterExp
+  exact
+    C.paper_ri_chooseOuterEventMass_le_exp_of_paperParameterLogs_of_images I hn hloglog hε
+      hεquarter hkone hsum2 hk hredM hblueM hkprod hhalf hredEq hblueEq hxRpos hxBpos
+      hmain
+
+/-- The previous simplified outer-event exponent fed through the abstract `eq:long` bridge. This
+reduces the remaining RI work to comparing the cleaner main-plus-remainder exponent against the
+three manuscript regime coefficients. -/
+theorem paper_ri_eqLong_bound_of_chooseOuterEventMass_le_exp_of_mainRemainder_of_le
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β ε p ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB totalExp outerExp xR xB : ℝ}
+    {mediumWitness smallBound : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hn : 1 < n) (hεnonneg : 0 ≤ ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hT2 : 2 < Twobites.paperT2 ε n) (hT1 : 2 < Twobites.paperT1 n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat (1 + ε) ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat (1 + ε) n)
+    (hLargeBound :
+      (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat (1 + ε) n +
+            (Twobites.paperLargeWitnessNat (1 + ε) ε n).choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hMediumWitness :
+      Twobites.paperKNat (1 + ε) n <
+        mediumWitness * ⌈Twobites.paperT3 ε n⌉₊ - mediumWitness.choose 2 * codegreeBound)
+    (hMediumBound :
+      (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat (1 + ε) n + mediumWitness.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hSmallCard : (C.SPart I ε).card ≤ smallBound)
+    (hSmallBound :
+      (Twobites.paperT3 ε n / 2) *
+          (Twobites.paperKNat (1 + ε) n + smallBound.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat (1 + ε) n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat (1 + ε) n)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+              (Twobites.paperLargeWitnessNat (1 + ε) ε n : ℝ) +
+            (Twobites.paperHugeWitnessNat (1 + ε) n : ℝ)) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * (1 + ε) ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * (1 + ε))
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + ε2) * β + 2 * ε1 * (1 + ε) + δsumGap + δgapR ≤ 1 + ε)
+    (hblueCrossSmall :
+      6 * Twobites.paperK (1 + ε) n ≤
+        (((Twobites.paperKNat (1 + ε) n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + ε2) * β + 2 * ε1 * (1 + ε) + δsumGap + δgapB ≤ 1 + ε)
+    (hredCrossSmall :
+      6 * Twobites.paperK (1 + ε) n ≤
+        (((Twobites.paperKNat (1 + ε) n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (houterLoglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ Twobites.paperK (1 + ε) n)
+    (hsum2 : xR + xB ≤ 2)
+    (hkOuter :
+      Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n)
+    (hredM : (C.redImage I).card ≤ Twobites.paperMNat n)
+    (hblueM : (C.blueImage I).card ≤ Twobites.paperMNat n)
+    (hkprod :
+      Twobites.paperKNat (1 + ε) n ≤ (C.redImage I).card * (C.blueImage I).card)
+    (hhalf :
+      2 * Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n + 1)
+    (hredEq : ((C.redImage I).card : ℝ) = xR * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hblueEq : ((C.blueImage I).card : ℝ) = xB * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hxRpos : 0 < xR) (hxBpos : 0 < xB)
+    (houterExp :
+      ((((xR + xB - 1) / 2) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) +
+          (((9 - 5 * (xR + xB)) / 2) * (Twobites.paperKNat (1 + ε) n : ℝ) *
+            Real.log (Real.log (n : ℝ))) +
+          (3 * (2 - xR - xB) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+          ((1 - xR - xB) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+          (2 + xR + xB) * (Twobites.paperKNat (1 + ε) n : ℝ)) ≤
+        outerExp)
+    (hLossGap :
+      paperRISILossNat (1 + ε) ε1 n ≤
+        C.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat β ε2 n))
+    (htotal :
+      outerExp +
+          (p * (12 * (ε1 * Twobites.paperK (1 + ε) n ^ 2) +
+              (⌈10 * (ε1 * Twobites.paperK (1 + ε) n ^ 2)⌉₊ : ℝ)) -
+            p * C.paperSection4OpenPairTarget I (1 + ε) (Twobites.paperCapNat β ε2 n)) ≤
+        totalExp) :
+    ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+        Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+          (C.blueImage I).card (Twobites.paperKNat (1 + ε) n) *
+        C.section4ActualConditionedEventMass I ε p (C.baseOpenPairSet I).card ≤
+      Real.exp totalExp := by
+  have houter :=
+    C.paper_ri_chooseOuterEventMass_le_exp_of_mainRemainder_of_images I hn houterLoglog
+      hεnonneg hεquarter hI hkone hsum2 hkOuter hredM hblueM hkprod hhalf hredEq hblueEq
+      hxRpos hxBpos houterExp
+  have hκ : 1 ≤ 1 + ε := by linarith
+  exact
+    C.paper_ri_eqLong_bound_of_outer_le_exp_of_paperRISILossGap_of_le
+      (κ := 1 + ε) (outerMass := ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+        Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+          (C.blueImage I).card (Twobites.paperKNat (1 + ε) n))
+      hD I hindep hp0 hp1 hHsubset ht21 ht32 hn hεquarter hI hκ hT2 hT1 hLChoose
+      hLargeBound hMediumWitness hMediumBound hSmallCard hSmallBound hHChoose hRevealArith
+      hLarge hMedium hSmall hHugeRed hHugeBlue hred hblue hblueCap hblueCapWeight hredCap
+      hredCapWeight hρR hρB hβ hε2 hε1pos hε1le hloglogGap hdiagScale hcodegScale hsumGap
+      hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
+      hredCrossSmall houter hLossGap htotal
+
 /-- Package the union-factor exact outer event family `\mathcal S_{I,\ell_R,\ell_B}` into the
 abstract `eq:long` bridge by using the actual image sizes of `I` and the paper-parameter outer
 logarithmic bound. -/

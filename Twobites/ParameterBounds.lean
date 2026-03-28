@@ -2819,6 +2819,74 @@ theorem paperRIChooseOuterEventMass_le_exp_of_paperParameterLogs
     exact mul_le_mul hchoose houter hmass_nonneg (by positivity)
   simpa [Real.exp_add] using hmul
 
+theorem one_sub_mul_log_nonpos {x : ℝ} (hxpos : 0 < x) (hxle : x ≤ 1) :
+    (1 - x) * Real.log x ≤ 0 := by
+  have hfac : 0 ≤ 1 - x := by linarith
+  have hlog : Real.log x ≤ 0 := Real.log_nonpos hxpos.le hxle
+  exact mul_nonpos_of_nonneg_of_nonpos hfac hlog
+
+theorem paperRI_chooseOuterExp_eq
+    {ε xR xB : ℝ} {n : ℕ} :
+    (((paperKNat (1 + ε) n : ℝ) *
+          (1 - Real.log (1 + ε) +
+            (Real.log (n : ℝ) - Real.log (Real.log (n : ℝ))) / 2)) +
+        ((((xR + xB - 2) * (paperKNat (1 + ε) n : ℝ)) *
+              (Real.log (n : ℝ) - 2 * Real.log (Real.log (n : ℝ)) - Real.log (4 : ℝ))) +
+          (((2 - xR - xB) * (paperKNat (1 + ε) n : ℝ)) *
+              (Real.log (2 : ℝ) + Real.log (1 + ε) +
+                (Real.log (n : ℝ) + Real.log (Real.log (n : ℝ))) / 2)) +
+          ((1 - xR) * (paperKNat (1 + ε) n : ℝ)) * Real.log xR +
+          ((1 - xB) * (paperKNat (1 + ε) n : ℝ)) * Real.log xB +
+          (1 + xR + xB) * (paperKNat (1 + ε) n : ℝ))) =
+      (((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) +
+        (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+          Real.log (Real.log (n : ℝ))) +
+        (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+        ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+        ((1 - xR) * (paperKNat (1 + ε) n : ℝ)) * Real.log xR +
+        ((1 - xB) * (paperKNat (1 + ε) n : ℝ)) * Real.log xB +
+        (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) := by
+  have hlog4 : Real.log (4 : ℝ) = 2 * Real.log (2 : ℝ) := by
+    rw [show (4 : ℝ) = 2 * 2 by norm_num, Real.log_mul (by norm_num) (by norm_num)]
+    ring
+  rw [hlog4]
+  ring
+
+theorem paperRI_chooseOuterExp_le_mainRemainder
+    {ε xR xB : ℝ} {n : ℕ}
+    (hxRpos : 0 < xR) (hxRle : xR ≤ 1)
+    (hxBpos : 0 < xB) (hxBle : xB ≤ 1) :
+    (((paperKNat (1 + ε) n : ℝ) *
+          (1 - Real.log (1 + ε) +
+            (Real.log (n : ℝ) - Real.log (Real.log (n : ℝ))) / 2)) +
+        ((((xR + xB - 2) * (paperKNat (1 + ε) n : ℝ)) *
+              (Real.log (n : ℝ) - 2 * Real.log (Real.log (n : ℝ)) - Real.log (4 : ℝ))) +
+          (((2 - xR - xB) * (paperKNat (1 + ε) n : ℝ)) *
+              (Real.log (2 : ℝ) + Real.log (1 + ε) +
+                (Real.log (n : ℝ) + Real.log (Real.log (n : ℝ))) / 2)) +
+          ((1 - xR) * (paperKNat (1 + ε) n : ℝ)) * Real.log xR +
+          ((1 - xB) * (paperKNat (1 + ε) n : ℝ)) * Real.log xB +
+          (1 + xR + xB) * (paperKNat (1 + ε) n : ℝ))) ≤
+      (((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) +
+        (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+          Real.log (Real.log (n : ℝ))) +
+        (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+        ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+        (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) := by
+  have hk_nonneg : 0 ≤ (paperKNat (1 + ε) n : ℝ) := by positivity
+  have htermR :
+      ((1 - xR) * (paperKNat (1 + ε) n : ℝ)) * Real.log xR ≤ 0 := by
+    have hfac : 0 ≤ (1 - xR) * (paperKNat (1 + ε) n : ℝ) := by
+      exact mul_nonneg (by linarith) hk_nonneg
+    exact mul_nonpos_of_nonneg_of_nonpos hfac (Real.log_nonpos hxRpos.le hxRle)
+  have htermB :
+      ((1 - xB) * (paperKNat (1 + ε) n : ℝ)) * Real.log xB ≤ 0 := by
+    have hfac : 0 ≤ (1 - xB) * (paperKNat (1 + ε) n : ℝ) := by
+      exact mul_nonneg (by linarith) hk_nonneg
+    exact mul_nonpos_of_nonneg_of_nonpos hfac (Real.log_nonpos hxBpos.le hxBle)
+  rw [paperRI_chooseOuterExp_eq]
+  linarith
+
 theorem paperRI_smallSumCoeff_le
     {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
     -(1 - x) / 2 ≤ -ε / 4 := by
