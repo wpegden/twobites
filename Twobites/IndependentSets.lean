@@ -49,6 +49,8 @@ variable {n m : ℕ}
 
 noncomputable section
 
+noncomputable instance : DecidableEq (ConstructionData n m) := Classical.decEq _
+
 /-- Paper notation `X_v(I)`: vertices of `I` lying in the lifted neighborhood of the base vertex
 `v ∈ V_R ∪ V_B`. -/
 def X (C : ConstructionData n m) (I : Finset (Fin n)) : BaseVertex m → Finset (Fin n) := by
@@ -121,6 +123,154 @@ noncomputable def goodEventDSet (n m fiberBound degreeBound codegreeBound projCo
       GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound := by
   classical
   simp [goodEventDSet, ConstructionData.sampleSpace]
+
+/-- The Bernoulli weight of one base graph in the paper's first-stage random construction. -/
+def constructionGraphBernoulliWeight (p : ℝ) (G : SimpleGraph (Fin m)) : ℝ :=
+  by
+    classical
+    letI : Fintype ↑G.edgeSet := Fintype.ofFinite ↑G.edgeSet
+    exact p ^ G.edgeFinset.card * (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - G.edgeFinset.card)
+
+/-- The uniform weight of the paper's random embedding `π`. -/
+def constructionEmbeddingUniformWeight (n m : ℕ) : ℝ :=
+  (((Fintype.card (Fin n ↪ Fin m × Fin m)) : ℕ) : ℝ)⁻¹
+
+/-- The product weight of a full construction outcome `(G_R,G_B,π)`. This is the finite weighted
+sample-space interface that the final global probability layer will use. -/
+def constructionProductWeight (p : ℝ) (C : ConstructionData n m) : ℝ :=
+  constructionGraphBernoulliWeight p C.redBase *
+    constructionGraphBernoulliWeight p C.blueBase *
+      constructionEmbeddingUniformWeight n m
+
+/-- The paper-scale specialization of `constructionProductWeight`. -/
+def paperConstructionWeight (β : ℝ) (n m : ℕ) (C : ConstructionData n m) : ℝ :=
+  constructionProductWeight (Twobites.paperP β n) C
+
+/-- Weighted mass of a finite event family in the construction sample space. -/
+def constructionEventMass (w : ConstructionData n m → ℝ) (E : Finset (ConstructionData n m)) : ℝ :=
+  ∑ C ∈ E, w C
+
+@[simp] theorem constructionEventMass_empty (w : ConstructionData n m → ℝ) :
+    constructionEventMass w (∅ : Finset (ConstructionData n m)) = 0 := by
+  simp [constructionEventMass]
+
+theorem constructionGraphBernoulliWeight_nonneg {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (G : SimpleGraph (Fin m)) :
+    0 ≤ constructionGraphBernoulliWeight p G := by
+  have hq : 0 ≤ 1 - p := sub_nonneg.mpr hp1
+  unfold constructionGraphBernoulliWeight
+  positivity
+
+theorem constructionGraphBernoulliWeight_pos {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
+    (G : SimpleGraph (Fin m)) :
+    0 < constructionGraphBernoulliWeight p G := by
+  have hq : 0 < 1 - p := sub_pos.mpr hp1
+  unfold constructionGraphBernoulliWeight
+  positivity
+
+theorem constructionEmbeddingUniformWeight_nonneg (n m : ℕ) :
+    0 ≤ constructionEmbeddingUniformWeight n m := by
+  unfold constructionEmbeddingUniformWeight
+  positivity
+
+theorem constructionEmbeddingUniformWeight_pos (C : ConstructionData n m) :
+    0 < constructionEmbeddingUniformWeight n m := by
+  unfold constructionEmbeddingUniformWeight
+  have hcard : 0 < Fintype.card (Fin n ↪ Fin m × Fin m) := by
+    exact Fintype.card_pos_iff.mpr ⟨C.embedding⟩
+  have hreal : 0 < (((Fintype.card (Fin n ↪ Fin m × Fin m)) : ℕ) : ℝ) := by
+    exact_mod_cast hcard
+  simpa using inv_pos.mpr hreal
+
+theorem constructionProductWeight_nonneg {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (C : ConstructionData n m) :
+    0 ≤ constructionProductWeight p C := by
+  unfold constructionProductWeight
+  exact mul_nonneg
+    (mul_nonneg
+      (constructionGraphBernoulliWeight_nonneg hp0 hp1 C.redBase)
+      (constructionGraphBernoulliWeight_nonneg hp0 hp1 C.blueBase))
+    (constructionEmbeddingUniformWeight_nonneg n m)
+
+theorem constructionProductWeight_pos {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
+    (C : ConstructionData n m) :
+    0 < constructionProductWeight p C := by
+  unfold constructionProductWeight
+  exact mul_pos
+    (mul_pos
+      (constructionGraphBernoulliWeight_pos hp0 hp1 C.redBase)
+      (constructionGraphBernoulliWeight_pos hp0 hp1 C.blueBase))
+    (constructionEmbeddingUniformWeight_pos C)
+
+theorem paperConstructionWeight_nonneg {β : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (C : ConstructionData n m) :
+    0 ≤ paperConstructionWeight β n m C := by
+  exact constructionProductWeight_nonneg hp0 hp1 C
+
+theorem paperConstructionWeight_pos {β : ℝ}
+    (hp0 : 0 < Twobites.paperP β n) (hp1 : Twobites.paperP β n < 1)
+    (C : ConstructionData n m) :
+    0 < paperConstructionWeight β n m C := by
+  exact constructionProductWeight_pos hp0 hp1 C
+
+theorem constructionEventMass_nonneg {w : ConstructionData n m → ℝ}
+    {E : Finset (ConstructionData n m)} (hwt : ∀ C, 0 ≤ w C) :
+    0 ≤ constructionEventMass w E := by
+  unfold constructionEventMass
+  exact Finset.sum_nonneg fun C _ => hwt C
+
+theorem constructionEventMass_mono {w : ConstructionData n m → ℝ}
+    {E F : Finset (ConstructionData n m)} (hEF : E ⊆ F)
+    (hwt : ∀ C, 0 ≤ w C) :
+    constructionEventMass w E ≤ constructionEventMass w F := by
+  unfold constructionEventMass
+  exact Finset.sum_le_sum_of_subset_of_nonneg hEF fun C _ _ => hwt C
+
+theorem constructionEventMass_union_le {w : ConstructionData n m → ℝ}
+    (E F : Finset (ConstructionData n m)) (hwt : ∀ C, 0 ≤ w C) :
+    constructionEventMass w (E ∪ F) ≤ constructionEventMass w E + constructionEventMass w F := by
+  have hunion : E ∪ F = E ∪ (F \ E) := by
+    ext C
+    by_cases hCE : C ∈ E <;> by_cases hCF : C ∈ F <;> simp [hCE, hCF]
+  have hdisj : Disjoint E (F \ E) := by
+    rw [Finset.disjoint_left]
+    intro C hCE hCF
+    exact (Finset.mem_sdiff.mp hCF).2 hCE
+  rw [hunion]
+  rw [constructionEventMass, Finset.sum_union hdisj, constructionEventMass]
+  have hmono : constructionEventMass w (F \ E) ≤ constructionEventMass w F := by
+    apply constructionEventMass_mono
+    · intro C hC
+      exact (Finset.mem_sdiff.mp hC).1
+    · exact hwt
+  simpa [add_comm, add_left_comm, add_assoc] using
+    add_le_add_left hmono (constructionEventMass w E)
+
+theorem constructionEventMass_biUnion_le {α : Type*} [DecidableEq α]
+    {w : ConstructionData n m → ℝ} (s : Finset α)
+    (E : α → Finset (ConstructionData n m)) (hwt : ∀ C, 0 ≤ w C) :
+    constructionEventMass w (s.biUnion E) ≤
+      ∑ a ∈ s, constructionEventMass w (E a) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+      simp [constructionEventMass]
+  | @insert a s ha hs =>
+      rw [Finset.biUnion_insert]
+      calc
+        constructionEventMass w (E a ∪ s.biUnion E)
+            ≤ constructionEventMass w (E a) + constructionEventMass w (s.biUnion E) :=
+          constructionEventMass_union_le (w := w) (E := E a) (F := s.biUnion E) hwt
+        _ ≤ constructionEventMass w (E a) + ∑ b ∈ s, constructionEventMass w (E b) :=
+          by
+            have hs' :
+                constructionEventMass w (s.biUnion E) ≤ ∑ b ∈ s, constructionEventMass w (E b) :=
+              hs
+            simpa [add_comm, add_left_comm, add_assoc] using
+              add_le_add_left hs' (constructionEventMass w (E a))
+        _ = ∑ b ∈ insert a s, constructionEventMass w (E b) := by
+          simp [ha]
 
 /-- Paper Section 3's huge part `H_I`. -/
 def HPart (C : ConstructionData n m) (I : Finset (Fin n)) : Finset (BaseVertex m) := by
@@ -20298,12 +20448,199 @@ theorem sum_powersetCard_le_of_choose_mul_le
   have h := hbound I (by simpa [s] using hI)
   simpa [s, hsCardNat] using h
 
+/-- A fixed vertex set survives the final deletion step as an independent set. -/
+def SurvivesAsIndependent (C : ConstructionData n m) (I : Finset (Fin n)) : Prop :=
+  ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w
+
+/-- The finite event that a fixed `I ⊆ [n]` survives as an independent set in the final graph. -/
+noncomputable def survivingIndepSetEventSet (n m : ℕ) (I : Finset (Fin n)) :
+    Finset (ConstructionData n m) :=
+  by
+    classical
+    exact (ConstructionData.sampleSpace n m).filter fun C => C.SurvivesAsIndependent I
+
+@[simp] theorem mem_survivingIndepSetEventSet_iff
+    {n m : ℕ} {I : Finset (Fin n)} {C : ConstructionData n m} :
+    C ∈ survivingIndepSetEventSet n m I ↔ C.SurvivesAsIndependent I := by
+  classical
+  simp [survivingIndepSetEventSet, ConstructionData.sampleSpace, SurvivesAsIndependent]
+
+/-- The finite event that a fixed `I ⊆ [n]` survives as an independent set while the deterministic
+good event `𝒟` also holds. This is the exact weighted event to which the finished RI bound will
+eventually be applied. -/
+noncomputable def goodSurvivingIndepSetEventSet
+    (n m fiberBound degreeBound codegreeBound projCodegreeBound : ℕ) (I : Finset (Fin n)) :
+    Finset (ConstructionData n m) :=
+  by
+    classical
+    exact
+      (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound).filter
+        fun C => C.SurvivesAsIndependent I
+
+@[simp] theorem mem_goodSurvivingIndepSetEventSet_iff
+    {n m fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    {I : Finset (Fin n)} {C : ConstructionData n m} :
+    C ∈ goodSurvivingIndepSetEventSet
+        n m fiberBound degreeBound codegreeBound projCodegreeBound I ↔
+      GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        C.SurvivesAsIndependent I := by
+  classical
+  simp [goodSurvivingIndepSetEventSet, SurvivesAsIndependent]
+
+/-- The global bad event that some `k`-subset survives as an independent set. -/
+noncomputable def survivingIndepSetCardBadSet (n m k : ℕ) :
+    Finset (ConstructionData n m) :=
+  by
+    classical
+    exact (ConstructionData.sampleSpace n m).filter fun C =>
+      ∃ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k, C.SurvivesAsIndependent I
+
+@[simp] theorem mem_survivingIndepSetCardBadSet_iff
+    {n m k : ℕ} {C : ConstructionData n m} :
+    C ∈ survivingIndepSetCardBadSet n m k ↔
+      ∃ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k, C.SurvivesAsIndependent I := by
+  classical
+  simp [survivingIndepSetCardBadSet, ConstructionData.sampleSpace, SurvivesAsIndependent]
+
+/-- The global bad event inside the deterministic good event `𝒟`. -/
+noncomputable def goodSurvivingIndepSetCardBadSet
+    (n m fiberBound degreeBound codegreeBound projCodegreeBound k : ℕ) :
+    Finset (ConstructionData n m) :=
+  by
+    classical
+    exact
+      (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound).filter
+        fun C => ∃ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k, C.SurvivesAsIndependent I
+
+@[simp] theorem mem_goodSurvivingIndepSetCardBadSet_iff
+    {n m fiberBound degreeBound codegreeBound projCodegreeBound k : ℕ}
+    {C : ConstructionData n m} :
+    C ∈ goodSurvivingIndepSetCardBadSet
+        n m fiberBound degreeBound codegreeBound projCodegreeBound k ↔
+      GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        ∃ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k, C.SurvivesAsIndependent I := by
+  classical
+  simp [goodSurvivingIndepSetCardBadSet, SurvivesAsIndependent]
+
+theorem goodSurvivingIndepSetCardBadSet_eq_biUnion
+    (n m fiberBound degreeBound codegreeBound projCodegreeBound k : ℕ) :
+    goodSurvivingIndepSetCardBadSet n m fiberBound degreeBound codegreeBound
+        projCodegreeBound k =
+      ((Finset.univ : Finset (Fin n)).powersetCard k).biUnion
+        (fun I =>
+          goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+            projCodegreeBound I) := by
+  classical
+  ext C
+  constructor
+  · intro h
+    simp [goodSurvivingIndepSetCardBadSet] at h
+    rcases h with ⟨hD, I, hIk, hsurv⟩
+    refine Finset.mem_biUnion.2 ?_
+    refine ⟨I, ?_, ?_⟩
+    · exact Finset.mem_powersetCard.2 ⟨Finset.subset_univ I, hIk⟩
+    · simp [goodSurvivingIndepSetEventSet, hD, hsurv]
+  · intro h
+    rcases Finset.mem_biUnion.1 h with ⟨I, hI, hmem⟩
+    have hIk : I.card = k := (Finset.mem_powersetCard.1 hI).2
+    simp [goodSurvivingIndepSetEventSet] at hmem
+    rcases hmem with ⟨hD, hsurv⟩
+    simp [goodSurvivingIndepSetCardBadSet, hD]
+    exact ⟨I, hIk, hsurv⟩
+
+theorem constructionEventMass_goodSurvivingIndepSetCardBadSet_le_sum
+    {w : ConstructionData n m → ℝ}
+    {fiberBound degreeBound codegreeBound projCodegreeBound k : ℕ}
+    (hwt : ∀ C, 0 ≤ w C) :
+    constructionEventMass w
+        (goodSurvivingIndepSetCardBadSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound k) ≤
+      (((Finset.univ : Finset (Fin n)).powersetCard k).sum fun I =>
+        constructionEventMass w
+          (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+            projCodegreeBound I)) := by
+  classical
+  rw [goodSurvivingIndepSetCardBadSet_eq_biUnion]
+  exact constructionEventMass_biUnion_le
+    ((Finset.univ : Finset (Fin n)).powersetCard k)
+    (fun I =>
+      goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+        projCodegreeBound I) hwt
+
+theorem constructionEventMass_goodSurvivingIndepSetCardBadSet_le_of_choose_mul_le
+    {w : ConstructionData n m → ℝ}
+    {fiberBound degreeBound codegreeBound projCodegreeBound k : ℕ} {B : ℝ}
+    (hB : 0 ≤ B) (hwt : ∀ C, 0 ≤ w C)
+    (hbound :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k,
+        ((n.choose k : ℕ) : ℝ) *
+            constructionEventMass w
+              (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I) ≤
+          B) :
+    constructionEventMass w
+        (goodSurvivingIndepSetCardBadSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound k) ≤
+      B := by
+  have hsum :
+      (((Finset.univ : Finset (Fin n)).powersetCard k).sum fun I =>
+          constructionEventMass w
+            (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I)) ≤
+        B := by
+    exact sum_powersetCard_le_of_choose_mul_le hB hbound
+  exact
+    (constructionEventMass_goodSurvivingIndepSetCardBadSet_le_sum
+      (w := w) (n := n) (m := m) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound) (k := k)
+      hwt).trans hsum
+
 /-- The paper's terminal bad-event condition at fixed set size `k`: no `k`-subset of the final
 graph survives as an independent set. This is the deterministic hypothesis that the still-missing
 global probability layer should eventually produce. -/
 def NoSurvivingIndepSetCard (C : ConstructionData n m) (k : ℕ) : Prop :=
   ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k,
-    ¬ (∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    ¬ C.SurvivesAsIndependent I
+
+@[simp] theorem not_mem_survivingIndepSetCardBadSet_iff
+    {n m k : ℕ} {C : ConstructionData n m} :
+    C ∉ survivingIndepSetCardBadSet n m k ↔ C.NoSurvivingIndepSetCard k := by
+  classical
+  simp [NoSurvivingIndepSetCard]
+
+theorem exists_goodEventD_with_noSurvivingIndepSetCard_of_mass_lt
+    {w : ConstructionData n m → ℝ}
+    {fiberBound degreeBound codegreeBound projCodegreeBound k : ℕ}
+    (hwt : ∀ C, 0 ≤ w C)
+    (hmass :
+      constructionEventMass w
+          (goodSurvivingIndepSetCardBadSet n m fiberBound degreeBound codegreeBound
+            projCodegreeBound k) <
+        constructionEventMass w
+          (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound)) :
+    ∃ C ∈ goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound,
+      C.NoSurvivingIndepSetCard k := by
+  classical
+  by_contra hno
+  push_neg at hno
+  have hsubset :
+      goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound ⊆
+        goodSurvivingIndepSetCardBadSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound k := by
+    intro C hC
+    have hbad : ¬ C.NoSurvivingIndepSetCard k := hno C hC
+    simp [NoSurvivingIndepSetCard] at hbad
+    rcases hbad with ⟨I, hIk, hsurv⟩
+    simp [goodSurvivingIndepSetCardBadSet, hC]
+    exact ⟨I, hIk, hsurv⟩
+  have hmono :
+      constructionEventMass w
+          (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound) ≤
+        constructionEventMass w
+          (goodSurvivingIndepSetCardBadSet n m fiberBound degreeBound codegreeBound
+            projCodegreeBound k) :=
+    constructionEventMass_mono hsubset hwt
+  exact not_le_of_gt hmass hmono
 
 /-- A deterministic endpoint for the final graph under the named terminal bad-event condition. -/
 theorem finalGraph_indepSetFree_of_noSurvivingIndepSetCard
