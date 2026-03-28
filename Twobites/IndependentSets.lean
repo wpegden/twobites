@@ -105,6 +105,23 @@ structure GoodEventD (C : ConstructionData n m) (fiberBound degreeBound codegree
     (C.redProjectionImage Finset.univ (Sum.inr b) ∩
       C.redProjectionImage Finset.univ (Sum.inr b')).card ≤ projCodegreeBound
 
+/-- The finite event family of construction outcomes satisfying the deterministic pseudorandomness
+package `GoodEventD`. This is the unweighted event set that the still-missing probability layer
+must eventually equip with positive mass. -/
+noncomputable def goodEventDSet (n m fiberBound degreeBound codegreeBound projCodegreeBound : ℕ) :
+    Finset (ConstructionData n m) :=
+  by
+    classical
+    exact (ConstructionData.sampleSpace n m).filter fun C =>
+      GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound
+
+@[simp] theorem mem_goodEventDSet_iff
+    {n m fiberBound degreeBound codegreeBound projCodegreeBound : ℕ} {C : ConstructionData n m} :
+    C ∈ goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound ↔
+      GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound := by
+  classical
+  simp [goodEventDSet, ConstructionData.sampleSpace]
+
 /-- Paper Section 3's huge part `H_I`. -/
 def HPart (C : ConstructionData n m) (I : Finset (Fin n)) : Finset (BaseVertex m) := by
   classical

@@ -37,9 +37,36 @@ structure ConstructionData (n m : ℕ) where
   blueBase : SimpleGraph (Fin m)
   embedding : Fin n ↪ Fin m × Fin m
 
+noncomputable instance instFintypeConstructionData (n m : ℕ) : Fintype (ConstructionData n m) :=
+  Fintype.ofEquiv
+    ((SimpleGraph (Fin m) × SimpleGraph (Fin m)) × (Fin n ↪ Fin m × Fin m))
+    { toFun := fun t =>
+        { redBase := t.1.1
+          blueBase := t.1.2
+          embedding := t.2 }
+      invFun := fun C => ((C.redBase, C.blueBase), C.embedding)
+      left_inv := by
+        intro t
+        cases t
+        rfl
+      right_inv := by
+        intro C
+        cases C
+        rfl
+      }
+
 namespace ConstructionData
 
 variable {n m : ℕ} (C : ConstructionData n m)
+
+/-- The literal finite sample space of all construction outcomes with parameters `(n,m)`. This is
+the unweighted ambient space underlying the still-missing global probability layer. -/
+noncomputable def sampleSpace (n m : ℕ) : Finset (ConstructionData n m) :=
+  Finset.univ
+
+@[simp] theorem mem_sampleSpace (C : ConstructionData n m) :
+    C ∈ ConstructionData.sampleSpace n m := by
+  simp [ConstructionData.sampleSpace]
 
 /-- The paper's map `π`. -/
 def pairEmbedding : Fin n ↪ Fin m × Fin m :=
