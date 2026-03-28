@@ -5,6 +5,7 @@ import Twobites.ParameterBounds
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Interval
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Prod
 import Mathlib.Data.Finset.Union
@@ -258,6 +259,241 @@ theorem constructionGraphBernoulliWeight_sum_univ_eq (p : ℝ) :
     _ = (1 - p) ^ m * (p + (1 - p)) ^ topEdges.card := by
           rw [Finset.sum_pow_mul_eq_add_pow]
     _ = (1 - p) ^ m := by simp
+
+/-- The finite weighted mass of base graphs satisfying a prescribed forced-edge / forced-nonedge
+pattern on canonical edge pairs. -/
+def constructionGraphConstraintMass
+    (p : ℝ) (required forbidden : Finset (Sym2 (Fin m))) : ℝ :=
+  ∑ G : SimpleGraph (Fin m),
+    if required ⊆ constructionGraphEdgeFinset G ∧
+        Disjoint forbidden (constructionGraphEdgeFinset G) then
+      constructionGraphBernoulliWeight p G
+    else
+      0
+
+theorem constructionGraphConstraintMass_eq
+    (p : ℝ) (required forbidden : Finset (Sym2 (Fin m)))
+    (hrequired : required ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset)
+    (hforbidden : forbidden ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset)
+    (hdisj : Disjoint required forbidden) :
+    constructionGraphConstraintMass p required forbidden =
+      (1 - p) ^ m * (p ^ required.card * (1 - p) ^ forbidden.card) := by
+  classical
+  let topEdges : Finset (Sym2 (Fin m)) := (⊤ : SimpleGraph (Fin m)).edgeFinset
+  let free : Finset (Sym2 (Fin m)) := topEdges \ (required ∪ forbidden)
+  have himage :
+      (Finset.univ.image fun G : SimpleGraph (Fin m) => constructionGraphEdgeFinset G) =
+        topEdges.powerset := by
+    simpa [topEdges] using constructionGraph_edgeFinset_image_univ_eq_powerset_top m
+  have hcard :
+      Fintype.card (Sym2 (Fin m)) = topEdges.card + m := by
+    rw [Sym2.card, show topEdges.card = m.choose 2 by
+      simpa [topEdges] using (SimpleGraph.card_edgeFinset_top_eq_card_choose_two (V := Fin m))]
+    simpa [Nat.add_comm] using Nat.choose_succ_succ' m 1
+  have hfree_subset : free ⊆ topEdges := by
+    intro e he
+    exact (Finset.mem_sdiff.1 he).1
+  have hrequired_subset_sdiff : required ⊆ topEdges \ forbidden := by
+    intro e heReq
+    refine Finset.mem_sdiff.2 ⟨hrequired heReq, ?_⟩
+    intro heForb
+    exact (Finset.disjoint_left.1 hdisj) heReq heForb
+  have hrequired_free_disjoint : Disjoint required free := by
+    refine Finset.disjoint_left.2 ?_
+    intro e heReq heFree
+    have hnot : e ∉ required ∪ forbidden := (Finset.mem_sdiff.1 heFree).2
+    exact hnot (Finset.mem_union.2 (Or.inl heReq))
+  have hforbidden_free_disjoint : Disjoint forbidden free := by
+    refine Finset.disjoint_left.2 ?_
+    intro e heForb heFree
+    have hnot : e ∉ required ∪ forbidden := (Finset.mem_sdiff.1 heFree).2
+    exact hnot (Finset.mem_union.2 (Or.inr heForb))
+  have hfree_eq : free = (topEdges \ forbidden) \ required := by
+    ext e
+    simp [free, and_assoc, and_comm]
+  have hfilter_eq :
+      topEdges.powerset.filter
+          (fun s => required ⊆ s ∧ Disjoint forbidden s) =
+        (free.powerset.image fun t => required ∪ t) := by
+    calc
+      topEdges.powerset.filter (fun s => required ⊆ s ∧ Disjoint forbidden s) =
+          Finset.Icc required (topEdges \ forbidden) := by
+            ext s
+            simp only [Finset.mem_filter, Finset.mem_powerset, Finset.mem_Icc,
+              Finset.disjoint_left]
+            constructor
+            · rintro ⟨hsTop, hsReq, hsDisj⟩
+              refine ⟨hsReq, ?_⟩
+              intro e he
+              refine Finset.mem_sdiff.2 ⟨hsTop he, ?_⟩
+              intro heForb
+              exact hsDisj heForb he
+            · rintro ⟨hsReq, hsSub⟩
+              refine ⟨?_, hsReq, ?_⟩
+              · intro e he
+                exact (Finset.mem_sdiff.1 (hsSub he)).1
+              · intro e heForb heS
+                exact (Finset.mem_sdiff.1 (hsSub heS)).2 heForb
+      _ = (((topEdges \ forbidden) \ required).powerset.image fun t => required ∪ t) := by
+            simpa using Finset.Icc_eq_image_powerset hrequired_subset_sdiff
+      _ = (free.powerset.image fun t => required ∪ t) := by
+            simp [hfree_eq]
+  calc
+    constructionGraphConstraintMass p required forbidden =
+        ∑ G : SimpleGraph (Fin m),
+          if required ⊆ constructionGraphEdgeFinset G ∧
+              Disjoint forbidden (constructionGraphEdgeFinset G) then
+            constructionGraphBernoulliWeight p G
+          else
+            0 := by
+      rfl
+    _ =
+        ∑ s ∈ topEdges.powerset.filter
+            (fun s => required ⊆ s ∧ Disjoint forbidden s),
+          p ^ s.card * (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - s.card) := by
+      calc
+        (∑ G : SimpleGraph (Fin m),
+            if required ⊆ constructionGraphEdgeFinset G ∧
+                Disjoint forbidden (constructionGraphEdgeFinset G) then
+              constructionGraphBernoulliWeight p G
+            else
+              0) =
+            ∑ s ∈ Finset.image (fun G : SimpleGraph (Fin m) => constructionGraphEdgeFinset G)
+                (Finset.univ : Finset (SimpleGraph (Fin m))),
+              if required ⊆ s ∧ Disjoint forbidden s then
+                p ^ s.card * (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - s.card)
+              else
+                0 := by
+              symm
+              refine (Finset.sum_image ?_).trans ?_
+              · intro G _ H _ hGH
+                have hGH' : G.edgeFinset = H.edgeFinset := by
+                  simpa [constructionGraphEdgeFinset] using hGH
+                exact (SimpleGraph.edgeFinset_inj).1 hGH'
+              · refine Finset.sum_congr rfl ?_
+                intro G hG
+                by_cases hcond :
+                    required ⊆ constructionGraphEdgeFinset G ∧
+                      Disjoint forbidden (constructionGraphEdgeFinset G)
+                · simp [constructionGraphBernoulliWeight, constructionGraphEdgeFinset]
+                · simp [hcond]
+        _ =
+            ∑ s ∈ topEdges.powerset.filter
+                (fun s => required ⊆ s ∧ Disjoint forbidden s),
+              p ^ s.card * (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - s.card) := by
+              rw [himage, Finset.sum_filter]
+    _ =
+        ∑ t ∈ free.powerset,
+          p ^ (required ∪ t).card *
+            (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - (required ∪ t).card) := by
+      rw [hfilter_eq]
+      refine Finset.sum_image ?_
+      intro t ht u hu hEq
+      have htDisj : Disjoint required t := by
+        refine Finset.disjoint_left.2 ?_
+        intro e heReq heT
+        exact (Finset.disjoint_left.1 hrequired_free_disjoint) heReq
+          ((Finset.mem_powerset.1 ht) heT)
+      have huDisj : Disjoint required u := by
+        refine Finset.disjoint_left.2 ?_
+        intro e heReq heU
+        exact (Finset.disjoint_left.1 hrequired_free_disjoint) heReq
+          ((Finset.mem_powerset.1 hu) heU)
+      have htEq : (required ∪ t) \ required = t := by
+        ext e
+        constructor
+        · intro he
+          rcases Finset.mem_sdiff.1 he with ⟨heUnion, hnotReq⟩
+          rcases Finset.mem_union.1 heUnion with heReq | heT
+          · exact False.elim (hnotReq heReq)
+          · exact heT
+        · intro he
+          exact Finset.mem_sdiff.2 ⟨Finset.mem_union.2 (Or.inr he), by
+            intro heReq
+            exact (Finset.disjoint_left.1 htDisj) heReq he⟩
+      have huEq : (required ∪ u) \ required = u := by
+        ext e
+        constructor
+        · intro he
+          rcases Finset.mem_sdiff.1 he with ⟨heUnion, hnotReq⟩
+          rcases Finset.mem_union.1 heUnion with heReq | heU
+          · exact False.elim (hnotReq heReq)
+          · exact heU
+        · intro he
+          exact Finset.mem_sdiff.2 ⟨Finset.mem_union.2 (Or.inr he), by
+            intro heReq
+            exact (Finset.disjoint_left.1 huDisj) heReq he⟩
+      have hsdiff : (required ∪ t) \ required = (required ∪ u) \ required := by
+        simp [hEq]
+      simpa [htEq, huEq] using hsdiff
+    _ =
+        ∑ t ∈ free.powerset,
+          (1 - p) ^ m * (p ^ required.card * (1 - p) ^ forbidden.card) *
+            (p ^ t.card * (1 - p) ^ (free.card - t.card)) := by
+      refine Finset.sum_congr rfl ?_
+      intro t ht
+      have htSubset : t ⊆ free := Finset.mem_powerset.1 ht
+      have htDisjReq : Disjoint required t := by
+        refine Finset.disjoint_left.2 ?_
+        intro e heReq heT
+        exact (Finset.disjoint_left.1 hrequired_free_disjoint) heReq (htSubset heT)
+      have htDisjForb : Disjoint forbidden t := by
+        refine Finset.disjoint_left.2 ?_
+        intro e heForb heT
+        exact (Finset.disjoint_left.1 hforbidden_free_disjoint) heForb (htSubset heT)
+      have hcardUnion : (required ∪ t).card = required.card + t.card := by
+        simpa using Finset.card_union_of_disjoint htDisjReq
+      have hcardTop :
+          topEdges.card = free.card + (required ∪ forbidden).card := by
+        have hsubsetUnion : required ∪ forbidden ⊆ topEdges := by
+          intro e he
+          rcases Finset.mem_union.1 he with heReq | heForb
+          · exact hrequired heReq
+          · exact hforbidden heForb
+        simpa [free, Nat.add_comm] using
+          (Finset.card_sdiff_add_card_eq_card hsubsetUnion).symm
+      have hcardReqForb : (required ∪ forbidden).card = required.card + forbidden.card := by
+        simpa using Finset.card_union_of_disjoint hdisj
+      have htle : t.card ≤ free.card := Finset.card_le_card htSubset
+      have hcardSym2 :
+          Fintype.card (Sym2 (Fin m)) - (required.card + t.card) =
+            m + forbidden.card + (free.card - t.card) := by
+        rw [hcard, hcardTop, hcardReqForb]
+        omega
+      rw [hcardUnion, hcardSym2, pow_add, pow_add, pow_add]
+      ring
+    _ =
+        (1 - p) ^ m * (p ^ required.card * (1 - p) ^ forbidden.card) *
+          (∑ t ∈ free.powerset, p ^ t.card * (1 - p) ^ (free.card - t.card)) := by
+      rw [← Finset.mul_sum]
+    _ =
+        (1 - p) ^ m * (p ^ required.card * (1 - p) ^ forbidden.card) *
+          (p + (1 - p)) ^ free.card := by
+      rw [Finset.sum_pow_mul_eq_add_pow]
+    _ =
+        (1 - p) ^ m * (p ^ required.card * (1 - p) ^ forbidden.card) := by
+      simp
+
+theorem constructionGraphConstraintMass_le
+    (p : ℝ) (required forbidden : Finset (Sym2 (Fin m)))
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hrequired : required ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset)
+    (hforbidden : forbidden ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset)
+    (hdisj : Disjoint required forbidden) :
+    constructionGraphConstraintMass p required forbidden ≤
+      p ^ required.card * (1 - p) ^ forbidden.card := by
+  rw [constructionGraphConstraintMass_eq p required forbidden hrequired hforbidden hdisj]
+  have hfac_nonneg : 0 ≤ (1 - p) ^ m := by
+    exact pow_nonneg (sub_nonneg.mpr hp1) _
+  have hfac_le_one : (1 - p) ^ m ≤ 1 := by
+    exact pow_le_one₀ (sub_nonneg.mpr hp1) (by linarith : 1 - p ≤ (1 : ℝ))
+  have hterm_nonneg : 0 ≤ p ^ required.card * (1 - p) ^ forbidden.card := by
+    exact mul_nonneg (pow_nonneg hp0 _) (pow_nonneg (sub_nonneg.mpr hp1) _)
+  calc
+    (1 - p) ^ m * (p ^ required.card * (1 - p) ^ forbidden.card) ≤
+        1 * (p ^ required.card * (1 - p) ^ forbidden.card) := by
+          exact mul_le_mul_of_nonneg_right hfac_le_one hterm_nonneg
+    _ = p ^ required.card * (1 - p) ^ forbidden.card := by ring
 
 theorem constructionEmbeddingUniformWeight_nonneg (n m : ℕ) :
     0 ≤ constructionEmbeddingUniformWeight n m := by
@@ -4579,6 +4815,115 @@ theorem openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_le_
   exact
     C.openPair_lower_bound_sub_section4_budget_sub_sameColorClosedPlus_le_section4TPairSet I
       hopen (C.sameColorClosedPlusBasePairSet_card_le_projectionPairCount_sum I (C.section4F I ε))
+
+theorem section4TPairSet_card_eq (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) :
+    (C.section4TPairSet I A).card =
+      (C.section4TRedPairSet I A).card + (C.section4TBluePairSet I A).card := by
+  classical
+  let sR : Finset (BaseVertex m × BaseVertex m) :=
+    (C.section4TRedPairSet I A).image fun p => (Sum.inl p.1, Sum.inl p.2)
+  let sB : Finset (BaseVertex m × BaseVertex m) :=
+    (C.section4TBluePairSet I A).image fun p => (Sum.inr p.1, Sum.inr p.2)
+  have hsR :
+      sR.card = (C.section4TRedPairSet I A).card := by
+    dsimp [sR]
+    simpa using
+      (Finset.card_image_of_injective (s := C.section4TRedPairSet I A)
+        (f := fun p => (Sum.inl p.1, Sum.inl p.2))
+        (by
+          intro a b hab
+          cases a
+          cases b
+          cases hab
+          rfl))
+  have hsB :
+      sB.card = (C.section4TBluePairSet I A).card := by
+    dsimp [sB]
+    simpa using
+      (Finset.card_image_of_injective (s := C.section4TBluePairSet I A)
+        (f := fun p => (Sum.inr p.1, Sum.inr p.2))
+        (by
+          intro a b hab
+          cases a
+          cases b
+          cases hab
+          rfl))
+  have hdisj : Disjoint sR sB := by
+    refine Finset.disjoint_left.2 ?_
+    intro p hpR hpB
+    rcases Finset.mem_image.1 hpR with ⟨qR, _, hqR⟩
+    rcases Finset.mem_image.1 hpB with ⟨qB, _, hqB⟩
+    rcases qR with ⟨r, r'⟩
+    rcases qB with ⟨b, b'⟩
+    have hfst : (Sum.inl r : BaseVertex m) = Sum.inr b := by
+      simpa [hqR, hqB] using congrArg Prod.fst (hqR.trans hqB.symm)
+    cases hfst
+  have hEq : C.section4TPairSet I A = sR ∪ sB := by
+    ext p
+    rcases p with ⟨x, y⟩
+    cases x with
+    | inl r =>
+        cases y with
+        | inl r' =>
+            constructor
+            · intro hp
+              refine Finset.mem_union.2 (Or.inl ?_)
+              exact Finset.mem_image.2 ⟨(r, r'), C.mem_section4TPairSet_inl_inl.1 hp, rfl⟩
+            · intro hp
+              rcases Finset.mem_union.1 hp with hpR | hpB
+              · rcases Finset.mem_image.1 hpR with ⟨p, hpT, hpEq⟩
+                rcases p with ⟨r₁, r₂⟩
+                cases hpEq
+                exact C.mem_section4TPairSet_inl_inl.2 hpT
+              · rcases Finset.mem_image.1 hpB with ⟨p, hpT, hpEq⟩
+                rcases p with ⟨b₁, b₂⟩
+                cases hpEq
+        | inr b =>
+            constructor
+            · intro hp
+              exact (C.not_mem_section4TPairSet_inl_inr hp).elim
+            · intro hp
+              rcases Finset.mem_union.1 hp with hpR | hpB
+              · rcases Finset.mem_image.1 hpR with ⟨p, hpT, hpEq⟩
+                rcases p with ⟨r₁, r₂⟩
+                cases hpEq
+              · rcases Finset.mem_image.1 hpB with ⟨p, hpT, hpEq⟩
+                rcases p with ⟨b₁, b₂⟩
+                cases hpEq
+    | inr b =>
+        cases y with
+        | inl r =>
+            constructor
+            · intro hp
+              exact (C.not_mem_section4TPairSet_inr_inl hp).elim
+            · intro hp
+              rcases Finset.mem_union.1 hp with hpR | hpB
+              · rcases Finset.mem_image.1 hpR with ⟨p, hpT, hpEq⟩
+                rcases p with ⟨r₁, r₂⟩
+                cases hpEq
+              · rcases Finset.mem_image.1 hpB with ⟨p, hpT, hpEq⟩
+                rcases p with ⟨b₁, b₂⟩
+                cases hpEq
+        | inr b' =>
+            constructor
+            · intro hp
+              refine Finset.mem_union.2 (Or.inr ?_)
+              exact Finset.mem_image.2 ⟨(b, b'), C.mem_section4TPairSet_inr_inr.1 hp, rfl⟩
+            · intro hp
+              rcases Finset.mem_union.1 hp with hpR | hpB
+              · rcases Finset.mem_image.1 hpR with ⟨p, hpT, hpEq⟩
+                rcases p with ⟨r₁, r₂⟩
+                cases hpEq
+              · rcases Finset.mem_image.1 hpB with ⟨p, hpT, hpEq⟩
+                rcases p with ⟨b₁, b₂⟩
+                cases hpEq
+                exact C.mem_section4TPairSet_inr_inr.2 hpT
+  calc
+    (C.section4TPairSet I A).card = (sR ∪ sB).card := by rw [hEq]
+    _ = sR.card + sB.card := Finset.card_union_of_disjoint hdisj
+    _ = (C.section4TRedPairSet I A).card + (C.section4TBluePairSet I A).card := by
+      rw [hsR, hsB]
 
 theorem section4UCondPairSet_card_eq (C : ConstructionData n m) (I : Finset (Fin n))
     (A : Finset (BaseVertex m)) :
@@ -15553,6 +15898,314 @@ theorem section4UBlueCondPairSet_image_sym2_subset_section4TBluePairSet_image_sy
     (C.mem_section4UBluePairSet.1 ((C.mem_section4UBlueCondPairSet.1 hp).1)).1
   exact Finset.mem_image.2 ⟨p, hpT, rfl⟩
 
+/-- The canonical red `T \ U` constraint set on `Sym2 (Fin m)` used by the fixed-embedding
+Bernoulli mass bound. -/
+def section4TRedRemainingSym2Set
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    Finset (Sym2 (Fin m)) := by
+  classical
+  exact (C.section4TRedPairSet I A).image Sym2.mk \ (C.section4URedCondPairSet I A).image Sym2.mk
+
+/-- The canonical blue `T \ U` constraint set on `Sym2 (Fin m)` used by the fixed-embedding
+Bernoulli mass bound. -/
+def section4TBlueRemainingSym2Set
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    Finset (Sym2 (Fin m)) := by
+  classical
+  exact
+    (C.section4TBluePairSet I A).image Sym2.mk \ (C.section4UBlueCondPairSet I A).image Sym2.mk
+
+theorem section4URedCondPairSet_image_sym2_subset_top_edgeFinset
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4URedCondPairSet I A).image Sym2.mk ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset := by
+  intro s hs
+  rcases Finset.mem_image.1 hs with ⟨⟨r, r'⟩, hp, rfl⟩
+  have hpU := (C.mem_section4URedCondPairSet.1 hp).1
+  have hpT := (C.mem_section4URedPairSet.1 hpU).1
+  have hpUn := (C.mem_section4TRedPairSet.1 hpT).1
+  have hlt : r < r' :=
+    (C.mem_redBasePairSet.1 ((C.mem_unrevealedRedBasePairSet.1 hpUn).1)).2.2
+  simp [SimpleGraph.edgeFinset_top, Sym2.isDiag_iff_proj_eq, ne_of_lt hlt]
+
+theorem section4UBlueCondPairSet_image_sym2_subset_top_edgeFinset
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4UBlueCondPairSet I A).image Sym2.mk ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset := by
+  intro s hs
+  rcases Finset.mem_image.1 hs with ⟨⟨b, b'⟩, hp, rfl⟩
+  have hpU := (C.mem_section4UBlueCondPairSet.1 hp).1
+  have hpT := (C.mem_section4UBluePairSet.1 hpU).1
+  have hpUn := (C.mem_section4TBluePairSet.1 hpT).1
+  have hlt : b < b' :=
+    (C.mem_blueBasePairSet.1 ((C.mem_unrevealedBlueBasePairSet.1 hpUn).1)).2.2
+  simp [SimpleGraph.edgeFinset_top, Sym2.isDiag_iff_proj_eq, ne_of_lt hlt]
+
+theorem section4TRedPairSet_image_sym2_subset_top_edgeFinset
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4TRedPairSet I A).image Sym2.mk ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset := by
+  intro s hs
+  rcases Finset.mem_image.1 hs with ⟨⟨r, r'⟩, hp, rfl⟩
+  have hpUn := (C.mem_section4TRedPairSet.1 hp).1
+  have hlt : r < r' :=
+    (C.mem_redBasePairSet.1 ((C.mem_unrevealedRedBasePairSet.1 hpUn).1)).2.2
+  simp [SimpleGraph.edgeFinset_top, Sym2.isDiag_iff_proj_eq, ne_of_lt hlt]
+
+theorem section4TBluePairSet_image_sym2_subset_top_edgeFinset
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4TBluePairSet I A).image Sym2.mk ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset := by
+  intro s hs
+  rcases Finset.mem_image.1 hs with ⟨⟨b, b'⟩, hp, rfl⟩
+  have hpUn := (C.mem_section4TBluePairSet.1 hp).1
+  have hlt : b < b' :=
+    (C.mem_blueBasePairSet.1 ((C.mem_unrevealedBlueBasePairSet.1 hpUn).1)).2.2
+  simp [SimpleGraph.edgeFinset_top, Sym2.isDiag_iff_proj_eq, ne_of_lt hlt]
+
+theorem section4TRedRemainingSym2Set_subset_top_edgeFinset
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    C.section4TRedRemainingSym2Set I A ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset := by
+  intro s hs
+  exact
+    C.section4TRedPairSet_image_sym2_subset_top_edgeFinset (I := I) (A := A)
+      ((Finset.mem_sdiff.1 hs).1)
+
+theorem section4TBlueRemainingSym2Set_subset_top_edgeFinset
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    C.section4TBlueRemainingSym2Set I A ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset := by
+  intro s hs
+  exact
+    C.section4TBluePairSet_image_sym2_subset_top_edgeFinset (I := I) (A := A)
+      ((Finset.mem_sdiff.1 hs).1)
+
+theorem section4TRedRemainingSym2Set_card_eq
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4TRedRemainingSym2Set I A).card =
+      (C.section4TRedPairSet I A).card - (C.section4URedCondPairSet I A).card := by
+  classical
+  unfold section4TRedRemainingSym2Set
+  rw [Finset.card_sdiff_of_subset
+    (C.section4URedCondPairSet_image_sym2_subset_section4TRedPairSet_image_sym2
+      (I := I) (A := A))]
+  rw [C.section4TRedPairSet_image_sym2_card_eq, C.section4URedCondPairSet_image_sym2_card_eq]
+
+theorem section4TBlueRemainingSym2Set_card_eq
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4TBlueRemainingSym2Set I A).card =
+      (C.section4TBluePairSet I A).card - (C.section4UBlueCondPairSet I A).card := by
+  classical
+  unfold section4TBlueRemainingSym2Set
+  rw [Finset.card_sdiff_of_subset
+    (C.section4UBlueCondPairSet_image_sym2_subset_section4TBluePairSet_image_sym2
+      (I := I) (A := A))]
+  rw [C.section4TBluePairSet_image_sym2_card_eq, C.section4UBlueCondPairSet_image_sym2_card_eq]
+
+theorem section4TRemainingPairSet_card_eq_section4TRedRemainingSym2Set_card_add
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.section4TRemainingPairSet I A).card =
+      (C.section4TRedRemainingSym2Set I A).card +
+        (C.section4TBlueRemainingSym2Set I A).card := by
+  have hredle :
+      (C.section4URedCondPairSet I A).card ≤ (C.section4TRedPairSet I A).card := by
+    have hsubset :=
+      C.section4URedCondPairSet_image_sym2_subset_section4TRedPairSet_image_sym2
+        (I := I) (A := A)
+    calc
+      (C.section4URedCondPairSet I A).card =
+          ((C.section4URedCondPairSet I A).image Sym2.mk).card := by
+        symm
+        exact C.section4URedCondPairSet_image_sym2_card_eq (I := I) (A := A)
+      _ ≤ ((C.section4TRedPairSet I A).image Sym2.mk).card := Finset.card_le_card hsubset
+      _ = (C.section4TRedPairSet I A).card := by
+        exact C.section4TRedPairSet_image_sym2_card_eq (I := I) (A := A)
+  have hbluele :
+      (C.section4UBlueCondPairSet I A).card ≤ (C.section4TBluePairSet I A).card := by
+    have hsubset :=
+      C.section4UBlueCondPairSet_image_sym2_subset_section4TBluePairSet_image_sym2
+        (I := I) (A := A)
+    calc
+      (C.section4UBlueCondPairSet I A).card =
+          ((C.section4UBlueCondPairSet I A).image Sym2.mk).card := by
+        symm
+        exact C.section4UBlueCondPairSet_image_sym2_card_eq (I := I) (A := A)
+      _ ≤ ((C.section4TBluePairSet I A).image Sym2.mk).card := Finset.card_le_card hsubset
+      _ = (C.section4TBluePairSet I A).card := by
+        exact C.section4TBluePairSet_image_sym2_card_eq (I := I) (A := A)
+  calc
+    (C.section4TRemainingPairSet I A).card =
+        (C.section4TPairSet I A).card -
+          (C.section4URedCondPairSet I A).card -
+            (C.section4UBlueCondPairSet I A).card := by
+      exact C.section4TRemainingPairSet_card_eq I A
+    _ =
+        ((C.section4TRedPairSet I A).card + (C.section4TBluePairSet I A).card) -
+          (C.section4URedCondPairSet I A).card -
+            (C.section4UBlueCondPairSet I A).card := by
+      rw [C.section4TPairSet_card_eq I A]
+    _ =
+        ((C.section4TRedPairSet I A).card - (C.section4URedCondPairSet I A).card) +
+          ((C.section4TBluePairSet I A).card - (C.section4UBlueCondPairSet I A).card) := by
+      omega
+    _ =
+        (C.section4TRedRemainingSym2Set I A).card +
+          (C.section4TBlueRemainingSym2Set I A).card := by
+      rw [← C.section4TRedRemainingSym2Set_card_eq (I := I) (A := A),
+        ← C.section4TBlueRemainingSym2Set_card_eq (I := I) (A := A)]
+
+theorem constructionGraphConstraintMass_section4TRedRemainingSym2Set_eq
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) (p : ℝ) :
+    constructionGraphConstraintMass p
+        ((C.section4URedCondPairSet I A).image Sym2.mk)
+        (C.section4TRedRemainingSym2Set I A) =
+      (1 - p) ^ m *
+        (p ^ (C.section4URedCondPairSet I A).card *
+          (1 - p) ^ (C.section4TRedRemainingSym2Set I A).card) := by
+  classical
+  simpa [C.section4URedCondPairSet_image_sym2_card_eq (I := I) (A := A)] using
+    constructionGraphConstraintMass_eq p
+      ((C.section4URedCondPairSet I A).image Sym2.mk)
+      (C.section4TRedRemainingSym2Set I A)
+      (C.section4URedCondPairSet_image_sym2_subset_top_edgeFinset (I := I) (A := A))
+      (by
+        intro s hs
+        exact
+          C.section4TRedRemainingSym2Set_subset_top_edgeFinset (I := I) (A := A)
+            hs)
+      (by
+        refine Finset.disjoint_left.2 ?_
+        intro s hsReq hsForb
+        exact (Finset.mem_sdiff.1 hsForb).2 hsReq)
+
+theorem constructionGraphConstraintMass_section4TBlueRemainingSym2Set_eq
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) (p : ℝ) :
+    constructionGraphConstraintMass p
+        ((C.section4UBlueCondPairSet I A).image Sym2.mk)
+        (C.section4TBlueRemainingSym2Set I A) =
+      (1 - p) ^ m *
+        (p ^ (C.section4UBlueCondPairSet I A).card *
+          (1 - p) ^ (C.section4TBlueRemainingSym2Set I A).card) := by
+  classical
+  simpa [C.section4UBlueCondPairSet_image_sym2_card_eq (I := I) (A := A)] using
+    constructionGraphConstraintMass_eq p
+      ((C.section4UBlueCondPairSet I A).image Sym2.mk)
+      (C.section4TBlueRemainingSym2Set I A)
+      (C.section4UBlueCondPairSet_image_sym2_subset_top_edgeFinset (I := I) (A := A))
+      (by
+        intro s hs
+        exact
+          C.section4TBlueRemainingSym2Set_subset_top_edgeFinset (I := I) (A := A)
+            hs)
+      (by
+        refine Finset.disjoint_left.2 ?_
+        intro s hsReq hsForb
+        exact (Finset.mem_sdiff.1 hsForb).2 hsReq)
+
+theorem constructionGraphConstraintMass_section4TRedRemainingSym2Set_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    constructionGraphConstraintMass p
+        ((C.section4URedCondPairSet I A).image Sym2.mk)
+        (C.section4TRedRemainingSym2Set I A) ≤
+      section4BernoulliMass p (C.section4URedCondPairSet I A).card 0
+        (C.section4TRedRemainingSym2Set I A).card := by
+  have h :=
+    constructionGraphConstraintMass_le p
+      ((C.section4URedCondPairSet I A).image Sym2.mk)
+      (C.section4TRedRemainingSym2Set I A) hp0 hp1
+      (C.section4URedCondPairSet_image_sym2_subset_top_edgeFinset (I := I) (A := A))
+      (by
+        intro s hs
+        exact
+          C.section4TRedRemainingSym2Set_subset_top_edgeFinset (I := I) (A := A)
+            hs)
+      (by
+        refine Finset.disjoint_left.2 ?_
+        intro s hsReq hsForb
+        exact (Finset.mem_sdiff.1 hsForb).2 hsReq)
+  rw [C.section4URedCondPairSet_image_sym2_card_eq (I := I) (A := A)] at h
+  change
+    constructionGraphConstraintMass p
+        ((C.section4URedCondPairSet I A).image Sym2.mk)
+        (C.section4TRedRemainingSym2Set I A) ≤
+      p ^ (C.section4URedCondPairSet I A).card *
+        (1 - p) ^ (C.section4TRedRemainingSym2Set I A).card
+  exact h
+
+theorem constructionGraphConstraintMass_section4TBlueRemainingSym2Set_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    constructionGraphConstraintMass p
+        ((C.section4UBlueCondPairSet I A).image Sym2.mk)
+        (C.section4TBlueRemainingSym2Set I A) ≤
+      section4BernoulliMass p 0 (C.section4UBlueCondPairSet I A).card
+        (C.section4TBlueRemainingSym2Set I A).card := by
+  have h :=
+    constructionGraphConstraintMass_le p
+      ((C.section4UBlueCondPairSet I A).image Sym2.mk)
+      (C.section4TBlueRemainingSym2Set I A) hp0 hp1
+      (C.section4UBlueCondPairSet_image_sym2_subset_top_edgeFinset (I := I) (A := A))
+      (by
+        intro s hs
+        exact
+          C.section4TBlueRemainingSym2Set_subset_top_edgeFinset (I := I) (A := A)
+            hs)
+      (by
+        refine Finset.disjoint_left.2 ?_
+        intro s hsReq hsForb
+        exact (Finset.mem_sdiff.1 hsForb).2 hsReq)
+  rw [C.section4UBlueCondPairSet_image_sym2_card_eq (I := I) (A := A)] at h
+  simpa [section4BernoulliMass, zero_add] using h
+
+theorem
+    mul_constructionGraphConstraintMass_section4TRemainingSym2Set_le_section4BernoulliMass
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    constructionGraphConstraintMass p
+        ((C.section4URedCondPairSet I A).image Sym2.mk)
+        (C.section4TRedRemainingSym2Set I A) *
+      constructionGraphConstraintMass p
+        ((C.section4UBlueCondPairSet I A).image Sym2.mk)
+        (C.section4TBlueRemainingSym2Set I A) ≤
+      section4BernoulliMass p
+        (C.section4URedCondPairSet I A).card
+        (C.section4UBlueCondPairSet I A).card
+        ((C.section4TRedRemainingSym2Set I A).card +
+          (C.section4TBlueRemainingSym2Set I A).card) := by
+  have hred :=
+    C.constructionGraphConstraintMass_section4TRedRemainingSym2Set_le I A hp0 hp1
+  have hblue :=
+    C.constructionGraphConstraintMass_section4TBlueRemainingSym2Set_le I A hp0 hp1
+  have hblue0 :
+      0 ≤ constructionGraphConstraintMass p
+        ((C.section4UBlueCondPairSet I A).image Sym2.mk)
+        (C.section4TBlueRemainingSym2Set I A) := by
+    unfold constructionGraphConstraintMass
+    exact Finset.sum_nonneg fun G _ => by
+      split_ifs <;> [exact constructionGraphBernoulliWeight_nonneg hp0 hp1 G; positivity]
+  have hredMass0 :
+      0 ≤ section4BernoulliMass p (C.section4URedCondPairSet I A).card 0
+        (C.section4TRedRemainingSym2Set I A).card := by
+    unfold section4BernoulliMass
+    have hsub : 0 ≤ 1 - p := by linarith
+    exact mul_nonneg (pow_nonneg hp0 _) (pow_nonneg hsub _)
+  have hmul :=
+    mul_le_mul hred hblue hblue0 hredMass0
+  calc
+    constructionGraphConstraintMass p
+        ((C.section4URedCondPairSet I A).image Sym2.mk)
+        (C.section4TRedRemainingSym2Set I A) *
+      constructionGraphConstraintMass p
+        ((C.section4UBlueCondPairSet I A).image Sym2.mk)
+        (C.section4TBlueRemainingSym2Set I A) ≤
+      section4BernoulliMass p (C.section4URedCondPairSet I A).card 0
+        (C.section4TRedRemainingSym2Set I A).card *
+      section4BernoulliMass p 0 (C.section4UBlueCondPairSet I A).card
+        (C.section4TBlueRemainingSym2Set I A).card := hmul
+    _ = section4BernoulliMass p
+          (C.section4URedCondPairSet I A).card
+          (C.section4UBlueCondPairSet I A).card
+          ((C.section4TRedRemainingSym2Set I A).card +
+            (C.section4TBlueRemainingSym2Set I A).card) := by
+      simp [section4BernoulliMass, pow_add]
+      ring
+
 @[simp] theorem section4URedChoiceSet_card_eq (C : ConstructionData n m)
     (I : Finset (Fin n)) (A : Finset (BaseVertex m)) (uR : ℕ) :
     (C.section4URedChoiceSet I A uR).card = (C.redOppositeWitnessBiUnion I A).card.choose uR := by
@@ -16048,6 +16701,59 @@ theorem section4ActualConditionedEventMass_le_one
           (A := C.section4F I ε) (uR := uRActual) (uB := uBActual) huR huB]
     _ ≤ 1 := section4BernoulliMass_le_one hp0 hp1
 
+set_option linter.style.longLine false in
+theorem mul_constructionGraphConstraintMass_section4TRemainingSym2Set_le_section4ActualConditionedEventMass_of_remaining_le
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p : ℝ} {N : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hRemaining :
+      N - C.section4SecondStageLossNat I ε ≤
+        (C.section4TRemainingPairSet I (C.section4F I ε)).card) :
+    constructionGraphConstraintMass p
+        ((C.section4URedCondPairSet I (C.section4F I ε)).image Sym2.mk)
+        (C.section4TRedRemainingSym2Set I (C.section4F I ε)) *
+      constructionGraphConstraintMass p
+        ((C.section4UBlueCondPairSet I (C.section4F I ε)).image Sym2.mk)
+        (C.section4TBlueRemainingSym2Set I (C.section4F I ε)) ≤
+      C.section4ActualConditionedEventMass I ε p N := by
+  let uRActual := (C.section4URedCondPairSet I (C.section4F I ε)).card
+  let uBActual := (C.section4UBlueCondPairSet I (C.section4F I ε)).card
+  let loss := C.section4SecondStageLossNat I ε
+  let remainingActual := N - loss
+  have hconstraint :=
+    C.mul_constructionGraphConstraintMass_section4TRemainingSym2Set_le_section4BernoulliMass
+      I (C.section4F I ε) hp0 hp1
+  have hremainingCard :
+      remainingActual ≤
+        (C.section4TRedRemainingSym2Set I (C.section4F I ε)).card +
+          (C.section4TBlueRemainingSym2Set I (C.section4F I ε)).card := by
+    rw [C.section4TRemainingPairSet_card_eq_section4TRedRemainingSym2Set_card_add
+      I (C.section4F I ε)] at hRemaining
+    simpa [remainingActual, loss] using hRemaining
+  have hmono :=
+    section4BernoulliMass_antitone_remaining
+      (uR := uRActual) (uB := uBActual) hp0 hp1 hremainingCard
+  have huR : (C.section4URedCondPairSet I (C.section4F I ε)).card = uRActual := rfl
+  have huB : (C.section4UBlueCondPairSet I (C.section4F I ε)).card = uBActual := rfl
+  calc
+    constructionGraphConstraintMass p
+        ((C.section4URedCondPairSet I (C.section4F I ε)).image Sym2.mk)
+        (C.section4TRedRemainingSym2Set I (C.section4F I ε)) *
+      constructionGraphConstraintMass p
+        ((C.section4UBlueCondPairSet I (C.section4F I ε)).image Sym2.mk)
+        (C.section4TBlueRemainingSym2Set I (C.section4F I ε)) ≤
+      section4BernoulliMass p
+        (C.section4URedCondPairSet I (C.section4F I ε)).card
+        (C.section4UBlueCondPairSet I (C.section4F I ε)).card
+        ((C.section4TRedRemainingSym2Set I (C.section4F I ε)).card +
+          (C.section4TBlueRemainingSym2Set I (C.section4F I ε)).card) := hconstraint
+    _ ≤ section4BernoulliMass p uRActual uBActual remainingActual := by
+      simpa [uRActual, uBActual, remainingActual] using hmono
+    _ = C.section4ActualConditionedEventMass I ε p N := by
+      unfold section4ActualConditionedEventMass
+      simp [uRActual, uBActual, loss, remainingActual,
+        C.section4UCondChoiceEventMass_eq_bernoulliMass_of_card_eq
+          (A := C.section4F I ε) (uR := uRActual) (uB := uBActual) huR huB]
+
 theorem mul_section4ActualConditionedEventMass_le_exp_add
     (C : ConstructionData n m) (I : Finset (Fin n))
     {ε p outerMass outerExp innerExp : ℝ} {N : ℕ}
@@ -16237,6 +16943,37 @@ theorem
       (C.openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_le_section4TPairSet
         I hopen)
       hindep
+
+set_option linter.style.longLine false in
+set_option maxHeartbeats 3000000 in
+-- This theorem elaborates a large specialized inequality involving several previously packaged
+-- Section 4 bridge lemmas; the extra heartbeats are only to let the elaborator normalize the full
+-- statement and its `simpa` proof.
+theorem
+    mul_constructionGraphConstraintMass_section4TRemainingSym2Set_le_section4ActualConditionedEventMass_of_openPair_le_of_indep
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p : ℝ} {N : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hopen : N ≤ (C.baseOpenPairSet I).card) :
+    constructionGraphConstraintMass p
+        ((C.section4URedCondPairSet I (C.section4F I ε)).image Sym2.mk)
+        (C.section4TRedRemainingSym2Set I (C.section4F I ε)) *
+      constructionGraphConstraintMass p
+        ((C.section4UBlueCondPairSet I (C.section4F I ε)).image Sym2.mk)
+        (C.section4TBlueRemainingSym2Set I (C.section4F I ε)) ≤
+      C.section4ActualConditionedEventMass I ε p N := by
+  have hbase :=
+    C.openPair_lower_bound_sub_section4_budget_sub_projectionPairCount_sum_sub_oppositeProjectionCounts_le_section4TRemainingPairSet
+      I (ε := ε) hopen hindep
+  have hRemaining :
+      N - C.section4SecondStageLossNat I ε ≤
+        (C.section4TRemainingPairSet I (C.section4F I ε)).card := by
+    simpa only [section4SecondStageLossNat, Nat.sub_sub, add_assoc, add_left_comm, add_comm]
+      using hbase
+  exact
+    C.mul_constructionGraphConstraintMass_section4TRemainingSym2Set_le_section4ActualConditionedEventMass_of_remaining_le
+      I hp0 hp1 hRemaining
 
 set_option linter.style.longLine false in
 theorem
