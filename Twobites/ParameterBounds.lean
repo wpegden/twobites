@@ -3344,6 +3344,227 @@ theorem paperRI_chooseOuterRemainder_le_nearOne_budget
       _ = (δ / 2 : ℝ) * paperK (1 + ε) n * Real.log (n : ℝ) := by ring
   linarith
 
+theorem two_le_delta_mul_paperK_one_add_eps_of_two_div_le
+    {δ ε : ℝ} {n : ℕ}
+    (hn : 1 < n) (hδ : 0 < δ) (hδle : δ ≤ 1) (hε : 0 ≤ ε)
+    (hloglog : 2 / δ ≤ Real.log (Real.log (n : ℝ))) :
+    2 ≤ δ * paperK (1 + ε) n := by
+  have hbase : 2 ≤ paperK δ n :=
+    two_le_paperK_of_two_div_le_of_le_one hn hδ hδle hloglog
+  calc
+    2 ≤ paperK δ n := hbase
+    _ ≤ paperK (δ * (1 + ε)) n := by
+      exact paperK_le_paperK_of_le (by nlinarith)
+    _ = δ * paperK (1 + ε) n := by
+      rw [← mul_paperK_eq_paperK_mul]
+
+theorem paperRI_chooseOuterExp_le_largeSum_main_plus_budget
+    {ε δ xR xB : ℝ} {n : ℕ}
+    (hn : 1 < n)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hδ : 0 < δ) (hδle : δ ≤ 1)
+    (hlarge : 56 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (hsum : 1 + ε / 2 ≤ xR + xB)
+    (hsum2 : xR + xB ≤ 2) :
+    ((((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) +
+        (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+          Real.log (Real.log (n : ℝ))) +
+        (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+        ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+        (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ)) ≤
+      (((xR + xB - 1) / 2) * paperK (1 + ε) n * Real.log (n : ℝ)) +
+        (2 * δ * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have hκ : 0 ≤ 1 + ε := by linarith
+  have hlog_nonneg : 0 ≤ Real.log (n : ℝ) := (paperLog_pos hn).le
+  have hKNat_le :
+      (paperKNat (1 + ε) n : ℝ) ≤ paperK (1 + ε) n + 1 :=
+    paperKNat_le_paperK_add_one hκ n
+  have hmainCoeff_nonneg : 0 ≤ (xR + xB - 1) / 2 := by
+    nlinarith
+  have hmainCoeff_half : (xR + xB - 1) / 2 ≤ (1 / 2 : ℝ) := by
+    nlinarith
+  have hdeltaK_two :
+      2 ≤ δ * paperK (1 + ε) n := by
+    exact two_le_delta_mul_paperK_one_add_eps_of_two_div_le
+      hn hδ hδle hε.le (by
+        have hsmall : (2 : ℝ) / δ ≤ 56 / δ :=
+          div_le_div_of_nonneg_right (by norm_num) hδ.le
+        exact hsmall.trans hlarge)
+  have hmainCoeff_le_budget :
+      (xR + xB - 1) / 2 ≤ δ * paperK (1 + ε) n := by
+    linarith
+  have hmain :
+      ((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ) ≤
+        ((xR + xB - 1) / 2) * paperK (1 + ε) n * Real.log (n : ℝ) +
+          (δ * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    have hmulK :
+        ((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) ≤
+          ((xR + xB - 1) / 2) * paperK (1 + ε) n + δ * paperK (1 + ε) n := by
+      have hscaled :
+          ((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) ≤
+            ((xR + xB - 1) / 2) * (paperK (1 + ε) n + 1) := by
+        nlinarith
+      nlinarith [hscaled, hmainCoeff_le_budget]
+    have hmul :=
+      mul_le_mul_of_nonneg_right hmulK hlog_nonneg
+    nlinarith [hmul]
+  have hrem :
+      (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+            Real.log (Real.log (n : ℝ))) +
+          (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+          ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+          (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) ≤
+        δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+    exact
+      paperRI_chooseOuterRemainder_le_largeSum_budget hn hloglog hε hεquarter hδ hlarge
+        hkone hsum hsum2
+  linarith
+
+theorem paperRI_chooseOuterExp_le_nearOne_main_plus_budget
+    {ε δ xR xB : ℝ} {n : ℕ}
+    (hn : 1 < n)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hδ : 0 < δ) (hδle : δ ≤ 1)
+    (hlarge : 72 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (hsumLower : 1 - ε / 2 ≤ xR + xB)
+    (hsumUpper : xR + xB ≤ 1 + ε / 2) :
+    ((((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) +
+        (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+          Real.log (Real.log (n : ℝ))) +
+        (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+        ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+        (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ)) ≤
+      (((xR + xB - 1) / 2) * paperK (1 + ε) n * Real.log (n : ℝ)) +
+        (2 * δ * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have hκ : 0 ≤ 1 + ε := by linarith
+  have hlog_nonneg : 0 ≤ Real.log (n : ℝ) := (paperLog_pos hn).le
+  have hKNat_le :
+      (paperKNat (1 + ε) n : ℝ) ≤ paperK (1 + ε) n + 1 :=
+    paperKNat_le_paperK_add_one hκ n
+  have hmainCoeff_half : (xR + xB - 1) / 2 ≤ (1 / 2 : ℝ) := by
+    nlinarith
+  have hdeltaK_two :
+      2 ≤ δ * paperK (1 + ε) n := by
+    exact two_le_delta_mul_paperK_one_add_eps_of_two_div_le
+      hn hδ hδle hε.le (by
+        have hsmall : (2 : ℝ) / δ ≤ 72 / δ :=
+          div_le_div_of_nonneg_right (by norm_num) hδ.le
+        exact hsmall.trans hlarge)
+  have hmain :
+      ((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ) ≤
+        ((xR + xB - 1) / 2) * paperK (1 + ε) n * Real.log (n : ℝ) +
+          (δ * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    by_cases hmainCoeff_nonneg : 0 ≤ (xR + xB - 1) / 2
+    · have hmainCoeff_le_budget :
+          (xR + xB - 1) / 2 ≤ δ * paperK (1 + ε) n := by
+        linarith
+      have hmulK :
+          ((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) ≤
+            ((xR + xB - 1) / 2) * paperK (1 + ε) n + δ * paperK (1 + ε) n := by
+        have hscaled :
+            ((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) ≤
+              ((xR + xB - 1) / 2) * (paperK (1 + ε) n + 1) := by
+          nlinarith
+        nlinarith [hscaled, hmainCoeff_le_budget]
+      have hmul :=
+        mul_le_mul_of_nonneg_right hmulK hlog_nonneg
+      nlinarith [hmul]
+    · have hmainCoeff_nonpos : (xR + xB - 1) / 2 ≤ 0 := by linarith
+      have hKNat_ge :
+          paperK (1 + ε) n ≤ (paperKNat (1 + ε) n : ℝ) :=
+        paperK_le_paperKNat (1 + ε) n
+      have hmulK :
+          ((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) ≤
+            ((xR + xB - 1) / 2) * paperK (1 + ε) n := by
+        exact mul_le_mul_of_nonpos_left hKNat_ge hmainCoeff_nonpos
+      have hmul :=
+        mul_le_mul_of_nonneg_right hmulK hlog_nonneg
+      have hbudget_nonneg :
+          0 ≤ δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+        have hδK_nonneg : 0 ≤ δ * paperK (1 + ε) n := by
+          exact mul_nonneg hδ.le (paperK_nonneg hκ n)
+        exact mul_nonneg hδK_nonneg hlog_nonneg
+      linarith
+  have hrem :
+      (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+            Real.log (Real.log (n : ℝ))) +
+          (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+          ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+          (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) ≤
+        δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+    exact
+      paperRI_chooseOuterRemainder_le_nearOne_budget hn hloglog hε hεquarter hδ hlarge
+        hkone hsumLower hsumUpper
+  linarith
+
+theorem paperRI_chooseOuterExp_add_risiLargeSum_le_htotal
+    {ε δ xR xB sectionExp : ℝ} {n : ℕ}
+    (hn : 1 < n)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hδ : 0 < δ) (hδle : δ ≤ 1)
+    (hlarge : 56 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (hsum : 1 + ε / 2 ≤ xR + xB)
+    (hsum2 : xR + xB ≤ 2)
+    (hsection :
+      sectionExp ≤
+        (((-((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * (xR + xB) -
+                2 * ε ^ 3 * (1 + ε)) / 2)) - 2 * δ) *
+          paperK (1 + ε) n * Real.log (n : ℝ))) :
+    ((((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) +
+        (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+          Real.log (Real.log (n : ℝ))) +
+        (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+        ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+        (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ)) +
+      sectionExp ≤
+      (((xR + xB - 1) / 2 -
+            ((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * (xR + xB) -
+                  2 * ε ^ 3 * (1 + ε)) / 2)) *
+          paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have houter :=
+    paperRI_chooseOuterExp_le_largeSum_main_plus_budget hn hloglog hε hεquarter hδ hδle
+      hlarge hkone hsum hsum2
+  linarith
+
+theorem paperRI_chooseOuterExp_add_risiNearOne_le_htotal
+    {ε δ xR xB sectionExp : ℝ} {n : ℕ}
+    (hn : 1 < n)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hδ : 0 < δ) (hδle : δ ≤ 1)
+    (hlarge : 72 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (hsumLower : 1 - ε / 2 ≤ xR + xB)
+    (hsumUpper : xR + xB ≤ 1 + ε / 2)
+    (hsection :
+      sectionExp ≤
+        (((-(1 / (4 * (1 + ε))) *
+              (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+                xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) - 2 * δ) *
+          paperK (1 + ε) n * Real.log (n : ℝ))) :
+    ((((xR + xB - 1) / 2) * (paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) +
+        (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+          Real.log (Real.log (n : ℝ))) +
+        (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+        ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+        (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ)) +
+      sectionExp ≤
+      ((-(1 - xR - xB) / 2 -
+              (1 / (4 * (1 + ε))) *
+                (-2 * (1 + ε) ^ 2 + 2 * (1 + ε) ^ 2 * (xR + xB) + (1 + ε) -
+                  xB * (1 + ε) - (1 / 2 : ℝ) - 2 * ε ^ 3 * (1 + ε) ^ 2)) *
+          paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have houter :=
+    paperRI_chooseOuterExp_le_nearOne_main_plus_budget hn hloglog hε hεquarter hδ hδle
+      hlarge hkone hsumLower hsumUpper
+  linarith
+
 theorem paperRI_smallSumCoeff_le
     {ε x : ℝ} (hsum : x ≤ 1 - ε / 2) :
     -(1 - x) / 2 ≤ -ε / 4 := by
