@@ -17973,6 +17973,217 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    section4ProjectionChoiceMassSum_section4F_le_exp_of_bounds
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p : ℝ} {N : ℕ}
+    {remainingBound uRBound uBBound : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hRemaining :
+      remainingBound ≤
+        N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+          (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl))
+    (hUR :
+      C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) ≤
+        uRBound)
+    (hUB :
+      C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) ≤
+        uBBound) :
+    let remainingNat :=
+      N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+        (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+        C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+        C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    let uRNat :=
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+    let uBNat :=
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    section4ProjectionChoiceMassSum p remainingNat uRNat uBNat ≤
+      Real.exp (p * (uRBound : ℝ) + p * (uBBound : ℝ) - p * (remainingBound : ℝ)) := by
+  let remainingNat :=
+    N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+      (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+        C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+  let uRNat :=
+    C.redProjectionPairCount I
+      ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+  let uBNat :=
+    C.blueProjectionPairCount I
+      ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+  change
+    section4ProjectionChoiceMassSum p remainingNat uRNat uBNat ≤
+      Real.exp (p * (uRBound : ℝ) + p * (uBBound : ℝ) - p * (remainingBound : ℝ))
+  refine
+    (section4ProjectionChoiceMassSum_le_exp
+      (p := p) (remaining := remainingNat) (uRMax := uRNat) (uBMax := uBNat) hp0 hp1).trans ?_
+  apply Real.exp_le_exp.mpr
+  have hRemainingR : (remainingBound : ℝ) ≤ remainingNat := by
+    exact_mod_cast hRemaining
+  have hURR : (uRNat : ℝ) ≤ uRBound := by
+    exact_mod_cast hUR
+  have hUBR : (uBNat : ℝ) ≤ uBBound := by
+    exact_mod_cast hUB
+  nlinarith
+
+set_option linter.style.longLine false in
+set_option maxHeartbeats 800000 in
+-- This projection-choice corollary reuses the large `section4F` specialized bound and needs extra
+-- elaboration budget to normalize the specialized arithmetic around the Section 4 loss term.
+theorem
+    section4ProjectionChoiceMassSum_section4F_le_exp_of_totalError
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p totalError : ℝ} {N : ℕ}
+    {uRBound uBBound : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hUR :
+      C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) ≤
+        uRBound)
+    (hUB :
+      C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) ≤
+        uBBound)
+    (hLossLeN : C.section4SecondStageLossNat I ε ≤ N)
+    (hTotal :
+      (C.section4SecondStageLossNat I ε : ℝ) + (uRBound : ℝ) + (uBBound : ℝ) ≤ totalError) :
+    let remainingNat := N - C.section4SecondStageLossNat I ε
+    let uRNat :=
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+    let uBNat :=
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    section4ProjectionChoiceMassSum p remainingNat uRNat uBNat ≤
+      Real.exp (p * totalError - p * (N : ℝ)) := by
+  dsimp
+  have hbase :
+      section4ProjectionChoiceMassSum p
+          (N - C.section4SecondStageLossNat I ε)
+          (C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr))
+          (C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)) ≤
+        Real.exp
+          (p * (uRBound : ℝ) + p * (uBBound : ℝ) -
+            p * ((N - C.section4SecondStageLossNat I ε : ℕ) : ℝ)) := by
+    have hRemaining :
+        N - C.section4SecondStageLossNat I ε ≤
+          N - I.card * (C.section4F1 I ∪ C.section4F2 I ε).card -
+            (C.redProjectionPairCount I ((C.baseImage I).filter IsRedBaseVertex) +
+              C.blueProjectionPairCount I ((C.baseImage I).filter IsBlueBaseVertex)) -
+            C.redProjectionPairCount I
+              ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) -
+            C.blueProjectionPairCount I
+              ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) := by
+      simpa only [section4SecondStageLossNat, Nat.sub_sub, add_assoc, add_left_comm, add_comm]
+        using (Nat.le_refl (N - C.section4SecondStageLossNat I ε))
+    have hbase' :=
+      C.section4ProjectionChoiceMassSum_section4F_le_exp_of_bounds
+        (I := I) (ε := ε) (p := p) (N := N)
+        (remainingBound := N - C.section4SecondStageLossNat I ε)
+        (uRBound := uRBound) (uBBound := uBBound)
+        hp0 hp1 hRemaining hUR hUB
+    simpa only [section4SecondStageLossNat, Nat.sub_sub, add_assoc, add_left_comm, add_comm]
+      using hbase'
+  refine hbase.trans ?_
+  apply Real.exp_le_exp.mpr
+  have hcast :
+      (((N - C.section4SecondStageLossNat I ε : ℕ) : ℝ)) =
+        (N : ℝ) - (C.section4SecondStageLossNat I ε : ℝ) := by
+    simp [Nat.cast_sub hLossLeN]
+  nlinarith
+
+set_option linter.style.longLine false in
+set_option maxHeartbeats 800000 in
+-- This LMS-specialized corollary inherits the same large specialized arithmetic footprint as the
+-- total-error version above, so we give Lean additional heartbeats to elaborate the wrappers.
+theorem
+    section4ProjectionChoiceMassSum_section4F_le_exp_of_LMS_totalError
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p totalError : ℝ} {N : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        N)
+    (hTotal :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+            3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+            C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) ≤
+        totalError) :
+    let remainingNat := N - C.section4SecondStageLossNat I ε
+    let uRNat :=
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+    let uBNat :=
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    section4ProjectionChoiceMassSum p remainingNat uRNat uBNat ≤
+      Real.exp (p * totalError - p * (N : ℝ)) := by
+  let uRBound :=
+    C.redProjectionPairCount I
+      ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+  let uBBound :=
+    C.blueProjectionPairCount I
+      ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+  have hLoss :
+      C.section4SecondStageLossNat I ε ≤
+        I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) := by
+    exact
+      C.section4SecondStageLossNat_le_revealBudget_add_two_mul_partPairCount_LMS_add_huge
+        I hHsubset ht21 ht32
+  have hLossLeN' : C.section4SecondStageLossNat I ε ≤ N := hLoss.trans hLossLeN
+  have hTotalNat :
+      C.section4SecondStageLossNat I ε + uRBound + uBBound ≤
+        I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) := by
+    simpa [uRBound, uBBound] using
+      C.section4SecondStageLossNat_add_witnessCaps_le_revealBudget_add_three_mul_partPairCount_LMS_add_huge
+        I hHsubset ht21 ht32
+  have hTotal' :
+      (C.section4SecondStageLossNat I ε : ℝ) + (uRBound : ℝ) + (uBBound : ℝ) ≤ totalError := by
+    have hTotalNatR :
+        (C.section4SecondStageLossNat I ε : ℝ) + (uRBound : ℝ) + (uBBound : ℝ) ≤
+          (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+                3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+                C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+                C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) := by
+      exact_mod_cast hTotalNat
+    exact hTotalNatR.trans hTotal
+  exact
+    C.section4ProjectionChoiceMassSum_section4F_le_exp_of_totalError
+      (I := I) (ε := ε) (p := p) (N := N)
+      (uRBound := uRBound) (uBBound := uBBound)
+      hp0 hp1
+      (by simp [uRBound])
+      (by simp [uBBound])
+      hLossLeN' hTotal'
+
+set_option linter.style.longLine false in
+theorem
     section4UCondChoiceEventMass_section4F_le_exp_of_indep_of_bounds_of_sum_le
     (C : ConstructionData n m) (I : Finset (Fin n)) {ε p errorBound : ℝ} {N : ℕ}
     {remainingBound uRBound uBBound : ℕ}
