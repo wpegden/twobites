@@ -2362,7 +2362,9 @@ theorem redBaseOpenPairSet_image_sym2_disjoint_constructionGraphEdgeFinset
 
 theorem blueBaseOpenPairSet_image_sym2_disjoint_constructionGraphEdgeFinset
     (C : ConstructionData n m) (I : Finset (Fin n)) :
-    Disjoint ((C.blueBaseOpenPairSet I).image Sym2.mk) (constructionGraphEdgeFinset C.blueBase) := by
+    Disjoint
+      ((C.blueBaseOpenPairSet I).image Sym2.mk)
+      (constructionGraphEdgeFinset C.blueBase) := by
   refine Finset.disjoint_left.2 ?_
   intro s hsOpen hsEdge
   rcases Finset.mem_image.1 hsOpen with ⟨⟨b, b'⟩, hp, rfl⟩
@@ -15802,6 +15804,106 @@ theorem blueOppositeWitnessBiUnion_card_le_blueProjectionPairCount (C : Construc
           ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl) := by
       simp [blueProjectionPairCount]
 
+theorem closedPairOn_of_redMixedDeletionWitness_of_mem
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {u v w : Fin n} (hxA : Sum.inr (C.blueProj u) ∈ A)
+    (hvI : v ∈ I) (hwI : w ∈ I) (hvw : v ≠ w)
+    (hmixed : C.redMixedDeletionWitness u v w) :
+    C.ClosedPairOn I A v w := by
+  refine C.closedPairOn_of_mem hxA ?_ ?_ hvw
+  · exact (C.mem_X_blue).2 ⟨hvI, by simpa [C.blueLift_adj_iff] using hmixed.1⟩
+  · exact (C.mem_X_blue).2 ⟨hwI, by simpa [C.blueLift_adj_iff] using hmixed.2.1⟩
+
+theorem closedPairOn_of_blueMixedDeletionWitness_of_mem
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {u v w : Fin n} (hxA : Sum.inl (C.redProj u) ∈ A)
+    (hvI : v ∈ I) (hwI : w ∈ I) (hvw : v ≠ w)
+    (hmixed : C.blueMixedDeletionWitness u v w) :
+    C.ClosedPairOn I A v w := by
+  refine C.closedPairOn_of_mem hxA ?_ ?_ hvw
+  · exact (C.mem_X_red).2 ⟨hvI, by simpa [C.redLift_adj_iff] using hmixed.1⟩
+  · exact (C.mem_X_red).2 ⟨hwI, by simpa [C.redLift_adj_iff] using hmixed.2.1⟩
+
+theorem sym2_mk_mem_redOppositeWitnessBiUnion_of_redMixedDeletionWitness_of_not_mem
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {u v w : Fin n} (hvI : v ∈ I) (hwI : w ∈ I)
+    (hnotA : Sum.inr (C.blueProj u) ∉ A)
+    (hmixed : C.redMixedDeletionWitness u v w) :
+    Sym2.mk (C.redProj v, C.redProj w) ∈ C.redOppositeWitnessBiUnion I A := by
+  refine Finset.mem_biUnion.2 ⟨C.blueProj u, by simpa using hnotA, ?_⟩
+  refine Finset.mem_image.2 ⟨(C.redProj v, C.redProj w), ?_, rfl⟩
+  refine Finset.mem_offDiag.2 ⟨?_, ?_, C.redProj_ne_of_redLift_adj hmixed.2.2⟩
+  · exact
+      C.mem_redProjectionImage_inr.2
+        ⟨v, hvI, by simpa [C.blueLift_adj_iff] using hmixed.1, rfl⟩
+  · exact
+      C.mem_redProjectionImage_inr.2
+        ⟨w, hwI, by simpa [C.blueLift_adj_iff] using hmixed.2.1, rfl⟩
+
+theorem sym2_mk_mem_blueOppositeWitnessBiUnion_of_blueMixedDeletionWitness_of_not_mem
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {u v w : Fin n} (hvI : v ∈ I) (hwI : w ∈ I)
+    (hnotA : Sum.inl (C.redProj u) ∉ A)
+    (hmixed : C.blueMixedDeletionWitness u v w) :
+    Sym2.mk (C.blueProj v, C.blueProj w) ∈ C.blueOppositeWitnessBiUnion I A := by
+  refine Finset.mem_biUnion.2 ⟨C.redProj u, by simpa using hnotA, ?_⟩
+  refine Finset.mem_image.2 ⟨(C.blueProj v, C.blueProj w), ?_, rfl⟩
+  refine Finset.mem_offDiag.2 ⟨?_, ?_, C.blueProj_ne_of_blueLift_adj hmixed.2.2⟩
+  · exact
+      C.mem_blueProjectionImage_inl.2
+        ⟨v, hvI, by simpa [C.redLift_adj_iff] using hmixed.1, rfl⟩
+  · exact
+      C.mem_blueProjectionImage_inl.2
+        ⟨w, hwI, by simpa [C.redLift_adj_iff] using hmixed.2.1, rfl⟩
+
+theorem redLift_edge_indep_trichotomy
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {v w : Fin n}
+    (hvI : v ∈ I) (hwI : w ∈ I) (hvw : v ≠ w)
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hred : C.redLift.Adj v w) :
+    C.ClosedPairPlus I v w ∨
+      C.ClosedPairOn I A v w ∨
+        Sym2.mk (C.redProj v, C.redProj w) ∈ C.redOppositeWitnessBiUnion I A := by
+  have hnotFinal : ¬ C.finalGraph.Adj v w := hindep hvI hwI hvw
+  have hdel : C.redDeleted v w := by
+    by_contra hdel
+    exact hnotFinal ((C.finalGraph_adj_iff).2 <|
+      Or.inl ((C.retainedRed_adj_iff).2 ⟨hred, hdel⟩))
+  rcases hdel with ⟨u, hmono | hmixed⟩
+  · exact Or.inl (C.closedPairPlus_of_redMonochromaticDeletionWitness hvI hwI hvw hmono)
+  · by_cases hxA : Sum.inr (C.blueProj u) ∈ A
+    · exact Or.inr <| Or.inl <|
+        C.closedPairOn_of_redMixedDeletionWitness_of_mem hxA hvI hwI hvw hmixed
+    · exact Or.inr <| Or.inr <|
+        C.sym2_mk_mem_redOppositeWitnessBiUnion_of_redMixedDeletionWitness_of_not_mem
+          hvI hwI hxA hmixed
+
+theorem blueLift_edge_indep_trichotomy
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {v w : Fin n}
+    (hvI : v ∈ I) (hwI : w ∈ I) (hvw : v ≠ w)
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hblue : C.blueLift.Adj v w) :
+    C.ClosedPairPlus I v w ∨
+      C.ClosedPairOn I A v w ∨
+        Sym2.mk (C.blueProj v, C.blueProj w) ∈ C.blueOppositeWitnessBiUnion I A := by
+  have hnotFinal : ¬ C.finalGraph.Adj v w := hindep hvI hwI hvw
+  have hdel : C.blueDeleted v w := by
+    by_contra hdel
+    exact hnotFinal ((C.finalGraph_adj_iff).2 <|
+      Or.inr ((C.retainedBlue_adj_iff).2 ⟨hblue, hdel⟩))
+  rcases hdel with ⟨u, hmono | hmixed⟩
+  · exact Or.inl (C.closedPairPlus_of_blueMonochromaticDeletionWitness hvI hwI hvw hmono)
+  · by_cases hxA : Sum.inl (C.redProj u) ∈ A
+    · exact Or.inr <| Or.inl <|
+        C.closedPairOn_of_blueMixedDeletionWitness_of_mem hxA hvI hwI hvw hmixed
+    · exact Or.inr <| Or.inr <|
+        C.sym2_mk_mem_blueOppositeWitnessBiUnion_of_blueMixedDeletionWitness_of_not_mem
+          hvI hwI hxA hmixed
+
 theorem sym2_mk_mem_redOppositeWitnessBiUnion_of_openPairOn_of_openPairPlus_of_not_finalGraph
     (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
     {v w : Fin n} (hopen : C.OpenPairOn I A v w) (hopenPlus : C.OpenPairPlus I v w)
@@ -16483,14 +16585,16 @@ theorem one_sub_pow_le_one_sub_pow_of_le {p : ℝ}
 theorem pow_le_pow_of_nonneg_le_one_nat {p : ℝ}
     (hp0 : 0 ≤ p) (hp1 : p ≤ 1) {m n : ℕ} (hmn : m ≤ n) :
     p ^ n ≤ p ^ m := by
-  induction' hmn with n hmn ih
-  · rfl
-  · calc
-      p ^ (n + 1) = p ^ n * p := by rw [pow_succ]
-      _ ≤ p ^ n * 1 := by
-        exact mul_le_mul_of_nonneg_left hp1 (pow_nonneg hp0 _)
-      _ = p ^ n := by ring
-      _ ≤ p ^ m := ih
+  induction hmn with
+  | refl =>
+      rfl
+  | @step n hmn ih =>
+      calc
+        p ^ (n + 1) = p ^ n * p := by rw [pow_succ]
+        _ ≤ p ^ n * 1 := by
+          exact mul_le_mul_of_nonneg_left hp1 (pow_nonneg hp0 _)
+        _ = p ^ n := by ring
+        _ ≤ p ^ m := ih
 
 theorem section4ChoiceMass_le_of_choiceBound_of_le_remaining
     (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
