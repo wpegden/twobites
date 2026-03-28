@@ -16,6 +16,10 @@
   1. first formalize a witness theorem of the form
      `∃ G : SimpleGraph (Fin n), G.CliqueFree 3 ∧ G.IndepSetFree k`,
   2. then package it into a local Ramsey-number definition or a local lower-bound corollary.
+  The witness-form side now has the basic monotonicity lemma `triangleFreeRamseyWitness_mono`, so a
+  witness on `n` vertices automatically restricts to one on every `m ≤ n`; the remaining gap on
+  the Ramsey-number side is therefore only the separate existence/nonemptiness layer for the local
+  `sInf`-based definition.
 - The paper-check notes imply one necessary Lean-side cleanup: the proof should explicitly reduce to sufficiently small `ε`, since the paper's asymptotic inequalities use `ε << 1`.
 
 ## Imported Dependencies
