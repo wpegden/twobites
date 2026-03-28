@@ -23072,6 +23072,135 @@ theorem constructionGraphBernoulliWeight_mul_le_section4ActualConditionedEventMa
             (remaining := (C.baseOpenPairSet I).card - C.section4SecondStageLossNat I ε)
             rfl rfl).symm
 
+set_option linter.style.longLine false in
+theorem
+    constructionEmbeddingUniformWeight_mul_constructionProductWeight_le_outerMass_mul_actualMass_of_baseOpenPairSet_card
+    {β ε : ℝ} (C : ConstructionData n m) (I : Finset (Fin n))
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1) :
+    constructionEmbeddingUniformWeight n m *
+        (constructionGraphBernoulliWeight (Twobites.paperP β n) C.redBase *
+          constructionGraphBernoulliWeight (Twobites.paperP β n) C.blueBase) ≤
+      Twobites.paperRIOuterEventMass m (C.redImage I).card (C.blueImage I).card I.card *
+        C.section4ActualConditionedEventMass I ε (Twobites.paperP β n) (C.baseOpenPairSet I).card := by
+  have houter :
+      constructionEmbeddingUniformWeight n m ≤
+        Twobites.paperRIOuterEventMass m (C.redImage I).card (C.blueImage I).card I.card := by
+    exact constructionEmbeddingUniformWeight_le_paperRIOuterEventMass_of_pairImage C I
+  have hinner :
+      constructionGraphBernoulliWeight (Twobites.paperP β n) C.redBase *
+          constructionGraphBernoulliWeight (Twobites.paperP β n) C.blueBase ≤
+        C.section4ActualConditionedEventMass I ε (Twobites.paperP β n) (C.baseOpenPairSet I).card :=
+    C.constructionGraphBernoulliWeight_mul_le_section4ActualConditionedEventMass_of_baseOpenPairSet_card
+      I hp0 hp1
+  have houter0 :
+      0 ≤ Twobites.paperRIOuterEventMass m (C.redImage I).card (C.blueImage I).card I.card := by
+    exact le_trans (constructionEmbeddingUniformWeight_nonneg n m) houter
+  have hinner0 :
+      0 ≤ constructionGraphBernoulliWeight (Twobites.paperP β n) C.redBase *
+        constructionGraphBernoulliWeight (Twobites.paperP β n) C.blueBase := by
+    exact mul_nonneg
+      (constructionGraphBernoulliWeight_nonneg hp0 hp1 C.redBase)
+      (constructionGraphBernoulliWeight_nonneg hp0 hp1 C.blueBase)
+  calc
+    constructionEmbeddingUniformWeight n m *
+        (constructionGraphBernoulliWeight (Twobites.paperP β n) C.redBase *
+          constructionGraphBernoulliWeight (Twobites.paperP β n) C.blueBase) ≤
+      Twobites.paperRIOuterEventMass m (C.redImage I).card (C.blueImage I).card I.card *
+        (constructionGraphBernoulliWeight (Twobites.paperP β n) C.redBase *
+          constructionGraphBernoulliWeight (Twobites.paperP β n) C.blueBase) := by
+      exact mul_le_mul_of_nonneg_right houter hinner0
+    _ ≤
+      Twobites.paperRIOuterEventMass m (C.redImage I).card (C.blueImage I).card I.card *
+        C.section4ActualConditionedEventMass I ε (Twobites.paperP β n) (C.baseOpenPairSet I).card := by
+      exact mul_le_mul_of_nonneg_left hinner houter0
+
+noncomputable def goodSurvivingGraphPairActualMassIntegrand
+    (β : ℝ) (n m fiberBound degreeBound codegreeBound projCodegreeBound : ℕ)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (ε : ℝ)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m)) : ℝ := by
+  classical
+  let Cx : ConstructionData n m :=
+    { redBase := x.1, blueBase := x.2, embedding := e }
+  exact
+    if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+          I e x then
+      Cx.section4ActualConditionedEventMass I ε (Twobites.paperP β n) (Cx.baseOpenPairSet I).card
+    else
+      0
+
+set_option linter.style.longLine false in
+theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_actualMass
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairActualMassIntegrand β n m fiberBound degreeBound codegreeBound
+            projCodegreeBound I e ε x := by
+  let outerMass :=
+    Twobites.paperRIOuterEventMass m
+      (({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m).redImage I).card
+      (({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m).blueImage I).card
+      I.card
+  have houter :
+      constructionEmbeddingUniformWeight n m ≤ outerMass := by
+    exact constructionEmbeddingUniformWeight_le_paperRIOuterEventMass_of_pairImage
+      ({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m) I
+  have houter0 : 0 ≤ outerMass := by
+    exact le_trans (constructionEmbeddingUniformWeight_nonneg n m) houter
+  have hsum :
+      paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairActualMassIntegrand β n m fiberBound degreeBound codegreeBound
+            projCodegreeBound I e ε x := by
+    classical
+    unfold paperGoodSurvivingGraphPairMass
+    refine Finset.sum_le_sum ?_
+    intro x hx
+    let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+    by_cases hgood :
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+          I e x
+    · simpa [goodSurvivingGraphPairActualMassIntegrand, Cx, hgood] using
+        Cx.constructionGraphBernoulliWeight_mul_le_section4ActualConditionedEventMass_of_baseOpenPairSet_card
+          (I := I) (ε := ε) (p := Twobites.paperP β n) hp0 hp1
+    · have hnonneg :
+        0 ≤
+          Cx.section4ActualConditionedEventMass I ε (Twobites.paperP β n) (Cx.baseOpenPairSet I).card := by
+        exact Cx.section4ActualConditionedEventMass_nonneg I hp0 hp1
+      simp [goodSurvivingGraphPairActualMassIntegrand, hgood]
+  have hmass0 :
+      0 ≤ paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+        projCodegreeBound I e :=
+    paperGoodSurvivingGraphPairMass_nonneg (n := n) (m := m) (β := β)
+      (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      hp0 hp1 I e
+  calc
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      outerMass *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e := by
+      exact mul_le_mul_of_nonneg_right houter hmass0
+    _ ≤
+      outerMass *
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairActualMassIntegrand β n m fiberBound degreeBound codegreeBound
+            projCodegreeBound I e ε x := by
+      exact mul_le_mul_of_nonneg_left hsum houter0
+
 theorem paperConstructionMass_goodSurvivingIndepSetEventSet_eq_sum_by_embedding
     {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (I : Finset (Fin n)) :
