@@ -1,4 +1,5 @@
 import Twobites.Construction
+import Twobites.PaperDefinitions
 import Twobites.ParameterBounds
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
@@ -20278,6 +20279,57 @@ theorem sum_powersetCard_le_of_choose_mul_le
   intro I hI
   have h := hbound I (by simpa [s] using hI)
   simpa [s, hsCardNat] using h
+
+/-- A deterministic endpoint for the final graph: if every `k`-subset of `Fin n` fails to be an
+independent set in `C.finalGraph`, then `C.finalGraph` is `k`-independent-set-free. -/
+theorem finalGraph_indepSetFree_of_forall_not_hindep_powersetCard
+    (C : ConstructionData n m) {k : ℕ}
+    (hnot :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k,
+        ¬ (∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)) :
+    C.finalGraph.IndepSetFree k := by
+  intro I hI
+  have hmem : I ∈ (Finset.univ : Finset (Fin n)).powersetCard k := by
+    exact Finset.mem_powersetCard.2 ⟨Finset.subset_univ I, hI.card_eq⟩
+  apply hnot I hmem
+  intro v w hv hw hvw
+  exact hI.isIndepSet hv hw hvw
+
+/-- A paper-facing Ramsey witness extracted from the deterministic final graph once every `k`-set
+fails to survive as an independent set. -/
+theorem triangleFreeRamseyWitness_of_forall_not_hindep_powersetCard
+    (C : ConstructionData n m) {k : ℕ}
+    (hnot :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k,
+        ¬ (∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)) :
+    triangleFreeRamseyWitness n k := by
+  refine ⟨C.finalGraph, C.finalGraph_cliqueFree, ?_⟩
+  exact C.finalGraph_indepSetFree_of_forall_not_hindep_powersetCard hnot
+
+/-- A paper-facing `main` witness extracted from the deterministic final graph once every
+`paperKNat (1 + ε) n`-subset fails to survive as an independent set. This isolates the final graph
+side of the argument from the still-missing global random-construction existence layer. -/
+theorem triangleFreeWithSmallIndepNum_of_forall_not_hindep_powersetCard
+    (C : ConstructionData n m) {ε : ℝ}
+    (hnot :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard (Twobites.paperKNat (1 + ε) n),
+        ¬ (∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)) :
+    triangleFreeWithSmallIndepNum ε n := by
+  refine ⟨C.finalGraph, C.finalGraph_cliqueFree, ?_⟩
+  have hfree :
+      C.finalGraph.IndepSetFree (Twobites.paperKNat (1 + ε) n) :=
+    C.finalGraph_indepSetFree_of_forall_not_hindep_powersetCard hnot
+  have hindepNumNat :
+      C.finalGraph.indepNum < Twobites.paperKNat (1 + ε) n :=
+    SimpleGraph.indepNum_lt_of_indepSetFree hfree
+  have hindepNumReal :
+      (C.finalGraph.indepNum : ℝ) < Twobites.paperK (1 + ε) n := by
+    by_contra hge
+    have hceil :
+        Twobites.paperKNat (1 + ε) n ≤ C.finalGraph.indepNum :=
+      Nat.ceil_le.2 (le_of_not_gt hge)
+    exact Nat.not_le_of_lt hindepNumNat hceil
+  simpa [Twobites.paperK] using hindepNumReal
 
 end
 
