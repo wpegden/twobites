@@ -23653,6 +23653,130 @@ theorem goodSurvivingGraphPairProjectionChoiceMassBound_le_section4ProjectionCho
       (p := Twobites.paperP β n) hp0 hp1 hremaining hUR hUB)
 
 set_option linter.style.longLine false in
+theorem goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_totalBudget_of_le
+    {β ε totalError : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    {remaining uRMax uBMax : ℕ}
+    (hremaining :
+      remaining ≤
+        (({ redBase := x.1, blueBase := x.2, embedding := e } :
+            ConstructionData n m).baseOpenPairSet I).card -
+          ({ redBase := x.1, blueBase := x.2, embedding := e } :
+              ConstructionData n m).section4SecondStageLossNat I ε)
+    (hUR :
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m =>
+              Sum.inr b ∉
+                ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).section4F I ε).image Sum.inr) ≤
+        uRMax)
+    (hUB :
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m =>
+              Sum.inl r ∉
+                ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).section4F I ε).image Sum.inl) ≤
+        uBMax)
+    (hTotal :
+      ((((({ redBase := x.1, blueBase := x.2, embedding := e } :
+              ConstructionData n m).baseOpenPairSet I).card - remaining + uRMax + uBMax : ℕ) :
+          ℝ)) ≤
+        totalError) :
+    goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x ≤
+      Real.exp
+        (Twobites.paperP β n * totalError -
+          Twobites.paperP β n *
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                ConstructionData n m).baseOpenPairSet I).card : ℝ)) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  have hsum :
+      goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x ≤
+        section4ProjectionChoiceMassSum (Twobites.paperP β n) remaining uRMax uBMax := by
+    exact
+      goodSurvivingGraphPairProjectionChoiceMassBound_le_section4ProjectionChoiceMassSum_of_le
+        (n := n) (m := m) (β := β) (ε := ε) hp0 hp1 I e x hremaining hUR hUB
+  have hexp :
+      section4ProjectionChoiceMassSum (Twobites.paperP β n) remaining uRMax uBMax ≤
+        Real.exp
+          (Twobites.paperP β n * (uRMax : ℝ) + Twobites.paperP β n * (uBMax : ℝ) -
+            Twobites.paperP β n * (remaining : ℝ)) := by
+    exact
+      section4ProjectionChoiceMassSum_le_exp
+        (p := Twobites.paperP β n) (remaining := remaining) (uRMax := uRMax)
+        (uBMax := uBMax) hp0 hp1
+  refine hsum.trans <| hexp.trans ?_
+  apply Real.exp_le_exp.mpr
+  have hremainingLeN : remaining ≤ (Cx.baseOpenPairSet I).card := by
+    exact le_trans hremaining (Nat.sub_le _ _)
+  have hTotal' :
+      (((Cx.baseOpenPairSet I).card : ℝ) - (remaining : ℝ)) + (uRMax : ℝ) + (uBMax : ℝ) ≤
+        totalError := by
+    have hcast :
+        (((Cx.baseOpenPairSet I).card - remaining + uRMax + uBMax : ℕ) : ℝ) =
+          (((Cx.baseOpenPairSet I).card : ℝ) - (remaining : ℝ)) + (uRMax : ℝ) + (uBMax : ℝ) := by
+      rw [Nat.cast_add, Nat.cast_add, Nat.cast_sub hremainingLeN]
+    rw [hcast] at hTotal
+    exact hTotal
+  nlinarith
+
+set_option linter.style.longLine false in
+theorem goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_section4FTotalError
+    {β ε totalError : ℝ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (hHsubset :
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseImage I ∩
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I ⊆
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card *
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+          2 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+              IsRedBaseVertex) +
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+              IsBlueBaseVertex) ≤
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseOpenPairSet I).card)
+    (hTotal :
+      (((I.card *
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                  ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+            3 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsRedBaseVertex) +
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsBlueBaseVertex) : ℕ) : ℝ)) ≤
+        totalError) :
+    goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x ≤
+      Real.exp
+        (Twobites.paperP β n * totalError -
+          Twobites.paperP β n *
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                ConstructionData n m).baseOpenPairSet I).card : ℝ)) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  unfold goodSurvivingGraphPairProjectionChoiceMassBound
+  simpa [Cx] using
+    Cx.section4ProjectionChoiceMassSum_section4F_le_exp_of_LMS_totalError
+      (I := I) (ε := ε) (p := Twobites.paperP β n)
+      (N := (Cx.baseOpenPairSet I).card)
+      hp0 hp1 hHsubset ht21 ht32 hLossLeN hTotal
+
+set_option linter.style.longLine false in
 theorem
     goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_splitPartTotalError
     {β ε totalError revealError largeError mediumError smallError hugeRedError hugeBlueError : ℝ}
@@ -25170,6 +25294,166 @@ theorem
 set_option linter.style.longLine false in
 open scoped Classical in
 theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_totalBudget_of_le
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    {remaining uRMax uBMax :
+      (SimpleGraph (Fin m) × SimpleGraph (Fin m)) → ℕ}
+    {totalError : (SimpleGraph (Fin m) × SimpleGraph (Fin m)) → ℝ}
+    (hremaining :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          remaining x ≤
+            (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                ConstructionData n m).baseOpenPairSet I).card -
+              ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                  ConstructionData n m).section4SecondStageLossNat I ε)
+    (hUR :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((Finset.univ.filter fun b : Fin m =>
+                  Sum.inr b ∉
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).section4F I ε).image Sum.inr) ≤
+            uRMax x)
+    (hUB :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((Finset.univ.filter fun r : Fin m =>
+                  Sum.inl r ∉
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).section4F I ε).image Sum.inl) ≤
+            uBMax x)
+    (hTotal :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ((((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                  ConstructionData n m).baseOpenPairSet I).card -
+                  remaining x + uRMax x + uBMax x : ℕ) : ℝ)) ≤
+            totalError x) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I e x then
+            Real.exp
+              (Twobites.paperP β n * totalError x -
+                Twobites.paperP β n *
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                      ConstructionData n m).baseOpenPairSet I).card : ℝ))
+          else
+            0 := by
+  refine
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e ?_
+  intro x hgood
+  exact
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_totalBudget_of_le
+      (n := n) (m := m) (β := β) (ε := ε) (totalError := totalError x) hp0 hp1 I e x
+      (hremaining x hgood) (hUR x hgood) (hUB x hgood) (hTotal x hgood)
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_section4FTotalError
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    {totalError : (SimpleGraph (Fin m) × SimpleGraph (Fin m)) → ℝ}
+    (hHsubset :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseImage I ∩
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I ⊆
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          I.card *
+                (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+              2 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+                  ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                  IsRedBaseVertex) +
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                  IsBlueBaseVertex) ≤
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseOpenPairSet I).card)
+    (hTotal :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          (((I.card *
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+                3 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsRedBaseVertex) +
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsBlueBaseVertex) : ℕ) : ℝ)) ≤
+            totalError x) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I e x then
+            Real.exp
+              (Twobites.paperP β n * totalError x -
+                Twobites.paperP β n *
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                      ConstructionData n m).baseOpenPairSet I).card : ℝ))
+          else
+            0 := by
+  refine
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e ?_
+  intro x hgood
+  exact
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_section4FTotalError
+      (n := n) (m := m) (β := β) (ε := ε) (totalError := totalError x)
+      I e x hp0 hp1 (hHsubset x hgood) ht21 ht32 (hLossLeN x hgood) (hTotal x hgood)
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
     constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperRISILossGap_of_paperSection4Bound
     {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
@@ -26181,6 +26465,179 @@ theorem paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_by_embedding_
   refine Finset.sum_le_sum ?_
   intro e he
   exact hbound e
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_totalBudget_of_le
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n))
+    {remaining uRMax uBMax :
+      (Fin n ↪ Fin m × Fin m) → (SimpleGraph (Fin m) × SimpleGraph (Fin m)) → ℕ}
+    {totalError :
+      (Fin n ↪ Fin m × Fin m) → (SimpleGraph (Fin m) × SimpleGraph (Fin m)) → ℝ}
+    (hremaining :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            remaining e x ≤
+              (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                  ConstructionData n m).baseOpenPairSet I).card -
+                ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).section4SecondStageLossNat I ε)
+    (hUR :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                ((Finset.univ.filter fun b : Fin m =>
+                    Sum.inr b ∉
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                          ConstructionData n m).section4F I ε).image Sum.inr) ≤
+              uRMax e x)
+    (hUB :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                ((Finset.univ.filter fun r : Fin m =>
+                    Sum.inl r ∉
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                          ConstructionData n m).section4F I ε).image Sum.inl) ≤
+              uBMax e x)
+    (hTotal :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ((((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).baseOpenPairSet I).card -
+                    remaining e x + uRMax e x + uBMax e x : ℕ) : ℝ)) ≤
+              totalError e x) :
+    constructionEventMass (paperConstructionWeight β n m)
+        (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I) ≤
+      ∑ e : Fin n ↪ Fin m × Fin m,
+        Twobites.paperRIOuterEventMass m
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).redImage I).card
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).blueImage I).card
+            I.card *
+          ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+            if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                  projCodegreeBound I e x then
+              Real.exp
+                (Twobites.paperP β n * totalError e x -
+                  Twobites.paperP β n *
+                    ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).baseOpenPairSet I).card : ℝ))
+            else
+              0 := by
+  refine
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_by_embedding_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound)
+      (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) (I := I) ?_
+  intro e
+  exact
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_totalBudget_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e (hremaining e) (hUR e) (hUB e) (hTotal e)
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_section4FTotalError
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n))
+    {totalError :
+      (Fin n ↪ Fin m × Fin m) → (SimpleGraph (Fin m) × SimpleGraph (Fin m)) → ℝ}
+    (hHsubset :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+              I e x →
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseImage I ∩
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I ⊆
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+              I e x →
+            I.card *
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+                2 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsRedBaseVertex) +
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsBlueBaseVertex) ≤
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseOpenPairSet I).card)
+    (hTotal :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+              I e x →
+            (((I.card *
+                    (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+                  3 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                    (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+                        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+                  ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                    ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                      IsRedBaseVertex) +
+                  ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                    ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                      IsBlueBaseVertex) : ℕ) : ℝ)) ≤
+              totalError e x) :
+    constructionEventMass (paperConstructionWeight β n m)
+        (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I) ≤
+      ∑ e : Fin n ↪ Fin m × Fin m,
+        Twobites.paperRIOuterEventMass m
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).redImage I).card
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).blueImage I).card
+            I.card *
+          ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+            if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                  projCodegreeBound I e x then
+              Real.exp
+                (Twobites.paperP β n * totalError e x -
+                  Twobites.paperP β n *
+                    ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).baseOpenPairSet I).card : ℝ))
+            else
+              0 := by
+  refine
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_by_embedding_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound)
+      (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) (I := I) ?_
+  intro e
+  exact
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_section4FTotalError
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e (hHsubset e) ht21 ht32 (hLossLeN e) (hTotal e)
 
 set_option maxHeartbeats 3000000 in
 -- The fixed-set wrapper elaborates a large inherited Section 4 hypothesis block.
