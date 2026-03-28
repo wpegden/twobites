@@ -496,6 +496,47 @@ theorem constructionGraphConstraintMass_le
           exact mul_le_mul_of_nonneg_right hfac_le_one hterm_nonneg
     _ = p ^ required.card * (1 - p) ^ forbidden.card := by ring
 
+theorem constructionGraphConstraintMass_nonneg
+    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (required forbidden : Finset (Sym2 (Fin m))) :
+    0 ≤ constructionGraphConstraintMass p required forbidden := by
+  classical
+  unfold constructionGraphConstraintMass
+  refine Finset.sum_nonneg ?_
+  intro G hG
+  by_cases hcond :
+      required ⊆ constructionGraphEdgeFinset G ∧
+        Disjoint forbidden (constructionGraphEdgeFinset G)
+  · simp [hcond, constructionGraphBernoulliWeight_nonneg hp0 hp1]
+  · simp [hcond]
+
+theorem constructionGraphBernoulliWeight_le_constructionGraphConstraintMass_of_subset_disjoint
+    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (G : SimpleGraph (Fin m)) (required forbidden : Finset (Sym2 (Fin m)))
+    (hrequired : required ⊆ constructionGraphEdgeFinset G)
+    (hforbidden : Disjoint forbidden (constructionGraphEdgeFinset G)) :
+    constructionGraphBernoulliWeight p G ≤
+      constructionGraphConstraintMass p required forbidden := by
+  classical
+  unfold constructionGraphConstraintMass
+  have hnonneg :
+      ∀ H ∈ (Finset.univ : Finset (SimpleGraph (Fin m))),
+        0 ≤
+          (if required ⊆ constructionGraphEdgeFinset H ∧
+                Disjoint forbidden (constructionGraphEdgeFinset H) then
+              constructionGraphBernoulliWeight p H
+            else
+              0) := by
+    intro H hH
+    by_cases hcond :
+        required ⊆ constructionGraphEdgeFinset H ∧
+          Disjoint forbidden (constructionGraphEdgeFinset H)
+    · simp [hcond, constructionGraphBernoulliWeight_nonneg hp0 hp1]
+    · simp [hcond]
+  have hsingle :=
+    Finset.single_le_sum hnonneg (show G ∈ (Finset.univ : Finset (SimpleGraph (Fin m))) by simp)
+  simpa [hrequired, hforbidden] using hsingle
+
 theorem constructionEmbeddingUniformWeight_nonneg (n m : ℕ) :
     0 ≤ constructionEmbeddingUniformWeight n m := by
   unfold constructionEmbeddingUniformWeight
@@ -2307,6 +2348,84 @@ theorem baseOpenPairSet_card_eq_redBaseOpenPairSet_card_add_blueBaseOpenPairSet_
     rw [baseOpenPairSet]
     simpa using (Finset.card_union_eq_card_add_card.2 hdisj)
   rw [hcard, hsR, hsB]
+
+theorem redBaseOpenPairSet_image_sym2_disjoint_constructionGraphEdgeFinset
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Disjoint ((C.redBaseOpenPairSet I).image Sym2.mk) (constructionGraphEdgeFinset C.redBase) := by
+  refine Finset.disjoint_left.2 ?_
+  intro s hsOpen hsEdge
+  rcases Finset.mem_image.1 hsOpen with ⟨⟨r, r'⟩, hp, rfl⟩
+  have hnotAdj : ¬ C.redBase.Adj r r' := (C.mem_redBaseOpenPairSet.1 hp).2.2.2
+  have hAdj : C.redBase.Adj r r' := by
+    simpa [constructionGraphEdgeFinset, SimpleGraph.mem_edgeFinset] using hsEdge
+  exact hnotAdj hAdj
+
+theorem blueBaseOpenPairSet_image_sym2_disjoint_constructionGraphEdgeFinset
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Disjoint ((C.blueBaseOpenPairSet I).image Sym2.mk) (constructionGraphEdgeFinset C.blueBase) := by
+  refine Finset.disjoint_left.2 ?_
+  intro s hsOpen hsEdge
+  rcases Finset.mem_image.1 hsOpen with ⟨⟨b, b'⟩, hp, rfl⟩
+  have hnotAdj : ¬ C.blueBase.Adj b b' := (C.mem_blueBaseOpenPairSet.1 hp).2.2.2
+  have hAdj : C.blueBase.Adj b b' := by
+    simpa [constructionGraphEdgeFinset, SimpleGraph.mem_edgeFinset] using hsEdge
+  exact hnotAdj hAdj
+
+theorem redBaseOpenPairSet_card_le_nonedgeCount
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    (C.redBaseOpenPairSet I).card ≤
+      Fintype.card (Sym2 (Fin m)) - (constructionGraphEdgeFinset C.redBase).card := by
+  let s : Finset (Sym2 (Fin m)) := (C.redBaseOpenPairSet I).image Sym2.mk
+  have hsCard : s.card = (C.redBaseOpenPairSet I).card := by
+    dsimp [s]
+    refine card_image_sym2_mk_of_strictPairSet (s := C.redBaseOpenPairSet I) ?_
+    intro p hp
+    exact (C.mem_redBaseOpenPairSet.1 hp).2.2.1
+  have hcardUnion :
+      s.card + (constructionGraphEdgeFinset C.redBase).card ≤ Fintype.card (Sym2 (Fin m)) := by
+    calc
+      s.card + (constructionGraphEdgeFinset C.redBase).card =
+          (s ∪ constructionGraphEdgeFinset C.redBase).card := by
+        symm
+        exact Finset.card_union_eq_card_add_card.2
+          (C.redBaseOpenPairSet_image_sym2_disjoint_constructionGraphEdgeFinset I)
+      _ ≤ (Finset.univ : Finset (Sym2 (Fin m))).card := Finset.card_le_univ _
+      _ = Fintype.card (Sym2 (Fin m)) := Finset.card_univ
+  rw [← hsCard]
+  omega
+
+theorem blueBaseOpenPairSet_card_le_nonedgeCount
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    (C.blueBaseOpenPairSet I).card ≤
+      Fintype.card (Sym2 (Fin m)) - (constructionGraphEdgeFinset C.blueBase).card := by
+  let s : Finset (Sym2 (Fin m)) := (C.blueBaseOpenPairSet I).image Sym2.mk
+  have hsCard : s.card = (C.blueBaseOpenPairSet I).card := by
+    dsimp [s]
+    refine card_image_sym2_mk_of_strictPairSet (s := C.blueBaseOpenPairSet I) ?_
+    intro p hp
+    exact (C.mem_blueBaseOpenPairSet.1 hp).2.2.1
+  have hcardUnion :
+      s.card + (constructionGraphEdgeFinset C.blueBase).card ≤ Fintype.card (Sym2 (Fin m)) := by
+    calc
+      s.card + (constructionGraphEdgeFinset C.blueBase).card =
+          (s ∪ constructionGraphEdgeFinset C.blueBase).card := by
+        symm
+        exact Finset.card_union_eq_card_add_card.2
+          (C.blueBaseOpenPairSet_image_sym2_disjoint_constructionGraphEdgeFinset I)
+      _ ≤ (Finset.univ : Finset (Sym2 (Fin m))).card := Finset.card_le_univ _
+      _ = Fintype.card (Sym2 (Fin m)) := Finset.card_univ
+  rw [← hsCard]
+  omega
+
+theorem baseOpenPairSet_card_le_nonedgeCountSum
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    (C.baseOpenPairSet I).card ≤
+      (Fintype.card (Sym2 (Fin m)) - (constructionGraphEdgeFinset C.redBase).card) +
+        (Fintype.card (Sym2 (Fin m)) - (constructionGraphEdgeFinset C.blueBase).card) := by
+  rw [C.baseOpenPairSet_card_eq_redBaseOpenPairSet_card_add_blueBaseOpenPairSet_card I]
+  exact add_le_add
+    (C.redBaseOpenPairSet_card_le_nonedgeCount I)
+    (C.blueBaseOpenPairSet_card_le_nonedgeCount I)
 
 theorem baseOpenPairSet_lower_bound_of_closedBounds (C : ConstructionData n m)
     (I : Finset (Fin n)) {redBound blueBound : ℕ}
@@ -15776,6 +15895,24 @@ theorem section4UBlueCondPairSet_image_sym2_subset_blueOppositeWitnessBiUnion_of
       (by simpa [ConstructionData.blueProj] using hv.symm)
       (by simpa [ConstructionData.blueProj] using hw.symm)
 
+theorem section4URedCondPairSet_image_sym2_subset_constructionGraphEdgeFinset
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4URedCondPairSet I A).image Sym2.mk ⊆ constructionGraphEdgeFinset C.redBase := by
+  intro s hs
+  rcases Finset.mem_image.1 hs with ⟨p, hp, rfl⟩
+  have hpU : p ∈ C.section4URedPairSet I A := (C.mem_section4URedCondPairSet.1 hp).1
+  have hAdj : C.redBase.Adj p.1 p.2 := (C.mem_section4URedPairSet.1 hpU).2
+  simpa [constructionGraphEdgeFinset, SimpleGraph.mem_edgeFinset] using hAdj
+
+theorem section4UBlueCondPairSet_image_sym2_subset_constructionGraphEdgeFinset
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)} :
+    (C.section4UBlueCondPairSet I A).image Sym2.mk ⊆ constructionGraphEdgeFinset C.blueBase := by
+  intro s hs
+  rcases Finset.mem_image.1 hs with ⟨p, hp, rfl⟩
+  have hpU : p ∈ C.section4UBluePairSet I A := (C.mem_section4UBlueCondPairSet.1 hp).1
+  have hAdj : C.blueBase.Adj p.1 p.2 := (C.mem_section4UBluePairSet.1 hpU).2
+  simpa [constructionGraphEdgeFinset, SimpleGraph.mem_edgeFinset] using hAdj
+
 theorem section4URedCondPairSet_card_le_redProjectionPairCount_of_indep
     (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
     (hindep :
@@ -16342,6 +16479,18 @@ theorem one_sub_pow_le_one_sub_pow_of_le {p : ℝ}
   refine pow_le_pow_of_le_one ?_ ?_ hmn
   · linarith
   · linarith
+
+theorem pow_le_pow_of_nonneg_le_one_nat {p : ℝ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) {m n : ℕ} (hmn : m ≤ n) :
+    p ^ n ≤ p ^ m := by
+  induction' hmn with n hmn ih
+  · rfl
+  · calc
+      p ^ (n + 1) = p ^ n * p := by rw [pow_succ]
+      _ ≤ p ^ n * 1 := by
+        exact mul_le_mul_of_nonneg_left hp1 (pow_nonneg hp0 _)
+      _ = p ^ n := by ring
+      _ ≤ p ^ m := ih
 
 theorem section4ChoiceMass_le_of_choiceBound_of_le_remaining
     (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
@@ -21865,11 +22014,110 @@ theorem constructionEmbeddingUniformWeight_le_paperRIOuterEventMass_of_pairImage
     (C : ConstructionData n m) (I : Finset (Fin n)) :
     constructionEmbeddingUniformWeight n m ≤
       Twobites.paperRIOuterEventMass m (C.redImage I).card (C.blueImage I).card I.card := by
-  exact
-    (constructionEmbeddingUniformWeight_le_inv_choose_pairImage_card C.embedding I).trans
+    exact
+      (constructionEmbeddingUniformWeight_le_inv_choose_pairImage_card C.embedding I).trans
       (inv_choose_le_paperRIOuterEventMass_of_mem
         (m := m) (lR := (C.redImage I).card) (lB := (C.blueImage I).card)
         (k := I.card) (S := C.pairImage I) (C.pairImage_mem_paperRIOuterEventSet I))
+
+theorem graphPairBernoulliMass_le_constraintMass_mul_constraintMass_of_imp
+    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (requiredR forbiddenR requiredB forbiddenB : Finset (Sym2 (Fin m)))
+    (P : SimpleGraph (Fin m) × SimpleGraph (Fin m) → Prop)
+    [DecidablePred P]
+    (hP :
+      ∀ x, P x →
+        requiredR ⊆ constructionGraphEdgeFinset x.1 ∧
+          Disjoint forbiddenR (constructionGraphEdgeFinset x.1) ∧
+            requiredB ⊆ constructionGraphEdgeFinset x.2 ∧
+              Disjoint forbiddenB (constructionGraphEdgeFinset x.2)) :
+    (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        if P x then
+          constructionGraphBernoulliWeight p x.1 *
+            constructionGraphBernoulliWeight p x.2
+        else
+          0) ≤
+      constructionGraphConstraintMass p requiredR forbiddenR *
+        constructionGraphConstraintMass p requiredB forbiddenB := by
+  classical
+  let fR : SimpleGraph (Fin m) → ℝ := fun G =>
+    if requiredR ⊆ constructionGraphEdgeFinset G ∧
+          Disjoint forbiddenR (constructionGraphEdgeFinset G) then
+      constructionGraphBernoulliWeight p G
+    else
+      0
+  let fB : SimpleGraph (Fin m) → ℝ := fun G =>
+    if requiredB ⊆ constructionGraphEdgeFinset G ∧
+          Disjoint forbiddenB (constructionGraphEdgeFinset G) then
+      constructionGraphBernoulliWeight p G
+    else
+      0
+  have hpoint :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        (if P x then
+            constructionGraphBernoulliWeight p x.1 *
+              constructionGraphBernoulliWeight p x.2
+          else
+            0) ≤
+          fR x.1 * fB x.2 := by
+    intro x
+    by_cases hPx : P x
+    · rcases hP x hPx with ⟨hreqR, hforbR, hreqB, hforbB⟩
+      simp [fR, fB, hPx, hreqR, hforbR, hreqB, hforbB]
+    · have hnonnegR : 0 ≤ fR x.1 := by
+        by_cases hcondR :
+            requiredR ⊆ constructionGraphEdgeFinset x.1 ∧
+              Disjoint forbiddenR (constructionGraphEdgeFinset x.1)
+        · simp [fR, hcondR, constructionGraphBernoulliWeight_nonneg hp0 hp1]
+        · simp [fR, hcondR]
+      have hnonnegB : 0 ≤ fB x.2 := by
+        by_cases hcondB :
+            requiredB ⊆ constructionGraphEdgeFinset x.2 ∧
+              Disjoint forbiddenB (constructionGraphEdgeFinset x.2)
+        · simp [fB, hcondB, constructionGraphBernoulliWeight_nonneg hp0 hp1]
+        · simp [fB, hcondB]
+      have hnonneg : 0 ≤ fR x.1 * fB x.2 := mul_nonneg hnonnegR hnonnegB
+      simp [hPx, hnonneg]
+  have hsum :
+      (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          if P x then
+            constructionGraphBernoulliWeight p x.1 *
+              constructionGraphBernoulliWeight p x.2
+          else
+            0) ≤
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m), fR x.1 * fB x.2 := by
+    refine Finset.sum_le_sum ?_
+    intro x hx
+    exact hpoint x
+  have hfactor :
+      (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m), fR x.1 * fB x.2) =
+        constructionGraphConstraintMass p requiredR forbiddenR *
+          constructionGraphConstraintMass p requiredB forbiddenB := by
+    calc
+      (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m), fR x.1 * fB x.2) =
+          ∑ G₁ : SimpleGraph (Fin m),
+            ∑ G₂ : SimpleGraph (Fin m), fR G₁ * fB G₂ := by
+        rw [show (Finset.univ : Finset (SimpleGraph (Fin m) × SimpleGraph (Fin m))) =
+            (Finset.univ : Finset (SimpleGraph (Fin m))) ×ˢ
+              (Finset.univ : Finset (SimpleGraph (Fin m))) by
+              ext x
+              simp]
+        rw [Finset.sum_product]
+      _ = (∑ G₁ : SimpleGraph (Fin m), fR G₁) *
+            (∑ G₂ : SimpleGraph (Fin m), fB G₂) := by
+        calc
+          (∑ G₁ : SimpleGraph (Fin m), ∑ G₂ : SimpleGraph (Fin m), fR G₁ * fB G₂) =
+              ∑ G₁ : SimpleGraph (Fin m), fR G₁ * ∑ G₂ : SimpleGraph (Fin m), fB G₂ := by
+            refine Finset.sum_congr rfl ?_
+            intro G₁ hG₁
+            rw [← Finset.mul_sum]
+          _ = (∑ G₁ : SimpleGraph (Fin m), fR G₁) *
+                (∑ G₂ : SimpleGraph (Fin m), fB G₂) := by
+            rw [Finset.sum_mul]
+      _ = constructionGraphConstraintMass p requiredR forbiddenR *
+            constructionGraphConstraintMass p requiredB forbiddenB := by
+        simp [fR, fB, constructionGraphConstraintMass]
+  exact hsum.trans (by rw [hfactor])
 
 /-- The first-stage graph mass of the fixed-set event for one embedding `π`, with the paper's
 construction weight and the deterministic good event already built in. This isolates the remaining
@@ -21916,6 +22164,46 @@ theorem paperGoodSurvivingGraphPairMass_nonneg
       constructionGraphBernoulliWeight_nonneg hp0 hp1]
   · simp [hgood]
 
+set_option linter.style.longLine false in
+theorem paperGoodSurvivingGraphPairMass_le_constraintMass_mul_constraintMass_of_imp
+    {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (requiredR forbiddenR requiredB forbiddenB : Finset (Sym2 (Fin m)))
+    (hP :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        GoodEventD
+              ({ redBase := x.1
+                 blueBase := x.2
+                 embedding := e } : ConstructionData n m)
+              fiberBound degreeBound codegreeBound projCodegreeBound ∧
+            ({ redBase := x.1
+               blueBase := x.2
+               embedding := e } : ConstructionData n m).SurvivesAsIndependent I →
+          requiredR ⊆ constructionGraphEdgeFinset x.1 ∧
+            Disjoint forbiddenR (constructionGraphEdgeFinset x.1) ∧
+              requiredB ⊆ constructionGraphEdgeFinset x.2 ∧
+                Disjoint forbiddenB (constructionGraphEdgeFinset x.2)) :
+    paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+        projCodegreeBound I e ≤
+      constructionGraphConstraintMass (Twobites.paperP β n) requiredR forbiddenR *
+        constructionGraphConstraintMass (Twobites.paperP β n) requiredB forbiddenB := by
+  classical
+  unfold paperGoodSurvivingGraphPairMass
+  simpa using
+    graphPairBernoulliMass_le_constraintMass_mul_constraintMass_of_imp
+      (m := m) (p := Twobites.paperP β n) hp0 hp1 requiredR forbiddenR requiredB forbiddenB
+      (fun x =>
+        GoodEventD
+              ({ redBase := x.1
+                 blueBase := x.2
+                 embedding := e } : ConstructionData n m)
+              fiberBound degreeBound codegreeBound projCodegreeBound ∧
+            ({ redBase := x.1
+               blueBase := x.2
+               embedding := e } : ConstructionData n m).SurvivesAsIndependent I)
+      hP
+
 theorem constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul
     {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
@@ -21949,6 +22237,174 @@ theorem constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_l
       (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
       hp0 hp1 I e
   exact mul_le_mul_of_nonneg_right houter hmass_nonneg
+
+set_option linter.style.longLine false in
+theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_constraintMass_mul_constraintMass_of_imp
+    {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (requiredR forbiddenR requiredB forbiddenB : Finset (Sym2 (Fin m)))
+    (hP :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        GoodEventD
+              ({ redBase := x.1
+                 blueBase := x.2
+                 embedding := e } : ConstructionData n m)
+              fiberBound degreeBound codegreeBound projCodegreeBound ∧
+            ({ redBase := x.1
+               blueBase := x.2
+               embedding := e } : ConstructionData n m).SurvivesAsIndependent I →
+          requiredR ⊆ constructionGraphEdgeFinset x.1 ∧
+            Disjoint forbiddenR (constructionGraphEdgeFinset x.1) ∧
+              requiredB ⊆ constructionGraphEdgeFinset x.2 ∧
+                Disjoint forbiddenB (constructionGraphEdgeFinset x.2)) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        (constructionGraphConstraintMass (Twobites.paperP β n) requiredR forbiddenR *
+          constructionGraphConstraintMass (Twobites.paperP β n) requiredB forbiddenB) := by
+  have houter :
+      constructionEmbeddingUniformWeight n m ≤
+        Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card := by
+    exact constructionEmbeddingUniformWeight_le_paperRIOuterEventMass_of_pairImage
+      ({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m) I
+  have hmass :
+      paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+        constructionGraphConstraintMass (Twobites.paperP β n) requiredR forbiddenR *
+          constructionGraphConstraintMass (Twobites.paperP β n) requiredB forbiddenB :=
+    paperGoodSurvivingGraphPairMass_le_constraintMass_mul_constraintMass_of_imp
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      hp0 hp1 I e requiredR forbiddenR requiredB forbiddenB hP
+  have hmass0 :
+      0 ≤ paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+        projCodegreeBound I e :=
+    paperGoodSurvivingGraphPairMass_nonneg (n := n) (m := m) (β := β)
+      (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      hp0 hp1 I e
+  have hconstraint0 :
+      0 ≤ constructionGraphConstraintMass (Twobites.paperP β n) requiredR forbiddenR *
+        constructionGraphConstraintMass (Twobites.paperP β n) requiredB forbiddenB := by
+    exact mul_nonneg
+      (constructionGraphConstraintMass_nonneg hp0 hp1 requiredR forbiddenR)
+      (constructionGraphConstraintMass_nonneg hp0 hp1 requiredB forbiddenB)
+  have houter0 :
+      0 ≤ Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card := by
+    exact le_trans (constructionEmbeddingUniformWeight_nonneg n m) houter
+  exact mul_le_mul houter hmass hmass0 houter0
+
+theorem constructionProductWeight_le_constraintMass_mul_constraintMass
+    {p : ℝ} (C : ConstructionData n m) (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (requiredR forbiddenR requiredB forbiddenB : Finset (Sym2 (Fin m)))
+    (hrequiredR : requiredR ⊆ constructionGraphEdgeFinset C.redBase)
+    (hforbiddenR : Disjoint forbiddenR (constructionGraphEdgeFinset C.redBase))
+    (hrequiredB : requiredB ⊆ constructionGraphEdgeFinset C.blueBase)
+    (hforbiddenB : Disjoint forbiddenB (constructionGraphEdgeFinset C.blueBase)) :
+    constructionGraphBernoulliWeight p C.redBase *
+        constructionGraphBernoulliWeight p C.blueBase ≤
+      constructionGraphConstraintMass p requiredR forbiddenR *
+        constructionGraphConstraintMass p requiredB forbiddenB := by
+  have hred :
+      constructionGraphBernoulliWeight p C.redBase ≤
+        constructionGraphConstraintMass p requiredR forbiddenR :=
+    constructionGraphBernoulliWeight_le_constructionGraphConstraintMass_of_subset_disjoint
+      hp0 hp1 C.redBase requiredR forbiddenR hrequiredR hforbiddenR
+  have hblue :
+      constructionGraphBernoulliWeight p C.blueBase ≤
+        constructionGraphConstraintMass p requiredB forbiddenB :=
+    constructionGraphBernoulliWeight_le_constructionGraphConstraintMass_of_subset_disjoint
+      hp0 hp1 C.blueBase requiredB forbiddenB hrequiredB hforbiddenB
+  have hred0 :
+      0 ≤ constructionGraphBernoulliWeight p C.redBase :=
+    constructionGraphBernoulliWeight_nonneg hp0 hp1 C.redBase
+  have hblue0 :
+      0 ≤ constructionGraphBernoulliWeight p C.blueBase :=
+    constructionGraphBernoulliWeight_nonneg hp0 hp1 C.blueBase
+  have hconstraintR0 :
+      0 ≤ constructionGraphConstraintMass p requiredR forbiddenR :=
+    constructionGraphConstraintMass_nonneg hp0 hp1 requiredR forbiddenR
+  have hconstraintB0 :
+      0 ≤ constructionGraphConstraintMass p requiredB forbiddenB :=
+    constructionGraphConstraintMass_nonneg hp0 hp1 requiredB forbiddenB
+  exact mul_le_mul hred hblue hblue0 hconstraintR0
+
+set_option linter.style.longLine false in
+theorem constructionGraphBernoulliWeight_mul_le_section4ActualConditionedEventMass_of_baseOpenPairSet_card
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p : ℝ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    constructionGraphBernoulliWeight p C.redBase *
+        constructionGraphBernoulliWeight p C.blueBase ≤
+      C.section4ActualConditionedEventMass I ε p (C.baseOpenPairSet I).card := by
+  let symCard : ℕ := Fintype.card (Sym2 (Fin m))
+  let eR : ℕ := (constructionGraphEdgeFinset C.redBase).card
+  let eB : ℕ := (constructionGraphEdgeFinset C.blueBase).card
+  let uR : ℕ := (C.section4URedCondPairSet I (C.section4F I ε)).card
+  let uB : ℕ := (C.section4UBlueCondPairSet I (C.section4F I ε)).card
+  let remaining : ℕ := (C.baseOpenPairSet I).card - C.section4SecondStageLossNat I ε
+  have hq0 : 0 ≤ 1 - p := by linarith
+  have hq1 : 1 - p ≤ 1 := by linarith
+  have huR : uR ≤ eR := by
+    dsimp [uR, eR]
+    rw [← C.section4URedCondPairSet_image_sym2_card_eq (I := I) (A := C.section4F I ε)]
+    exact Finset.card_le_card
+      (C.section4URedCondPairSet_image_sym2_subset_constructionGraphEdgeFinset
+        (I := I) (A := C.section4F I ε))
+  have huB : uB ≤ eB := by
+    dsimp [uB, eB]
+    rw [← C.section4UBlueCondPairSet_image_sym2_card_eq (I := I) (A := C.section4F I ε)]
+    exact Finset.card_le_card
+      (C.section4UBlueCondPairSet_image_sym2_subset_constructionGraphEdgeFinset
+        (I := I) (A := C.section4F I ε))
+  have hremaining : remaining ≤ (symCard - eR) + (symCard - eB) := by
+    dsimp [remaining, symCard, eR, eB]
+    exact (Nat.sub_le _ _).trans (C.baseOpenPairSet_card_le_nonedgeCountSum I)
+  have hpPow :
+      p ^ (eR + eB) ≤ p ^ (uR + uB) := by
+    apply pow_le_pow_of_nonneg_le_one_nat hp0 hp1
+    omega
+  have hqPow :
+      (1 - p) ^ ((symCard - eR) + (symCard - eB)) ≤ (1 - p) ^ remaining := by
+    apply pow_le_pow_of_nonneg_le_one_nat hq0 hq1
+    exact hremaining
+  have hmul :
+      p ^ (eR + eB) * (1 - p) ^ ((symCard - eR) + (symCard - eB)) ≤
+        p ^ (uR + uB) * (1 - p) ^ remaining := by
+    exact mul_le_mul hpPow hqPow (pow_nonneg hq0 _) (pow_nonneg hp0 _)
+  calc
+    constructionGraphBernoulliWeight p C.redBase *
+        constructionGraphBernoulliWeight p C.blueBase =
+      p ^ (eR + eB) * (1 - p) ^ ((symCard - eR) + (symCard - eB)) := by
+        dsimp [eR, eB, symCard]
+        simp [constructionGraphBernoulliWeight, pow_add, mul_assoc, mul_left_comm]
+    _ ≤ p ^ (uR + uB) * (1 - p) ^ remaining := hmul
+    _ = C.section4ActualConditionedEventMass I ε p (C.baseOpenPairSet I).card := by
+        unfold section4ActualConditionedEventMass
+        simpa [uR, uB, remaining, section4BernoulliMass] using
+          (C.section4UCondChoiceEventMass_eq_bernoulliMass_of_card_eq
+            (I := I) (A := C.section4F I ε) (p := p)
+            (uR := (C.section4URedCondPairSet I (C.section4F I ε)).card)
+            (uB := (C.section4UBlueCondPairSet I (C.section4F I ε)).card)
+            (remaining := (C.baseOpenPairSet I).card - C.section4SecondStageLossNat I ε)
+            rfl rfl).symm
 
 theorem paperConstructionMass_goodSurvivingIndepSetEventSet_eq_sum_by_embedding
     {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
