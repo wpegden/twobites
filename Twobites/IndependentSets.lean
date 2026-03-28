@@ -21032,6 +21032,36 @@ noncomputable def goodSurvivingIndepSetEventSet
   classical
   simp [goodSurvivingIndepSetEventSet, SurvivesAsIndependent]
 
+theorem pairImage_card_eq_card (C : ConstructionData n m) (I : Finset (Fin n)) :
+    (C.pairImage I).card = I.card := by
+  classical
+  simpa [ConstructionData.pairImage] using
+    Finset.card_image_of_injective (s := I) C.embedding.injective
+
+theorem pairImage_mem_powersetCard (C : ConstructionData n m) (I : Finset (Fin n)) :
+    C.pairImage I ∈ ((Finset.univ : Finset (Fin m × Fin m)).powersetCard I.card) := by
+  refine Finset.mem_powersetCard.2 ?_
+  exact ⟨Finset.subset_univ _, C.pairImage_card_eq_card I⟩
+
+@[simp] theorem paperRIOuterRedImage_pairImage_eq_redImage
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Twobites.paperRIOuterRedImage (C.pairImage I) = C.redImage I := by
+  ext r
+  simp [Twobites.paperRIOuterRedImage, ConstructionData.pairImage, ConstructionData.redImage]
+
+@[simp] theorem paperRIOuterBlueImage_pairImage_eq_blueImage
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    Twobites.paperRIOuterBlueImage (C.pairImage I) = C.blueImage I := by
+  ext b
+  simp [Twobites.paperRIOuterBlueImage, ConstructionData.pairImage, ConstructionData.blueImage]
+
+theorem pairImage_mem_paperRIOuterEventSet
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    C.pairImage I ∈
+      Twobites.paperRIOuterEventSet m (C.redImage I).card (C.blueImage I).card I.card := by
+  refine Finset.mem_filter.2 ?_
+  exact ⟨C.pairImage_mem_powersetCard I, by simp⟩
+
 /-- The first-stage graph mass of the fixed-set event for one embedding `π`, with the paper's
 construction weight and the deterministic good event already built in. This isolates the remaining
 probabilistic estimate to a sum over base-graph pairs at fixed embedding. -/
