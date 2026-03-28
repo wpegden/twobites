@@ -125,11 +125,15 @@ noncomputable def goodEventDSet (n m fiberBound degreeBound codegreeBound projCo
   simp [goodEventDSet, ConstructionData.sampleSpace]
 
 /-- The Bernoulli weight of one base graph in the paper's first-stage random construction. -/
+def constructionGraphEdgeCard (G : SimpleGraph (Fin m)) : ℕ := by
+  classical
+  letI : Fintype ↑G.edgeSet := Fintype.ofFinite ↑G.edgeSet
+  exact G.edgeFinset.card
+
+/-- The Bernoulli weight of one base graph in the paper's first-stage random construction. -/
 def constructionGraphBernoulliWeight (p : ℝ) (G : SimpleGraph (Fin m)) : ℝ :=
-  by
-    classical
-    letI : Fintype ↑G.edgeSet := Fintype.ofFinite ↑G.edgeSet
-    exact p ^ G.edgeFinset.card * (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - G.edgeFinset.card)
+  p ^ constructionGraphEdgeCard G *
+    (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - constructionGraphEdgeCard G)
 
 /-- The uniform weight of the paper's random embedding `π`. -/
 def constructionEmbeddingUniformWeight (n m : ℕ) : ℝ :=
@@ -154,6 +158,18 @@ def constructionEventMass (w : ConstructionData n m → ℝ) (E : Finset (Constr
     constructionEventMass w (∅ : Finset (ConstructionData n m)) = 0 := by
   simp [constructionEventMass]
 
+theorem constructionGraphEdgeCard_eq_edgeFinset_card (G : SimpleGraph (Fin m)) :
+    constructionGraphEdgeCard G = by
+      classical
+      letI : Fintype ↑G.edgeSet := Fintype.ofFinite ↑G.edgeSet
+      exact G.edgeFinset.card := rfl
+
+@[simp] theorem constructionGraphEdgeCard_bot :
+    constructionGraphEdgeCard (⊥ : SimpleGraph (Fin m)) = 0 := by
+  classical
+  rw [constructionGraphEdgeCard_eq_edgeFinset_card]
+  simp
+
 theorem constructionGraphBernoulliWeight_nonneg {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
     (G : SimpleGraph (Fin m)) :
     0 ≤ constructionGraphBernoulliWeight p G := by
@@ -167,6 +183,12 @@ theorem constructionGraphBernoulliWeight_pos {p : ℝ} (hp0 : 0 < p) (hp1 : p < 
   have hq : 0 < 1 - p := sub_pos.mpr hp1
   unfold constructionGraphBernoulliWeight
   positivity
+
+@[simp] theorem constructionGraphBernoulliWeight_bot_eq (p : ℝ) :
+    constructionGraphBernoulliWeight p (⊥ : SimpleGraph (Fin m)) =
+      (1 - p) ^ Fintype.card (Sym2 (Fin m)) := by
+  rw [constructionGraphBernoulliWeight, constructionGraphEdgeCard_bot]
+  simp
 
 theorem constructionEmbeddingUniformWeight_nonneg (n m : ℕ) :
     0 ≤ constructionEmbeddingUniformWeight n m := by
@@ -213,6 +235,22 @@ theorem paperConstructionWeight_pos {β : ℝ}
     (C : ConstructionData n m) :
     0 < paperConstructionWeight β n m C := by
   exact constructionProductWeight_pos hp0 hp1 C
+
+theorem constructionProductWeight_emptyBalancedConstructionData_eq
+    {b : ℕ} (hn : n ≤ m * b) (hb : b ≤ m) (p : ℝ) :
+    constructionProductWeight p (emptyBalancedConstructionData hn hb) =
+      ((1 - p) ^ Fintype.card (Sym2 (Fin m))) *
+        (((1 - p) ^ Fintype.card (Sym2 (Fin m))) * constructionEmbeddingUniformWeight n m) := by
+  simp [constructionProductWeight, emptyBalancedConstructionData, mul_assoc]
+
+theorem paperConstructionWeight_emptyBalancedConstructionData_eq
+    {β : ℝ} {b : ℕ} (hn : n ≤ m * b) (hb : b ≤ m) :
+    paperConstructionWeight β n m (emptyBalancedConstructionData hn hb) =
+      ((1 - Twobites.paperP β n) ^ Fintype.card (Sym2 (Fin m))) *
+        (((1 - Twobites.paperP β n) ^ Fintype.card (Sym2 (Fin m))) *
+          constructionEmbeddingUniformWeight n m) := by
+  simp [paperConstructionWeight, constructionProductWeight, emptyBalancedConstructionData,
+    mul_assoc]
 
 theorem constructionEventMass_nonneg {w : ConstructionData n m → ℝ}
     {E : Finset (ConstructionData n m)} (hwt : ∀ C, 0 ≤ w C) :
@@ -427,6 +465,26 @@ theorem paperConstructionMass_goodEventDSet_pos_of_emptyBalancedConstructionData
   · intro C
     exact paperConstructionWeight_nonneg hp0.le hp1.le C
   · exact paperConstructionWeight_pos hp0 hp1 (emptyBalancedConstructionData hn hb)
+
+theorem paperConstructionMass_goodEventDSet_ge_emptyBalancedConstructionWeight_explicit
+    {β : ℝ} {n m b fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (hn : n ≤ m * b) (hb : b ≤ m) (hfb : b ≤ fiberBound) :
+    ((1 - Twobites.paperP β n) ^ Fintype.card (Sym2 (Fin m))) *
+        (((1 - Twobites.paperP β n) ^ Fintype.card (Sym2 (Fin m))) *
+          constructionEmbeddingUniformWeight n m) ≤
+      constructionEventMass (paperConstructionWeight β n m)
+        (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound) := by
+  have hbound :
+      paperConstructionWeight β n m (emptyBalancedConstructionData hn hb) ≤
+        constructionEventMass (paperConstructionWeight β n m)
+          (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound) :=
+    constructionEventMass_goodEventDSet_ge_emptyBalancedConstructionWeight
+      (hn := hn) (hb := hb) (hfb := hfb) (w := paperConstructionWeight β n m) (by
+        intro C
+        exact paperConstructionWeight_nonneg hp0 hp1 C)
+  simpa [paperConstructionWeight_emptyBalancedConstructionData_eq
+    (β := β) (hn := hn) (hb := hb)] using hbound
 
 /-- Paper Section 3's huge part `H_I`. -/
 def HPart (C : ConstructionData n m) (I : Finset (Fin n)) : Finset (BaseVertex m) := by
