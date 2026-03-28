@@ -22223,6 +22223,116 @@ theorem graphPairBernoulliMass_le_constraintMass_mul_constraintMass_of_imp
         simp [fR, fB, constructionGraphConstraintMass]
   exact hsum.trans (by rw [hfactor])
 
+theorem graphPairBernoulliMass_le_sum_constraintMass_of_finite_imp
+    {α : Type*} {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (s : Finset α)
+    (requiredR forbiddenR requiredB forbiddenB : α → Finset (Sym2 (Fin m)))
+    (P : SimpleGraph (Fin m) × SimpleGraph (Fin m) → Prop)
+    [DecidablePred P]
+    (hP :
+      ∀ x, P x →
+        ∃ a ∈ s,
+          requiredR a ⊆ constructionGraphEdgeFinset x.1 ∧
+            Disjoint (forbiddenR a) (constructionGraphEdgeFinset x.1) ∧
+              requiredB a ⊆ constructionGraphEdgeFinset x.2 ∧
+                Disjoint (forbiddenB a) (constructionGraphEdgeFinset x.2)) :
+    (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        if P x then
+          constructionGraphBernoulliWeight p x.1 *
+            constructionGraphBernoulliWeight p x.2
+        else
+          0) ≤
+      Finset.sum s (fun a =>
+        constructionGraphConstraintMass p (requiredR a) (forbiddenR a) *
+          constructionGraphConstraintMass p (requiredB a) (forbiddenB a)) := by
+  classical
+  let w : SimpleGraph (Fin m) × SimpleGraph (Fin m) → ℝ := fun x =>
+    constructionGraphBernoulliWeight p x.1 * constructionGraphBernoulliWeight p x.2
+  let Q : α → SimpleGraph (Fin m) × SimpleGraph (Fin m) → Prop := fun a x =>
+    requiredR a ⊆ constructionGraphEdgeFinset x.1 ∧
+      Disjoint (forbiddenR a) (constructionGraphEdgeFinset x.1) ∧
+        requiredB a ⊆ constructionGraphEdgeFinset x.2 ∧
+          Disjoint (forbiddenB a) (constructionGraphEdgeFinset x.2)
+  have hpoint :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        (if P x then w x else 0) ≤
+          Finset.sum s (fun a => if Q a x then w x else 0) := by
+    intro x
+    by_cases hPx : P x
+    · rcases hP x hPx with ⟨a, ha, hQa⟩
+      have hsingle' :
+          (if Q a x then w x else 0) ≤ Finset.sum s (fun a => if Q a x then w x else 0) := by
+        refine Finset.single_le_sum
+          (f := fun a => if Q a x then w x else 0) ?_ ha
+        intro b hb
+        by_cases hQb : Q b x
+        · simp [hQb, w, mul_nonneg,
+            constructionGraphBernoulliWeight_nonneg hp0 hp1]
+        · simp [hQb]
+      have hsingle :
+          w x ≤ Finset.sum s (fun a => if Q a x then w x else 0) := by
+        calc
+          w x = (if Q a x then w x else 0) := by
+            by_cases hQax : Q a x
+            · simp [hQax]
+            · exact False.elim (hQax hQa)
+          _ ≤ Finset.sum s (fun a => if Q a x then w x else 0) := hsingle'
+      simpa [w, hPx, hQa]
+        using hsingle
+    · have hsum_nonneg :
+          0 ≤ Finset.sum s (fun a => if Q a x then w x else 0) := by
+        refine Finset.sum_nonneg ?_
+        intro a ha
+        by_cases hQa : Q a x
+        · simp [hQa, w, mul_nonneg,
+            constructionGraphBernoulliWeight_nonneg hp0 hp1]
+        · simp [hQa]
+      simpa [w, hPx] using hsum_nonneg
+  calc
+    (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        if P x then
+          constructionGraphBernoulliWeight p x.1 *
+            constructionGraphBernoulliWeight p x.2
+        else
+          0) =
+      Finset.sum (Finset.univ : Finset (SimpleGraph (Fin m) × SimpleGraph (Fin m)))
+        (fun x => if P x then w x else 0) := by
+        simp [w]
+    _ ≤
+        Finset.sum (Finset.univ : Finset (SimpleGraph (Fin m) × SimpleGraph (Fin m)))
+          (fun x => Finset.sum s (fun a => if Q a x then w x else 0)) := by
+        exact Finset.sum_le_sum fun x hx => hpoint x
+    _ = Finset.sum s (fun a =>
+          ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+            if Q a x then w x else 0) := by
+        rw [Finset.sum_comm]
+    _ ≤ Finset.sum s (fun a =>
+          constructionGraphConstraintMass p (requiredR a) (forbiddenR a) *
+            constructionGraphConstraintMass p (requiredB a) (forbiddenB a)) := by
+        refine Finset.sum_le_sum ?_
+        intro a ha
+        simpa [Q, w] using
+          graphPairBernoulliMass_le_constraintMass_mul_constraintMass_of_imp
+            (m := m) (p := p) hp0 hp1
+            (requiredR a) (forbiddenR a) (requiredB a) (forbiddenB a)
+            (fun x => Q a x) (fun x hx => hx)
+
+/-- The first-stage graph mass of the fixed-set event for one embedding `π`, with the paper's
+construction weight and the deterministic good event already built in. This isolates the remaining
+probabilistic estimate to a sum over base-graph pairs at fixed embedding. -/
+def goodSurvivingGraphPairPred
+    (n m fiberBound degreeBound codegreeBound projCodegreeBound : ℕ)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m)) : Prop :=
+  GoodEventD
+      ({ redBase := x.1
+         blueBase := x.2
+         embedding := e } : ConstructionData n m)
+      fiberBound degreeBound codegreeBound projCodegreeBound ∧
+    ({ redBase := x.1
+       blueBase := x.2
+       embedding := e } : ConstructionData n m).SurvivesAsIndependent I
+
 /-- The first-stage graph mass of the fixed-set event for one embedding `π`, with the paper's
 construction weight and the deterministic good event already built in. This isolates the remaining
 probabilistic estimate to a sum over base-graph pairs at fixed embedding. -/
@@ -22232,14 +22342,8 @@ def paperGoodSurvivingGraphPairMass
   classical
   exact
     ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
-      if GoodEventD
-            ({ redBase := x.1
-               blueBase := x.2
-               embedding := e } : ConstructionData n m)
-            fiberBound degreeBound codegreeBound projCodegreeBound ∧
-          ({ redBase := x.1
-             blueBase := x.2
-             embedding := e } : ConstructionData n m).SurvivesAsIndependent I then
+      if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x then
         constructionGraphBernoulliWeight (Twobites.paperP β n) x.1 *
           constructionGraphBernoulliWeight (Twobites.paperP β n) x.2
       else
@@ -22255,7 +22359,7 @@ theorem paperGoodSurvivingGraphPairMass_nonneg
   unfold paperGoodSurvivingGraphPairMass
   refine Finset.sum_nonneg ?_
   intro x hx
-  by_cases hgood :
+  by_cases hgoodRaw :
       GoodEventD
             ({ redBase := x.1
                blueBase := x.2
@@ -22264,9 +22368,9 @@ theorem paperGoodSurvivingGraphPairMass_nonneg
           ({ redBase := x.1
              blueBase := x.2
              embedding := e } : ConstructionData n m).SurvivesAsIndependent I
-  · simp [hgood, mul_nonneg,
+  · simp [goodSurvivingGraphPairPred, hgoodRaw, mul_nonneg,
       constructionGraphBernoulliWeight_nonneg hp0 hp1]
-  · simp [hgood]
+  · simp [goodSurvivingGraphPairPred, hgoodRaw]
 
 set_option linter.style.longLine false in
 theorem paperGoodSurvivingGraphPairMass_le_constraintMass_mul_constraintMass_of_imp
@@ -22276,14 +22380,8 @@ theorem paperGoodSurvivingGraphPairMass_le_constraintMass_mul_constraintMass_of_
     (requiredR forbiddenR requiredB forbiddenB : Finset (Sym2 (Fin m)))
     (hP :
       ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
-        GoodEventD
-              ({ redBase := x.1
-                 blueBase := x.2
-                 embedding := e } : ConstructionData n m)
-              fiberBound degreeBound codegreeBound projCodegreeBound ∧
-            ({ redBase := x.1
-               blueBase := x.2
-               embedding := e } : ConstructionData n m).SurvivesAsIndependent I →
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+          I e x →
           requiredR ⊆ constructionGraphEdgeFinset x.1 ∧
             Disjoint forbiddenR (constructionGraphEdgeFinset x.1) ∧
               requiredB ⊆ constructionGraphEdgeFinset x.2 ∧
@@ -22297,15 +22395,37 @@ theorem paperGoodSurvivingGraphPairMass_le_constraintMass_mul_constraintMass_of_
   simpa using
     graphPairBernoulliMass_le_constraintMass_mul_constraintMass_of_imp
       (m := m) (p := Twobites.paperP β n) hp0 hp1 requiredR forbiddenR requiredB forbiddenB
-      (fun x =>
-        GoodEventD
-              ({ redBase := x.1
-                 blueBase := x.2
-                 embedding := e } : ConstructionData n m)
-              fiberBound degreeBound codegreeBound projCodegreeBound ∧
-            ({ redBase := x.1
-               blueBase := x.2
-               embedding := e } : ConstructionData n m).SurvivesAsIndependent I)
+      (goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e)
+      hP
+
+theorem paperGoodSurvivingGraphPairMass_le_sum_constraintMass_of_finite_imp
+    {α : Type*} {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (s : Finset α)
+    (requiredR forbiddenR requiredB forbiddenB : α → Finset (Sym2 (Fin m)))
+    (hP :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+          I e x →
+          ∃ a ∈ s,
+            requiredR a ⊆ constructionGraphEdgeFinset x.1 ∧
+              Disjoint (forbiddenR a) (constructionGraphEdgeFinset x.1) ∧
+                requiredB a ⊆ constructionGraphEdgeFinset x.2 ∧
+                  Disjoint (forbiddenB a) (constructionGraphEdgeFinset x.2)) :
+    paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+        projCodegreeBound I e ≤
+      Finset.sum s (fun a =>
+        constructionGraphConstraintMass (Twobites.paperP β n) (requiredR a) (forbiddenR a) *
+          constructionGraphConstraintMass (Twobites.paperP β n) (requiredB a) (forbiddenB a)) := by
+  classical
+  unfold paperGoodSurvivingGraphPairMass
+  simpa using
+    graphPairBernoulliMass_le_sum_constraintMass_of_finite_imp
+      (m := m) (p := Twobites.paperP β n) hp0 hp1 s requiredR forbiddenR requiredB
+      forbiddenB
+      (goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e)
       hP
 
 theorem constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul
@@ -22351,14 +22471,8 @@ theorem
     (requiredR forbiddenR requiredB forbiddenB : Finset (Sym2 (Fin m)))
     (hP :
       ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
-        GoodEventD
-              ({ redBase := x.1
-                 blueBase := x.2
-                 embedding := e } : ConstructionData n m)
-              fiberBound degreeBound codegreeBound projCodegreeBound ∧
-            ({ redBase := x.1
-               blueBase := x.2
-               embedding := e } : ConstructionData n m).SurvivesAsIndependent I →
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+          I e x →
           requiredR ⊆ constructionGraphEdgeFinset x.1 ∧
             Disjoint forbiddenR (constructionGraphEdgeFinset x.1) ∧
               requiredB ⊆ constructionGraphEdgeFinset x.2 ∧
@@ -22415,6 +22529,94 @@ theorem
           I.card := by
     exact le_trans (constructionEmbeddingUniformWeight_nonneg n m) houter
   exact mul_le_mul houter hmass hmass0 houter0
+
+set_option linter.style.longLine false in
+theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_constraintMass_of_finite_imp
+    {α : Type*} {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (s : Finset α)
+    (requiredR forbiddenR requiredB forbiddenB : α → Finset (Sym2 (Fin m)))
+    (hP :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+          I e x →
+          ∃ a ∈ s,
+            requiredR a ⊆ constructionGraphEdgeFinset x.1 ∧
+              Disjoint (forbiddenR a) (constructionGraphEdgeFinset x.1) ∧
+                requiredB a ⊆ constructionGraphEdgeFinset x.2 ∧
+                  Disjoint (forbiddenB a) (constructionGraphEdgeFinset x.2)) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        Finset.sum s (fun a =>
+          constructionGraphConstraintMass (Twobites.paperP β n) (requiredR a) (forbiddenR a) *
+            constructionGraphConstraintMass (Twobites.paperP β n) (requiredB a) (forbiddenB a)) := by
+  have houter :
+      constructionEmbeddingUniformWeight n m ≤
+        Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card := by
+    exact constructionEmbeddingUniformWeight_le_paperRIOuterEventMass_of_pairImage
+      ({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m) I
+  have hmass :
+      paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+        Finset.sum s (fun a =>
+          constructionGraphConstraintMass (Twobites.paperP β n) (requiredR a) (forbiddenR a) *
+            constructionGraphConstraintMass (Twobites.paperP β n) (requiredB a) (forbiddenB a)) :=
+    paperGoodSurvivingGraphPairMass_le_sum_constraintMass_of_finite_imp
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      hp0 hp1 I e s requiredR forbiddenR requiredB forbiddenB hP
+  have hmass0 :
+      0 ≤ paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+        projCodegreeBound I e :=
+    paperGoodSurvivingGraphPairMass_nonneg (n := n) (m := m) (β := β)
+      (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      hp0 hp1 I e
+  have houter0 :
+      0 ≤ Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card := by
+    exact le_trans (constructionEmbeddingUniformWeight_nonneg n m) houter
+  calc
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e := by
+        exact mul_le_mul_of_nonneg_right houter hmass0
+    _ ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        Finset.sum s (fun a =>
+          constructionGraphConstraintMass (Twobites.paperP β n) (requiredR a) (forbiddenR a) *
+            constructionGraphConstraintMass (Twobites.paperP β n) (requiredB a) (forbiddenB a)) := by
+        exact mul_le_mul_of_nonneg_left hmass houter0
 
 theorem constructionProductWeight_le_constraintMass_mul_constraintMass
     {p : ℝ} (C : ConstructionData n m) (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
@@ -22522,7 +22724,8 @@ theorem paperConstructionMass_goodSurvivingIndepSetEventSet_eq_sum_by_embedding
             projCodegreeBound I e := by
   classical
   simpa [paperGoodSurvivingGraphPairMass, paperConstructionWeight,
-    goodSurvivingIndepSetEventSet, ConstructionData.sampleSpace, SurvivesAsIndependent]
+    goodSurvivingGraphPairPred, goodSurvivingIndepSetEventSet, ConstructionData.sampleSpace,
+    SurvivesAsIndependent]
     using
       constructionEventMass_eq_sum_embeddings_graphWeights
         (n := n) (m := m) (p := Twobites.paperP β n)
