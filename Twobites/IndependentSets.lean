@@ -9853,6 +9853,35 @@ theorem
     C.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOne_of_two_div_le_loglog
       I hI hred hn hε0 hε1 hloglog hLoss
 
+set_option linter.style.longLine false in
+theorem
+    paper_risi_hLossGap_of_paperNearOneReal_of_two_div_le_loglog
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hsum :
+      ((((C.redImage I).card + (C.blueImage I).card : ℕ) : ℝ)) ≤
+        (1 + ε / 2) * Twobites.paperK (1 + ε) n)
+    (hn : 1 < n) (hε0 : 0 < ε) (hε1 : ε < 1)
+    (hloglog : 2 / (ε * (1 - ε) / 8) ≤ Real.log (Real.log (n : ℝ)))
+    (hLoss :
+      (paperRISILossNat (1 + ε) ε1 n : ℝ) +
+          (((Twobites.paperKNat (1 + ε) n -
+                ((C.redImage I).card + (C.blueImage I).card) : ℕ) : ℕ) : ℝ) *
+            ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) ≤
+        (Twobites.paperCapNat (1 / 2) 0 n : ℝ) *
+          (Twobites.paperKNat (ε * (1 - ε) / 8) n : ℝ)) :
+    paperRISILossNat (1 + ε) ε1 n ≤
+      C.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+  by_cases hblueLeRed : (C.blueImage I).card ≤ (C.redImage I).card
+  · exact
+      C.paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog
+        I hI hsum hblueLeRed hn hε0 hε1 hloglog hLoss
+  · have hredLeBlue : (C.redImage I).card ≤ (C.blueImage I).card := by
+      exact le_of_not_ge hblueLeRed
+    exact
+      C.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOneReal_of_red_le_blue_of_two_div_le_loglog
+        I hI hsum hredLeBlue hn hε0 hε1 hloglog hLoss
+
 theorem paper_huge_blue_cross_deterministic_of_paperCapNat_of_witnessErrorBounds_of_additiveCapBase
     (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
@@ -24565,6 +24594,164 @@ theorem
       hblueCrossSmall hgap2B hκ2B hredCrossSmall hLossGap
 
 set_option linter.style.longLine false in
+theorem
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperNearOneReal_of_two_div_le_loglog_of_paperSection4Bound
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    (hgood :
+      goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e x)
+    {ρR ρB ε ε1 βdeg qcodeg δsumGap δgapR δgapB : ℝ}
+    {mediumWitness smallBound : ℕ}
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε) * Twobites.paperS n)
+    (hdegreeBound :
+      (degreeBound : ℝ) ≤ (1 + ε) * Twobites.paperP (1 / 2) n * Twobites.paperM n)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hn : 1 < n) (hεpos : 0 < ε) (hε : ε ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hnearLoglog : 2 / (ε * (1 - ε) / 8) ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε) / 2)
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hT2 : 2 < Twobites.paperT2 ε n) (hT1 : 2 < Twobites.paperT1 n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat (1 + ε) ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat (1 + ε) n)
+    (hLargeBound :
+      (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat (1 + ε) n +
+            (Twobites.paperLargeWitnessNat (1 + ε) ε n).choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hMediumWitness :
+      Twobites.paperKNat (1 + ε) n < mediumWitness * ⌈Twobites.paperT3 ε n⌉₊ -
+        mediumWitness.choose 2 * codegreeBound)
+    (hMediumBound :
+      (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat (1 + ε) n + mediumWitness.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hSmallCard :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε).card ≤
+        smallBound)
+    (hSmallBound :
+      (Twobites.paperT3 ε n / 2) *
+          (Twobites.paperKNat (1 + ε) n + smallBound.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat (1 + ε) n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat (1 + ε) n)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+              (Twobites.paperLargeWitnessNat (1 + ε) ε n : ℝ) +
+            (Twobites.paperHugeWitnessNat (1 + ε) n : ℝ)) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hred :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card ≤
+        Twobites.paperKNat ρR n)
+    (hblue :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card ≤
+        Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ y ∈ (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+          IsRedBaseVertex,
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionImage I y).card ≤
+          Twobites.paperCapNat (1 / 2) 0 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat (1 / 2) 0 n ≤
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionWeight I
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+            IsRedBaseVertex))
+    (hredCap :
+      ∀ y ∈ (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+          IsBlueBaseVertex,
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionImage I y).card ≤
+          Twobites.paperCapNat (1 / 2) 0 n)
+    (hredCapWeight :
+      Twobites.paperCapNat (1 / 2) 0 n ≤
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionWeight I
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+            IsBlueBaseVertex))
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * (1 + ε) ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * (1 + ε))
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + (0 : ℝ)) * (1 / 2 : ℝ) + 2 * ε1 * (1 + ε) + δsumGap + δgapR ≤ 1 + ε)
+    (hblueCrossSmall :
+      6 * Twobites.paperK (1 + ε) n ≤
+        (((Twobites.paperKNat (1 + ε) n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat (1 / 2) 0 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + (0 : ℝ)) * (1 / 2 : ℝ) + 2 * ε1 * (1 + ε) + δsumGap + δgapB ≤ 1 + ε)
+    (hredCrossSmall :
+      6 * Twobites.paperK (1 + ε) n ≤
+        (((Twobites.paperKNat (1 + ε) n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat (1 / 2) 0 n : ℕ) : ℝ) - 1))
+    (hsum :
+      ((((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card : ℕ) :
+          ℝ)) ≤
+        (1 + ε / 2) * Twobites.paperK (1 + ε) n)
+    (hLoss :
+      (paperRISILossNat (1 + ε) ε1 n : ℝ) +
+          (((Twobites.paperKNat (1 + ε) n -
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card) :
+                ℕ) :
+              ℕ) :
+            ℝ) *
+            ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) ≤
+        (Twobites.paperCapNat (1 / 2) 0 n : ℝ) *
+          (Twobites.paperKNat (ε * (1 - ε) / 8) n : ℝ)) :
+    goodSurvivingGraphPairProjectionChoiceMassBound (1 / 2) n m I e ε x ≤
+      Real.exp
+        (Twobites.paperP (1 / 2) n *
+            (12 * (ε1 * Twobites.paperK (1 + ε) n ^ 2) +
+              (⌈10 * (ε1 * Twobites.paperK (1 + ε) n ^ 2)⌉₊ : ℝ)) -
+          Twobites.paperP (1 / 2) n *
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTarget I
+              (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n)) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  by_cases hblueLeRedRaw : (Cx.blueImage I).card ≤ (Cx.redImage I).card
+  · exact
+      goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog_of_paperSection4Bound
+        (n := n) (m := m) (fiberBound := fiberBound) (degreeBound := degreeBound)
+        (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+        (I := I) (e := e) (x := x) hgood hfiberBound hdegreeBound ht21 ht32 hn hεpos
+        hε hloglog hnearLoglog hfiberScale hI hT2 hT1 hLChoose hLargeBound
+        hMediumWitness hMediumBound hSmallCard hSmallBound hHChoose hRevealArith hred
+        hblue hblueCap hblueCapWeight hredCap hredCapWeight hρR hρB hε1pos hε1le
+        hloglogGap hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound
+        hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall hsum
+        (by simpa [Cx] using hblueLeRedRaw) hLoss
+  · have hredLeBlueRaw : (Cx.redImage I).card ≤ (Cx.blueImage I).card := by
+      exact le_of_not_ge hblueLeRedRaw
+    exact
+      goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperNearOneReal_of_red_le_blue_of_two_div_le_loglog_of_paperSection4Bound
+        (n := n) (m := m) (fiberBound := fiberBound) (degreeBound := degreeBound)
+        (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+        (I := I) (e := e) (x := x) hgood hfiberBound hdegreeBound ht21 ht32 hn hεpos
+        hε hloglog hnearLoglog hfiberScale hI hT2 hT1 hLChoose hLargeBound
+        hMediumWitness hMediumBound hSmallCard hSmallBound hHChoose hRevealArith hred
+        hblue hblueCap hblueCapWeight hredCap hredCapWeight hρR hρB hε1pos hε1le
+        hloglogGap hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound
+        hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall hsum
+        (by simpa [Cx] using hredLeBlueRaw) hLoss
+
+set_option linter.style.longLine false in
 set_option maxHeartbeats 3000000 in
 -- This fixed-embedding counted-event bridge expands several large Section 4 definitions and
 -- needs extra heartbeats for elaboration, even though the proof itself is direct.
@@ -25579,38 +25766,19 @@ theorem
       (projCodegreeBound := projCodegreeBound) (ε := ε)
       (Twobites.paperP_nonneg (by norm_num) n) (Twobites.paperPHalf_le_one hn) I e ?_
   intro x hgood
-  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
-  by_cases hblueLeRedRaw : (Cx.blueImage I).card ≤ (Cx.redImage I).card
-  · exact
-      goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog_of_paperSection4Bound
-        (n := n) (m := m) (fiberBound := fiberBound) (degreeBound := degreeBound)
-        (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
-        (I := I) (e := e) (x := x) (ρR := ρR) (ρB := ρB) (ε := ε) (ε1 := ε1)
-        (βdeg := βdeg) (qcodeg := qcodeg) (δsumGap := δsumGap) (δgapR := δgapR)
-        (δgapB := δgapB) hgood hfiberBound hdegreeBound ht21 ht32 hn hεpos hε
-        hloglog hnearLoglog hfiberScale hI hT2 hT1 hLChoose hLargeBound hMediumWitness
-        hMediumBound (hSmallCard x hgood) hSmallBound hHChoose hRevealArith
-        (hred x hgood) (hblue x hgood) (hblueCap x hgood) (hblueCapWeight x hgood)
-        (hredCap x hgood) (hredCapWeight x hgood) hρR hρB hε1pos hε1le hloglogGap
-        hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound hcodegBound hgap2R
-        hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall (hsum x hgood)
-        (by simpa [Cx] using hblueLeRedRaw) (hLoss x hgood)
-  · have hredLeBlueRaw : (Cx.redImage I).card ≤ (Cx.blueImage I).card := by
-      exact le_of_not_ge hblueLeRedRaw
-    exact
-      goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperNearOneReal_of_red_le_blue_of_two_div_le_loglog_of_paperSection4Bound
-        (n := n) (m := m) (fiberBound := fiberBound) (degreeBound := degreeBound)
-        (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
-        (I := I) (e := e) (x := x) (ρR := ρR) (ρB := ρB) (ε := ε) (ε1 := ε1)
-        (βdeg := βdeg) (qcodeg := qcodeg) (δsumGap := δsumGap) (δgapR := δgapR)
-        (δgapB := δgapB) hgood hfiberBound hdegreeBound ht21 ht32 hn hεpos hε
-        hloglog hnearLoglog hfiberScale hI hT2 hT1 hLChoose hLargeBound hMediumWitness
-        hMediumBound (hSmallCard x hgood) hSmallBound hHChoose hRevealArith
-        (hred x hgood) (hblue x hgood) (hblueCap x hgood) (hblueCapWeight x hgood)
-        (hredCap x hgood) (hredCapWeight x hgood) hρR hρB hε1pos hε1le hloglogGap
-        hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound hcodegBound hgap2R
-        hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall (hsum x hgood)
-        (by simpa [Cx] using hredLeBlueRaw) (hLoss x hgood)
+  exact
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperNearOneReal_of_two_div_le_loglog_of_paperSection4Bound
+      (n := n) (m := m) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (I := I) (e := e) (x := x) (ρR := ρR) (ρB := ρB) (ε := ε) (ε1 := ε1)
+      (βdeg := βdeg) (qcodeg := qcodeg) (δsumGap := δsumGap) (δgapR := δgapR)
+      (δgapB := δgapB) hgood hfiberBound hdegreeBound ht21 ht32 hn hεpos hε hloglog
+      hnearLoglog hfiberScale hI hT2 hT1 hLChoose hLargeBound hMediumWitness
+      hMediumBound (hSmallCard x hgood) hSmallBound hHChoose hRevealArith
+      (hred x hgood) (hblue x hgood) (hblueCap x hgood) (hblueCapWeight x hgood)
+      (hredCap x hgood) (hredCapWeight x hgood) hρR hρB hε1pos hε1le hloglogGap
+      hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound hcodegBound hgap2R
+      hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall (hsum x hgood) (hLoss x hgood)
 
 set_option linter.style.longLine false in
 theorem
