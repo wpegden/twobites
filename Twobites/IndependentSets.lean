@@ -21201,6 +21201,41 @@ theorem exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_lt_goodMass
     ⟨C, hD, hnot⟩
   exact ⟨C, hD, C.triangleFreeWithSmallIndepNum_of_noSurvivingIndepSetCard hnot⟩
 
+theorem exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_lt_explicitGoodMass
+    {β ε : ℝ} {b fiberBound degreeBound codegreeBound projCodegreeBound : ℕ} {B : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1) (hB : 0 ≤ B)
+    (hbound :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard (Twobites.paperKNat (1 + ε) n),
+        ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+            constructionEventMass (paperConstructionWeight β n m)
+              (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I) ≤
+          B)
+    (hn : n ≤ m * b) (hb : b ≤ m) (hfb : b ≤ fiberBound)
+    (hgood :
+      B <
+        ((1 - Twobites.paperP β n) ^ Fintype.card (Sym2 (Fin m))) *
+          (((1 - Twobites.paperP β n) ^ Fintype.card (Sym2 (Fin m))) *
+            constructionEmbeddingUniformWeight n m)) :
+    ∃ C : ConstructionData n m,
+      GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        triangleFreeWithSmallIndepNum ε n := by
+  have hgoodMass :
+      B <
+        constructionEventMass (paperConstructionWeight β n m)
+          (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound) := by
+    exact lt_of_lt_of_le hgood
+      (paperConstructionMass_goodEventDSet_ge_emptyBalancedConstructionWeight_explicit
+        (β := β) (n := n) (m := m) (b := b)
+        (fiberBound := fiberBound) (degreeBound := degreeBound)
+        (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+        hp0 hp1 hn hb hfb)
+  exact exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_lt_goodMass
+    (n := n) (m := m) (β := β) (ε := ε)
+    (fiberBound := fiberBound) (degreeBound := degreeBound)
+    (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+    hp0 hp1 hB hbound hgoodMass
+
 /-- A paper-facing `main` witness extracted from the deterministic final graph once every
 `paperKNat (1 + ε) n`-subset fails to survive as an independent set. This isolates the final graph
 side of the argument from the still-missing global random-construction existence layer. -/
