@@ -1429,6 +1429,18 @@ def blueMonochromaticWitnessBiUnion (C : ConstructionData n m) (I : Finset (Fin 
   (Finset.univ : Finset (Fin m)).biUnion fun b =>
     (C.blueProjectionImage I (Sum.inr b)).offDiag.image Sym2.mk
 
+/-- The red projection-pair witness pool `⋃_{x ∈ A} π_R({X_x(I) choose 2})`, represented as
+unordered red pairs. -/
+def redProjectionPairBiUnion (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (Sym2 (Fin m)) :=
+  A.biUnion fun x => (C.redProjectionImage I x).offDiag.image Sym2.mk
+
+/-- The blue projection-pair witness pool `⋃_{x ∈ A} π_B({X_x(I) choose 2})`, represented as
+unordered blue pairs. -/
+def blueProjectionPairBiUnion (C : ConstructionData n m) (I : Finset (Fin n))
+    (A : Finset (BaseVertex m)) : Finset (Sym2 (Fin m)) :=
+  A.biUnion fun x => (C.blueProjectionImage I x).offDiag.image Sym2.mk
+
 /-- The paper's closed-pair predicate `C(I)`, expressed on ordered pairs of distinct vertices of
 `I`. -/
 def ClosedPair (C : ConstructionData n m) (I : Finset (Fin n)) (v w : Fin n) : Prop :=
@@ -14472,6 +14484,34 @@ theorem blueMonochromaticWitnessBiUnion_card_le_blueProjectionPairCount_filter_i
       · intro b _
         rfl
 
+theorem redProjectionPairBiUnion_card_le_redProjectionPairCount
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.redProjectionPairBiUnion I A).card ≤ C.redProjectionPairCount I A := by
+  calc
+    (C.redProjectionPairBiUnion I A).card ≤
+        ∑ x ∈ A, (((C.redProjectionImage I x).offDiag.image Sym2.mk).card) := by
+      simpa [redProjectionPairBiUnion] using
+        (Finset.card_biUnion_le
+          (s := A) (t := fun x => (C.redProjectionImage I x).offDiag.image Sym2.mk))
+    _ = ∑ x ∈ A, ((C.redProjectionImage I x).card).choose 2 := by
+      simp [Sym2.card_image_offDiag]
+    _ = C.redProjectionPairCount I A := by
+      simp [redProjectionPairCount]
+
+theorem blueProjectionPairBiUnion_card_le_blueProjectionPairCount
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m)) :
+    (C.blueProjectionPairBiUnion I A).card ≤ C.blueProjectionPairCount I A := by
+  calc
+    (C.blueProjectionPairBiUnion I A).card ≤
+        ∑ x ∈ A, (((C.blueProjectionImage I x).offDiag.image Sym2.mk).card) := by
+      simpa [blueProjectionPairBiUnion] using
+        (Finset.card_biUnion_le
+          (s := A) (t := fun x => (C.blueProjectionImage I x).offDiag.image Sym2.mk))
+    _ = ∑ x ∈ A, ((C.blueProjectionImage I x).card).choose 2 := by
+      simp [Sym2.card_image_offDiag]
+    _ = C.blueProjectionPairCount I A := by
+      simp [blueProjectionPairCount]
+
 set_option linter.style.longLine false in
 theorem redBaseClosedPairSet_image_sym2_subset_redMonochromaticWitnessBiUnion_union_redOppositeWitnessBiUnion_of_indep
     (C : ConstructionData n m) {I : Finset (Fin n)}
@@ -14573,6 +14613,138 @@ theorem blueBaseClosedPairSet_image_sym2_subset_blueMonochromaticWitnessBiUnion_
     · refine C.mem_blueProjectionImage_inl.2 ?_
       refine ⟨w, hwI, ?_, hw⟩
       simpa [C.redLift_adj_iff] using hmixed.2.1
+
+set_option linter.style.longLine false in
+theorem
+    redBaseClosedPairSet_image_sym2_subset_redMonochromaticWitnessBiUnion_union_redProjectionPairBiUnion_union_redOppositeWitnessBiUnion_of_indep
+    (C : ConstructionData n m) {I : Finset (Fin n)} (A : Finset (BaseVertex m))
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w) :
+    (C.redBaseClosedPairSet I).image Sym2.mk ⊆
+      (C.redMonochromaticWitnessBiUnion I ∪ C.redProjectionPairBiUnion I A) ∪
+        C.redOppositeWitnessBiUnion I A := by
+  intro z hz
+  rcases Finset.mem_image.1 hz with ⟨p, hp, rfl⟩
+  rcases p with ⟨r, r'⟩
+  rcases (C.mem_redBaseClosedPairSet.1 hp) with ⟨hr, hr', hrr', hAdj⟩
+  rcases C.mem_redImage.1 hr with ⟨v, hvI, hv⟩
+  rcases C.mem_redImage.1 hr' with ⟨w, hwI, hw⟩
+  have hvw : v ≠ w := by
+    intro hvwEq
+    have hprojEq : C.redProj v = C.redProj w := congrArg C.redProj hvwEq
+    have hrrEq : r = r' := by
+      rw [← hv, ← hw]
+      exact hprojEq
+    exact hrr'.ne hrrEq
+  have hred : C.redLift.Adj v w := by
+    rw [C.redLift_adj_iff, hv, hw]
+    exact hAdj
+  have hdel : C.redDeleted v w := by
+    by_contra hnotDel
+    exact (hindep hvI hwI hvw) <|
+      (C.finalGraph_adj_iff.2 <| Or.inl <| (C.retainedRed_adj_iff.2 ⟨hred, hnotDel⟩))
+  rcases hdel with ⟨u, hmono | hmixed⟩
+  · refine Finset.mem_union.2 <| Or.inl ?_
+    refine Finset.mem_union.2 <| Or.inl ?_
+    refine Finset.mem_biUnion.2 ⟨C.redProj u, by simp, ?_⟩
+    refine Finset.mem_image.2 ⟨(r, r'), ?_, rfl⟩
+    refine Finset.mem_offDiag.2 ⟨?_, ?_, hrr'.ne⟩
+    · refine C.mem_redProjectionImage_inl.2 ?_
+      refine ⟨?_, hr⟩
+      rw [← hv]
+      exact C.redLift_adj_iff.1 hmono.1
+    · refine C.mem_redProjectionImage_inl.2 ?_
+      refine ⟨?_, hr'⟩
+      rw [← hw]
+      exact C.redLift_adj_iff.1 hmono.2.1
+  · by_cases hxA : Sum.inr (C.blueProj u) ∈ A
+    · refine Finset.mem_union.2 <| Or.inl ?_
+      refine Finset.mem_union.2 <| Or.inr ?_
+      refine Finset.mem_biUnion.2 ⟨Sum.inr (C.blueProj u), hxA, ?_⟩
+      refine Finset.mem_image.2 ⟨(r, r'), ?_, rfl⟩
+      refine Finset.mem_offDiag.2 ⟨?_, ?_, hrr'.ne⟩
+      · exact
+          C.mem_redProjectionImage_inr.2
+            ⟨v, hvI, by simpa [C.blueLift_adj_iff] using hmixed.1, hv⟩
+      · exact
+          C.mem_redProjectionImage_inr.2
+            ⟨w, hwI, by simpa [C.blueLift_adj_iff] using hmixed.2.1, hw⟩
+    · refine Finset.mem_union.2 <| Or.inr ?_
+      refine Finset.mem_biUnion.2 ⟨C.blueProj u, by simpa using hxA, ?_⟩
+      refine Finset.mem_image.2 ⟨(r, r'), ?_, rfl⟩
+      refine Finset.mem_offDiag.2 ⟨?_, ?_, hrr'.ne⟩
+      · exact
+          C.mem_redProjectionImage_inr.2
+            ⟨v, hvI, by simpa [C.blueLift_adj_iff] using hmixed.1, hv⟩
+      · exact
+          C.mem_redProjectionImage_inr.2
+            ⟨w, hwI, by simpa [C.blueLift_adj_iff] using hmixed.2.1, hw⟩
+
+set_option linter.style.longLine false in
+theorem
+    blueBaseClosedPairSet_image_sym2_subset_blueMonochromaticWitnessBiUnion_union_blueProjectionPairBiUnion_union_blueOppositeWitnessBiUnion_of_indep
+    (C : ConstructionData n m) {I : Finset (Fin n)} (A : Finset (BaseVertex m))
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w) :
+    (C.blueBaseClosedPairSet I).image Sym2.mk ⊆
+      (C.blueMonochromaticWitnessBiUnion I ∪ C.blueProjectionPairBiUnion I A) ∪
+        C.blueOppositeWitnessBiUnion I A := by
+  intro z hz
+  rcases Finset.mem_image.1 hz with ⟨p, hp, rfl⟩
+  rcases p with ⟨b, b'⟩
+  rcases (C.mem_blueBaseClosedPairSet.1 hp) with ⟨hb, hb', hbb', hAdj⟩
+  rcases C.mem_blueImage.1 hb with ⟨v, hvI, hv⟩
+  rcases C.mem_blueImage.1 hb' with ⟨w, hwI, hw⟩
+  have hvw : v ≠ w := by
+    intro hvwEq
+    have hprojEq : C.blueProj v = C.blueProj w := congrArg C.blueProj hvwEq
+    have hbbEq : b = b' := by
+      rw [← hv, ← hw]
+      exact hprojEq
+    exact hbb'.ne hbbEq
+  have hblue : C.blueLift.Adj v w := by
+    rw [C.blueLift_adj_iff, hv, hw]
+    exact hAdj
+  have hdel : C.blueDeleted v w := by
+    by_contra hnotDel
+    exact (hindep hvI hwI hvw) <|
+      (C.finalGraph_adj_iff.2 <| Or.inr <| (C.retainedBlue_adj_iff.2 ⟨hblue, hnotDel⟩))
+  rcases hdel with ⟨u, hmono | hmixed⟩
+  · refine Finset.mem_union.2 <| Or.inl ?_
+    refine Finset.mem_union.2 <| Or.inl ?_
+    refine Finset.mem_biUnion.2 ⟨C.blueProj u, by simp, ?_⟩
+    refine Finset.mem_image.2 ⟨(b, b'), ?_, rfl⟩
+    refine Finset.mem_offDiag.2 ⟨?_, ?_, hbb'.ne⟩
+    · refine C.mem_blueProjectionImage_inr.2 ?_
+      refine ⟨?_, hb⟩
+      rw [← hv]
+      exact C.blueLift_adj_iff.1 hmono.1
+    · refine C.mem_blueProjectionImage_inr.2 ?_
+      refine ⟨?_, hb'⟩
+      rw [← hw]
+      exact C.blueLift_adj_iff.1 hmono.2.1
+  · by_cases hxA : Sum.inl (C.redProj u) ∈ A
+    · refine Finset.mem_union.2 <| Or.inl ?_
+      refine Finset.mem_union.2 <| Or.inr ?_
+      refine Finset.mem_biUnion.2 ⟨Sum.inl (C.redProj u), hxA, ?_⟩
+      refine Finset.mem_image.2 ⟨(b, b'), ?_, rfl⟩
+      refine Finset.mem_offDiag.2 ⟨?_, ?_, hbb'.ne⟩
+      · exact
+          C.mem_blueProjectionImage_inl.2
+            ⟨v, hvI, by simpa [C.redLift_adj_iff] using hmixed.1, hv⟩
+      · exact
+          C.mem_blueProjectionImage_inl.2
+            ⟨w, hwI, by simpa [C.redLift_adj_iff] using hmixed.2.1, hw⟩
+    · refine Finset.mem_union.2 <| Or.inr ?_
+      refine Finset.mem_biUnion.2 ⟨C.redProj u, by simpa using hxA, ?_⟩
+      refine Finset.mem_image.2 ⟨(b, b'), ?_, rfl⟩
+      refine Finset.mem_offDiag.2 ⟨?_, ?_, hbb'.ne⟩
+      · exact
+          C.mem_blueProjectionImage_inl.2
+            ⟨v, hvI, by simpa [C.redLift_adj_iff] using hmixed.1, hv⟩
+      · exact
+          C.mem_blueProjectionImage_inl.2
+            ⟨w, hwI, by simpa [C.redLift_adj_iff] using hmixed.2.1, hw⟩
 
 set_option linter.style.longLine false in
 theorem redBaseClosedPairSet_card_le_redProjectionPairCount_filter_isRed_add_filter_isBlue_of_indep
@@ -14693,6 +14865,162 @@ theorem blueBaseClosedPairSet_card_le_blueProjectionPairCount_filter_isBlue_add_
         C.blueProjectionPairCount I ((Finset.univ : Finset (BaseVertex m)).filter IsBlueBaseVertex) +
           C.blueProjectionPairCount I ((Finset.univ : Finset (BaseVertex m)).filter IsRedBaseVertex) := by
       exact Nat.add_le_add hmono hopp
+
+set_option linter.style.longLine false in
+theorem redBaseClosedPairSet_card_le_redProjectionPairCount_filter_isRed_add_A_add_opposite_of_indep
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w) :
+    (C.redBaseClosedPairSet I).card ≤
+      C.redProjectionPairCount I ((Finset.univ : Finset (BaseVertex m)).filter IsRedBaseVertex) +
+        C.redProjectionPairCount I A +
+          C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr) := by
+  have hstrict :
+      ∀ p ∈ C.redBaseClosedPairSet I, p.1 < p.2 := by
+    intro p hp
+    exact (C.mem_redBaseClosedPairSet.1 hp).2.2.1
+  have himage :
+      (C.redBaseClosedPairSet I).card = ((C.redBaseClosedPairSet I).image Sym2.mk).card := by
+    symm
+    exact card_image_sym2_mk_of_strictPairSet _ hstrict
+  have hmono :=
+    C.redMonochromaticWitnessBiUnion_card_le_redProjectionPairCount_filter_isRed I
+  have hproj := C.redProjectionPairBiUnion_card_le_redProjectionPairCount I A
+  have hopp :
+      (C.redOppositeWitnessBiUnion I A).card ≤
+        C.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr) := by
+    calc
+      (C.redOppositeWitnessBiUnion I A).card ≤
+          ∑ b ∈ (Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A),
+            (((C.redProjectionImage I (Sum.inr b)).offDiag.image Sym2.mk).card) := by
+        simpa [redOppositeWitnessBiUnion] using
+          (Finset.card_biUnion_le
+            (s := (Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A))
+            (t := fun b => (C.redProjectionImage I (Sum.inr b)).offDiag.image Sym2.mk))
+      _ = ∑ b ∈ (Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A),
+            ((C.redProjectionImage I (Sum.inr b)).card).choose 2 := by
+        simp [Sym2.card_image_offDiag]
+      _ = C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr) := by
+        rw [redProjectionPairCount]
+        refine Finset.sum_bij (i := fun b _ => (Sum.inr b : BaseVertex m)) ?_ ?_ ?_ ?_
+        · intro b hb
+          exact Finset.mem_image.2 ⟨b, hb, rfl⟩
+        · intro b₁ _ b₂ _ h
+          cases h
+          rfl
+        · intro x hx
+          rcases Finset.mem_image.1 hx with ⟨b, hb, rfl⟩
+          exact ⟨b, hb, rfl⟩
+        · intro b hb
+          rfl
+  calc
+    (C.redBaseClosedPairSet I).card = ((C.redBaseClosedPairSet I).image Sym2.mk).card := himage
+    _ ≤
+        ((C.redMonochromaticWitnessBiUnion I ∪ C.redProjectionPairBiUnion I A) ∪
+            C.redOppositeWitnessBiUnion I A).card := by
+      exact
+        Finset.card_le_card
+          (C.redBaseClosedPairSet_image_sym2_subset_redMonochromaticWitnessBiUnion_union_redProjectionPairBiUnion_union_redOppositeWitnessBiUnion_of_indep
+            A hindep)
+    _ ≤
+        (C.redMonochromaticWitnessBiUnion I ∪ C.redProjectionPairBiUnion I A).card +
+          (C.redOppositeWitnessBiUnion I A).card := by
+      exact Finset.card_union_le _ _
+    _ ≤
+        (C.redMonochromaticWitnessBiUnion I).card +
+          (C.redProjectionPairBiUnion I A).card +
+            (C.redOppositeWitnessBiUnion I A).card := by
+      have hpair : (C.redMonochromaticWitnessBiUnion I ∪ C.redProjectionPairBiUnion I A).card ≤
+          (C.redMonochromaticWitnessBiUnion I).card + (C.redProjectionPairBiUnion I A).card := by
+        exact Finset.card_union_le _ _
+      omega
+    _ ≤
+        C.redProjectionPairCount I ((Finset.univ : Finset (BaseVertex m)).filter IsRedBaseVertex) +
+          C.redProjectionPairCount I A +
+            C.redProjectionPairCount I
+              ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ A).image Sum.inr) := by
+      exact Nat.add_le_add (Nat.add_le_add hmono hproj) hopp
+
+set_option linter.style.longLine false in
+theorem blueBaseClosedPairSet_card_le_blueProjectionPairCount_filter_isBlue_add_A_add_opposite_of_indep
+    (C : ConstructionData n m) (I : Finset (Fin n)) (A : Finset (BaseVertex m))
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w) :
+    (C.blueBaseClosedPairSet I).card ≤
+      C.blueProjectionPairCount I ((Finset.univ : Finset (BaseVertex m)).filter IsBlueBaseVertex) +
+        C.blueProjectionPairCount I A +
+          C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl) := by
+  have hstrict :
+      ∀ p ∈ C.blueBaseClosedPairSet I, p.1 < p.2 := by
+    intro p hp
+    exact (C.mem_blueBaseClosedPairSet.1 hp).2.2.1
+  have himage :
+      (C.blueBaseClosedPairSet I).card = ((C.blueBaseClosedPairSet I).image Sym2.mk).card := by
+    symm
+    exact card_image_sym2_mk_of_strictPairSet _ hstrict
+  have hmono :=
+    C.blueMonochromaticWitnessBiUnion_card_le_blueProjectionPairCount_filter_isBlue I
+  have hproj := C.blueProjectionPairBiUnion_card_le_blueProjectionPairCount I A
+  have hopp :
+      (C.blueOppositeWitnessBiUnion I A).card ≤
+        C.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl) := by
+    calc
+      (C.blueOppositeWitnessBiUnion I A).card ≤
+          ∑ r ∈ (Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A),
+            (((C.blueProjectionImage I (Sum.inl r)).offDiag.image Sym2.mk).card) := by
+        simpa [blueOppositeWitnessBiUnion] using
+          (Finset.card_biUnion_le
+            (s := (Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A))
+            (t := fun r => (C.blueProjectionImage I (Sum.inl r)).offDiag.image Sym2.mk))
+      _ = ∑ r ∈ (Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A),
+            ((C.blueProjectionImage I (Sum.inl r)).card).choose 2 := by
+        simp [Sym2.card_image_offDiag]
+      _ = C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl) := by
+        rw [blueProjectionPairCount]
+        refine Finset.sum_bij (i := fun r _ => (Sum.inl r : BaseVertex m)) ?_ ?_ ?_ ?_
+        · intro r hr
+          exact Finset.mem_image.2 ⟨r, hr, rfl⟩
+        · intro r₁ _ r₂ _ h
+          cases h
+          rfl
+        · intro x hx
+          rcases Finset.mem_image.1 hx with ⟨r, hr, rfl⟩
+          exact ⟨r, hr, rfl⟩
+        · intro r hr
+          rfl
+  calc
+    (C.blueBaseClosedPairSet I).card = ((C.blueBaseClosedPairSet I).image Sym2.mk).card := himage
+    _ ≤
+        ((C.blueMonochromaticWitnessBiUnion I ∪ C.blueProjectionPairBiUnion I A) ∪
+            C.blueOppositeWitnessBiUnion I A).card := by
+      exact
+        Finset.card_le_card
+          (C.blueBaseClosedPairSet_image_sym2_subset_blueMonochromaticWitnessBiUnion_union_blueProjectionPairBiUnion_union_blueOppositeWitnessBiUnion_of_indep
+            A hindep)
+    _ ≤
+        (C.blueMonochromaticWitnessBiUnion I ∪ C.blueProjectionPairBiUnion I A).card +
+          (C.blueOppositeWitnessBiUnion I A).card := by
+      exact Finset.card_union_le _ _
+    _ ≤
+        (C.blueMonochromaticWitnessBiUnion I).card +
+          (C.blueProjectionPairBiUnion I A).card +
+            (C.blueOppositeWitnessBiUnion I A).card := by
+      have hpair : (C.blueMonochromaticWitnessBiUnion I ∪ C.blueProjectionPairBiUnion I A).card ≤
+          (C.blueMonochromaticWitnessBiUnion I).card + (C.blueProjectionPairBiUnion I A).card := by
+        exact Finset.card_union_le _ _
+      omega
+    _ ≤
+        C.blueProjectionPairCount I ((Finset.univ : Finset (BaseVertex m)).filter IsBlueBaseVertex) +
+          C.blueProjectionPairCount I A +
+            C.blueProjectionPairCount I
+              ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ A).image Sum.inl) := by
+      exact Nat.add_le_add (Nat.add_le_add hmono hproj) hopp
 
 set_option linter.style.longLine false in
 theorem redBaseClosedPairSet_card_le_partPairCount_LMS_add_huge_diag_add_huge_cross_of_indep
@@ -15847,6 +16175,38 @@ theorem sym2_mk_mem_blueOppositeWitnessBiUnion_of_blueMixedDeletionWitness_of_no
     (hmixed : C.blueMixedDeletionWitness u v w) :
     Sym2.mk (C.blueProj v, C.blueProj w) ∈ C.blueOppositeWitnessBiUnion I A := by
   refine Finset.mem_biUnion.2 ⟨C.redProj u, by simpa using hnotA, ?_⟩
+  refine Finset.mem_image.2 ⟨(C.blueProj v, C.blueProj w), ?_, rfl⟩
+  refine Finset.mem_offDiag.2 ⟨?_, ?_, C.blueProj_ne_of_blueLift_adj hmixed.2.2⟩
+  · exact
+      C.mem_blueProjectionImage_inl.2
+        ⟨v, hvI, by simpa [C.redLift_adj_iff] using hmixed.1, rfl⟩
+  · exact
+      C.mem_blueProjectionImage_inl.2
+        ⟨w, hwI, by simpa [C.redLift_adj_iff] using hmixed.2.1, rfl⟩
+
+theorem sym2_mk_mem_redProjectionPairBiUnion_of_redMixedDeletionWitness_of_mem
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {u v w : Fin n} (hvI : v ∈ I) (hwI : w ∈ I)
+    (hxA : Sum.inr (C.blueProj u) ∈ A)
+    (hmixed : C.redMixedDeletionWitness u v w) :
+    Sym2.mk (C.redProj v, C.redProj w) ∈ C.redProjectionPairBiUnion I A := by
+  refine Finset.mem_biUnion.2 ⟨Sum.inr (C.blueProj u), hxA, ?_⟩
+  refine Finset.mem_image.2 ⟨(C.redProj v, C.redProj w), ?_, rfl⟩
+  refine Finset.mem_offDiag.2 ⟨?_, ?_, C.redProj_ne_of_redLift_adj hmixed.2.2⟩
+  · exact
+      C.mem_redProjectionImage_inr.2
+        ⟨v, hvI, by simpa [C.blueLift_adj_iff] using hmixed.1, rfl⟩
+  · exact
+      C.mem_redProjectionImage_inr.2
+        ⟨w, hwI, by simpa [C.blueLift_adj_iff] using hmixed.2.1, rfl⟩
+
+theorem sym2_mk_mem_blueProjectionPairBiUnion_of_blueMixedDeletionWitness_of_mem
+    (C : ConstructionData n m) {I : Finset (Fin n)} {A : Finset (BaseVertex m)}
+    {u v w : Fin n} (hvI : v ∈ I) (hwI : w ∈ I)
+    (hxA : Sum.inl (C.redProj u) ∈ A)
+    (hmixed : C.blueMixedDeletionWitness u v w) :
+    Sym2.mk (C.blueProj v, C.blueProj w) ∈ C.blueProjectionPairBiUnion I A := by
+  refine Finset.mem_biUnion.2 ⟨Sum.inl (C.redProj u), hxA, ?_⟩
   refine Finset.mem_image.2 ⟨(C.blueProj v, C.blueProj w), ?_, rfl⟩
   refine Finset.mem_offDiag.2 ⟨?_, ?_, C.blueProj_ne_of_blueLift_adj hmixed.2.2⟩
   · exact
