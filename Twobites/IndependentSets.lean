@@ -247,7 +247,7 @@ theorem constructionEventMass_union_le {w : ConstructionData n m → ℝ}
   simpa [add_comm, add_left_comm, add_assoc] using
     add_le_add_left hmono (constructionEventMass w E)
 
-theorem constructionEventMass_biUnion_le {α : Type*} [DecidableEq α]
+theorem constructionEventMass_biUnion_le {α : Type*}
     {w : ConstructionData n m → ℝ} (s : Finset α)
     (E : α → Finset (ConstructionData n m)) (hwt : ∀ C, 0 ≤ w C) :
     constructionEventMass w (s.biUnion E) ≤
@@ -20534,19 +20534,19 @@ theorem goodSurvivingIndepSetCardBadSet_eq_biUnion
   ext C
   constructor
   · intro h
-    simp [goodSurvivingIndepSetCardBadSet] at h
-    rcases h with ⟨hD, I, hIk, hsurv⟩
+    rw [mem_goodSurvivingIndepSetCardBadSet_iff] at h
+    rcases h with ⟨hD, I, hI, hsurv⟩
     refine Finset.mem_biUnion.2 ?_
     refine ⟨I, ?_, ?_⟩
-    · exact Finset.mem_powersetCard.2 ⟨Finset.subset_univ I, hIk⟩
-    · simp [goodSurvivingIndepSetEventSet, hD, hsurv]
+    · exact hI
+    · rw [mem_goodSurvivingIndepSetEventSet_iff]
+      exact ⟨hD, hsurv⟩
   · intro h
     rcases Finset.mem_biUnion.1 h with ⟨I, hI, hmem⟩
-    have hIk : I.card = k := (Finset.mem_powersetCard.1 hI).2
-    simp [goodSurvivingIndepSetEventSet] at hmem
+    rw [mem_goodSurvivingIndepSetEventSet_iff] at hmem
     rcases hmem with ⟨hD, hsurv⟩
-    simp [goodSurvivingIndepSetCardBadSet, hD]
-    exact ⟨I, hIk, hsurv⟩
+    rw [mem_goodSurvivingIndepSetCardBadSet_iff]
+    exact ⟨hD, I, hI, hsurv⟩
 
 theorem constructionEventMass_goodSurvivingIndepSetCardBadSet_le_sum
     {w : ConstructionData n m → ℝ}
@@ -20629,10 +20629,12 @@ theorem exists_goodEventD_with_noSurvivingIndepSetCard_of_mass_lt
           projCodegreeBound k := by
     intro C hC
     have hbad : ¬ C.NoSurvivingIndepSetCard k := hno C hC
-    simp [NoSurvivingIndepSetCard] at hbad
-    rcases hbad with ⟨I, hIk, hsurv⟩
-    simp [goodSurvivingIndepSetCardBadSet, hC]
-    exact ⟨I, hIk, hsurv⟩
+    have hmemBad : C ∈ survivingIndepSetCardBadSet n m k := by
+      by_contra hnotmem
+      exact hbad ((not_mem_survivingIndepSetCardBadSet_iff).1 hnotmem)
+    rcases (mem_survivingIndepSetCardBadSet_iff).1 hmemBad with ⟨I, hI, hsurv⟩
+    rw [mem_goodSurvivingIndepSetCardBadSet_iff]
+    exact ⟨(mem_goodEventDSet_iff.mp hC), I, hI, hsurv⟩
   have hmono :
       constructionEventMass w
           (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound) ≤
@@ -20641,6 +20643,66 @@ theorem exists_goodEventD_with_noSurvivingIndepSetCard_of_mass_lt
             projCodegreeBound k) :=
     constructionEventMass_mono hsubset hwt
   exact not_le_of_gt hmass hmono
+
+theorem exists_goodEventD_with_noSurvivingIndepSetCard_of_choose_mul_le_lt_goodMass
+    {w : ConstructionData n m → ℝ}
+    {fiberBound degreeBound codegreeBound projCodegreeBound k : ℕ} {B : ℝ}
+    (hwt : ∀ C, 0 ≤ w C) (hB : 0 ≤ B)
+    (hbound :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k,
+        ((n.choose k : ℕ) : ℝ) *
+            constructionEventMass w
+              (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I) ≤
+          B)
+    (hgood :
+      B <
+        constructionEventMass w
+          (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound)) :
+    ∃ C ∈ goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound,
+      C.NoSurvivingIndepSetCard k := by
+  have hbad :
+      constructionEventMass w
+          (goodSurvivingIndepSetCardBadSet n m fiberBound degreeBound codegreeBound
+            projCodegreeBound k) ≤
+        B :=
+    constructionEventMass_goodSurvivingIndepSetCardBadSet_le_of_choose_mul_le
+      (n := n) (m := m) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound) (k := k)
+      hB hwt hbound
+  apply exists_goodEventD_with_noSurvivingIndepSetCard_of_mass_lt hwt
+  exact lt_of_le_of_lt hbad hgood
+
+theorem exists_goodEventD_with_noSurvivingIndepSetCard_of_paperChooseMulLe_lt_goodMass
+    {β : ℝ}
+    {fiberBound degreeBound codegreeBound projCodegreeBound k : ℕ} {B : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1) (hB : 0 ≤ B)
+    (hbound :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k,
+        ((n.choose k : ℕ) : ℝ) *
+            constructionEventMass (paperConstructionWeight β n m)
+              (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I) ≤
+          B)
+    (hgood :
+      B <
+        constructionEventMass (paperConstructionWeight β n m)
+          (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound)) :
+    ∃ C : ConstructionData n m,
+      GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        C.NoSurvivingIndepSetCard k := by
+  have hwt : ∀ C, 0 ≤ paperConstructionWeight β n m C := by
+    intro C
+    exact paperConstructionWeight_nonneg hp0 hp1 C
+  rcases
+      exists_goodEventD_with_noSurvivingIndepSetCard_of_choose_mul_le_lt_goodMass
+        (w := paperConstructionWeight β n m)
+        (n := n) (m := m)
+        (fiberBound := fiberBound) (degreeBound := degreeBound)
+        (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+        (k := k) hwt hB hbound hgood with
+    ⟨C, hC, hnot⟩
+  exact ⟨C, (mem_goodEventDSet_iff.mp hC), hnot⟩
 
 /-- A deterministic endpoint for the final graph under the named terminal bad-event condition. -/
 theorem finalGraph_indepSetFree_of_noSurvivingIndepSetCard
@@ -20710,6 +20772,34 @@ theorem triangleFreeWithSmallIndepNum_of_noSurvivingIndepSetCard
       Nat.ceil_le.2 (le_of_not_gt hge)
     exact Nat.not_le_of_lt hindepNumNat hceil
   simpa [Twobites.paperK] using hindepNumReal
+
+theorem exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_lt_goodMass
+    {β ε : ℝ}
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ} {B : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1) (hB : 0 ≤ B)
+    (hbound :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard (Twobites.paperKNat (1 + ε) n),
+        ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+            constructionEventMass (paperConstructionWeight β n m)
+              (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I) ≤
+          B)
+    (hgood :
+      B <
+        constructionEventMass (paperConstructionWeight β n m)
+          (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound)) :
+    ∃ C : ConstructionData n m,
+      GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        triangleFreeWithSmallIndepNum ε n := by
+  rcases
+      exists_goodEventD_with_noSurvivingIndepSetCard_of_paperChooseMulLe_lt_goodMass
+        (n := n) (m := m) (β := β)
+        (fiberBound := fiberBound) (degreeBound := degreeBound)
+        (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+        (k := Twobites.paperKNat (1 + ε) n)
+        hp0 hp1 hB hbound hgood with
+    ⟨C, hD, hnot⟩
+  exact ⟨C, hD, C.triangleFreeWithSmallIndepNum_of_noSurvivingIndepSetCard hnot⟩
 
 /-- A paper-facing `main` witness extracted from the deterministic final graph once every
 `paperKNat (1 + ε) n`-subset fails to survive as an independent set. This isolates the final graph
