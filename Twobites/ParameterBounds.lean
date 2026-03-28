@@ -4283,6 +4283,58 @@ theorem paperRI_eqLongCoeff_neg_of_nearOne
     _ < 0 :=
       paperRI_nearOne_finalCoeff_neg hε hneg
 
+/-- The final large-sum coefficient appearing in the cleaned RI endpoint. -/
+def paperRILargeSumFinalCoeff (ε : ℝ) : ℝ :=
+  -(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4
+
+/-- The final near-one coefficient appearing in the cleaned RI endpoint. -/
+def paperRINearOneFinalCoeff (ε : ℝ) : ℝ :=
+  ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε))
+
+/-- A uniform negative RI coefficient covering the finished large-sum and near-one branches. The
+small-sum branch is even more negative, so it is also absorbed by this maximum. -/
+def paperRIUniformFinalCoeff (ε : ℝ) : ℝ :=
+  max (paperRILargeSumFinalCoeff ε) (paperRINearOneFinalCoeff ε)
+
+@[simp] theorem paperRILargeSumFinalCoeff_eq
+    {ε : ℝ} :
+    paperRILargeSumFinalCoeff ε =
+      -(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4 := rfl
+
+@[simp] theorem paperRINearOneFinalCoeff_eq
+    {ε : ℝ} :
+    paperRINearOneFinalCoeff ε =
+      ε * (-1 + ε + 22 * ε ^ 2) / (16 * (1 + ε)) := rfl
+
+theorem paperRISmallSumFinalCoeff_le_paperRIUniformFinalCoeff
+    {ε : ℝ} (hε : 0 ≤ ε) :
+    -(ε / 8 : ℝ) ≤ paperRIUniformFinalCoeff ε := by
+  have hnear :
+      -(ε / 8 : ℝ) ≤ paperRINearOneFinalCoeff ε := by
+    have hden : 0 < 16 * (1 + ε) := by nlinarith
+    rw [paperRINearOneFinalCoeff_eq]
+    exact (le_div_iff₀ hden).2 (by nlinarith)
+  exact hnear.trans (le_max_right _ _)
+
+theorem paperRILargeSumFinalCoeff_le_paperRIUniformFinalCoeff
+    {ε : ℝ} :
+    paperRILargeSumFinalCoeff ε ≤ paperRIUniformFinalCoeff ε := by
+  exact le_max_left _ _
+
+theorem paperRINearOneFinalCoeff_le_paperRIUniformFinalCoeff
+    {ε : ℝ} :
+    paperRINearOneFinalCoeff ε ≤ paperRIUniformFinalCoeff ε := by
+  exact le_max_right _ _
+
+theorem paperRIUniformFinalCoeff_neg
+    {ε : ℝ} (hε : 0 < ε) (hlargeNeg : 0 < 1 - 2 * ε - 2 * ε ^ 2)
+    (hnearNeg : -1 + ε + 22 * ε ^ 2 < 0) :
+    paperRIUniformFinalCoeff ε < 0 := by
+  rw [paperRIUniformFinalCoeff]
+  exact max_lt_iff.mpr ⟨
+    paperRI_largeSum_finalCoeff_neg hε hlargeNeg,
+    paperRI_nearOne_finalCoeff_neg hε hnearNeg⟩
+
 theorem paperRI_eqLongExp_neg_of_smallSum
     {ε x : ℝ} {n : ℕ}
     (hn : 1 < n) (hε : 0 < ε) (hsum : x ≤ 1 - ε / 2) :

@@ -20002,6 +20002,283 @@ theorem paper_ri_exists_negCoeff_of_chooseOuterEventMass
             hsumUpper hblueLe hkOuter hredM hblueM hkprod hhalf hredEq hblueEq hxRpos
             hxBpos hLossGap hbudget
 
+set_option maxHeartbeats 3000000 in
+-- A uniform fixed-coefficient version of Paper Lemma `lem:RI`. Unlike
+-- `paper_ri_exists_negCoeff_of_chooseOuterEventMass`, this theorem exposes one explicit negative
+-- coefficient that works simultaneously for the finished small-, large-, and near-one branches, so
+-- it can be used in a later finite union bound.
+set_option linter.style.longLine false in
+theorem paper_ri_uniformCoeff_bound_of_chooseOuterEventMass
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB ε ε1 βdeg qcodeg δsumGap δgapR δgapB δ xR xB : ℝ}
+    {mediumWitness smallBound : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hn : 1 < n) (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hT2 : 2 < Twobites.paperT2 ε n) (hT1 : 2 < Twobites.paperT1 n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat (1 + ε) ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat (1 + ε) n)
+    (hLargeBound :
+      (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat (1 + ε) n +
+            (Twobites.paperLargeWitnessNat (1 + ε) ε n).choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hMediumWitness :
+      Twobites.paperKNat (1 + ε) n <
+        mediumWitness * ⌈Twobites.paperT3 ε n⌉₊ - mediumWitness.choose 2 * codegreeBound)
+    (hMediumBound :
+      (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat (1 + ε) n + mediumWitness.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hSmallCard : (C.SPart I ε).card ≤ smallBound)
+    (hSmallBound :
+      (Twobites.paperT3 ε n / 2) *
+          (Twobites.paperKNat (1 + ε) n + smallBound.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat (1 + ε) n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat (1 + ε) n)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+              (Twobites.paperLargeWitnessNat (1 + ε) ε n : ℝ) +
+            (Twobites.paperHugeWitnessNat (1 + ε) n : ℝ)) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat (1 / 2) 0 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat (1 / 2) 0 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat (1 / 2) 0 n)
+    (hredCapWeight :
+      Twobites.paperCapNat (1 / 2) 0 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * (1 + ε) ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * (1 + ε))
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + (0 : ℝ)) * (1 / 2 : ℝ) + 2 * ε1 * (1 + ε) + δsumGap + δgapR ≤ 1 + ε)
+    (hblueCrossSmall :
+      6 * Twobites.paperK (1 + ε) n ≤
+        (((Twobites.paperKNat (1 + ε) n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat (1 / 2) 0 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + (0 : ℝ)) * (1 / 2 : ℝ) + 2 * ε1 * (1 + ε) + δsumGap + δgapB ≤ 1 + ε)
+    (hredCrossSmall :
+      6 * Twobites.paperK (1 + ε) n ≤
+        (((Twobites.paperKNat (1 + ε) n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat (1 / 2) 0 n : ℕ) : ℝ) - 1))
+    (houterLoglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ Twobites.paperK (1 + ε) n)
+    (hlargeLoglogSmall : 296 / ε ≤ Real.log (Real.log (n : ℝ)))
+    (hδ : 0 < δ) (hδle : δ ≤ 1)
+    (hlargeLoglogBudget : 72 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hεsmall : 8 * (1 + ε) ^ 2 ≤ (9 : ℝ))
+    (hblueLe : xB ≤ xR)
+    (hsum2 : xR + xB ≤ 2)
+    (hkOuter :
+      Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n)
+    (hredM : (C.redImage I).card ≤ Twobites.paperMNat n)
+    (hblueM : (C.blueImage I).card ≤ Twobites.paperMNat n)
+    (hkprod :
+      Twobites.paperKNat (1 + ε) n ≤ (C.redImage I).card * (C.blueImage I).card)
+    (hhalf :
+      2 * Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n + 1)
+    (hredEq : ((C.redImage I).card : ℝ) = xR * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hblueEq : ((C.blueImage I).card : ℝ) = xB * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hxRpos : 0 < xR) (hxBpos : 0 < xB)
+    (hLossGap :
+      paperRISILossNat (1 + ε) ε1 n ≤
+        C.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n))
+    (hbudget : 11 * (1 + ε) * ε1 + 4 * δ ≤ (1 + ε) * ε ^ 3 / 2) :
+    ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+        Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+          (C.blueImage I).card (Twobites.paperKNat (1 + ε) n) *
+        C.section4ActualConditionedEventMass I ε (Twobites.paperP (1 / 2) n)
+          (C.baseOpenPairSet I).card ≤
+      Real.exp
+        (Twobites.paperRIUniformFinalCoeff ε *
+          Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  by_cases hsmall : xR + xB ≤ 1 - ε / 2
+  · have hmass :
+        ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+            Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+              (C.blueImage I).card (Twobites.paperKNat (1 + ε) n) *
+            C.section4ActualConditionedEventMass I ε (Twobites.paperP (1 / 2) n)
+              (C.baseOpenPairSet I).card ≤
+          Real.exp
+            (-(ε / 8 : ℝ) * Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+      exact
+        C.paper_ri_eqLong_bound_smallSum_of_chooseOuterEventMass_le_exp_of_mainRemainder_of_images
+          (I := I) (ε := ε) (p := Twobites.paperP (1 / 2) n) (xR := xR) (xB := xB)
+          (N := (C.baseOpenPairSet I).card) (Twobites.paperP_nonneg (by norm_num) n)
+          (Twobites.paperPHalf_le_one hn) hn houterLoglog hε hεquarter hlargeLoglogSmall hI
+          hkone hsmall hkOuter hredM hblueM hkprod hhalf hredEq hblueEq hxRpos hxBpos
+    have hfac_nonneg :
+        0 ≤ Twobites.paperK (1 + ε) n * Real.log (n : ℝ) := by
+      have hκ : 0 ≤ 1 + ε := by linarith
+      exact mul_nonneg (Twobites.paperK_nonneg hκ n) (Twobites.paperLog_pos hn).le
+    have hcoeff :
+        (-(ε / 8 : ℝ)) * Twobites.paperK (1 + ε) n * Real.log (n : ℝ) ≤
+          Twobites.paperRIUniformFinalCoeff ε *
+            Twobites.paperK (1 + ε) n * Real.log (n : ℝ) := by
+      nlinarith [Twobites.paperRISmallSumFinalCoeff_le_paperRIUniformFinalCoeff hε.le, hfac_nonneg]
+    exact hmass.trans (Real.exp_le_exp.mpr hcoeff)
+  · by_cases hlarge : 1 + ε / 2 ≤ xR + xB
+    · have hlargeLoglog56 : 56 / δ ≤ Real.log (Real.log (n : ℝ)) := by
+        have hsmall : (56 : ℝ) / δ ≤ 72 / δ :=
+          div_le_div_of_nonneg_right (by norm_num) hδ.le
+        exact hsmall.trans hlargeLoglogBudget
+      have hmass :
+          ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+              Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+                (C.blueImage I).card (Twobites.paperKNat (1 + ε) n) *
+              C.section4ActualConditionedEventMass I ε (Twobites.paperP (1 / 2) n)
+                (C.baseOpenPairSet I).card ≤
+            Real.exp
+              (Twobites.paperRILargeSumFinalCoeff ε *
+                Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+        simpa [Twobites.paperRILargeSumFinalCoeff_eq] using
+          C.paper_ri_eqLong_bound_largeSum_of_chooseOuterEventMass_le_exp_of_mainRemainder_of_images_of_budget
+            hD I hindep hHsubset ht21 ht32 hn hε hεquarter hI hT2 hT1 hLChoose hLargeBound
+            hMediumWitness hMediumBound hSmallCard hSmallBound hHChoose hRevealArith hLarge
+            hMedium hSmall hHugeRed hHugeBlue hred hblue hblueCap hblueCapWeight hredCap
+            hredCapWeight hρR hρB (by norm_num : 0 ≤ (1 / 2 : ℝ))
+            (by norm_num : -1 ≤ (0 : ℝ)) hε1pos hε1le hloglogGap hdiagScale hcodegScale
+            hsumGap hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall
+            hgap2B hκ2B hredCrossSmall houterLoglog hkone hδ hδle hlargeLoglog56 hlarge
+            hsum2 hkOuter hredM hblueM hkprod hhalf hredEq hblueEq hxRpos hxBpos hLossGap
+            hbudget
+      have hfac_nonneg :
+          0 ≤ Twobites.paperK (1 + ε) n * Real.log (n : ℝ) := by
+        have hκ : 0 ≤ 1 + ε := by linarith
+        exact mul_nonneg (Twobites.paperK_nonneg hκ n) (Twobites.paperLog_pos hn).le
+      have hcoeff :
+          Twobites.paperRILargeSumFinalCoeff ε *
+              Twobites.paperK (1 + ε) n * Real.log (n : ℝ) ≤
+            Twobites.paperRIUniformFinalCoeff ε *
+              Twobites.paperK (1 + ε) n * Real.log (n : ℝ) := by
+        have hbase :
+            Twobites.paperRILargeSumFinalCoeff ε ≤ Twobites.paperRIUniformFinalCoeff ε :=
+          Twobites.paperRILargeSumFinalCoeff_le_paperRIUniformFinalCoeff (ε := ε)
+        nlinarith
+      exact hmass.trans (Real.exp_le_exp.mpr hcoeff)
+    · have hsumLower : 1 - ε / 2 ≤ xR + xB := by
+        have hlt : 1 - ε / 2 < xR + xB := lt_of_not_ge hsmall
+        linarith
+      have hsumUpper : xR + xB ≤ 1 + ε / 2 := le_of_not_ge hlarge
+      have hmass :
+          ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+              Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+                (C.blueImage I).card (Twobites.paperKNat (1 + ε) n) *
+              C.section4ActualConditionedEventMass I ε (Twobites.paperP (1 / 2) n)
+                (C.baseOpenPairSet I).card ≤
+            Real.exp
+              (Twobites.paperRINearOneFinalCoeff ε *
+                Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+        simpa [Twobites.paperRINearOneFinalCoeff_eq] using
+          C.paper_ri_eqLong_bound_nearOne_of_chooseOuterEventMass_le_exp_of_mainRemainder_of_images_of_budget
+            hD I hindep hHsubset ht21 ht32 hn hε hεquarter hI hT2 hT1 hLChoose hLargeBound
+            hMediumWitness hMediumBound hSmallCard hSmallBound hHChoose hRevealArith hLarge
+            hMedium hSmall hHugeRed hHugeBlue hred hblue hblueCap hblueCapWeight hredCap
+            hredCapWeight hρR hρB hε1pos hε1le hloglogGap hdiagScale hcodegScale hsumGap
+            hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
+            hredCrossSmall houterLoglog hkone hδ hδle hlargeLoglogBudget hεsmall hsumLower
+            hsumUpper hblueLe hkOuter hredM hblueM hkprod hhalf hredEq hblueEq hxRpos
+            hxBpos hLossGap hbudget
+      have hfac_nonneg :
+          0 ≤ Twobites.paperK (1 + ε) n * Real.log (n : ℝ) := by
+        have hκ : 0 ≤ 1 + ε := by linarith
+        exact mul_nonneg (Twobites.paperK_nonneg hκ n) (Twobites.paperLog_pos hn).le
+      have hcoeff :
+          Twobites.paperRINearOneFinalCoeff ε *
+              Twobites.paperK (1 + ε) n * Real.log (n : ℝ) ≤
+            Twobites.paperRIUniformFinalCoeff ε *
+              Twobites.paperK (1 + ε) n * Real.log (n : ℝ) := by
+        have hbase :
+            Twobites.paperRINearOneFinalCoeff ε ≤ Twobites.paperRIUniformFinalCoeff ε :=
+          Twobites.paperRINearOneFinalCoeff_le_paperRIUniformFinalCoeff (ε := ε)
+        nlinarith
+      exact hmass.trans (Real.exp_le_exp.mpr hcoeff)
+
+/-- A generic finite union-bound step for functions that already carry a factor of the cardinality
+of the indexing finset on the left-hand side. -/
+theorem finset_sum_le_of_card_mul_le
+    {α : Type*} (s : Finset α) {f : α → ℝ} {B : ℝ}
+    (hB : 0 ≤ B)
+    (hbound : ∀ a ∈ s, (s.card : ℝ) * f a ≤ B) :
+    s.sum f ≤ B := by
+  by_cases hs0 : s.card = 0
+  · have hs : s = ∅ := Finset.card_eq_zero.mp hs0
+    simp [hs, hB]
+  · have hsposNat : 0 < s.card := Nat.pos_iff_ne_zero.mpr hs0
+    have hspos : 0 < (s.card : ℝ) := by exact_mod_cast hsposNat
+    have hpoint : ∀ a ∈ s, f a ≤ B / (s.card : ℝ) := by
+      intro a ha
+      have hmul : f a * (s.card : ℝ) ≤ B := by
+        simpa [mul_comm] using hbound a ha
+      exact (le_div_iff₀ hspos).2 hmul
+    calc
+      s.sum f ≤ s.sum fun _ => B / (s.card : ℝ) := Finset.sum_le_sum hpoint
+      _ = (s.card : ℝ) * (B / (s.card : ℝ)) := by rw [Finset.sum_const, nsmul_eq_mul]
+      _ = B := by field_simp [hspos.ne']
+
+/-- The finite union-bound shell over all `k`-subsets of `Fin n`, matching the paper's final
+sum over independent-set candidates once a uniform per-set RI estimate is available. -/
+theorem sum_powersetCard_le_of_choose_mul_le
+    {k : ℕ} {f : Finset (Fin n) → ℝ} {B : ℝ}
+    (hB : 0 ≤ B)
+    (hbound :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k,
+        ((n.choose k : ℕ) : ℝ) * f I ≤ B) :
+    (((Finset.univ : Finset (Fin n)).powersetCard k).sum f) ≤ B := by
+  let s : Finset (Finset (Fin n)) := (Finset.univ : Finset (Fin n)).powersetCard k
+  have hsCardNat : s.card = n.choose k := by
+    simp [s]
+  refine finset_sum_le_of_card_mul_le s hB ?_
+  intro I hI
+  have h := hbound I (by simpa [s] using hI)
+  simpa [s, hsCardNat] using h
+
 end
 
 end ConstructionData
