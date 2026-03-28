@@ -1537,6 +1537,15 @@ theorem paperKNat_le_paperK_add_one {κ : ℝ} (hκ : 0 ≤ κ) (n : ℕ) :
     (paperKNat κ n : ℝ) ≤ paperK κ n + 1 := by
   exact (paperKNat_lt_paperK_add_one hκ n).le
 
+theorem paperKNat_le_two_mul_paperK_of_one_le {κ : ℝ} {n : ℕ}
+    (hκ : 0 ≤ κ) (hkone : 1 ≤ paperK κ n) :
+    (paperKNat κ n : ℝ) ≤ 2 * paperK κ n := by
+  calc
+    (paperKNat κ n : ℝ) ≤ paperK κ n + 1 :=
+      paperKNat_le_paperK_add_one hκ n
+    _ ≤ 2 * paperK κ n := by
+      nlinarith
+
 theorem paperKNat_log_le_log_two_add_paperK_log {κ : ℝ} {n : ℕ}
     (hκ : 0 ≤ κ) (hkone : 1 ≤ paperK κ n) :
     Real.log (paperKNat κ n : ℝ) ≤ Real.log (2 : ℝ) + Real.log (paperK κ n) := by
@@ -3081,6 +3090,258 @@ theorem paperRI_chooseOuterExp_le_smallSum_final
     have hmul := mul_le_mul_of_nonneg_left hconst' hk_nonneg
     ring_nf at hmul ⊢
     simpa [mul_assoc, add_mul] using hmul
+  linarith
+
+theorem paperRI_chooseOuterRemainder_le_largeSum_budget
+    {ε δ xR xB : ℝ} {n : ℕ}
+    (hn : 1 < n)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hδ : 0 < δ)
+    (hlarge : 56 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (hsum : 1 + ε / 2 ≤ xR + xB)
+    (hsum2 : xR + xB ≤ 2) :
+    (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+          Real.log (Real.log (n : ℝ))) +
+        (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+        ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+        (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) ≤
+      δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+  have hκ : 0 ≤ 1 + ε := by linarith
+  have hkNat_le : (paperKNat (1 + ε) n : ℝ) ≤ 2 * paperK (1 + ε) n :=
+    paperKNat_le_two_mul_paperK_of_one_le hκ hkone
+  have hk_nonneg : 0 ≤ paperK (1 + ε) n := paperK_nonneg hκ n
+  have hll :
+      Real.log (Real.log (n : ℝ)) ≤ (δ / 8 : ℝ) * Real.log (n : ℝ) := by
+    have hlarge16' : 2 / (δ / 4) ≤ Real.log (Real.log (n : ℝ)) := by
+      have hEq : 2 / (δ / 4) = (8 : ℝ) / δ := by
+        field_simp [hδ.ne']
+        ring
+      rw [hEq]
+      have h8_56 : (8 : ℝ) / δ ≤ 56 / δ :=
+        div_le_div_of_nonneg_right (by norm_num) hδ.le
+      exact h8_56.trans hlarge
+    have hbase :
+        Real.log (Real.log (n : ℝ)) ≤ ((δ / 4) / 2) * Real.log (n : ℝ) :=
+      loglog_le_half_eta_mul_log_of_two_le_loglog_of_two_div_le
+        hn (by positivity : 0 < δ / 4) hloglog hlarge16'
+    convert hbase using 1
+    ring
+  have hone :
+      1 ≤ (δ / 28 : ℝ) * Real.log (n : ℝ) := by
+    have hlarge56' : 2 / (δ / 14) ≤ Real.log (Real.log (n : ℝ)) := by
+      have hEq : 2 / (δ / 14) = 28 / δ := by
+        field_simp [hδ.ne']
+        ring
+      rw [hEq]
+      have h28_56 : (28 : ℝ) / δ ≤ 56 / δ :=
+        div_le_div_of_nonneg_right (by norm_num) hδ.le
+      exact h28_56.trans hlarge
+    have hbase :
+        1 ≤ ((δ / 14) / 2) * Real.log (n : ℝ) :=
+      one_le_half_eta_mul_log_of_two_div_loglog_le
+        hn (by positivity : 0 < δ / 14) hlarge56'
+    convert hbase using 1
+    ring
+  have hlog2 : Real.log (2 : ℝ) ≤ 1 := by
+    have htmp := Real.log_le_sub_one_of_pos (by positivity : 0 < (2 : ℝ))
+    nlinarith
+  have hlogOneAdd_nonneg : 0 ≤ Real.log (1 + ε) := by
+    have hone' : (1 : ℝ) ≤ 1 + ε := by linarith
+    exact Real.log_nonneg hone'
+  have hcoeffLL :
+      (9 - 5 * (xR + xB)) / 2 ≤ (2 : ℝ) := by
+    nlinarith
+  have hLL :
+      (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+            Real.log (Real.log (n : ℝ))) ≤
+        ((δ / 2 : ℝ) * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    calc
+      (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+            Real.log (Real.log (n : ℝ))) ≤
+          (2 : ℝ) * (paperKNat (1 + ε) n : ℝ) * Real.log (Real.log (n : ℝ)) := by
+            gcongr
+      _ ≤ 2 * (2 * paperK (1 + ε) n) * Real.log (Real.log (n : ℝ)) := by
+            gcongr
+      _ = 4 * paperK (1 + ε) n * Real.log (Real.log (n : ℝ)) := by ring
+      _ ≤ 4 * paperK (1 + ε) n * ((δ / 8 : ℝ) * Real.log (n : ℝ)) := by
+            gcongr
+      _ = (δ / 2 : ℝ) * paperK (1 + ε) n * Real.log (n : ℝ) := by ring
+  have hcoeffConst :
+      3 * (2 - xR - xB) * Real.log (2 : ℝ) +
+          (1 - xR - xB) * Real.log (1 + ε) + (2 + xR + xB) ≤
+        (7 : ℝ) := by
+    have hterm1 : 3 * (2 - xR - xB) * Real.log (2 : ℝ) ≤ 3 := by
+      have hcoeff : 3 * (2 - xR - xB) ≤ (3 : ℝ) := by
+        nlinarith
+      calc
+        3 * (2 - xR - xB) * Real.log (2 : ℝ) ≤ 3 * Real.log (2 : ℝ) := by
+          gcongr
+        _ ≤ 3 := by nlinarith
+    have hterm2 : (1 - xR - xB) * Real.log (1 + ε) ≤ 0 := by
+      have hfac : 1 - xR - xB ≤ 0 := by
+        nlinarith
+      exact mul_nonpos_of_nonpos_of_nonneg hfac hlogOneAdd_nonneg
+    have hterm3 : 2 + xR + xB ≤ 4 := by
+      nlinarith
+    linarith
+  have hConst :
+      (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+          ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+          (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) ≤
+        ((δ / 2 : ℝ) * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    have hk_scale :
+        paperK (1 + ε) n ≤ ((δ / 28 : ℝ) * Real.log (n : ℝ)) * paperK (1 + ε) n := by
+      simpa [mul_assoc, mul_left_comm, mul_comm] using
+        (mul_le_mul_of_nonneg_right hone hk_nonneg)
+    have hk_scale14 :
+        14 * paperK (1 + ε) n ≤ 14 * (((δ / 28 : ℝ) * Real.log (n : ℝ)) * paperK (1 + ε) n) := by
+      exact mul_le_mul_of_nonneg_left hk_scale (by positivity : 0 ≤ (14 : ℝ))
+    calc
+      (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+          ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+          (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) ≤
+        7 * (paperKNat (1 + ε) n : ℝ) := by
+          nlinarith [hcoeffConst]
+      _ ≤ 7 * (2 * paperK (1 + ε) n) := by
+          gcongr
+      _ = 14 * paperK (1 + ε) n := by ring
+      _ ≤ 14 * (((δ / 28 : ℝ) * Real.log (n : ℝ)) * paperK (1 + ε) n) := hk_scale14
+      _ = (δ / 2 : ℝ) * paperK (1 + ε) n * Real.log (n : ℝ) := by ring
+  linarith
+
+theorem paperRI_chooseOuterRemainder_le_nearOne_budget
+    {ε δ xR xB : ℝ} {n : ℕ}
+    (hn : 1 < n)
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hδ : 0 < δ)
+    (hlarge : 72 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ paperK (1 + ε) n)
+    (hsumLower : 1 - ε / 2 ≤ xR + xB)
+    (hsumUpper : xR + xB ≤ 1 + ε / 2) :
+    (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+          Real.log (Real.log (n : ℝ))) +
+        (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+        ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+        (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) ≤
+      δ * paperK (1 + ε) n * Real.log (n : ℝ) := by
+  have hκ : 0 ≤ 1 + ε := by linarith
+  have hkNat_le : (paperKNat (1 + ε) n : ℝ) ≤ 2 * paperK (1 + ε) n :=
+    paperKNat_le_two_mul_paperK_of_one_le hκ hkone
+  have hk_nonneg : 0 ≤ paperK (1 + ε) n := paperK_nonneg hκ n
+  have hll :
+      Real.log (Real.log (n : ℝ)) ≤ (δ / 12 : ℝ) * Real.log (n : ℝ) := by
+    have hlarge24' : 2 / (δ / 6) ≤ Real.log (Real.log (n : ℝ)) := by
+      have hEq : 2 / (δ / 6) = (12 : ℝ) / δ := by
+        field_simp [hδ.ne']
+        ring
+      rw [hEq]
+      have h12_72 : (12 : ℝ) / δ ≤ 72 / δ :=
+        div_le_div_of_nonneg_right (by norm_num) hδ.le
+      exact h12_72.trans hlarge
+    have hbase :
+        Real.log (Real.log (n : ℝ)) ≤ ((δ / 6) / 2) * Real.log (n : ℝ) :=
+      loglog_le_half_eta_mul_log_of_two_le_loglog_of_two_div_le
+        hn (by positivity : 0 < δ / 6) hloglog hlarge24'
+    convert hbase using 1
+    ring
+  have hone :
+      1 ≤ (δ / 36 : ℝ) * Real.log (n : ℝ) := by
+    have hlarge72' : 2 / (δ / 18) ≤ Real.log (Real.log (n : ℝ)) := by
+      have hEq : 2 / (δ / 18) = 36 / δ := by
+        field_simp [hδ.ne']
+        ring
+      rw [hEq]
+      have h36_72 : (36 : ℝ) / δ ≤ 72 / δ :=
+        div_le_div_of_nonneg_right (by norm_num) hδ.le
+      exact h36_72.trans hlarge
+    have hbase :
+        1 ≤ ((δ / 18) / 2) * Real.log (n : ℝ) :=
+      one_le_half_eta_mul_log_of_two_div_loglog_le
+        hn (by positivity : 0 < δ / 18) hlarge72'
+    convert hbase using 1
+    ring
+  have hlog2 : Real.log (2 : ℝ) ≤ 1 := by
+    have htmp := Real.log_le_sub_one_of_pos (by positivity : 0 < (2 : ℝ))
+    nlinarith
+  have hlogOneAdd : Real.log (1 + ε) ≤ ε := by
+    have htmp := Real.log_le_sub_one_of_pos (by linarith : 0 < 1 + ε)
+    nlinarith
+  have hlogOneAdd_nonneg : 0 ≤ Real.log (1 + ε) := by
+    have hone' : (1 : ℝ) ≤ 1 + ε := by linarith
+    exact Real.log_nonneg hone'
+  have hcoeffLL :
+      (9 - 5 * (xR + xB)) / 2 ≤ (3 : ℝ) := by
+    nlinarith
+  have hLL :
+      (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+            Real.log (Real.log (n : ℝ))) ≤
+        ((δ / 2 : ℝ) * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    calc
+      (((9 - 5 * (xR + xB)) / 2) * (paperKNat (1 + ε) n : ℝ) *
+            Real.log (Real.log (n : ℝ))) ≤
+          (3 : ℝ) * (paperKNat (1 + ε) n : ℝ) * Real.log (Real.log (n : ℝ)) := by
+            gcongr
+      _ ≤ 3 * (2 * paperK (1 + ε) n) * Real.log (Real.log (n : ℝ)) := by
+            gcongr
+      _ = 6 * paperK (1 + ε) n * Real.log (Real.log (n : ℝ)) := by ring
+      _ ≤ 6 * paperK (1 + ε) n * ((δ / 12 : ℝ) * Real.log (n : ℝ)) := by
+            gcongr
+      _ = (δ / 2 : ℝ) * paperK (1 + ε) n * Real.log (n : ℝ) := by ring
+  have hcoeffConst :
+      3 * (2 - xR - xB) * Real.log (2 : ℝ) +
+          (1 - xR - xB) * Real.log (1 + ε) + (2 + xR + xB) ≤
+        (9 : ℝ) := by
+    have hterm1 : 3 * (2 - xR - xB) * Real.log (2 : ℝ) ≤ 4 := by
+      have hcoeff : 3 * (2 - xR - xB) ≤ (27 / 8 : ℝ) := by
+        nlinarith
+      calc
+        3 * (2 - xR - xB) * Real.log (2 : ℝ) ≤ (27 / 8 : ℝ) * Real.log (2 : ℝ) := by
+          gcongr
+        _ ≤ 4 := by nlinarith
+    have hterm2 : (1 - xR - xB) * Real.log (1 + ε) ≤ (1 / 32 : ℝ) := by
+      have hfac : 1 - xR - xB ≤ ε / 2 := by
+        nlinarith
+      by_cases hfac_nonneg : 0 ≤ 1 - xR - xB
+      · calc
+          (1 - xR - xB) * Real.log (1 + ε) ≤ (ε / 2) * Real.log (1 + ε) := by
+            exact mul_le_mul_of_nonneg_right hfac hlogOneAdd_nonneg
+          _ ≤ (ε / 2) * ε := by
+            gcongr
+          _ ≤ (1 / 32 : ℝ) := by
+            nlinarith
+      · have hfac_nonpos : 1 - xR - xB ≤ 0 := by linarith
+        have hnonpos : (1 - xR - xB) * Real.log (1 + ε) ≤ 0 := by
+          exact mul_nonpos_of_nonpos_of_nonneg hfac_nonpos hlogOneAdd_nonneg
+        linarith
+    have hterm3 : 2 + xR + xB ≤ 4 := by
+      nlinarith
+    linarith
+  have hConst :
+      (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+          ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+          (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) ≤
+        ((δ / 2 : ℝ) * paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    have hk_scale :
+        paperK (1 + ε) n ≤ ((δ / 36 : ℝ) * Real.log (n : ℝ)) * paperK (1 + ε) n := by
+      simpa [mul_assoc, mul_left_comm, mul_comm] using
+        (mul_le_mul_of_nonneg_right hone hk_nonneg)
+    have hk_scale18 :
+        18 * paperK (1 + ε) n ≤ 18 * (((δ / 36 : ℝ) * Real.log (n : ℝ)) * paperK (1 + ε) n) := by
+      exact mul_le_mul_of_nonneg_left hk_scale (by positivity : 0 ≤ (18 : ℝ))
+    calc
+      (3 * (2 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+          ((1 - xR - xB) * (paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+          (2 + xR + xB) * (paperKNat (1 + ε) n : ℝ) ≤
+        9 * (paperKNat (1 + ε) n : ℝ) := by
+          nlinarith [hcoeffConst]
+      _ ≤ 9 * (2 * paperK (1 + ε) n) := by
+          gcongr
+      _ = 18 * paperK (1 + ε) n := by ring
+      _ ≤ 18 * (((δ / 36 : ℝ) * Real.log (n : ℝ)) * paperK (1 + ε) n) := hk_scale18
+      _ = (δ / 2 : ℝ) * paperK (1 + ε) n * Real.log (n : ℝ) := by ring
   linarith
 
 theorem paperRI_smallSumCoeff_le
