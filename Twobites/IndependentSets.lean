@@ -9,6 +9,7 @@ import Mathlib.Data.Finset.Interval
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Prod
 import Mathlib.Data.Finset.Union
+import Mathlib.Data.Fintype.CardEmbedding
 import Mathlib.Data.Sym.Card
 import Mathlib.Data.Nat.Choose.Cast
 import Mathlib.Tactic
@@ -21799,6 +21800,77 @@ theorem pairImage_mem_paperRIOuterEventSet
   refine Finset.mem_filter.2 ?_
   exact ⟨C.pairImage_mem_powersetCard I, by simp⟩
 
+theorem constructionEmbeddingUniformWeight_le_inv_choose_pairImage_card
+    (e : Fin n ↪ Fin m × Fin m) (I : Finset (Fin n)) :
+    constructionEmbeddingUniformWeight n m ≤ (((m * m).choose I.card : ℕ) : ℝ)⁻¹ := by
+  have hk : I.card ≤ n := by
+    simpa using Finset.card_le_univ I
+  have hnm : n ≤ m * m := by
+    simpa using Fintype.card_le_of_embedding e
+  have hchoose_le_desc :
+      (m * m).choose I.card ≤ (m * m).descFactorial n := by
+    have hchoose_le_desc_k :
+        (m * m).choose I.card ≤ (m * m).descFactorial I.card :=
+      Nat.choose_le_descFactorial (m * m) I.card
+    have hfac_pos : 0 < ((m * m - I.card).descFactorial (n - I.card)) := by
+      exact Nat.descFactorial_pos.2 (Nat.sub_le_sub_right hnm I.card)
+    have hdesc_k_le_desc_n :
+        (m * m).descFactorial I.card ≤ (m * m).descFactorial n := by
+      calc
+        (m * m).descFactorial I.card ≤
+            ((m * m - I.card).descFactorial (n - I.card)) * (m * m).descFactorial I.card := by
+          simpa [Nat.one_mul] using
+            Nat.mul_le_mul_right ((m * m).descFactorial I.card) (Nat.succ_le_of_lt hfac_pos)
+        _ = (m * m).descFactorial n := by
+          simpa [Nat.mul_comm] using
+            (Nat.descFactorial_mul_descFactorial (n := m * m) (k := I.card) (m := n) hk)
+    exact hchoose_le_desc_k.trans hdesc_k_le_desc_n
+  have hchoose_pos : 0 < (((m * m).choose I.card : ℕ) : ℝ) := by
+    exact_mod_cast Nat.choose_pos (le_trans hk hnm)
+  have hchoose_cast :
+      (((m * m).choose I.card : ℕ) : ℝ) ≤ (((m * m).descFactorial n : ℕ) : ℝ) := by
+    exact_mod_cast hchoose_le_desc
+  have hinv :
+      (((m * m).descFactorial n : ℕ) : ℝ)⁻¹ ≤ (((m * m).choose I.card : ℕ) : ℝ)⁻¹ := by
+    simpa [one_div] using one_div_le_one_div_of_le hchoose_pos hchoose_cast
+  unfold constructionEmbeddingUniformWeight
+  rw [Fintype.card_embedding_eq (α := Fin n) (β := Fin m × Fin m)]
+  simpa using hinv
+
+theorem inv_choose_le_paperRIOuterEventMass_of_mem
+    {lR lB k : ℕ} {S : Finset (Fin m × Fin m)}
+    (hS : S ∈ Twobites.paperRIOuterEventSet m lR lB k) :
+    (((m * m).choose k : ℕ) : ℝ)⁻¹ ≤ Twobites.paperRIOuterEventMass m lR lB k := by
+  rcases Finset.mem_filter.1 hS with ⟨hkset, _⟩
+  have hk : k ≤ m * m := by
+    rw [← (Finset.mem_powersetCard.1 hkset).2]
+    simpa using Finset.card_le_card (Finset.mem_powersetCard.1 hkset).1
+  have hcard_ge_one : 1 ≤ (Twobites.paperRIOuterEventSet m lR lB k).card := by
+    exact Finset.one_le_card.mpr ⟨S, hS⟩
+  have hcard_ge_one_real : (1 : ℝ) ≤ ((Twobites.paperRIOuterEventSet m lR lB k).card : ℝ) := by
+    exact_mod_cast hcard_ge_one
+  have hden_pos : 0 < (((m * m).choose k : ℕ) : ℝ) := by
+    exact_mod_cast Nat.choose_pos hk
+  have hmul :
+      (1 : ℝ) * (((m * m).choose k : ℕ) : ℝ)⁻¹ ≤
+        ((Twobites.paperRIOuterEventSet m lR lB k).card : ℝ) *
+          (((m * m).choose k : ℕ) : ℝ)⁻¹ := by
+    exact
+      mul_le_mul_of_nonneg_right hcard_ge_one_real
+        (inv_nonneg.mpr hden_pos.le)
+  unfold Twobites.paperRIOuterEventMass
+  simpa [one_div, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using hmul
+
+theorem constructionEmbeddingUniformWeight_le_paperRIOuterEventMass_of_pairImage
+    (C : ConstructionData n m) (I : Finset (Fin n)) :
+    constructionEmbeddingUniformWeight n m ≤
+      Twobites.paperRIOuterEventMass m (C.redImage I).card (C.blueImage I).card I.card := by
+  exact
+    (constructionEmbeddingUniformWeight_le_inv_choose_pairImage_card C.embedding I).trans
+      (inv_choose_le_paperRIOuterEventMass_of_mem
+        (m := m) (lR := (C.redImage I).card) (lB := (C.blueImage I).card)
+        (k := I.card) (S := C.pairImage I) (C.pairImage_mem_paperRIOuterEventSet I))
+
 /-- The first-stage graph mass of the fixed-set event for one embedding `π`, with the paper's
 construction weight and the deterministic good event already built in. This isolates the remaining
 probabilistic estimate to a sum over base-graph pairs at fixed embedding. -/
@@ -21820,6 +21892,63 @@ def paperGoodSurvivingGraphPairMass
           constructionGraphBernoulliWeight (Twobites.paperP β n) x.2
       else
         0
+
+theorem paperGoodSurvivingGraphPairMass_nonneg
+    {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) :
+    0 ≤ paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+      projCodegreeBound I e := by
+  classical
+  unfold paperGoodSurvivingGraphPairMass
+  refine Finset.sum_nonneg ?_
+  intro x hx
+  by_cases hgood :
+      GoodEventD
+            ({ redBase := x.1
+               blueBase := x.2
+               embedding := e } : ConstructionData n m)
+            fiberBound degreeBound codegreeBound projCodegreeBound ∧
+          ({ redBase := x.1
+             blueBase := x.2
+             embedding := e } : ConstructionData n m).SurvivesAsIndependent I
+  · simp [hgood, mul_nonneg,
+      constructionGraphBernoulliWeight_nonneg hp0 hp1]
+  · simp [hgood]
+
+theorem constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul
+    {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e := by
+  have houter :
+      constructionEmbeddingUniformWeight n m ≤
+        Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card := by
+    exact constructionEmbeddingUniformWeight_le_paperRIOuterEventMass_of_pairImage
+      ({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m) I
+  have hmass_nonneg :
+      0 ≤ paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+        projCodegreeBound I e :=
+    paperGoodSurvivingGraphPairMass_nonneg (n := n) (m := m) (β := β)
+      (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      hp0 hp1 I e
+  exact mul_le_mul_of_nonneg_right houter hmass_nonneg
 
 theorem paperConstructionMass_goodSurvivingIndepSetEventSet_eq_sum_by_embedding
     {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
