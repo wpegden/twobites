@@ -18995,6 +18995,203 @@ theorem paper_ri_eqLong_bound_largeSum_of_chooseOuterEventMass_le_exp_of_mainRem
   exact C.paper_ri_eqLong_bound_largeSum_of_le I hn hεnonneg hsum hmass
 
 set_option maxHeartbeats 800000 in
+-- This specialization discharges the large-sum Section 4 slack term using the exact
+-- `paperP(1/2)` large-branch budget from `ParameterBounds.lean`.
+set_option linter.style.longLine false in
+theorem paper_ri_eqLong_bound_largeSum_of_chooseOuterEventMass_le_exp_of_mainRemainder_of_images_of_budget
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β ε ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB δ xR xB : ℝ}
+    {mediumWitness smallBound : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hn : 1 < n) (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hT2 : 2 < Twobites.paperT2 ε n) (hT1 : 2 < Twobites.paperT1 n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat (1 + ε) ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat (1 + ε) n)
+    (hLargeBound :
+      (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat (1 + ε) n +
+            (Twobites.paperLargeWitnessNat (1 + ε) ε n).choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hMediumWitness :
+      Twobites.paperKNat (1 + ε) n <
+        mediumWitness * ⌈Twobites.paperT3 ε n⌉₊ - mediumWitness.choose 2 * codegreeBound)
+    (hMediumBound :
+      (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat (1 + ε) n + mediumWitness.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hSmallCard : (C.SPart I ε).card ≤ smallBound)
+    (hSmallBound :
+      (Twobites.paperT3 ε n / 2) *
+          (Twobites.paperKNat (1 + ε) n + smallBound.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat (1 + ε) n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat (1 + ε) n)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+              (Twobites.paperLargeWitnessNat (1 + ε) ε n : ℝ) +
+            (Twobites.paperHugeWitnessNat (1 + ε) n : ℝ)) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK (1 + ε) n ^ 2)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * (1 + ε) ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * (1 + ε))
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + ε2) * β + 2 * ε1 * (1 + ε) + δsumGap + δgapR ≤ 1 + ε)
+    (hblueCrossSmall :
+      6 * Twobites.paperK (1 + ε) n ≤
+        (((Twobites.paperKNat (1 + ε) n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + ε2) * β + 2 * ε1 * (1 + ε) + δsumGap + δgapB ≤ 1 + ε)
+    (hredCrossSmall :
+      6 * Twobites.paperK (1 + ε) n ≤
+        (((Twobites.paperKNat (1 + ε) n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (houterLoglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hkone : 1 ≤ Twobites.paperK (1 + ε) n)
+    (hδ : 0 < δ) (hδle : δ ≤ 1)
+    (hlargeLoglog : 56 / δ ≤ Real.log (Real.log (n : ℝ)))
+    (hsum : 1 + ε / 2 ≤ xR + xB)
+    (hsum2 : xR + xB ≤ 2)
+    (hkOuter :
+      Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n)
+    (hredM : (C.redImage I).card ≤ Twobites.paperMNat n)
+    (hblueM : (C.blueImage I).card ≤ Twobites.paperMNat n)
+    (hkprod :
+      Twobites.paperKNat (1 + ε) n ≤ (C.redImage I).card * (C.blueImage I).card)
+    (hhalf :
+      2 * Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n + 1)
+    (hredEq : ((C.redImage I).card : ℝ) = xR * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hblueEq : ((C.blueImage I).card : ℝ) = xB * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hxRpos : 0 < xR) (hxBpos : 0 < xB)
+    (hLossGap :
+      paperRISILossNat (1 + ε) ε1 n ≤
+        C.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat β ε2 n))
+    (hbudget : 11 * (1 + ε) * ε1 + 4 * δ ≤ (1 + ε) * ε ^ 3 / 2) :
+    ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+        Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+          (C.blueImage I).card (Twobites.paperKNat (1 + ε) n) *
+        C.section4ActualConditionedEventMass I ε (Twobites.paperP (1 / 2) n)
+          (C.baseOpenPairSet I).card ≤
+      Real.exp
+        (-(ε ^ 2 * (1 - 2 * ε - 2 * ε ^ 2)) / 4 *
+          Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have hp0 : 0 ≤ Twobites.paperP (1 / 2) n := Twobites.paperP_nonneg (by norm_num) n
+  have hp1 : Twobites.paperP (1 / 2) n ≤ 1 := Twobites.paperPHalf_le_one hn
+  have hredK : (C.redImage I).card ≤ Twobites.paperKNat (1 + ε) n :=
+    (C.redImage_card_le_card I).trans hI
+  have hblueK : (C.blueImage I).card ≤ Twobites.paperKNat (1 + ε) n :=
+    (C.blueImage_card_le_card I).trans hI
+  have hdeltaLog : 2 / δ ≤ Real.log (Real.log (n : ℝ)) := by
+    have hsmall : (2 : ℝ) / δ ≤ 56 / δ :=
+      div_le_div_of_nonneg_right (by norm_num) hδ.le
+    exact hsmall.trans hlargeLoglog
+  have htargetLower :
+      (((xR + xB - 1) * (Twobites.paperKNat (1 + ε) n : ℝ)) *
+          ((Twobites.paperKNat (1 + ε) n : ℝ) - 1)) ≤
+        C.paperSection4OpenPairTarget I (1 + ε) (Twobites.paperCapNat β ε2 n) := by
+    calc
+      (((xR + xB - 1) * (Twobites.paperKNat (1 + ε) n : ℝ)) *
+          ((Twobites.paperKNat (1 + ε) n : ℝ) - 1)) =
+        ((((C.redImage I).card + (C.blueImage I).card : ℕ) : ℝ) -
+            Twobites.paperKNat (1 + ε) n) *
+          ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) := by
+        rw [Nat.cast_add, hredEq, hblueEq]
+        ring
+      _ =
+          ((C.redImage I).card.choose 2 : ℝ) + ((C.blueImage I).card.choose 2 : ℝ) -
+            (((Twobites.paperKNat (1 + ε) n - (C.redImage I).card).choose 2 : ℕ) : ℝ) -
+            (((Twobites.paperKNat (1 + ε) n - (C.blueImage I).card).choose 2 : ℕ) : ℝ) :=
+          C.paperSection4Branch_blueLeft_redLeft_eq I hredK hblueK
+      _ ≤ C.paperSection4OpenPairTarget I (1 + ε) (Twobites.paperCapNat β ε2 n) :=
+        C.paperSection4OpenPairTarget_lower_bound_of_blueLeft_of_redLeft I
+  have hsection0 :
+      (Twobites.paperP (1 / 2) n *
+            (12 * (ε1 * Twobites.paperK (1 + ε) n ^ 2) +
+              (⌈10 * (ε1 * Twobites.paperK (1 + ε) n ^ 2)⌉₊ : ℝ)) -
+          Twobites.paperP (1 / 2) n *
+            C.paperSection4OpenPairTarget I (1 + ε) (Twobites.paperCapNat β ε2 n)) ≤
+        Twobites.paperP (1 / 2) n *
+            (12 * (ε1 * Twobites.paperK (1 + ε) n ^ 2) +
+              (⌈10 * (ε1 * Twobites.paperK (1 + ε) n ^ 2)⌉₊ : ℝ)) -
+          Twobites.paperP (1 / 2) n *
+            (((xR + xB - 1) * (Twobites.paperKNat (1 + ε) n : ℝ)) *
+              ((Twobites.paperKNat (1 + ε) n : ℝ) - 1)) := by
+    have hscaled := mul_le_mul_of_nonneg_left htargetLower hp0
+    linarith
+  have hsection :
+      (Twobites.paperP (1 / 2) n *
+            (12 * (ε1 * Twobites.paperK (1 + ε) n ^ 2) +
+              (⌈10 * (ε1 * Twobites.paperK (1 + ε) n ^ 2)⌉₊ : ℝ)) -
+          Twobites.paperP (1 / 2) n *
+            C.paperSection4OpenPairTarget I (1 + ε) (Twobites.paperCapNat β ε2 n)) ≤
+        (((-((1 / 2 : ℝ) * (-2 * (1 + ε) + 2 * (1 + ε) * (xR + xB) -
+                2 * ε ^ 3 * (1 + ε)) / 2)) - 2 * δ) *
+          Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    exact hsection0.trans <|
+      Twobites.paperRI_largeSum_sectionExp_le_of_budget hn hε hεquarter hδ hδle hdeltaLog
+        hkone hε1pos.le hsum hsum2 hbudget
+  exact
+    C.paper_ri_eqLong_bound_largeSum_of_chooseOuterEventMass_le_exp_of_mainRemainder_of_images_of_section_le
+      hD I hindep hp0 hp1 hHsubset ht21 ht32 hn hε hεquarter hI hT2 hT1 hLChoose
+      hLargeBound hMediumWitness hMediumBound hSmallCard hSmallBound hHChoose hRevealArith
+      hLarge hMedium hSmall hHugeRed hHugeBlue hred hblue hblueCap hblueCapWeight hredCap
+      hredCapWeight hρR hρB hβ hε2 hε1pos hε1le hloglogGap hdiagScale hcodegScale hsumGap
+      hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
+      hredCrossSmall houterLoglog hkone hδ hδle hlargeLoglog hsum hsum2 hkOuter hredM hblueM
+      hkprod hhalf hredEq hblueEq hxRpos hxBpos hLossGap hsection
+
+set_option maxHeartbeats 800000 in
 -- This specialization packages the cleaned union-plus-outer exponent together with an explicit
 -- near-one Section 4 slack term `- 2 * δ * k * log n`.
 set_option linter.style.longLine false in
