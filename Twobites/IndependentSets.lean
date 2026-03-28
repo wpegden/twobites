@@ -1,3 +1,4 @@
+import Twobites.Basic
 import Twobites.Construction
 import Twobites.PaperDefinitions
 import Twobites.ParameterBounds
@@ -20280,6 +20281,25 @@ theorem sum_powersetCard_le_of_choose_mul_le
   have h := hbound I (by simpa [s] using hI)
   simpa [s, hsCardNat] using h
 
+/-- The paper's terminal bad-event condition at fixed set size `k`: no `k`-subset of the final
+graph survives as an independent set. This is the deterministic hypothesis that the still-missing
+global probability layer should eventually produce. -/
+def NoSurvivingIndepSetCard (C : ConstructionData n m) (k : ℕ) : Prop :=
+  ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k,
+    ¬ (∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+
+/-- A deterministic endpoint for the final graph under the named terminal bad-event condition. -/
+theorem finalGraph_indepSetFree_of_noSurvivingIndepSetCard
+    (C : ConstructionData n m) {k : ℕ}
+    (hnot : C.NoSurvivingIndepSetCard k) :
+    C.finalGraph.IndepSetFree k := by
+  intro I hI
+  have hmem : I ∈ (Finset.univ : Finset (Fin n)).powersetCard k := by
+    exact Finset.mem_powersetCard.2 ⟨Finset.subset_univ I, hI.card_eq⟩
+  apply hnot I hmem
+  intro v w hv hw hvw
+  exact hI.isIndepSet hv hw hvw
+
 /-- A deterministic endpoint for the final graph: if every `k`-subset of `Fin n` fails to be an
 independent set in `C.finalGraph`, then `C.finalGraph` is `k`-independent-set-free. -/
 theorem finalGraph_indepSetFree_of_forall_not_hindep_powersetCard
@@ -20295,6 +20315,15 @@ theorem finalGraph_indepSetFree_of_forall_not_hindep_powersetCard
   intro v w hv hw hvw
   exact hI.isIndepSet hv hw hvw
 
+/-- A paper-facing Ramsey witness extracted from the deterministic final graph under the named
+no-surviving-`k`-set condition. -/
+theorem triangleFreeRamseyWitness_of_noSurvivingIndepSetCard
+    (C : ConstructionData n m) {k : ℕ}
+    (hnot : C.NoSurvivingIndepSetCard k) :
+    triangleFreeRamseyWitness n k := by
+  refine ⟨C.finalGraph, C.finalGraph_cliqueFree, ?_⟩
+  exact C.finalGraph_indepSetFree_of_noSurvivingIndepSetCard hnot
+
 /-- A paper-facing Ramsey witness extracted from the deterministic final graph once every `k`-set
 fails to survive as an independent set. -/
 theorem triangleFreeRamseyWitness_of_forall_not_hindep_powersetCard
@@ -20305,6 +20334,28 @@ theorem triangleFreeRamseyWitness_of_forall_not_hindep_powersetCard
     triangleFreeRamseyWitness n k := by
   refine ⟨C.finalGraph, C.finalGraph_cliqueFree, ?_⟩
   exact C.finalGraph_indepSetFree_of_forall_not_hindep_powersetCard hnot
+
+/-- A paper-facing `main` witness extracted from the deterministic final graph under the named
+no-surviving-set condition at the paper scale. -/
+theorem triangleFreeWithSmallIndepNum_of_noSurvivingIndepSetCard
+    (C : ConstructionData n m) {ε : ℝ}
+    (hnot : C.NoSurvivingIndepSetCard (Twobites.paperKNat (1 + ε) n)) :
+    triangleFreeWithSmallIndepNum ε n := by
+  refine ⟨C.finalGraph, C.finalGraph_cliqueFree, ?_⟩
+  have hfree :
+      C.finalGraph.IndepSetFree (Twobites.paperKNat (1 + ε) n) :=
+    C.finalGraph_indepSetFree_of_noSurvivingIndepSetCard hnot
+  have hindepNumNat :
+      C.finalGraph.indepNum < Twobites.paperKNat (1 + ε) n :=
+    SimpleGraph.indepNum_lt_of_indepSetFree hfree
+  have hindepNumReal :
+      (C.finalGraph.indepNum : ℝ) < Twobites.paperK (1 + ε) n := by
+    by_contra hge
+    have hceil :
+        Twobites.paperKNat (1 + ε) n ≤ C.finalGraph.indepNum :=
+      Nat.ceil_le.2 (le_of_not_gt hge)
+    exact Nat.not_le_of_lt hindepNumNat hceil
+  simpa [Twobites.paperK] using hindepNumReal
 
 /-- A paper-facing `main` witness extracted from the deterministic final graph once every
 `paperKNat (1 + ε) n`-subset fails to survive as an independent set. This isolates the final graph

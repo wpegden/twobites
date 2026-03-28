@@ -32,15 +32,14 @@ theorem paperMainStatement_of_eventually_exists_finalGraphWitness
       ∀ ε > 0, ∃ n0 : ℕ, ∀ ⦃n : ℕ⦄, n ≥ n0 →
         ∃ m : ℕ,
           ∃ C : ConstructionData n m,
-            ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard (Twobites.paperKNat (1 + ε) n),
-              ¬ (∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)) :
+            ConstructionData.NoSurvivingIndepSetCard C (Twobites.paperKNat (1 + ε) n)) :
     paperMainStatement := by
   intro ε hε
   rcases hexists ε hε with ⟨n0, hn0⟩
   refine ⟨n0, ?_⟩
   intro n hn
   rcases hn0 hn with ⟨m, C, hnot⟩
-  exact C.triangleFreeWithSmallIndepNum_of_forall_not_hindep_powersetCard hnot
+  exact ConstructionData.triangleFreeWithSmallIndepNum_of_noSurvivingIndepSetCard C hnot
 
 /-- The witness-form `main2` statement follows from an eventual supply of final graphs whose
 `k`-subsets all fail to survive as independent sets. This isolates the remaining global existence
@@ -50,9 +49,7 @@ theorem paperMain2WitnessStatement_of_eventually_exists_finalGraphWitness
       ∀ ε > 0, ∃ k0 : ℕ, ∀ ⦃k : ℕ⦄, k ≥ k0 →
         ∃ n : ℕ, ∃ m : ℕ,
           (((1 / 2 : ℝ) - ε) * (k : ℝ) ^ 2 / Real.log (k : ℝ) ≤ (n : ℝ)) ∧
-          ∃ C : ConstructionData n m,
-            ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard k,
-              ¬ (∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)) :
+          ∃ C : ConstructionData n m, ConstructionData.NoSurvivingIndepSetCard C k) :
     paperMain2WitnessStatement := by
   intro ε hε
   rcases hexists ε hε with ⟨k0, hk0⟩
@@ -60,7 +57,7 @@ theorem paperMain2WitnessStatement_of_eventually_exists_finalGraphWitness
   intro k hk
   rcases hk0 hk with ⟨n, m, hbound, C, hnot⟩
   refine ⟨n, hbound, ?_⟩
-  exact C.triangleFreeRamseyWitness_of_forall_not_hindep_powersetCard hnot
+  exact ConstructionData.triangleFreeRamseyWitness_of_noSurvivingIndepSetCard C hnot
 
 end
 
