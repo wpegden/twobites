@@ -18330,6 +18330,72 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    section4ProjectionChoiceMassSum_section4F_le_exp_of_splitPartTotalError
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε p totalError revealError largeError mediumError smallError hugeRedError hugeBlueError : ℝ}
+    {N : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        N)
+    (hReveal :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤ revealError)
+    (hLarge : ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤ largeError)
+    (hMedium : ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤ mediumError)
+    (hSmall : ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤ smallError)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        hugeRedError)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        hugeBlueError)
+    (hTotal :
+      revealError + 3 * (largeError + mediumError + smallError) + hugeRedError + hugeBlueError ≤
+        totalError) :
+    let remainingNat := N - C.section4SecondStageLossNat I ε
+    let uRNat :=
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+    let uBNat :=
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    section4ProjectionChoiceMassSum p remainingNat uRNat uBNat ≤
+      Real.exp (p * totalError - p * (N : ℝ)) := by
+  have hLMS :
+      ((C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) : ℕ) : ℝ) ≤
+        largeError + mediumError + smallError := by
+    exact C.cast_partPairCount_LMS_le_sum_of_thresholds I ht32 hLarge hMedium hSmall
+  have hTotal' :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+            3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+            C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) ≤
+        totalError := by
+    have hCast :
+        (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+              3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+              C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+              C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) =
+          (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) +
+            3 * ((C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) : ℕ) : ℝ) +
+            ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) +
+            ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) := by
+      norm_num
+    rw [hCast]
+    nlinarith
+  exact
+    C.section4ProjectionChoiceMassSum_section4F_le_exp_of_LMS_totalError
+      (I := I) (ε := ε) (p := p) (N := N)
+      hp0 hp1 hHsubset ht21 ht32 hLossLeN hTotal'
+
+set_option linter.style.longLine false in
+theorem
     section4ActualConditionedEventMass_le_exp_of_indep_of_totalError
     (C : ConstructionData n m) (I : Finset (Fin n)) {ε p totalError : ℝ} {N : ℕ}
     {uRBound uBBound : ℕ}
@@ -23375,6 +23441,83 @@ theorem goodSurvivingGraphPairProjectionChoiceMassBound_nonneg
   classical
   unfold goodSurvivingGraphPairProjectionChoiceMassBound
   exact section4ProjectionChoiceMassSum_nonneg hp0 hp1
+
+set_option linter.style.longLine false in
+theorem
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_splitPartTotalError
+    {β ε totalError revealError largeError mediumError smallError hugeRedError hugeBlueError : ℝ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (hHsubset :
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseImage I ∩
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I ⊆
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card *
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+          2 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+              IsRedBaseVertex) +
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+              IsBlueBaseVertex) ≤
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseOpenPairSet I).card)
+    (hReveal :
+      (((I.card *
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                  ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card : ℕ) :
+          ℝ)) ≤
+        revealError)
+    (hLarge :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε) : ℕ) :
+          ℝ) ≤
+        largeError)
+    (hMedium :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε) : ℕ) :
+          ℝ) ≤
+        mediumError)
+    (hSmall :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) : ℕ) :
+          ℝ) ≤
+        smallError)
+    (hHugeRed :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsRedBaseVertex) : ℕ) :
+          ℝ) ≤
+        hugeRedError)
+    (hHugeBlue :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsBlueBaseVertex) : ℕ) :
+          ℝ) ≤
+        hugeBlueError)
+    (hTotal :
+      revealError + 3 * (largeError + mediumError + smallError) + hugeRedError + hugeBlueError ≤
+        totalError) :
+    goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x ≤
+      Real.exp
+        (Twobites.paperP β n * totalError -
+          Twobites.paperP β n *
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseOpenPairSet I).card : ℝ)) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  unfold goodSurvivingGraphPairProjectionChoiceMassBound
+  simpa [Cx] using
+    Cx.section4ProjectionChoiceMassSum_section4F_le_exp_of_splitPartTotalError
+      (I := I) (ε := ε) (p := Twobites.paperP β n)
+      (N := (Cx.baseOpenPairSet I).card)
+      hp0 hp1 hHsubset ht21 ht32 hLossLeN hReveal hLarge hMedium hSmall hHugeRed hHugeBlue
+      hTotal
 
 set_option linter.style.longLine false in
 set_option maxHeartbeats 3000000 in
