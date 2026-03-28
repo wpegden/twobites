@@ -444,6 +444,18 @@ theorem constructionEventMass_nonneg {w : ConstructionData n m → ℝ}
   unfold constructionEventMass
   exact Finset.sum_nonneg fun C _ => hwt C
 
+theorem constructionEventMass_eq_sum_univ_indicator {w : ConstructionData n m → ℝ}
+    (E : Finset (ConstructionData n m)) :
+    constructionEventMass w E =
+      ∑ C : ConstructionData n m, if C ∈ E then w C else 0 := by
+  classical
+  have hfilter :
+      (Finset.univ : Finset (ConstructionData n m)).filter (fun C => C ∈ E) = E := by
+    ext C
+    simp
+  rw [constructionEventMass, ← hfilter, Finset.sum_filter]
+  simp
+
 theorem constructionEventMass_mono {w : ConstructionData n m → ℝ}
     {E F : Finset (ConstructionData n m)} (hEF : E ⊆ F)
     (hwt : ∀ C, 0 ≤ w C) :
@@ -513,6 +525,139 @@ theorem constructionEventMass_pos_of_mem {w : ConstructionData n m → ℝ}
     (hC : C ∈ E) (hwt : ∀ D, 0 ≤ w D) (hpos : 0 < w C) :
     0 < constructionEventMass w E :=
   lt_of_lt_of_le hpos (constructionEventMass_single_le_of_mem hC hwt)
+
+theorem constructionEventMass_eq_sum_embeddings_graphWeights {p : ℝ}
+    (E : Finset (ConstructionData n m)) :
+    constructionEventMass (constructionProductWeight p) E =
+      ∑ e : Fin n ↪ Fin m × Fin m,
+        constructionEmbeddingUniformWeight n m *
+          (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+            if ({ redBase := x.1
+                  blueBase := x.2
+                  embedding := e } : ConstructionData n m) ∈ E then
+              constructionGraphBernoulliWeight p x.1 *
+                constructionGraphBernoulliWeight p x.2
+            else
+              0) := by
+  classical
+  let equivCD :
+      ConstructionData n m ≃
+        ((Fin n ↪ Fin m × Fin m) × (SimpleGraph (Fin m) × SimpleGraph (Fin m))) :=
+    { toFun := fun C => (C.embedding, (C.redBase, C.blueBase))
+      invFun := fun t =>
+        { redBase := t.2.1
+          blueBase := t.2.2
+          embedding := t.1 }
+      left_inv := by
+        intro C
+        cases C
+        rfl
+      right_inv := by
+        intro t
+        cases t
+        rfl }
+  let f :
+      (Fin n ↪ Fin m × Fin m) →
+        (SimpleGraph (Fin m) × SimpleGraph (Fin m)) → ℝ :=
+    fun e x =>
+      if ({ redBase := x.1
+            blueBase := x.2
+            embedding := e } : ConstructionData n m) ∈ E then
+        constructionGraphBernoulliWeight p x.1 *
+          constructionGraphBernoulliWeight p x.2
+      else
+        0
+  calc
+    constructionEventMass (constructionProductWeight p) E =
+        ∑ C : ConstructionData n m,
+          if C ∈ E then constructionProductWeight p C else 0 :=
+      constructionEventMass_eq_sum_univ_indicator E
+    _ =
+        ∑ t : ((Fin n ↪ Fin m × Fin m) × (SimpleGraph (Fin m) × SimpleGraph (Fin m))),
+          if ({ redBase := t.2.1
+                blueBase := t.2.2
+                embedding := t.1 } : ConstructionData n m) ∈ E then
+            constructionProductWeight p
+              { redBase := t.2.1
+                blueBase := t.2.2
+                embedding := t.1 }
+          else
+            0 := by
+          simpa [equivCD] using
+            (Equiv.sum_comp equivCD.symm
+              (fun C : ConstructionData n m =>
+                if C ∈ E then constructionProductWeight p C else 0)).symm
+    _ =
+        ∑ e : Fin n ↪ Fin m × Fin m,
+          ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+            if ({ redBase := x.1
+                  blueBase := x.2
+                  embedding := e } : ConstructionData n m) ∈ E then
+              constructionProductWeight p
+                { redBase := x.1
+                  blueBase := x.2
+                  embedding := e }
+            else
+              0 := by
+          rw [Fintype.sum_prod_type]
+    _ =
+        ∑ e : Fin n ↪ Fin m × Fin m,
+          constructionEmbeddingUniformWeight n m *
+            (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m), f e x) := by
+          refine Fintype.sum_congr
+            (fun e : Fin n ↪ Fin m × Fin m =>
+              ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+                if ({ redBase := x.1
+                      blueBase := x.2
+                      embedding := e } : ConstructionData n m) ∈ E then
+                  constructionProductWeight p
+                    { redBase := x.1
+                      blueBase := x.2
+                      embedding := e }
+                else
+                  0)
+            (fun e : Fin n ↪ Fin m × Fin m =>
+              constructionEmbeddingUniformWeight n m *
+                (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m), f e x)) ?_
+          intro e
+          calc
+            (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+                if ({ redBase := x.1
+                      blueBase := x.2
+                      embedding := e } : ConstructionData n m) ∈ E then
+                  constructionProductWeight p
+                    { redBase := x.1
+                      blueBase := x.2
+                      embedding := e }
+                else
+                  0) =
+                ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+                  constructionEmbeddingUniformWeight n m * f e x := by
+                  refine Fintype.sum_congr
+                    (fun x : SimpleGraph (Fin m) × SimpleGraph (Fin m) =>
+                      if ({ redBase := x.1
+                            blueBase := x.2
+                            embedding := e } : ConstructionData n m) ∈ E then
+                        constructionProductWeight p
+                          { redBase := x.1
+                            blueBase := x.2
+                            embedding := e }
+                      else
+                        0)
+                    (fun x : SimpleGraph (Fin m) × SimpleGraph (Fin m) =>
+                      constructionEmbeddingUniformWeight n m * f e x) ?_
+                  intro x
+                  let Cx : ConstructionData n m :=
+                    { redBase := x.1
+                      blueBase := x.2
+                      embedding := e }
+                  by_cases hx : Cx ∈ E
+                  · simp [Cx, f, constructionProductWeight, hx, mul_comm]
+                  · simp [Cx, f, hx]
+            _ =
+                constructionEmbeddingUniformWeight n m *
+                  (∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m), f e x) := by
+                  rw [← Finset.mul_sum]
 
 /-- The empty-base balanced-band construction has red fibers of size at most the band width `b`. -/
 theorem redFiber_card_le_of_emptyBalancedConstructionData {n m b : ℕ}
@@ -20886,6 +21031,47 @@ noncomputable def goodSurvivingIndepSetEventSet
         C.SurvivesAsIndependent I := by
   classical
   simp [goodSurvivingIndepSetEventSet, SurvivesAsIndependent]
+
+/-- The first-stage graph mass of the fixed-set event for one embedding `π`, with the paper's
+construction weight and the deterministic good event already built in. This isolates the remaining
+probabilistic estimate to a sum over base-graph pairs at fixed embedding. -/
+def paperGoodSurvivingGraphPairMass
+    (β : ℝ) (n m fiberBound degreeBound codegreeBound projCodegreeBound : ℕ)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) : ℝ := by
+  classical
+  exact
+    ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+      if GoodEventD
+            ({ redBase := x.1
+               blueBase := x.2
+               embedding := e } : ConstructionData n m)
+            fiberBound degreeBound codegreeBound projCodegreeBound ∧
+          ({ redBase := x.1
+             blueBase := x.2
+             embedding := e } : ConstructionData n m).SurvivesAsIndependent I then
+        constructionGraphBernoulliWeight (Twobites.paperP β n) x.1 *
+          constructionGraphBernoulliWeight (Twobites.paperP β n) x.2
+      else
+        0
+
+theorem paperConstructionMass_goodSurvivingIndepSetEventSet_eq_sum_by_embedding
+    {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (I : Finset (Fin n)) :
+    constructionEventMass (paperConstructionWeight β n m)
+        (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I) =
+      ∑ e : Fin n ↪ Fin m × Fin m,
+        constructionEmbeddingUniformWeight n m *
+          paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+            projCodegreeBound I e := by
+  classical
+  simpa [paperGoodSurvivingGraphPairMass, paperConstructionWeight,
+    goodSurvivingIndepSetEventSet, ConstructionData.sampleSpace, SurvivesAsIndependent]
+    using
+      constructionEventMass_eq_sum_embeddings_graphWeights
+        (n := n) (m := m) (p := Twobites.paperP β n)
+        (E := goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I)
 
 /-- The global bad event that some `k`-subset survives as an independent set. -/
 noncomputable def survivingIndepSetCardBadSet (n m k : ℕ) :
