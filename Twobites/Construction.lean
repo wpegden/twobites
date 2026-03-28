@@ -1,6 +1,8 @@
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Combinatorics.SimpleGraph.Maps
+import Mathlib.Data.Fin.Embedding
 import Mathlib.Data.Finset.Basic
+import Mathlib.Logic.Equiv.Fin.Basic
 
 namespace Twobites
 
@@ -71,6 +73,54 @@ noncomputable def sampleSpace (n m : ℕ) : Finset (ConstructionData n m) :=
 /-- The paper's map `π`. -/
 def pairEmbedding : Fin n ↪ Fin m × Fin m :=
   C.embedding
+
+/-- A balanced cyclic-band embedding of `Fin n` into `Fin m × Fin m`, available whenever `n`
+fits inside a width-`b` band and `b ≤ m`. Each row and each column supports at most `b` points;
+this is used later to manufacture explicit finite witnesses for the good event. -/
+noncomputable def balancedBandEmbedding {n m b : ℕ} (hn : n ≤ m * b) (hb : b ≤ m) :
+    Fin n ↪ Fin m × Fin m := by
+  classical
+  let e : Fin n ↪ Fin (m * b) := Fin.castLEEmb hn
+  refine
+    { toFun := fun i =>
+        let p : Fin m × Fin b := finProdFinEquiv.symm (e i)
+        (p.1, p.1 + Fin.castLE hb p.2)
+      inj' := ?_ }
+  intro i j hij
+  have hfst :
+      (finProdFinEquiv.symm (e i)).1 = (finProdFinEquiv.symm (e j)).1 := by
+    simpa using congrArg Prod.fst hij
+  have hsnd :
+      (finProdFinEquiv.symm (e i)).1 + Fin.castLE hb (finProdFinEquiv.symm (e i)).2 =
+        (finProdFinEquiv.symm (e j)).1 + Fin.castLE hb (finProdFinEquiv.symm (e j)).2 := by
+    simpa using congrArg Prod.snd hij
+  rw [hfst] at hsnd
+  have hband :
+      (finProdFinEquiv.symm (e i)).2 = (finProdFinEquiv.symm (e j)).2 := by
+    apply Fin.castLE_injective hb
+    exact add_left_cancel hsnd
+  have hpair : finProdFinEquiv.symm (e i) = finProdFinEquiv.symm (e j) := by
+    exact Prod.ext hfst hband
+  have he : e i = e j := by
+    simpa only [Equiv.apply_symm_apply] using congrArg finProdFinEquiv hpair
+  exact e.injective he
+
+@[simp] theorem balancedBandEmbedding_fst {n m b : ℕ} (hn : n ≤ m * b) (hb : b ≤ m)
+    (i : Fin n) :
+    (balancedBandEmbedding hn hb i).1 = (finProdFinEquiv.symm ((Fin.castLEEmb hn) i)).1 := rfl
+
+@[simp] theorem balancedBandEmbedding_snd {n m b : ℕ} (hn : n ≤ m * b) (hb : b ≤ m)
+    (i : Fin n) :
+    (balancedBandEmbedding hn hb i).2 =
+      (finProdFinEquiv.symm ((Fin.castLEEmb hn) i)).1 +
+        Fin.castLE hb (finProdFinEquiv.symm ((Fin.castLEEmb hn) i)).2 := rfl
+
+/-- The explicit empty-base construction built from the balanced cyclic-band embedding. -/
+noncomputable def emptyBalancedConstructionData {n m b : ℕ} (hn : n ≤ m * b) (hb : b ≤ m) :
+    ConstructionData n m where
+  redBase := ⊥
+  blueBase := ⊥
+  embedding := balancedBandEmbedding hn hb
 
 /-- The red projection `π_R`. -/
 def redProj (v : Fin n) : Fin m :=

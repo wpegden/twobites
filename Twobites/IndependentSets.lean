@@ -272,6 +272,162 @@ theorem constructionEventMass_biUnion_le {α : Type*}
         _ = ∑ b ∈ insert a s, constructionEventMass w (E b) := by
           simp [ha]
 
+theorem constructionEventMass_single_le_of_mem {w : ConstructionData n m → ℝ}
+    {E : Finset (ConstructionData n m)} {C : ConstructionData n m}
+    (hC : C ∈ E) (hwt : ∀ D, 0 ≤ w D) :
+    w C ≤ constructionEventMass w E := by
+  have hmono :
+      constructionEventMass w ({C} : Finset (ConstructionData n m)) ≤ constructionEventMass w E :=
+    constructionEventMass_mono (by
+      intro D hD
+      have hDC : D = C := by simpa using hD
+      simpa [hDC] using hC) hwt
+  simpa [constructionEventMass] using hmono
+
+theorem constructionEventMass_pos_of_mem {w : ConstructionData n m → ℝ}
+    {E : Finset (ConstructionData n m)} {C : ConstructionData n m}
+    (hC : C ∈ E) (hwt : ∀ D, 0 ≤ w D) (hpos : 0 < w C) :
+    0 < constructionEventMass w E :=
+  lt_of_lt_of_le hpos (constructionEventMass_single_le_of_mem hC hwt)
+
+/-- The empty-base balanced-band construction has red fibers of size at most the band width `b`. -/
+theorem redFiber_card_le_of_emptyBalancedConstructionData {n m b : ℕ}
+    (hn : n ≤ m * b) (hb : b ≤ m) (r : Fin m) :
+    ((emptyBalancedConstructionData hn hb).redFiber r).card ≤ b := by
+  classical
+  convert (Finset.card_le_card_of_injOn
+    (s := (emptyBalancedConstructionData hn hb).redFiber r)
+    (t := (Finset.univ : Finset (Fin b)))
+    (f := fun v => (finProdFinEquiv.symm ((Fin.castLEEmb hn) v)).2) ?_ ?_) using 1
+  · simp
+  · intro v hv
+    simp
+  · intro v hv w hw hEq
+    have hv' : ((emptyBalancedConstructionData hn hb).embedding v).1 = r := by
+      simpa [redFiber] using hv
+    have hw' : ((emptyBalancedConstructionData hn hb).embedding w).1 = r := by
+      simpa [redFiber] using hw
+    have hfst :
+        (finProdFinEquiv.symm ((Fin.castLEEmb hn) v)).1 =
+          (finProdFinEquiv.symm ((Fin.castLEEmb hn) w)).1 := by
+      simpa [emptyBalancedConstructionData, hv', hw'] using hv'.trans hw'.symm
+    have hpair :
+        finProdFinEquiv.symm ((Fin.castLEEmb hn) v) =
+          finProdFinEquiv.symm ((Fin.castLEEmb hn) w) := by
+      exact Prod.ext hfst hEq
+    have heq : (Fin.castLEEmb hn) v = (Fin.castLEEmb hn) w := by
+      simpa only [Equiv.apply_symm_apply] using congrArg finProdFinEquiv hpair
+    exact (Fin.castLEEmb hn).injective heq
+
+/-- The empty-base balanced-band construction has blue fibers of size at most the band width `b`. -/
+theorem blueFiber_card_le_of_emptyBalancedConstructionData {n m b : ℕ}
+    (hn : n ≤ m * b) (hb : b ≤ m) (c : Fin m) :
+    ((emptyBalancedConstructionData hn hb).blueFiber c).card ≤ b := by
+  classical
+  convert (Finset.card_le_card_of_injOn
+    (s := (emptyBalancedConstructionData hn hb).blueFiber c)
+    (t := (Finset.univ : Finset (Fin b)))
+    (f := fun v => (finProdFinEquiv.symm ((Fin.castLEEmb hn) v)).2) ?_ ?_) using 1
+  · simp
+  · intro v hv
+    simp
+  · intro v hv w hw hEq
+    have hv' : ((emptyBalancedConstructionData hn hb).embedding v).2 = c := by
+      simpa [blueFiber] using hv
+    have hw' : ((emptyBalancedConstructionData hn hb).embedding w).2 = c := by
+      simpa [blueFiber] using hw
+    have hEqCast :
+        Fin.castLE hb ((finProdFinEquiv.symm ((Fin.castLEEmb hn) v)).2) =
+          Fin.castLE hb ((finProdFinEquiv.symm ((Fin.castLEEmb hn) w)).2) := by
+      exact congrArg (Fin.castLE hb) hEq
+    have hsum :
+        (finProdFinEquiv.symm ((Fin.castLEEmb hn) v)).1 +
+            Fin.castLE hb ((finProdFinEquiv.symm ((Fin.castLEEmb hn) v)).2) =
+          (finProdFinEquiv.symm ((Fin.castLEEmb hn) w)).1 +
+            Fin.castLE hb ((finProdFinEquiv.symm ((Fin.castLEEmb hn) w)).2) := by
+      simpa [emptyBalancedConstructionData] using hv'.trans hw'.symm
+    have hfst :
+        (finProdFinEquiv.symm ((Fin.castLEEmb hn) v)).1 =
+          (finProdFinEquiv.symm ((Fin.castLEEmb hn) w)).1 := by
+      rw [hEqCast] at hsum
+      exact add_right_cancel hsum
+    have hpair :
+        finProdFinEquiv.symm ((Fin.castLEEmb hn) v) =
+          finProdFinEquiv.symm ((Fin.castLEEmb hn) w) := by
+      exact Prod.ext hfst hEq
+    have heq : (Fin.castLEEmb hn) v = (Fin.castLEEmb hn) w := by
+      simpa only [Equiv.apply_symm_apply] using congrArg finProdFinEquiv hpair
+    exact (Fin.castLEEmb hn).injective heq
+
+/-- Empty base graphs automatically satisfy all projection and codegree clauses of `GoodEventD`;
+the balanced-band embedding supplies the needed fiber bounds. -/
+theorem goodEventD_of_emptyBalancedConstructionData
+    {n m b fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hn : n ≤ m * b) (hb : b ≤ m) (hfb : b ≤ fiberBound) :
+    GoodEventD (emptyBalancedConstructionData hn hb) fiberBound degreeBound codegreeBound
+      projCodegreeBound := by
+  classical
+  refine {
+    redFiberBound := ?_,
+    blueFiberBound := ?_,
+    redProjectionBound := ?_,
+    blueProjectionBound := ?_,
+    xInterBound := ?_,
+    blueProjectionInterBound := ?_,
+    redProjectionInterBound := ?_ }
+  · intro r
+    exact (redFiber_card_le_of_emptyBalancedConstructionData hn hb r).trans hfb
+  · intro c
+    exact (blueFiber_card_le_of_emptyBalancedConstructionData hn hb c).trans hfb
+  · intro r
+    simp [redProjectionImage, X, emptyBalancedConstructionData]
+  · intro b'
+    simp [blueProjectionImage, X, emptyBalancedConstructionData]
+  · intro x y hxy
+    cases x <;> cases y <;> simp [X, emptyBalancedConstructionData]
+  · intro r r' hrr'
+    simp [blueProjectionImage, X, emptyBalancedConstructionData]
+  · intro b1 b2 hbb
+    simp [redProjectionImage, X, emptyBalancedConstructionData]
+
+theorem constructionEventMass_goodEventDSet_ge_emptyBalancedConstructionWeight
+    {w : ConstructionData n m → ℝ} {b fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hn : n ≤ m * b) (hb : b ≤ m) (hfb : b ≤ fiberBound) (hwt : ∀ C, 0 ≤ w C) :
+    w (emptyBalancedConstructionData hn hb) ≤
+      constructionEventMass w (goodEventDSet n m fiberBound degreeBound codegreeBound
+        projCodegreeBound) := by
+  have hmem :
+      emptyBalancedConstructionData hn hb ∈
+        goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound := by
+    rw [mem_goodEventDSet_iff]
+    exact goodEventD_of_emptyBalancedConstructionData hn hb hfb
+  exact constructionEventMass_single_le_of_mem hmem hwt
+
+theorem constructionEventMass_goodEventDSet_pos_of_emptyBalancedConstructionData
+    {w : ConstructionData n m → ℝ} {b fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hn : n ≤ m * b) (hb : b ≤ m) (hfb : b ≤ fiberBound) (hwt : ∀ C, 0 ≤ w C)
+    (hpos : 0 < w (emptyBalancedConstructionData hn hb)) :
+    0 < constructionEventMass w (goodEventDSet n m fiberBound degreeBound codegreeBound
+      projCodegreeBound) := by
+  have hmem :
+      emptyBalancedConstructionData hn hb ∈
+        goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound := by
+    rw [mem_goodEventDSet_iff]
+    exact goodEventD_of_emptyBalancedConstructionData hn hb hfb
+  exact constructionEventMass_pos_of_mem hmem hwt hpos
+
+theorem paperConstructionMass_goodEventDSet_pos_of_emptyBalancedConstructionData
+    {β : ℝ} {n m b fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 < Twobites.paperP β n) (hp1 : Twobites.paperP β n < 1)
+    (hn : n ≤ m * b) (hb : b ≤ m) (hfb : b ≤ fiberBound) :
+    0 < constructionEventMass (paperConstructionWeight β n m)
+      (goodEventDSet n m fiberBound degreeBound codegreeBound projCodegreeBound) := by
+  apply constructionEventMass_goodEventDSet_pos_of_emptyBalancedConstructionData
+    (hn := hn) (hb := hb) (hfb := hfb)
+  · intro C
+    exact paperConstructionWeight_nonneg hp0.le hp1.le C
+  · exact paperConstructionWeight_pos hp0 hp1 (emptyBalancedConstructionData hn hb)
+
 /-- Paper Section 3's huge part `H_I`. -/
 def HPart (C : ConstructionData n m) (I : Finset (Fin n)) : Finset (BaseVertex m) := by
   classical
