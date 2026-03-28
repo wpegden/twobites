@@ -24313,6 +24313,29 @@ theorem goodSurvivingGraphPairActualMassIntegrand_le_projectionChoiceMassBound
       (goodSurvivingGraphPairProjectionChoiceMassBound_nonneg
         (n := n) (m := m) (β := β) hp0 hp1 I e ε x)
 
+open scoped Classical in
+theorem goodSurvivingGraphPairActualMassIntegrand_le_if_good_projectionChoiceMassBound
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m)) :
+    goodSurvivingGraphPairActualMassIntegrand β n m fiberBound degreeBound codegreeBound
+        projCodegreeBound I e ε x ≤
+      if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x then
+        goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x
+      else
+        0 := by
+  by_cases hgood :
+      goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e x
+  · simpa [hgood] using
+      goodSurvivingGraphPairActualMassIntegrand_le_projectionChoiceMassBound
+        (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+        (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+        hp0 hp1 I e x
+  · simp [goodSurvivingGraphPairActualMassIntegrand, hgood]
+
 set_option linter.style.longLine false in
 theorem
     constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_actualMass
@@ -24385,6 +24408,61 @@ theorem
           goodSurvivingGraphPairActualMassIntegrand β n m fiberBound degreeBound codegreeBound
             projCodegreeBound I e ε x := by
       exact mul_le_mul_of_nonneg_left hsum houter0
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_projectionChoiceMass
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I e x then
+            goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x
+      else
+        0 := by
+  let outerMass :=
+    Twobites.paperRIOuterEventMass m
+      (({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m).redImage I).card
+      (({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m).blueImage I).card
+      I.card
+  have houter0 : 0 ≤ outerMass := by
+    exact le_trans (constructionEmbeddingUniformWeight_nonneg n m) <|
+      constructionEmbeddingUniformWeight_le_paperRIOuterEventMass_of_pairImage
+        ({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m) I
+  have hsum :
+      ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairActualMassIntegrand β n m fiberBound degreeBound codegreeBound
+            projCodegreeBound I e ε x ≤
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I e x then
+            goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x
+          else
+            0 := by
+    refine Finset.sum_le_sum ?_
+    intro x hx
+    exact
+      goodSurvivingGraphPairActualMassIntegrand_le_if_good_projectionChoiceMassBound
+        (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+        (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+        hp0 hp1 I e x
+  refine
+    (constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_actualMass
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e).trans ?_
+  exact mul_le_mul_of_nonneg_left hsum houter0
 
 set_option linter.style.longLine false in
 theorem
