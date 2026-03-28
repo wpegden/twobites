@@ -23128,6 +23128,104 @@ noncomputable def goodSurvivingGraphPairActualMassIntegrand
     else
       0
 
+theorem section4ProjectionChoiceMassSum_nonneg {p : ℝ} {remaining uRMax uBMax : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    0 ≤ section4ProjectionChoiceMassSum p remaining uRMax uBMax := by
+  unfold section4ProjectionChoiceMassSum
+  refine Finset.sum_nonneg ?_
+  intro uv huv
+  have hsub : 0 ≤ 1 - p := by linarith
+  refine mul_nonneg ?_ (pow_nonneg hsub _)
+  refine mul_nonneg ?_ ?_
+  · exact mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hp0 _)
+  · exact mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hp0 _)
+
+noncomputable def goodSurvivingGraphPairProjectionChoiceMassBound
+    (β : ℝ) (n m : ℕ)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (ε : ℝ)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m)) : ℝ := by
+  classical
+  let Cx : ConstructionData n m :=
+    { redBase := x.1, blueBase := x.2, embedding := e }
+  exact
+    section4ProjectionChoiceMassSum (Twobites.paperP β n)
+      ((Cx.baseOpenPairSet I).card - Cx.section4SecondStageLossNat I ε)
+      (Cx.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ Cx.section4F I ε).image Sum.inr))
+      (Cx.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ Cx.section4F I ε).image Sum.inl))
+
+theorem goodSurvivingGraphPairProjectionChoiceMassBound_nonneg
+    {β : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (ε : ℝ)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m)) :
+    0 ≤ goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x := by
+  classical
+  unfold goodSurvivingGraphPairProjectionChoiceMassBound
+  exact section4ProjectionChoiceMassSum_nonneg hp0 hp1
+
+set_option linter.style.longLine false in
+set_option maxHeartbeats 3000000 in
+-- This fixed-embedding counted-event bridge expands several large Section 4 definitions and
+-- needs extra heartbeats for elaboration, even though the proof itself is direct.
+theorem goodSurvivingGraphPairActualMassIntegrand_le_projectionChoiceMassBound
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m)) :
+    goodSurvivingGraphPairActualMassIntegrand β n m fiberBound degreeBound codegreeBound
+        projCodegreeBound I e ε x ≤
+      goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x := by
+  classical
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  by_cases hgood :
+      goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e x
+  · let remainingNat :=
+      (Cx.baseOpenPairSet I).card -
+        I.card * (Cx.section4F1 I ∪ Cx.section4F2 I ε).card -
+        (Cx.redProjectionPairCount I ((Cx.baseImage I).filter IsRedBaseVertex) +
+          Cx.blueProjectionPairCount I ((Cx.baseImage I).filter IsBlueBaseVertex)) -
+        Cx.redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ Cx.section4F I ε).image Sum.inr) -
+        Cx.blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ Cx.section4F I ε).image Sum.inl)
+    let uRMax :=
+      Cx.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ Cx.section4F I ε).image Sum.inr)
+    let uBMax :=
+      Cx.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ Cx.section4F I ε).image Sum.inl)
+    let uRActual := (Cx.section4URedCondPairSet I (Cx.section4F I ε)).card
+    let uBActual := (Cx.section4UBlueCondPairSet I (Cx.section4F I ε)).card
+    have hURactual : uRActual ≤ uRMax := by
+      simpa [uRActual, uRMax] using
+        (Cx.section4URedCondPairSet_card_le_redProjectionPairCount_of_indep
+          (I := I) (A := Cx.section4F I ε) hgood.2)
+    have hUBactual : uBActual ≤ uBMax := by
+      simpa [uBActual, uBMax] using
+        (Cx.section4UBlueCondPairSet_card_le_blueProjectionPairCount_of_indep
+          (I := I) (A := Cx.section4F I ε) hgood.2)
+    have hchoice :
+        Cx.section4UCondChoiceEventMass I (Cx.section4F I ε) (Twobites.paperP β n)
+            uRActual uBActual remainingNat ≤
+          section4ProjectionChoiceMassSum (Twobites.paperP β n) remainingNat uRMax uBMax := by
+      rw [← Cx.section4UCondChoiceEventMassSum_eq_section4UCondChoiceEventMass_of_card_le
+        (I := I) (A := Cx.section4F I ε) (p := Twobites.paperP β n) (remaining := remainingNat)
+        (uRMax := uRMax) (uBMax := uBMax) hURactual hUBactual]
+      simpa [remainingNat, uRMax, uBMax] using
+        (Cx.section4UCondChoiceEventMassSum_section4F_le_projectionChoiceMassSum_of_indep
+          (I := I) (ε := ε) (p := Twobites.paperP β n) (N := (Cx.baseOpenPairSet I).card)
+          hgood.2 hp0 hp1)
+    simpa only [goodSurvivingGraphPairActualMassIntegrand,
+      goodSurvivingGraphPairProjectionChoiceMassBound, Cx, hgood, remainingNat, uRMax, uBMax,
+      uRActual, uBActual, section4ActualConditionedEventMass, section4SecondStageLossNat,
+      Nat.sub_sub, add_assoc, add_left_comm, add_comm] using hchoice
+  · simpa [goodSurvivingGraphPairActualMassIntegrand, hgood] using
+      (goodSurvivingGraphPairProjectionChoiceMassBound_nonneg
+        (n := n) (m := m) (β := β) hp0 hp1 I e ε x)
+
 set_option linter.style.longLine false in
 theorem
     constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_actualMass
@@ -23200,6 +23298,51 @@ theorem
           goodSurvivingGraphPairActualMassIntegrand β n m fiberBound degreeBound codegreeBound
             projCodegreeBound I e ε x := by
       exact mul_le_mul_of_nonneg_left hsum houter0
+
+set_option linter.style.longLine false in
+theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_projectionChoiceMass
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x := by
+  let outerMass :=
+    Twobites.paperRIOuterEventMass m
+      (({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m).redImage I).card
+      (({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m).blueImage I).card
+      I.card
+  have houter0 : 0 ≤ outerMass := by
+    exact le_trans (constructionEmbeddingUniformWeight_nonneg n m) <|
+      constructionEmbeddingUniformWeight_le_paperRIOuterEventMass_of_pairImage
+        ({ redBase := ⊥, blueBase := ⊥, embedding := e } : ConstructionData n m) I
+  have hsum :
+      ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairActualMassIntegrand β n m fiberBound degreeBound codegreeBound
+            projCodegreeBound I e ε x ≤
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x := by
+    refine Finset.sum_le_sum ?_
+    intro x hx
+    exact goodSurvivingGraphPairActualMassIntegrand_le_projectionChoiceMassBound
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      hp0 hp1 I e x
+  refine
+    (constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_actualMass
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e).trans ?_
+  exact mul_le_mul_of_nonneg_left hsum houter0
 
 theorem paperConstructionMass_goodSurvivingIndepSetEventSet_eq_sum_by_embedding
     {β : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
