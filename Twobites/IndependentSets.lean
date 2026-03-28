@@ -18182,6 +18182,80 @@ theorem paper_ri_eqLong_bound_of_chooseOuterEventMass_le_exp_of_paperParameterLo
       hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
       hredCrossSmall houter hLossGap htotal
 
+theorem paper_ri_eqLong_bound_smallSum_of_chooseOuterEventMass_le_exp_of_mainRemainder_of_images
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε p xR xB : ℝ} {N : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hn : 1 < n)
+    (houterLoglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hε : 0 < ε) (hεquarter : ε ≤ (1 / 4 : ℝ))
+    (hlargeLoglog : 296 / ε ≤ Real.log (Real.log (n : ℝ)))
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hkone : 1 ≤ Twobites.paperK (1 + ε) n)
+    (hsum : xR + xB ≤ 1 - ε / 2)
+    (hkOuter :
+      Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n)
+    (hredM : (C.redImage I).card ≤ Twobites.paperMNat n)
+    (hblueM : (C.blueImage I).card ≤ Twobites.paperMNat n)
+    (hkprod :
+      Twobites.paperKNat (1 + ε) n ≤ (C.redImage I).card * (C.blueImage I).card)
+    (hhalf :
+      2 * Twobites.paperKNat (1 + ε) n ≤ Twobites.paperMNat n * Twobites.paperMNat n + 1)
+    (hredEq : ((C.redImage I).card : ℝ) = xR * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hblueEq : ((C.blueImage I).card : ℝ) = xB * (Twobites.paperKNat (1 + ε) n : ℝ))
+    (hxRpos : 0 < xR) (hxBpos : 0 < xB) :
+    ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+        Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+          (C.blueImage I).card (Twobites.paperKNat (1 + ε) n) *
+        C.section4ActualConditionedEventMass I ε p N ≤
+      Real.exp
+        (-(ε / 8) * Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+  have hsum2 : xR + xB ≤ 2 := by
+    linarith
+  have houterExp :
+      ((((xR + xB - 1) / 2) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) +
+          (((9 - 5 * (xR + xB)) / 2) * (Twobites.paperKNat (1 + ε) n : ℝ) *
+            Real.log (Real.log (n : ℝ))) +
+          (3 * (2 - xR - xB) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (2 : ℝ)) +
+          ((1 - xR - xB) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (1 + ε)) +
+          (2 + xR + xB) * (Twobites.paperKNat (1 + ε) n : ℝ)) ≤
+        (-(ε / 8) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) := by
+    exact
+      Twobites.paperRI_chooseOuterExp_le_smallSum_final hn houterLoglog hε hεquarter
+        hlargeLoglog hxRpos hxBpos hsum
+  have houter :=
+    C.paper_ri_chooseOuterEventMass_le_exp_of_mainRemainder_of_images I hn houterLoglog
+      hε.le hεquarter hI hkone hsum2 hkOuter hredM hblueM hkprod hhalf hredEq hblueEq
+      hxRpos hxBpos houterExp
+  have hinner :
+      C.section4ActualConditionedEventMass I ε p N ≤ Real.exp (0 : ℝ) := by
+    calc
+      C.section4ActualConditionedEventMass I ε p N ≤ 1 :=
+        C.section4ActualConditionedEventMass_le_one I hp0 hp1
+      _ = Real.exp 0 := by simp
+  have hmass :
+      ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+          Twobites.paperRIOuterEventMass (Twobites.paperMNat n) (C.redImage I).card
+            (C.blueImage I).card (Twobites.paperKNat (1 + ε) n) *
+          C.section4ActualConditionedEventMass I ε p N ≤
+        Real.exp
+          (-(ε / 8) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) := by
+    simpa [zero_add] using
+      C.mul_section4ActualConditionedEventMass_le_exp_add I hp0 hp1 houter hinner
+  have hκ : 0 ≤ 1 + ε := by linarith
+  have hcoeff :
+      (-(ε / 8) * (Twobites.paperKNat (1 + ε) n : ℝ) * Real.log (n : ℝ)) ≤
+        (-(ε / 8) * Twobites.paperK (1 + ε) n * Real.log (n : ℝ)) := by
+    have hkceil :
+        Twobites.paperK (1 + ε) n ≤ (Twobites.paperKNat (1 + ε) n : ℝ) :=
+      Twobites.paperK_le_paperKNat (1 + ε) n
+    have hmulK :
+        (-(ε / 8 : ℝ)) * (Twobites.paperKNat (1 + ε) n : ℝ) ≤
+          (-(ε / 8 : ℝ)) * Twobites.paperK (1 + ε) n := by
+      exact mul_le_mul_of_nonpos_left hkceil (by nlinarith)
+    exact mul_le_mul_of_nonneg_right hmulK (Twobites.paperLog_pos hn).le
+  exact hmass.trans (Real.exp_le_exp.mpr hcoeff)
+
 theorem paper_ri_eqLong_bound_of_outer_smallSum
     (C : ConstructionData n m) (I : Finset (Fin n))
     {ε p outerMass x κ : ℝ} {N : ℕ}
