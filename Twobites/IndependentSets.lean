@@ -18396,6 +18396,112 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    section4ProjectionChoiceMassSum_section4F_le_exp_of_uniformPartError
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {ε p revealError ε1 κ : ℝ} {N : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        N)
+    (hReveal :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤ revealError)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    let remainingNat := N - C.section4SecondStageLossNat I ε
+    let uRNat :=
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+    let uBNat :=
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    section4ProjectionChoiceMassSum p remainingNat uRNat uBNat ≤
+      Real.exp
+        (p * (revealError + 11 * (ε1 * Twobites.paperK κ n ^ 2)) - p * (N : ℝ)) := by
+  refine
+    C.section4ProjectionChoiceMassSum_section4F_le_exp_of_splitPartTotalError
+      (I := I) (ε := ε) (p := p) (N := N)
+      (totalError := revealError + 11 * (ε1 * Twobites.paperK κ n ^ 2))
+      (revealError := revealError)
+      (largeError := ε1 * Twobites.paperK κ n ^ 2)
+      (mediumError := ε1 * Twobites.paperK κ n ^ 2)
+      (smallError := ε1 * Twobites.paperK κ n ^ 2)
+      (hugeRedError := ε1 * Twobites.paperK κ n ^ 2)
+      (hugeBlueError := ε1 * Twobites.paperK κ n ^ 2)
+      hp0 hp1 hHsubset ht21 ht32 hLossLeN hReveal hLarge hMedium hSmall hHugeRed hHugeBlue ?_
+  nlinarith
+
+set_option linter.style.longLine false in
+theorem
+    section4ProjectionChoiceMassSum_section4F_le_exp_of_uniformError
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε p ε1 κ : ℝ} {N : ℕ}
+    (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeN :
+      I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          2 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
+        N)
+    (hReveal :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRed :
+      ((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlue :
+      ((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) :
+    let remainingNat := N - C.section4SecondStageLossNat I ε
+    let uRNat :=
+      C.redProjectionPairCount I
+        ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+    let uBNat :=
+      C.blueProjectionPairCount I
+        ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+    section4ProjectionChoiceMassSum p remainingNat uRNat uBNat ≤
+      Real.exp (p * (12 * (ε1 * Twobites.paperK κ n ^ 2)) - p * (N : ℝ)) := by
+  have hbase :=
+    C.section4ProjectionChoiceMassSum_section4F_le_exp_of_uniformPartError
+      (I := I) (ε := ε) (p := p) (κ := κ) (N := N)
+      (revealError := ε1 * Twobites.paperK κ n ^ 2)
+      hp0 hp1 hHsubset ht21 ht32 hLossLeN hReveal hLarge hMedium hSmall hHugeRed hHugeBlue
+  refine hbase.trans ?_
+  apply Real.exp_le_exp.mpr
+  ring_nf
+  linarith
+
+set_option linter.style.longLine false in
+theorem
     section4ActualConditionedEventMass_le_exp_of_indep_of_totalError
     (C : ConstructionData n m) (I : Finset (Fin n)) {ε p totalError : ℝ} {N : ℕ}
     {uRBound uBBound : ℕ}
