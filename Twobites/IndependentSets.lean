@@ -2,6 +2,7 @@ import Twobites.Basic
 import Twobites.Construction
 import Twobites.PaperDefinitions
 import Twobites.ParameterBounds
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Powerset
@@ -124,16 +125,17 @@ noncomputable def goodEventDSet (n m fiberBound degreeBound codegreeBound projCo
   classical
   simp [goodEventDSet, ConstructionData.sampleSpace]
 
-/-- The Bernoulli weight of one base graph in the paper's first-stage random construction. -/
-def constructionGraphEdgeCard (G : SimpleGraph (Fin m)) : ℕ := by
+/-- The edge finset of a construction-stage base graph, packaged so it can be referenced inside
+`Finset.image` without reopening local `Fintype` instances for `edgeSet`. -/
+noncomputable def constructionGraphEdgeFinset
+    (G : SimpleGraph (Fin m)) : Finset (Sym2 (Fin m)) := by
   classical
-  letI : Fintype ↑G.edgeSet := Fintype.ofFinite ↑G.edgeSet
-  exact G.edgeFinset.card
+  exact G.edgeFinset
 
 /-- The Bernoulli weight of one base graph in the paper's first-stage random construction. -/
 def constructionGraphBernoulliWeight (p : ℝ) (G : SimpleGraph (Fin m)) : ℝ :=
-  p ^ constructionGraphEdgeCard G *
-    (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - constructionGraphEdgeCard G)
+  p ^ (constructionGraphEdgeFinset G).card *
+    (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - (constructionGraphEdgeFinset G).card)
 
 /-- The uniform weight of the paper's random embedding `π`. -/
 def constructionEmbeddingUniformWeight (n m : ℕ) : ℝ :=
@@ -158,18 +160,6 @@ def constructionEventMass (w : ConstructionData n m → ℝ) (E : Finset (Constr
     constructionEventMass w (∅ : Finset (ConstructionData n m)) = 0 := by
   simp [constructionEventMass]
 
-theorem constructionGraphEdgeCard_eq_edgeFinset_card (G : SimpleGraph (Fin m)) :
-    constructionGraphEdgeCard G = by
-      classical
-      letI : Fintype ↑G.edgeSet := Fintype.ofFinite ↑G.edgeSet
-      exact G.edgeFinset.card := rfl
-
-@[simp] theorem constructionGraphEdgeCard_bot :
-    constructionGraphEdgeCard (⊥ : SimpleGraph (Fin m)) = 0 := by
-  classical
-  rw [constructionGraphEdgeCard_eq_edgeFinset_card]
-  simp
-
 theorem constructionGraphBernoulliWeight_nonneg {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
     (G : SimpleGraph (Fin m)) :
     0 ≤ constructionGraphBernoulliWeight p G := by
@@ -187,13 +177,108 @@ theorem constructionGraphBernoulliWeight_pos {p : ℝ} (hp0 : 0 < p) (hp1 : p < 
 @[simp] theorem constructionGraphBernoulliWeight_bot_eq (p : ℝ) :
     constructionGraphBernoulliWeight p (⊥ : SimpleGraph (Fin m)) =
       (1 - p) ^ Fintype.card (Sym2 (Fin m)) := by
-  rw [constructionGraphBernoulliWeight, constructionGraphEdgeCard_bot]
+  have hbot : constructionGraphEdgeFinset (⊥ : SimpleGraph (Fin m)) = ∅ := by
+    simp [constructionGraphEdgeFinset]
+  rw [constructionGraphBernoulliWeight, hbot]
   simp
+
+theorem constructionGraph_edgeFinset_image_univ_eq_powerset_top (m : ℕ) :
+    (Finset.univ.image fun G : SimpleGraph (Fin m) => constructionGraphEdgeFinset G) =
+      ((⊤ : SimpleGraph (Fin m)).edgeFinset).powerset := by
+  classical
+  ext s
+  constructor
+  · intro hs
+    rcases Finset.mem_image.1 hs with ⟨G, -, rfl⟩
+    refine Finset.mem_powerset.2 ?_
+    simpa [SimpleGraph.edgeFinset_top] using
+      (SimpleGraph.edgeFinset_mono (show G ≤ (⊤ : SimpleGraph (Fin m)) by
+        exact le_top) : G.edgeFinset ⊆ (⊤ : SimpleGraph (Fin m)).edgeFinset)
+  · intro hs
+    refine Finset.mem_image.2 ?_
+    refine ⟨SimpleGraph.fromEdgeSet (s : Set (Sym2 (Fin m))), by simp, ?_⟩
+    ext e
+    constructor
+    · intro he
+      have he' :
+          e ∈ (SimpleGraph.fromEdgeSet (s : Set (Sym2 (Fin m))) : SimpleGraph (Fin m)).edgeSet := by
+        simpa [constructionGraphEdgeFinset] using he
+      exact (by simpa [SimpleGraph.edgeSet_fromEdgeSet] using he' : e ∈ s ∧ ¬ e.IsDiag).1
+    · intro he
+      have htop : e ∈ (⊤ : SimpleGraph (Fin m)).edgeFinset := (Finset.mem_powerset.1 hs) he
+      have hdiag : ¬ e.IsDiag :=
+        SimpleGraph.not_isDiag_of_mem_edgeFinset (G := (⊤ : SimpleGraph (Fin m))) htop
+      have he' :
+          e ∈ (SimpleGraph.fromEdgeSet (s : Set (Sym2 (Fin m))) : SimpleGraph (Fin m)).edgeSet := by
+        simpa [SimpleGraph.edgeSet_fromEdgeSet, hdiag] using
+          (show e ∈ s ∧ ¬ e.IsDiag from ⟨he, hdiag⟩)
+      simpa [constructionGraphEdgeFinset] using he'
+
+theorem constructionGraphBernoulliWeight_sum_univ_eq (p : ℝ) :
+    (∑ G : SimpleGraph (Fin m), constructionGraphBernoulliWeight p G) = (1 - p) ^ m := by
+  classical
+  let topEdges : Finset (Sym2 (Fin m)) := (⊤ : SimpleGraph (Fin m)).edgeFinset
+  have himage :
+      (Finset.univ.image fun G : SimpleGraph (Fin m) => constructionGraphEdgeFinset G) =
+        topEdges.powerset := by
+    simpa [topEdges] using constructionGraph_edgeFinset_image_univ_eq_powerset_top m
+  have hcard :
+      Fintype.card (Sym2 (Fin m)) = topEdges.card + m := by
+    rw [Sym2.card, show topEdges.card = m.choose 2 by
+      simpa [topEdges] using (SimpleGraph.card_edgeFinset_top_eq_card_choose_two (V := Fin m))]
+    simpa [Nat.add_comm] using Nat.choose_succ_succ' m 1
+  calc
+    Finset.sum (Finset.univ : Finset (SimpleGraph (Fin m)))
+        (fun G => constructionGraphBernoulliWeight p G)
+        = Finset.sum topEdges.powerset
+            (fun s => p ^ s.card * (1 - p) ^ (Fintype.card (Sym2 (Fin m)) - s.card)) := by
+          rw [← himage]
+          symm
+          refine (Finset.sum_image ?hinj).trans ?_
+          · intro G _ H _ hGH
+            have hGH' : G.edgeFinset = H.edgeFinset := by
+              simpa [constructionGraphEdgeFinset] using hGH
+            exact (SimpleGraph.edgeFinset_inj).1 hGH'
+          · refine Finset.sum_congr rfl ?_
+            intro G hG
+            rw [constructionGraphBernoulliWeight, constructionGraphEdgeFinset]
+    _ = Finset.sum topEdges.powerset
+          (fun s => (1 - p) ^ m * (p ^ s.card * (1 - p) ^ (topEdges.card - s.card))) := by
+          refine Finset.sum_congr rfl ?_
+          intro s hs
+          have hsle : s.card ≤ topEdges.card := by
+            exact Finset.card_le_card (Finset.mem_powerset.1 hs)
+          have hsplit : topEdges.card + m - s.card = m + (topEdges.card - s.card) := by
+            omega
+          rw [hcard, hsplit, pow_add]
+          ring
+    _ = (1 - p) ^ m * Finset.sum topEdges.powerset
+          (fun s => p ^ s.card * (1 - p) ^ (topEdges.card - s.card)) := by
+          rw [Finset.mul_sum]
+    _ = (1 - p) ^ m * (p + (1 - p)) ^ topEdges.card := by
+          rw [Finset.sum_pow_mul_eq_add_pow]
+    _ = (1 - p) ^ m := by simp
 
 theorem constructionEmbeddingUniformWeight_nonneg (n m : ℕ) :
     0 ≤ constructionEmbeddingUniformWeight n m := by
   unfold constructionEmbeddingUniformWeight
   positivity
+
+theorem constructionEmbeddingUniformWeight_sum_univ_eq_one (e : Fin n ↪ Fin m × Fin m) :
+    (∑ _ : Fin n ↪ Fin m × Fin m, constructionEmbeddingUniformWeight n m) = 1 := by
+  classical
+  unfold constructionEmbeddingUniformWeight
+  have hcardposNat : 0 < Fintype.card (Fin n ↪ Fin m × Fin m) := by
+    exact Fintype.card_pos_iff.mpr ⟨e⟩
+  have hcardposReal : 0 < (((Fintype.card (Fin n ↪ Fin m × Fin m)) : ℕ) : ℝ) := by
+    exact_mod_cast hcardposNat
+  calc
+    (∑ _ : Fin n ↪ Fin m × Fin m, (((Fintype.card (Fin n ↪ Fin m × Fin m)) : ℕ) : ℝ)⁻¹)
+        = ((Fintype.card (Fin n ↪ Fin m × Fin m) : ℕ) : ℝ) *
+            (((Fintype.card (Fin n ↪ Fin m × Fin m)) : ℕ) : ℝ)⁻¹ := by
+              simp
+    _ = 1 := by
+          field_simp [hcardposReal.ne']
 
 theorem constructionEmbeddingUniformWeight_pos (C : ConstructionData n m) :
     0 < constructionEmbeddingUniformWeight n m := by
@@ -235,6 +320,107 @@ theorem paperConstructionWeight_pos {β : ℝ}
     (C : ConstructionData n m) :
     0 < paperConstructionWeight β n m C := by
   exact constructionProductWeight_pos hp0 hp1 C
+
+theorem constructionProductWeight_sum_univ_eq (p : ℝ)
+    (e : Fin n ↪ Fin m × Fin m) :
+    (∑ C : ConstructionData n m, constructionProductWeight p C) = ((1 - p) ^ m) ^ 2 := by
+  classical
+  let equivCD :
+      ConstructionData n m ≃
+        ((SimpleGraph (Fin m) × SimpleGraph (Fin m)) × (Fin n ↪ Fin m × Fin m)) :=
+    { toFun := fun C => ((C.redBase, C.blueBase), C.embedding)
+      invFun := fun t =>
+        { redBase := t.1.1
+          blueBase := t.1.2
+          embedding := t.2 }
+      left_inv := by
+        intro C
+        cases C
+        rfl
+      right_inv := by
+        intro t
+        cases t
+        rfl }
+  calc
+    (∑ C : ConstructionData n m, constructionProductWeight p C) =
+        ∑ t : ((SimpleGraph (Fin m) × SimpleGraph (Fin m)) × (Fin n ↪ Fin m × Fin m)),
+          constructionProductWeight p
+            { redBase := t.1.1
+              blueBase := t.1.2
+              embedding := t.2 } := by
+          simpa [equivCD] using
+            (Equiv.sum_comp equivCD.symm
+              (fun C : ConstructionData n m => constructionProductWeight p C)).symm
+    _ = ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          ∑ f : Fin n ↪ Fin m × Fin m,
+            constructionProductWeight p
+              { redBase := x.1
+                blueBase := x.2
+                embedding := f } := by
+          rw [Fintype.sum_prod_type]
+    _ = ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          constructionGraphBernoulliWeight p x.1 *
+            constructionGraphBernoulliWeight p x.2 := by
+          refine Fintype.sum_congr
+            (fun x : SimpleGraph (Fin m) × SimpleGraph (Fin m) =>
+              ∑ f : Fin n ↪ Fin m × Fin m,
+                constructionProductWeight p
+                  { redBase := x.1
+                    blueBase := x.2
+                    embedding := f })
+            (fun x : SimpleGraph (Fin m) × SimpleGraph (Fin m) =>
+              constructionGraphBernoulliWeight p x.1 *
+                constructionGraphBernoulliWeight p x.2) ?_
+          intro x
+          calc
+            (∑ f : Fin n ↪ Fin m × Fin m,
+                constructionProductWeight p
+                  { redBase := x.1
+                    blueBase := x.2
+                    embedding := f }) =
+                ∑ f : Fin n ↪ Fin m × Fin m,
+                  constructionGraphBernoulliWeight p x.1 *
+                    (constructionGraphBernoulliWeight p x.2 *
+                      constructionEmbeddingUniformWeight n m) := by
+                  simp [constructionProductWeight, mul_assoc]
+            _ = constructionGraphBernoulliWeight p x.1 *
+                  (constructionGraphBernoulliWeight p x.2 *
+                    ∑ _ : Fin n ↪ Fin m × Fin m, constructionEmbeddingUniformWeight n m) := by
+                  rw [← Finset.mul_sum, ← Finset.mul_sum]
+            _ = constructionGraphBernoulliWeight p x.1 *
+                  (constructionGraphBernoulliWeight p x.2 * 1) := by
+                  rw [constructionEmbeddingUniformWeight_sum_univ_eq_one (n := n) (m := m) e]
+            _ = constructionGraphBernoulliWeight p x.1 *
+                  constructionGraphBernoulliWeight p x.2 := by
+                  ring
+    _ = (∑ G : SimpleGraph (Fin m), constructionGraphBernoulliWeight p G) *
+          ∑ H : SimpleGraph (Fin m), constructionGraphBernoulliWeight p H := by
+          rw [Fintype.sum_prod_type]
+          symm
+          simpa using
+            (Finset.sum_mul_sum
+              (Finset.univ : Finset (SimpleGraph (Fin m)))
+              (Finset.univ : Finset (SimpleGraph (Fin m)))
+              (fun G => constructionGraphBernoulliWeight p G)
+              (fun H => constructionGraphBernoulliWeight p H))
+    _ = (((1 - p) ^ m) * ((1 - p) ^ m)) := by
+          have hgraphR :
+              (∑ G : SimpleGraph (Fin m), constructionGraphBernoulliWeight p G) = (1 - p) ^ m :=
+            constructionGraphBernoulliWeight_sum_univ_eq (m := m) p
+          have hgraphB :
+              (∑ H : SimpleGraph (Fin m), constructionGraphBernoulliWeight p H) = (1 - p) ^ m :=
+            constructionGraphBernoulliWeight_sum_univ_eq (m := m) p
+          simp [hgraphR]
+    _ = ((1 - p) ^ m) ^ 2 := by
+          rw [pow_two]
+
+theorem paperConstructionMass_sampleSpace_eq {β : ℝ} {b : ℕ}
+    (hn : n ≤ m * b) (hb : b ≤ m) :
+    constructionEventMass (paperConstructionWeight β n m) (ConstructionData.sampleSpace n m) =
+      ((1 - Twobites.paperP β n) ^ m) ^ 2 := by
+  simpa [constructionEventMass, ConstructionData.sampleSpace, paperConstructionWeight] using
+    (constructionProductWeight_sum_univ_eq (n := n) (m := m)
+      (p := Twobites.paperP β n) (balancedBandEmbedding hn hb))
 
 theorem constructionProductWeight_emptyBalancedConstructionData_eq
     {b : ℕ} (hn : n ≤ m * b) (hb : b ≤ m) (p : ℝ) :
