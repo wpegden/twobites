@@ -17168,6 +17168,45 @@ theorem section4ProjectionChoiceMassSum_eq_closedForm
     _ = ((1 + p) ^ uRMax) * ((1 + p) ^ uBMax) * (1 - p) ^ remaining := by
       simp [hR, hB, c]
 
+theorem section4ProjectionChoiceMassSum_mono
+    {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    {remaining₁ remaining₂ uRMax₁ uRMax₂ uBMax₁ uBMax₂ : ℕ}
+    (hremaining : remaining₂ ≤ remaining₁)
+    (hUR : uRMax₁ ≤ uRMax₂)
+    (hUB : uBMax₁ ≤ uBMax₂) :
+    section4ProjectionChoiceMassSum p remaining₁ uRMax₁ uBMax₁ ≤
+      section4ProjectionChoiceMassSum p remaining₂ uRMax₂ uBMax₂ := by
+  have hpAdd0 : 0 ≤ 1 + p := by linarith
+  have hpAdd1 : 1 ≤ 1 + p := by linarith
+  have hq0 : 0 ≤ 1 - p := by linarith
+  have hq1 : 1 - p ≤ 1 := by linarith
+  have hR : (1 + p) ^ uRMax₁ ≤ (1 + p) ^ uRMax₂ := by
+    rcases Nat.exists_eq_add_of_le hUR with ⟨k, rfl⟩
+    rw [pow_add]
+    have hpow0 : 0 ≤ (1 + p) ^ uRMax₁ := pow_nonneg hpAdd0 _
+    have hpow1 : 1 ≤ (1 + p) ^ k := one_le_pow₀ hpAdd1
+    nlinarith
+  have hB : (1 + p) ^ uBMax₁ ≤ (1 + p) ^ uBMax₂ := by
+    rcases Nat.exists_eq_add_of_le hUB with ⟨k, rfl⟩
+    rw [pow_add]
+    have hpow0 : 0 ≤ (1 + p) ^ uBMax₁ := pow_nonneg hpAdd0 _
+    have hpow1 : 1 ≤ (1 + p) ^ k := one_le_pow₀ hpAdd1
+    nlinarith
+  have hRem : (1 - p) ^ remaining₁ ≤ (1 - p) ^ remaining₂ := by
+    exact pow_le_pow_of_nonneg_le_one_nat hq0 hq1 hremaining
+  rw [section4ProjectionChoiceMassSum_eq_closedForm, section4ProjectionChoiceMassSum_eq_closedForm]
+  calc
+    (1 + p) ^ uRMax₁ * (1 + p) ^ uBMax₁ * (1 - p) ^ remaining₁ ≤
+        ((1 + p) ^ uRMax₂ * (1 + p) ^ uBMax₂) * (1 - p) ^ remaining₁ := by
+      have hmul :
+          (1 + p) ^ uRMax₁ * (1 + p) ^ uBMax₁ ≤
+            (1 + p) ^ uRMax₂ * (1 + p) ^ uBMax₂ := by
+        exact mul_le_mul hR hB (pow_nonneg hpAdd0 _) (pow_nonneg hpAdd0 _)
+      simpa [mul_assoc] using mul_le_mul_of_nonneg_right hmul (pow_nonneg hq0 _)
+    _ ≤ ((1 + p) ^ uRMax₂ * (1 + p) ^ uBMax₂) * (1 - p) ^ remaining₂ := by
+      exact mul_le_mul_of_nonneg_left hRem
+        (mul_nonneg (pow_nonneg hpAdd0 _) (pow_nonneg hpAdd0 _))
+
 theorem section4ProjectionChoiceMassSum_le_exp
     {p : ℝ} {remaining uRMax uBMax : ℕ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     section4ProjectionChoiceMassSum p remaining uRMax uBMax ≤
@@ -23578,6 +23617,42 @@ theorem goodSurvivingGraphPairProjectionChoiceMassBound_nonneg
   exact section4ProjectionChoiceMassSum_nonneg hp0 hp1
 
 set_option linter.style.longLine false in
+theorem goodSurvivingGraphPairProjectionChoiceMassBound_le_section4ProjectionChoiceMassSum_of_le
+    {β ε : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    {remaining uRMax uBMax : ℕ}
+    (hremaining :
+      remaining ≤
+        (({ redBase := x.1, blueBase := x.2, embedding := e } :
+            ConstructionData n m).baseOpenPairSet I).card -
+          ({ redBase := x.1, blueBase := x.2, embedding := e } :
+              ConstructionData n m).section4SecondStageLossNat I ε)
+    (hUR :
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m =>
+              Sum.inr b ∉
+                ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).section4F I ε).image Sum.inr) ≤
+        uRMax)
+    (hUB :
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m =>
+              Sum.inl r ∉
+                ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).section4F I ε).image Sum.inl) ≤
+        uBMax) :
+    goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x ≤
+      section4ProjectionChoiceMassSum (Twobites.paperP β n) remaining uRMax uBMax := by
+  classical
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  unfold goodSurvivingGraphPairProjectionChoiceMassBound
+  simpa [Cx] using
+    (section4ProjectionChoiceMassSum_mono
+      (p := Twobites.paperP β n) hp0 hp1 hremaining hUR hUB)
+
+set_option linter.style.longLine false in
 theorem
     goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_splitPartTotalError
     {β ε totalError revealError largeError mediumError smallError hugeRedError hugeBlueError : ℝ}
@@ -25026,6 +25101,71 @@ theorem
       (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
       (ε := ε) hp0 hp1 I e).trans ?_
   exact mul_le_mul_of_nonneg_left hsum houter0
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_section4ProjectionChoiceMass_of_le
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    {remaining uRMax uBMax :
+      (SimpleGraph (Fin m) × SimpleGraph (Fin m)) → ℕ}
+    (hremaining :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          remaining x ≤
+            (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                ConstructionData n m).baseOpenPairSet I).card -
+              ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                  ConstructionData n m).section4SecondStageLossNat I ε)
+    (hUR :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((Finset.univ.filter fun b : Fin m =>
+                  Sum.inr b ∉
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).section4F I ε).image Sum.inr) ≤
+            uRMax x)
+    (hUB :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((Finset.univ.filter fun r : Fin m =>
+                  Sum.inl r ∉
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).section4F I ε).image Sum.inl) ≤
+            uBMax x) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I e x then
+            section4ProjectionChoiceMassSum (Twobites.paperP β n) (remaining x) (uRMax x)
+              (uBMax x)
+          else
+            0 := by
+  refine
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e ?_
+  intro x hgood
+  exact
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_section4ProjectionChoiceMassSum_of_le
+      (n := n) (m := m) (β := β) (ε := ε) hp0 hp1 I e x
+      (hremaining x hgood) (hUR x hgood) (hUB x hgood)
 
 set_option linter.style.longLine false in
 open scoped Classical in
