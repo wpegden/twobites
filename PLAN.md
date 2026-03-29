@@ -307,6 +307,13 @@
       now isolates that reduced `hLossLeTarget` conclusion itself, so the remaining combinatorial
       collapse can target a literal natural inequality on one good graph pair before worrying about
       the exponential mass shell.
+      The fixed-embedding and fixed-set shells
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperRISILossGap_of_uniformPaperErrorBounds_of_paperSection4Bound`
+      and
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_paperRISILossGap_of_uniformPaperErrorBounds_of_paperSection4Bound`
+      now lift that reduced manuscript-loss-gap route above graph-pair level, so later three-pool
+      combinatorial lemmas can remain in manuscript `paperRISILossGap` coordinates all the way up
+      to the current filtered bad-event mass shell.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
