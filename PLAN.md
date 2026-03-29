@@ -376,6 +376,16 @@
       `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperDeterministicTargetGap_of_paperSection4Bound`
       has already been refactored through that bundled graph-pair interface. This trims one more
       layer of duplicated deterministic wrapper plumbing from the live RI frontier.
+      The literal nat-valued graph-pair target-gap inequality is now also exposed directly in the
+      reduced manuscript branch via
+      `goodSurvivingGraphPair_section4LossLeTarget_of_paperRISILossGap_of_uniformPaperErrorBounds_of_paperDeterministicBounds`,
+      and the pointwise theorem
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperRISILossGap_of_uniformPaperErrorBounds_of_paperSection4Bound_of_paperDeterministicBounds`
+      has been refactored to route through that bridge before invoking the reduced deterministic
+      target-gap endpoint. This sharpens the graph-pair frontier again: one of the key literal
+      counting hypotheses needed for the fixed-embedding collapse now has a reusable deterministic
+      wrapper of its own, leaving the genuinely graph-dependent three-pool cap/cardinality inputs
+      as the remaining live obstruction.
       The near-one branch now also reaches the reduced uniform-paper-error shell above graph-pair
       level: the new wrappers
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
