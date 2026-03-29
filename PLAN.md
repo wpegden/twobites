@@ -409,7 +409,13 @@
       These wrappers combine the reduced manuscript `paperRISILossGap` shell with caller-supplied
       red/blue/open closed-pair error budgets whenever `openError ≤ ⌈10 ε₁ k²⌉`, so future
       three-pool lemmas can feed split red/blue closed-error estimates directly into the reduced
-      manuscript route instead of first reassembling the intermediate target-gap theorem.
+      manuscript route instead of first reassembling the intermediate target-gap theorem. The same
+      split-error route now also reaches the explicit-good-mass endpoint via
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperRISILossGap_of_splitClosedErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`,
+      so there is no remaining wrapper gap above the fixed-set split-error interface: once the
+      three-pool collapse produces the per-graph-pair manuscript loss-gap together with split
+      red/blue/open closed-pair error bounds, that data can be pushed all the way to the final
+      witness-existence theorem.
       The near-one branch now also reaches the reduced uniform-paper-error shell above graph-pair
       level: the new wrappers
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
