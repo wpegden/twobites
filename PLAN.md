@@ -191,7 +191,11 @@
       factor the red/blue image-size hypotheses out of that direct route as well. The remaining
       combinatorial step can therefore aim at the manuscript-native graph-pair hypotheses
       `hTotal`, `paperRISILossGap`, `hSmallCard`, and the opposite-color projection-cap bounds all
-      the way up to the choose-multiplied bad-event estimate.
+      the way up to the choose-multiplied bad-event estimate. The final extraction wrapper
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_section4FTotalError_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_lt_explicitGoodMass`
+      now carries that same direct route through the explicit-good-mass endpoint too, so the
+      remaining blocker is purely to prove those graph-pair hypotheses uniformly and then collapse
+      the filtered sum.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
