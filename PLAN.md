@@ -392,6 +392,15 @@
       This keeps one more layer of the remaining collapse in literal natural-number error-budget
       coordinates before specializing to the manuscript `⌈10 ε₁ k²⌉` shell, which should make the
       eventual three-pool red/blue error assembly easier to feed into the existing RI endpoints.
+      On top of that, the generic arbitrary-`openError` target-gap route is now also lifted
+      through the deterministic graph-pair, fixed-embedding, and fixed-set shells via
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_targetGap_of_paperSection4Bound_of_paperDeterministicBounds`,
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_targetGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,
+      and
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_targetGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`.
+      This means later three-pool lemmas can now target the literal graph-pair hypotheses
+      `hLossLeTarget` and `paperSection4OpenPairTargetNat - openError ≤ |O(I)|` directly, without
+      restating the deterministic reveal/L/M/S/huge-diagonal contribution package each time.
       The near-one branch now also reaches the reduced uniform-paper-error shell above graph-pair
       level: the new wrappers
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
