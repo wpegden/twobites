@@ -271,8 +271,18 @@
       The matching final extraction wrapper
       `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound_lt_explicitGoodMass`
       now carries that reduced target-gap route through the explicit-good-mass witness theorem as
-      well, so the reduced shell no longer stops at a fixed-set bad-event estimate.
-      fixed-embedding collapse supplying those same loss-gap / `SPart` / projection-cap hypotheses.
+      well, so the reduced shell no longer stops at a fixed-set bad-event estimate. The new
+      deterministic-bounds lifts
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound_of_paperDeterministicBounds`,
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,
+      and
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`
+      now expose that same lighter target-gap interface with the routine large/medium/small/huge
+      contribution bounds discharged internally from the embedding-only image bounds and the
+      deterministic Section 4 hypotheses, so the remaining fixed-embedding collapse can target a
+      reduced `hLossLeTarget` statement directly without separately restating those contribution
+      estimates.
       On the near-one route, the manuscript loss-gap step is now factored out already at raw
       graph-pair level by `graphPair_paperRISILossGap_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog`,
       `..._of_red_le_blue_...`, and the merged dispatcher
