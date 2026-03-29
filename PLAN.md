@@ -260,6 +260,15 @@
       `graphPair_paperRISILossGap_of_paperNearOneReal_of_two_div_le_loglog`, so later fixed-embedding
       combinatorics can target that standalone per-pair hypothesis directly instead of reopening the
       `ConstructionData.paper_risi_hLossGap...` lemmas inside each pointwise endpoint.
+      The fixed-embedding, fixed-set, and final explicit-good-mass near-one wrappers
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,
+      and
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`
+      now route that near-one branch through the stronger direct deterministic-bounds manuscript
+      `paperRISILossGap` shell all the way to the witness-existence endpoint, so the remaining
+      near-one obstruction is the same graph-dependent fixed-embedding collapse as on the direct
+      manuscript-loss-gap branch.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
