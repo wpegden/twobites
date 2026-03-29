@@ -236,7 +236,11 @@
       now pushes that same direct deterministic-bounds route through
       `paperConstructionMass_goodSurvivingIndepSetEventSet_eq_sum_by_embedding`, so the remaining
       graph-dependent collapse can stay in manuscript loss-gap coordinates even after fixing the
-      independent set `I`.
+      independent set `I`. The new final extraction wrapper
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`
+      now carries that same direct deterministic-bounds manuscript route through the explicit-good-mass
+      endpoint too, so neither the final existence theorem nor the fixed-set shell needs to route
+      through the nat total-error specialization or the deterministic target-gap bridge anymore.
       The final
       extraction wrapper
       `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_section4FTotalErrorNat_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`
