@@ -205,6 +205,15 @@
       and `..._of_embeddingImageBounds` now preserve that nat-valued total-error interface through
       the filtered embedding and fixed-set mass shells as well, so the remaining three-pool witness
       collapse can stay in pure counting coordinates right up to the choose-multiplied mass bound.
+      The stronger deterministic-bounds specializations
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_section4FTotalErrorNat_of_paperRISILossGap_of_paperSection4Bound_of_paperDeterministicBounds`,
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_section4FTotalErrorNat_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,
+      and
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_section4FTotalErrorNat_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
+      now internalize the routine `12 * ε₁ * k²` estimate coming from the checked reveal/L/M/S/huge
+      deterministic bounds, so the nat manuscript-native route is narrowed further: above the
+      graph-pair level, only the genuinely graph-dependent `paperRISILossGap`, `SPart`, and
+      opposite-color projection-cap hypotheses still remain to be supplied uniformly.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
