@@ -15920,6 +15920,59 @@ theorem paperSection4OpenPairTargetNat_sub_ceil_ten_mul_eps_mul_paperKSq_le_base
     simp [hzero]
 
 set_option linter.style.longLine false in
+theorem paperSection4OpenPairTargetNat_sub_ceil_ten_mul_eps_mul_paperKSq_le_baseOpenPairSet_card_of_uniformPaperErrorBounds
+    (C : ConstructionData n m) (I : Finset (Fin n))
+    {κ ε ε1 : ℝ} {cap : ℕ}
+    (hindep :
+      ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ C.finalGraph.Adj v w)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHuge :
+      (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+            ε1 * Twobites.paperK κ n ^ 2) ∧
+          (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) * ((C.paperHugeBlueCrossTargetNat I κ cap : ℕ) : ℝ)) ∧
+            (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+                (1 + ε1) * ((C.paperHugeRedCrossTargetNat I κ cap : ℕ) : ℝ)))
+    (hκ : 1 ≤ κ)
+    (hε1 : 0 ≤ ε1)
+    (hk : 1 ≤ Twobites.paperK κ n) :
+    C.paperSection4OpenPairTargetNat I κ cap - ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ ≤
+      (C.baseOpenPairSet I).card := by
+  have hreal :=
+    C.paperSection4OpenPairTarget_sub_ten_mul_eps_mul_paperKSq_le_baseOpenPairSet_card_of_uniformPaperErrorBounds
+      I hindep ht21 ht32 hLarge hMedium hSmall hHuge hκ hε1 hk
+  by_cases hle : ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ ≤ C.paperSection4OpenPairTargetNat I κ cap
+  · have hcast :
+        (((C.paperSection4OpenPairTargetNat I κ cap -
+              ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ : ℕ) : ℝ)) ≤
+          ((C.baseOpenPairSet I).card : ℝ) := by
+      rw [Nat.cast_sub hle]
+      unfold paperSection4OpenPairTarget at hreal
+      have hceil :
+          10 * (ε1 * Twobites.paperK κ n ^ 2) ≤
+            (⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ : ℝ) := by
+        exact Nat.le_ceil _
+      nlinarith
+    exact_mod_cast hcast
+  · have hzero :
+        C.paperSection4OpenPairTargetNat I κ cap -
+            ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ = 0 := by
+      exact Nat.sub_eq_zero_of_le (Nat.le_of_lt (Nat.lt_of_not_ge hle))
+    simp [hzero]
+
+set_option linter.style.longLine false in
 /-- The deterministic reveal, large, medium, small, and huge-diagonal contribution bounds that
 recur throughout the Section 4 graph-pair wrappers. -/
 theorem section4UniformContributionBounds_of_paperDeterministic
@@ -24842,6 +24895,134 @@ theorem
       I e x hgood'.1 hp0 hp1 hHsubset ht21 ht32 hLossLeTarget hTargetGap hn
       (show ε ≤ (1 / 4 : ℝ) by linarith) hI hκ
       hT2 hT1 hLChoose hHChoose hRevealArith hLarge hMedium hSmall hHugeRed hHugeBlue
+
+set_option linter.style.longLine false in
+theorem
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound
+    {β κ ε ε1 : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    {cap : ℕ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    (hgood :
+      goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e x)
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε) * Twobites.paperS n)
+    (hdegreeBound : (degreeBound : ℝ) ≤ (1 + ε) * Twobites.paperP β n * Twobites.paperM n)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeTarget :
+      I.card *
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+          2 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+              IsRedBaseVertex) +
+          ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+              IsBlueBaseVertex) ≤
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat I κ
+          cap - ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊)
+    (hn : 1 < n) (hβ0 : 0 ≤ β) (hβhalf : β ≤ (1 / 2 : ℝ)) (hεlow : -1 ≤ ε)
+    (hε : ε ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε) / 2)
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 1 ≤ κ) (hT2 : 2 < Twobites.paperT2 ε n) (hT1 : 2 < Twobites.paperT1 n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+              (Twobites.paperLargeWitnessNat κ ε n : ℝ) +
+            (Twobites.paperHugeWitnessNat κ n : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hLarge :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRedDiag :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsRedBaseVertex) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlueDiag :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsBlueBaseVertex) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlueCross :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsRedBaseVertex) : ℕ) :
+          ℝ) ≤
+        (1 + ε1) *
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeBlueCrossTargetNat I κ
+              cap : ℕ) : ℝ))
+    (hHugeRedCross :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsBlueBaseVertex) : ℕ) :
+          ℝ) ≤
+        (1 + ε1) *
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeRedCrossTargetNat I κ
+              cap : ℕ) : ℝ))
+    (hε1 : 0 ≤ ε1) :
+    goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x ≤
+      Real.exp
+        (Twobites.paperP β n *
+            (12 * (ε1 * Twobites.paperK κ n ^ 2) +
+              (⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ : ℝ)) -
+          Twobites.paperP β n *
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTarget I κ
+              cap) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  have hgood' :
+      GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        Cx.SurvivesAsIndependent I := by
+    simpa [goodSurvivingGraphPairPred, Cx] using hgood
+  have hk : 1 ≤ Twobites.paperK κ n := by
+    have hbase : Twobites.paperT1 n ≤ Twobites.paperK κ n :=
+      Twobites.paperT1_le_paperK (by linarith) hκ
+    linarith
+  have hTargetGap :
+      Cx.paperSection4OpenPairTargetNat I κ cap -
+          ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ ≤
+        (Cx.baseOpenPairSet I).card := by
+    exact
+      Cx.paperSection4OpenPairTargetNat_sub_ceil_ten_mul_eps_mul_paperKSq_le_baseOpenPairSet_card_of_uniformPaperErrorBounds
+        I hgood'.2 ht21 ht32 hLarge hMedium hSmall
+        ⟨hHugeRedDiag, hHugeBlueDiag, hHugeBlueCross, hHugeRedCross⟩ hκ hε1 hk
+  exact
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_uniformError_of_paperLargeWitness_of_paperHugeWitness_of_targetGap_of_paperSection4Bound
+      (n := n) (m := m) (β := β) (κ := κ) (ε := ε) (ε1 := ε1)
+      (fiberBound := fiberBound) (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) (cap := cap)
+      (openError := ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊)
+      I e x hgood hp0 hp1 hfiberBound hdegreeBound ht21 ht32 hLossLeTarget hTargetGap
+      hn hβ0 hβhalf hεlow hε hloglog hfiberScale hI (show 0 ≤ κ by linarith) hT2 hT1
+      hLChoose hHChoose hRevealArith hLarge hMedium hSmall hHugeRedDiag hHugeBlueDiag
 
 set_option linter.style.longLine false in
 theorem
@@ -36145,6 +36326,318 @@ theorem
       (hblueCap I hI) (hblueCapWeight I hI) (hredCap I hI) (hredCapWeight I hI)
       hRevealArithI hHChoose (hLarge I hI) (hMedium I hI) (hSmall I hI) (hHugeRed I hI)
       (hHugeBlue I hI) hblueCrossSmall hredCrossSmall
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    {β κ ε ε1 ε2 : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε) * Twobites.paperS n)
+    (hdegreeBound : (degreeBound : ℝ) ≤ (1 + ε) * Twobites.paperP β n * Twobites.paperM n)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLossLeTarget :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          I.card *
+                (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+              2 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+                  ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                  IsRedBaseVertex) +
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                  IsBlueBaseVertex) ≤
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat I κ
+              (Twobites.paperCapNat β ε2 n) - ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊)
+    (hn : 1 < n) (hβ0 : 0 ≤ β) (hβhalf : β ≤ (1 / 2 : ℝ)) (hεlow : -1 ≤ ε)
+    (hε : ε ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε) / 2)
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 1 ≤ κ) (hT2 : 2 < Twobites.paperT2 ε n) (hT1 : 2 < Twobites.paperT1 n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+              (Twobites.paperLargeWitnessNat κ ε n : ℝ) +
+            (Twobites.paperHugeWitnessNat κ n : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hLarge :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε) : ℕ) :
+              ℝ) ≤
+            ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε) : ℕ) :
+              ℝ) ≤
+            ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) : ℕ) :
+              ℝ) ≤
+            ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRedDiag :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsRedBaseVertex) : ℕ) :
+              ℝ) ≤
+            ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlueDiag :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsBlueBaseVertex) : ℕ) :
+              ℝ) ≤
+            ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlueCross :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsRedBaseVertex) : ℕ) :
+              ℝ) ≤
+            (1 + ε1) *
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeBlueCrossTargetNat I κ
+                    (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ))
+    (hHugeRedCross :
+      ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+        goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+            I e x →
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsBlueBaseVertex) : ℕ) :
+              ℝ) ≤
+            (1 + ε1) *
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeRedCrossTargetNat I κ
+                    (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ))
+    (hε1 : 0 ≤ ε1) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I e x then
+            Real.exp
+              (Twobites.paperP β n *
+                  (12 * (ε1 * Twobites.paperK κ n ^ 2) +
+                    (⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ : ℝ)) -
+                Twobites.paperP β n *
+                  ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTarget I κ
+                    (Twobites.paperCapNat β ε2 n))
+          else
+            0 := by
+  refine
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e ?_
+  intro x hgood
+  exact
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound
+      (n := n) (m := m) (β := β) (κ := κ) (ε := ε) (ε1 := ε1)
+      (fiberBound := fiberBound) (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) (cap := Twobites.paperCapNat β ε2 n)
+      I e x hgood hp0 hp1 hfiberBound hdegreeBound ht21 ht32 (hLossLeTarget x hgood) hn hβ0
+      hβhalf hεlow hε hloglog hfiberScale hI hκ hT2 hT1 hLChoose hHChoose hRevealArith
+      (hLarge x hgood) (hMedium x hgood) (hSmall x hgood) (hHugeRedDiag x hgood)
+      (hHugeBlueDiag x hgood) (hHugeBlueCross x hgood) (hHugeRedCross x hgood) hε1
+
+set_option maxHeartbeats 3000000 in
+-- This fixed-set shell lifts the same reduced deterministic target-gap interface over embeddings.
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound
+    {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (I : Finset (Fin n))
+    {β κ ε ε1 ε2 : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε) * Twobites.paperS n)
+    (hdegreeBound : (degreeBound : ℝ) ≤ (1 + ε) * Twobites.paperP β n * Twobites.paperM n)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hn : 1 < n) (hβ0 : 0 ≤ β) (hβhalf : β ≤ (1 / 2 : ℝ)) (hεlow : -1 ≤ ε)
+    (hε : ε ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε) / 2)
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 1 ≤ κ) (hT2 : 2 < Twobites.paperT2 ε n) (hT1 : 2 < Twobites.paperT1 n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hLossLeTarget :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            I.card *
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+                2 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsRedBaseVertex) +
+                ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                    IsBlueBaseVertex) ≤
+              ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat I κ
+                (Twobites.paperCapNat β ε2 n) - ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+              (Twobites.paperLargeWitnessNat κ ε n : ℝ) +
+            (Twobites.paperHugeWitnessNat κ n : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hLarge :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                    (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε) : ℕ) :
+                ℝ) ≤
+              ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                    (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε) : ℕ) :
+                ℝ) ≤
+              ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+                    (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) : ℕ) :
+                ℝ) ≤
+              ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeRedDiag :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                    ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                      IsRedBaseVertex) : ℕ) :
+                ℝ) ≤
+              ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlueDiag :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                    ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                      IsBlueBaseVertex) : ℕ) :
+                ℝ) ≤
+              ε1 * Twobites.paperK κ n ^ 2)
+    (hHugeBlueCross :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                    ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                      IsRedBaseVertex) : ℕ) :
+                ℝ) ≤
+              (1 + ε1) *
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeBlueCrossTargetNat I κ
+                      (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ))
+    (hHugeRedCross :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                    ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                      IsBlueBaseVertex) : ℕ) :
+                ℝ) ≤
+              (1 + ε1) *
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeRedCrossTargetNat I κ
+                      (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ))
+    (hε1 : 0 ≤ ε1) :
+    constructionEventMass (paperConstructionWeight β n m)
+        (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I) ≤
+      ∑ e : Fin n ↪ Fin m × Fin m,
+        Twobites.paperRIOuterEventMass m
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).redImage I).card
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).blueImage I).card
+            I.card *
+          ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+            if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                  projCodegreeBound I e x then
+              Real.exp
+                (Twobites.paperP β n *
+                    (12 * (ε1 * Twobites.paperK κ n ^ 2) +
+                      (⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ : ℝ)) -
+                  Twobites.paperP β n *
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTarget I κ
+                      (Twobites.paperCapNat β ε2 n))
+            else
+              0 := by
+  refine
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_by_embedding_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound)
+      (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) (I := I) ?_
+  intro e
+  exact
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound
+      (n := n) (m := m) (I := I) (e := e) hp0 hp1 hfiberBound hdegreeBound ht21 ht32
+      (hLossLeTarget e) hn hβ0 hβhalf hεlow hε hloglog hfiberScale hI hκ hT2 hT1
+      hLChoose hHChoose hRevealArith (hLarge e) (hMedium e) (hSmall e) (hHugeRedDiag e)
+      (hHugeBlueDiag e) (hHugeBlueCross e) (hHugeRedCross e) hε1
 
 set_option maxHeartbeats 3000000 in
 -- This extraction wrapper packages the direct manuscript-native `section4F` + `paperRISILossGap`

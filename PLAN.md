@@ -258,6 +258,16 @@
       `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_section4FTotalErrorNat_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`
       now carries that nat deterministic-bounds manuscript-native route through the explicit-good-mass
       endpoint as well, so the only unfinished step on that branch is the genuinely graph-dependent
+      fixed-embedding collapse. In parallel, the new reduced-hypothesis deterministic-target-gap
+      lifts
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound`
+      and
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound`
+      now bypass the old cap-weight interface above the graph-pair layer entirely: once one good
+      graph pair supplies the literal Section 4 loss-to-target inequality and the four huge
+      pair-count bounds, the embedding and fixed-set mass shells no longer need any separate
+      projection-cap-weight hypotheses. This better matches the checked three-pool witness
+      decomposition, whose remaining job is precisely to prove those graph-pair counting bounds.
       fixed-embedding collapse supplying those same loss-gap / `SPart` / projection-cap hypotheses.
       On the near-one route, the manuscript loss-gap step is now factored out already at raw
       graph-pair level by `graphPair_paperRISILossGap_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog`,
