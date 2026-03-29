@@ -401,6 +401,15 @@
       This means later three-pool lemmas can now target the literal graph-pair hypotheses
       `hLossLeTarget` and `paperSection4OpenPairTargetNat - openError ≤ |O(I)|` directly, without
       restating the deterministic reveal/L/M/S/huge-diagonal contribution package each time.
+      The reduced manuscript route now also has a matching split-closed-error interface:
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperRISILossGap_of_splitClosedErrorBounds_of_paperSection4Bound_of_paperDeterministicBounds`,
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperRISILossGap_of_splitClosedErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,
+      and
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_paperRISILossGap_of_splitClosedErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`.
+      These wrappers combine the reduced manuscript `paperRISILossGap` shell with caller-supplied
+      red/blue/open closed-pair error budgets whenever `openError ≤ ⌈10 ε₁ k²⌉`, so future
+      three-pool lemmas can feed split red/blue closed-error estimates directly into the reduced
+      manuscript route instead of first reassembling the intermediate target-gap theorem.
       The near-one branch now also reaches the reduced uniform-paper-error shell above graph-pair
       level: the new wrappers
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
