@@ -195,7 +195,10 @@
       `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_section4FTotalError_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_lt_explicitGoodMass`
       now carries that same direct route through the explicit-good-mass endpoint too, so the
       remaining blocker is purely to prove those graph-pair hypotheses uniformly and then collapse
-      the filtered sum.
+      the filtered sum. The new pointwise helper
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_section4FTotalErrorNat_of_paperRISILossGap_of_paperSection4Bound`
+      also lets that last graph-pair argument keep the crucial `section4F` total-error hypothesis
+      in natural numbers until the final cast to `ℝ`.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
