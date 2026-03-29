@@ -322,6 +322,13 @@
       use that wrapper. This removes another layer of repeated `GoodEventD` unpacking from the
       graph-pair frontier and isolates the remaining work to the genuinely graph-dependent
       three-pool collapse hypotheses themselves.
+      The raw nat-valued good-graph-pair witness-cap inequality
+      `goodSurvivingGraphPair_section4SecondStageLossNat_add_witnessCaps_le_revealBudget_add_three_mul_partPairCount_LMS_add_huge_of_paperSection4Bound`
+      is now exposed separately as well, with the casted helper
+      `goodSurvivingGraphPair_section4SecondStageLossNat_add_witnessCaps_cast_le_totalError_of_LMS_totalError_of_paperSection4Bound`
+      refactored through it. This keeps one more step of the fixed-embedding collapse in natural
+      counting coordinates and makes the remaining three-pool/cardinality assembly closer to the
+      literal manuscript inequalities.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound

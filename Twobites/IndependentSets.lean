@@ -24142,6 +24142,62 @@ theorem
 
 set_option linter.style.longLine false in
 set_option maxHeartbeats 800000 in
+-- This graph-pair nat-valued witness-cap wrapper discharges the recurring `H_I ⊆ F_2` side
+-- condition once, so later three-pool collapse lemmas can target the literal natural inequality
+-- before any cast to `ℝ`.
+theorem
+    goodSurvivingGraphPair_section4SecondStageLossNat_add_witnessCaps_le_revealBudget_add_three_mul_partPairCount_LMS_add_huge_of_paperSection4Bound
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    (hgood :
+      goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e x)
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε) * Twobites.paperS n)
+    (hdegreeBound : (degreeBound : ℝ) ≤ (1 + ε) * Twobites.paperP β n * Twobites.paperM n)
+    (hn : 1 < n) (hβ0 : 0 ≤ β) (hβhalf : β ≤ (1 / 2 : ℝ)) (hεlow : -1 ≤ ε)
+    (hε : ε ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε) / 2)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n) :
+    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4SecondStageLossNat I ε +
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+          ((Finset.univ.filter fun b : Fin m =>
+              Sum.inr b ∉ ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F I ε).image
+            Sum.inr) +
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+          ((Finset.univ.filter fun r : Fin m =>
+              Sum.inl r ∉ ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F I ε).image
+            Sum.inl) ≤
+      I.card * (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F1 I ∪
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).section4F2 I ε).card +
+        3 * ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+          (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) +
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+            IsRedBaseVertex) +
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+            IsBlueBaseVertex) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  have hgood' :
+      GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        Cx.SurvivesAsIndependent I := by
+    simpa [goodSurvivingGraphPairPred, Cx] using hgood
+  have hHsubset :
+      Cx.baseImage I ∩ Cx.HPart I ⊆ Cx.section4F2 I ε := by
+    exact
+      Cx.baseImage_inter_HPart_subset_section4F2_of_goodEventD_of_paperSection4Bound
+        hgood'.1 I hfiberBound hdegreeBound hn hβ0 hβhalf hεlow hε hloglog hfiberScale
+  simpa [Cx] using
+    Cx.section4SecondStageLossNat_add_witnessCaps_le_revealBudget_add_three_mul_partPairCount_LMS_add_huge
+      I hHsubset ht21 ht32
+
+set_option linter.style.longLine false in
+set_option maxHeartbeats 800000 in
 -- This graph-pair helper reuses the large LMS-specialized cast wrapper with repeated
 -- `ConstructionData` substitutions, so we give Lean additional heartbeats to elaborate it.
 theorem
@@ -24188,18 +24244,36 @@ theorem
               Sum.inl) : ℝ) ≤
       totalError := by
   let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
-  have hgood' :
-      GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound ∧
-        Cx.SurvivesAsIndependent I := by
-    simpa [goodSurvivingGraphPairPred, Cx] using hgood
-  have hHsubset :
-      Cx.baseImage I ∩ Cx.HPart I ⊆ Cx.section4F2 I ε := by
+  have hTotalNat :
+      Cx.section4SecondStageLossNat I ε +
+          Cx.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ Cx.section4F I ε).image Sum.inr) +
+          Cx.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ Cx.section4F I ε).image Sum.inl) ≤
+        I.card * (Cx.section4F1 I ∪ Cx.section4F2 I ε).card +
+          3 * Cx.partPairCount I (Cx.LPart I ε ∪ Cx.MPart I ε ∪ Cx.SPart I ε) +
+          Cx.redProjectionPairCount I ((Cx.HPart I).filter IsRedBaseVertex) +
+          Cx.blueProjectionPairCount I ((Cx.HPart I).filter IsBlueBaseVertex) := by
     exact
-      Cx.baseImage_inter_HPart_subset_section4F2_of_goodEventD_of_paperSection4Bound
-        hgood'.1 I hfiberBound hdegreeBound hn hβ0 hβhalf hεlow hε hloglog hfiberScale
-  simpa [Cx] using
-    Cx.section4SecondStageLossNat_add_witnessCaps_cast_le_totalError_of_LMS_totalError
-      I hHsubset ht21 ht32 hTotal
+      goodSurvivingGraphPair_section4SecondStageLossNat_add_witnessCaps_le_revealBudget_add_three_mul_partPairCount_LMS_add_huge_of_paperSection4Bound
+        (n := n) (m := m) (β := β) (ε := ε) (fiberBound := fiberBound)
+        (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+        (projCodegreeBound := projCodegreeBound) I e x hgood hfiberBound hdegreeBound
+        hn hβ0 hβhalf hεlow hε hloglog hfiberScale ht21 ht32
+  have hTotalNatR :
+      (Cx.section4SecondStageLossNat I ε : ℝ) +
+          (Cx.redProjectionPairCount I
+              ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ Cx.section4F I ε).image Sum.inr) :
+            ℝ) +
+          (Cx.blueProjectionPairCount I
+              ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ Cx.section4F I ε).image Sum.inl) :
+            ℝ) ≤
+        (((I.card * (Cx.section4F1 I ∪ Cx.section4F2 I ε).card +
+              3 * Cx.partPairCount I (Cx.LPart I ε ∪ Cx.MPart I ε ∪ Cx.SPart I ε) +
+              Cx.redProjectionPairCount I ((Cx.HPart I).filter IsRedBaseVertex) +
+              Cx.blueProjectionPairCount I ((Cx.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) := by
+    exact_mod_cast hTotalNat
+  exact hTotalNatR.trans hTotal
 
 set_option linter.style.longLine false in
 theorem
