@@ -335,6 +335,15 @@
       use that wrapper. This removes another layer of repeated `GoodEventD` unpacking from the
       graph-pair frontier and isolates the remaining work to the genuinely graph-dependent
       three-pool collapse hypotheses themselves.
+      The rounded deterministic target-gap bounds are now also exposed directly at graph-pair
+      level via
+      `goodSurvivingGraphPair_paperSection4OpenPairTargetNat_sub_ceil_ten_mul_eps_mul_paperKSq_le_baseOpenPairSet_card_of_paperDeterministicBounds`
+      and
+      `goodSurvivingGraphPair_paperSection4OpenPairTarget_sub_ceil_ten_mul_eps_mul_paperKSq_le_baseOpenPairSet_card_of_paperDeterministicBounds`,
+      and the nearby pointwise deterministic target-gap / manuscript-loss-gap shells have been
+      refactored through those helpers. This removes another repeated `GoodEventD` plus
+      independence unpacking step from the RI graph-pair layer and keeps the remaining frontier
+      focused on supplying the actual three-pool combinatorial inequalities.
       The raw nat-valued good-graph-pair witness-cap inequality
       `goodSurvivingGraphPair_section4SecondStageLossNat_add_witnessCaps_le_revealBudget_add_three_mul_partPairCount_LMS_add_huge_of_paperSection4Bound`
       is now exposed separately as well, with the casted helper
