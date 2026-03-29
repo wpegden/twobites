@@ -15920,6 +15920,160 @@ theorem paperSection4OpenPairTargetNat_sub_ceil_ten_mul_eps_mul_paperKSq_le_base
     simp [hzero]
 
 set_option linter.style.longLine false in
+/-- The deterministic reveal, large, medium, small, and huge-diagonal contribution bounds that
+recur throughout the Section 4 graph-pair wrappers. -/
+theorem section4UniformContributionBounds_of_paperDeterministic
+    (C : ConstructionData n m) {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hD : GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound)
+    (I : Finset (Fin n))
+    {ρR ρB β κ ε ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB : ℝ}
+    {mediumWitness smallBound : ℕ}
+    (hn : 1 < n)
+    (hε : ε ≤ (1 / 4 : ℝ))
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 1 ≤ κ)
+    (hT2 : 2 < Twobites.paperT2 ε n)
+    (hT1 : 2 < Twobites.paperT1 n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hLargeBound :
+      (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat κ n +
+            (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMediumWitness :
+      Twobites.paperKNat κ n < mediumWitness * ⌈Twobites.paperT3 ε n⌉₊ -
+        mediumWitness.choose 2 * codegreeBound)
+    (hMediumBound :
+      (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat κ n + mediumWitness.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmallCard : (C.SPart I ε).card ≤ smallBound)
+    (hSmallBound :
+      (Twobites.paperT3 ε n / 2) *
+          (Twobites.paperKNat κ n + smallBound.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHChoose :
+      (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hRevealArith :
+      (I.card : ℝ) *
+          (2 * (I.card : ℝ) / Real.log (n : ℝ) +
+              (Twobites.paperLargeWitnessNat κ ε n : ℝ) +
+            (Twobites.paperHugeWitnessNat κ n : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hred : (C.redImage I).card ≤ Twobites.paperKNat ρR n)
+    (hblue : (C.blueImage I).card ≤ Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ x ∈ (C.HPart I).filter IsRedBaseVertex,
+        (C.blueProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.blueProjectionWeight I ((C.HPart I).filter IsRedBaseVertex))
+    (hredCap :
+      ∀ x ∈ (C.HPart I).filter IsBlueBaseVertex,
+        (C.redProjectionImage I x).card ≤ Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        C.redProjectionWeight I ((C.HPart I).filter IsBlueBaseVertex))
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      6 * Twobites.paperK κ n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      6 * Twobites.paperK κ n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1)) :
+    (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2 ∧
+      (((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) := by
+  have hκ0 : 0 ≤ κ := by
+    linarith
+  have hLargeWitness :
+      Twobites.paperKNat κ n <
+        Twobites.paperLargeWitnessNat κ ε n * ⌈Twobites.paperT2 ε n⌉₊ -
+          (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound := by
+    exact
+      Twobites.paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_of_two_mul_lt
+        (Twobites.two_mul_paperKNat_lt_paperLargeWitnessNat_mul_ceil_paperT2 hκ0 hT2)
+        hLChoose
+  have hHugeWitness :
+      Twobites.paperKNat κ n <
+        Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ -
+          (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound := by
+    exact
+      Twobites.paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt
+        (Twobites.two_mul_paperKNat_lt_paperHugeWitnessNat_mul_ceil_paperT1 hκ0 hT1)
+        hHChoose
+  have hReveal :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤
+        ε1 * Twobites.paperK κ n ^ 2 := by
+    exact
+      C.cast_section4RevealBudget_le_eps_mul_paperKSq_of_goodEventD_of_witnessBounds
+        hD I hn hε hI hLargeWitness hHugeWitness hRevealArith
+  have hLarge :
+      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2 :=
+    C.paper_large_deterministic hD I (show 0 ≤ Twobites.paperT1 n by linarith) hI
+      hLargeWitness hLargeBound
+  have hMedium :
+      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2 :=
+    C.paper_medium_deterministic hD I hI hMediumWitness hMediumBound
+  have hSmall :
+      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2 :=
+    C.paper_small_deterministic hD I hI hSmallCard hSmallBound
+  have hHuge :
+      (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+          ε1 * Twobites.paperK κ n ^ 2) ∧
+        (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+            ε1 * Twobites.paperK κ n ^ 2) ∧
+          (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
+              (1 + ε1) *
+                ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) :
+                  ℝ)) ∧
+            (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
+                (1 + ε1) *
+                  ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) :
+                    ℝ)) :=
+    C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_kSmall
+      hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR hρB
+      hβ hε2 hε1pos hε1le hloglogGap (le_of_lt hε1pos) hdiagScale hcodegScale hsumGap
+      hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
+      hredCrossSmall
+  rcases hHuge with ⟨hHugeRed, hHugeBlue, _, _⟩
+  exact ⟨hReveal, hLarge, hMedium, hSmall, hHugeRed, hHugeBlue⟩
+
 /-- The deterministic Section 4 loss term before the final target-gap subtraction is bounded by
 `9 * ε₁ * k²` once the reveal, large, medium, small, and huge diagonal terms are each bounded by
 `ε₁ * k²`. This is the manuscript-scale loss package underlying `lem:RISI`. -/
@@ -16061,53 +16215,15 @@ theorem section4LossTargetNat_le_ceil_nine_mul_eps_mul_paperKSq_of_paperDetermin
         C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
         C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) ≤
       ⌈9 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ := by
-  have hκ0 : 0 ≤ κ := by linarith
-  have hReveal :
-      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card : ℕ) : ℝ)) ≤
-        ε1 * Twobites.paperK κ n ^ 2 := by
-    exact
-      C.cast_section4RevealBudget_le_eps_mul_paperKSq_of_paperLargeWitness_of_paperHugeWitness
-        hD I hn hε hI hκ0 hT2 hT1 hLChoose hHChoose hRevealArith
-  have hLargeWitness :
-      Twobites.paperKNat κ n <
-        Twobites.paperLargeWitnessNat κ ε n * ⌈Twobites.paperT2 ε n⌉₊ -
-          (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound := by
-    exact
-      Twobites.paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_of_two_mul_lt
-        (Twobites.two_mul_paperKNat_lt_paperLargeWitnessNat_mul_ceil_paperT2 hκ0 hT2)
-        hLChoose
-  have hLarge :
-      ((C.partPairCount I (C.LPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    C.paper_large_deterministic hD I (show 0 ≤ Twobites.paperT1 n by linarith) hI
-      hLargeWitness hLargeBound
-  have hMedium :
-      ((C.partPairCount I (C.MPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    C.paper_medium_deterministic hD I hI hMediumWitness hMediumBound
-  have hSmall :
-      ((C.partPairCount I (C.SPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    C.paper_small_deterministic hD I hI hSmallCard hSmallBound
-  have hHuge :
-      (((C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
-          ε1 * Twobites.paperK κ n ^ 2) ∧
-        (((C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
-            ε1 * Twobites.paperK κ n ^ 2) ∧
-          (((C.blueProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
-              (1 + ε1) *
-                ((C.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) :
-                  ℝ)) ∧
-            (((C.redProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
-                (1 + ε1) *
-                  ((C.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) :
-                    ℝ)) :=
-    C.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_kSmall
-      hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR hρB
-      hβ hε2 hε1pos hε1le hloglogGap (le_of_lt hε1pos) hdiagScale hcodegScale hsumGap
-      hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
-      hredCrossSmall
-  rcases hHuge with ⟨hHugeRed, hHugeBlue, _, _⟩
+  have _ := ht21
+  rcases
+      C.section4UniformContributionBounds_of_paperDeterministic hD I hn hε hI hκ hT2 hT1
+        hLChoose hLargeBound hMediumWitness hMediumBound hSmallCard hSmallBound hHChoose
+        hRevealArith hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hρR hρB
+        hβ hε2 hε1pos hε1le hloglogGap hdiagScale hcodegScale hsumGap hdegBound
+        hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
+        hredCrossSmall
+    with ⟨hReveal, hLarge, hMedium, hSmall, hHugeRed, hHugeBlue⟩
   have hreal :=
     C.cast_section4LossTarget_le_nine_mul_eps_mul_paperKSq_of_uniformBounds
       I ht32 hReveal hLarge hMedium hSmall hHugeRed hHugeBlue
@@ -25046,61 +25162,16 @@ theorem
         Cx.SurvivesAsIndependent I := by
     simpa [goodSurvivingGraphPairPred, Cx] using hgood
   have hD : GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound := hgood'.1
-  have hκ0 : 0 ≤ κ := by
+  have hεQuarter : ε ≤ (1 / 4 : ℝ) := by
     linarith
-  have hLargeWitness :
-      Twobites.paperKNat κ n <
-        Twobites.paperLargeWitnessNat κ ε n * ⌈Twobites.paperT2 ε n⌉₊ -
-          (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound := by
-    exact
-      Twobites.paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_of_two_mul_lt
-        (Twobites.two_mul_paperKNat_lt_paperLargeWitnessNat_mul_ceil_paperT2 hκ0 hT2)
-        hLChoose
-  have hHugeWitness :
-      Twobites.paperKNat κ n <
-        Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ -
-          (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound := by
-    exact
-      Twobites.paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt
-        (Twobites.two_mul_paperKNat_lt_paperHugeWitnessNat_mul_ceil_paperT1 hκ0 hT1)
-        hHChoose
-  have hReveal :
-      (((I.card * (Cx.section4F1 I ∪ Cx.section4F2 I ε).card : ℕ) : ℝ)) ≤
-        ε1 * Twobites.paperK κ n ^ 2 := by
-    exact
-      Cx.cast_section4RevealBudget_le_eps_mul_paperKSq_of_goodEventD_of_witnessBounds
-        hD I hn (show ε ≤ (1 / 4 : ℝ) by linarith) hI hLargeWitness hHugeWitness
-        hRevealArith
-  have hLarge :
-      ((Cx.partPairCount I (Cx.LPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    Cx.paper_large_deterministic hD I (show 0 ≤ Twobites.paperT1 n by linarith) hI
-      hLargeWitness hLargeBound
-  have hMedium :
-      ((Cx.partPairCount I (Cx.MPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    Cx.paper_medium_deterministic hD I hI hMediumWitness hMediumBound
-  have hSmall :
-      ((Cx.partPairCount I (Cx.SPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    Cx.paper_small_deterministic hD I hI hSmallCard hSmallBound
-  have hHuge :
-      (((Cx.redProjectionPairCount I ((Cx.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
-          ε1 * Twobites.paperK κ n ^ 2) ∧
-        (((Cx.blueProjectionPairCount I ((Cx.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
-            ε1 * Twobites.paperK κ n ^ 2) ∧
-          (((Cx.blueProjectionPairCount I ((Cx.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
-              (1 + ε1) *
-                ((Cx.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
-            (((Cx.redProjectionPairCount I ((Cx.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
-                (1 + ε1) *
-                  ((Cx.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) :=
-    Cx.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_kSmall
-      hD I hI (by simpa [Cx] using hred) (by simpa [Cx] using hblue) hblueCap hblueCapWeight
-      hredCap hredCapWeight hn hκ hρR hρB hβ hε2 hε1pos hε1le hloglogGap
-      (le_of_lt hε1pos) hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound
-      hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall
-  rcases hHuge with ⟨hHugeRed, hHugeBlue, _, _⟩
+  rcases
+      Cx.section4UniformContributionBounds_of_paperDeterministic hD I hn hεQuarter hI hκ
+        hT2 hT1 hLChoose hLargeBound hMediumWitness hMediumBound hSmallCard hSmallBound
+        hHChoose hRevealArith (by simpa [Cx] using hred) (by simpa [Cx] using hblue)
+        hblueCap hblueCapWeight hredCap hredCapWeight hρR hρB hβ hε2 hε1pos hε1le
+        hloglogGap hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound
+        hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall
+    with ⟨hReveal, hLarge, hMedium, hSmall, hHugeRed, hHugeBlue⟩
   exact
     goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_uniformError_of_paperLargeWitness_of_paperHugeWitness_of_paperDeterministicTargetGap_of_paperSection4Bound
       (n := n) (m := m) (β := β) (κ := κ) (ε := ε) (ε1 := ε1) (ε2 := ε2)
@@ -25405,58 +25476,14 @@ theorem goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperRISILossG
   have hD : GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound := hgood'.1
   have hindep : ∀ {v w : Fin n}, v ∈ I → w ∈ I → v ≠ w → ¬ Cx.finalGraph.Adj v w := hgood'.2
   have hκ0 : 0 ≤ κ := by linarith
-  have hLargeWitness :
-      Twobites.paperKNat κ n <
-        Twobites.paperLargeWitnessNat κ ε n * ⌈Twobites.paperT2 ε n⌉₊ -
-          (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound := by
-    exact
-      Twobites.paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_of_two_mul_lt
-        (Twobites.two_mul_paperKNat_lt_paperLargeWitnessNat_mul_ceil_paperT2 hκ0 hT2)
-        hLChoose
-  have hHugeWitness :
-      Twobites.paperKNat κ n <
-        Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ -
-          (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound := by
-    exact
-      Twobites.paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt
-        (Twobites.two_mul_paperKNat_lt_paperHugeWitnessNat_mul_ceil_paperT1 hκ0 hT1)
-        hHChoose
-  have hReveal :
-      (((I.card * (Cx.section4F1 I ∪ Cx.section4F2 I ε).card : ℕ) : ℝ)) ≤
-        ε1 * Twobites.paperK κ n ^ 2 := by
-    exact
-      Cx.cast_section4RevealBudget_le_eps_mul_paperKSq_of_goodEventD_of_witnessBounds
-        hD I hn hε hI hLargeWitness hHugeWitness hRevealArith
-  have hLarge :
-      ((Cx.partPairCount I (Cx.LPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    Cx.paper_large_deterministic hD I (show 0 ≤ Twobites.paperT1 n by linarith) hI
-      hLargeWitness hLargeBound
-  have hMedium :
-      ((Cx.partPairCount I (Cx.MPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    Cx.paper_medium_deterministic hD I hI hMediumWitness hMediumBound
-  have hSmall :
-      ((Cx.partPairCount I (Cx.SPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    Cx.paper_small_deterministic hD I hI hSmallCard hSmallBound
-  have hHuge :
-      (((Cx.redProjectionPairCount I ((Cx.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
-          ε1 * Twobites.paperK κ n ^ 2) ∧
-        (((Cx.blueProjectionPairCount I ((Cx.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
-            ε1 * Twobites.paperK κ n ^ 2) ∧
-          (((Cx.blueProjectionPairCount I ((Cx.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
-              (1 + ε1) *
-                ((Cx.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
-            (((Cx.redProjectionPairCount I ((Cx.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
-                (1 + ε1) *
-                  ((Cx.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) :=
-    Cx.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_kSmall
-      hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR hρB
-      hβ hε2 hε1pos hε1le hloglogGap (le_of_lt hε1pos) hdiagScale hcodegScale hsumGap
-      hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
-      hredCrossSmall
-  rcases hHuge with ⟨hHugeRed, hHugeBlue, _, _⟩
+  rcases
+      Cx.section4UniformContributionBounds_of_paperDeterministic hD I hn hε hI hκ hT2
+        hT1 hLChoose hLargeBound hMediumWitness hMediumBound hSmallCard hSmallBound
+        hHChoose hRevealArith hred hblue hblueCap hblueCapWeight hredCap hredCapWeight
+        hρR hρB hβ hε2 hε1pos hε1le hloglogGap hdiagScale hcodegScale hsumGap
+        hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B
+        hκ2B hredCrossSmall
+    with ⟨hReveal, hLarge, hMedium, hSmall, hHugeRed, hHugeBlue⟩
   have hLossLeTarget :
       I.card * (Cx.section4F1 I ∪ Cx.section4F2 I ε).card +
           2 * Cx.partPairCount I (Cx.LPart I ε ∪ Cx.MPart I ε ∪ Cx.SPart I ε) +
@@ -26224,67 +26251,22 @@ theorem
               ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
                 IsBlueBaseVertex) : ℕ) : ℝ)) ≤
       12 * (ε1 * Twobites.paperK κ n ^ 2) := by
+  have _ := ht21
   let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
   have hgood' : GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound ∧
       Cx.SurvivesAsIndependent I := by
     simpa [goodSurvivingGraphPairPred, Cx] using hgood
   have hD : GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound := hgood'.1
-  have hκ0 : 0 ≤ κ := by
-    linarith
   have hεQuarter : ε ≤ (1 / 4 : ℝ) := by
     linarith
-  have hLargeWitness :
-      Twobites.paperKNat κ n <
-        Twobites.paperLargeWitnessNat κ ε n * ⌈Twobites.paperT2 ε n⌉₊ -
-          (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound := by
-    exact
-      Twobites.paperKNat_lt_mul_ceil_paperT2_sub_choose_mul_of_two_mul_lt
-        (Twobites.two_mul_paperKNat_lt_paperLargeWitnessNat_mul_ceil_paperT2 hκ0 hT2)
-        hLChoose
-  have hHugeWitness :
-      Twobites.paperKNat κ n <
-        Twobites.paperHugeWitnessNat κ n * ⌈Twobites.paperT1 n⌉₊ -
-          (Twobites.paperHugeWitnessNat κ n).choose 2 * codegreeBound := by
-    exact
-      Twobites.paperKNat_lt_mul_ceil_paperT1_sub_choose_mul_of_two_mul_lt
-        (Twobites.two_mul_paperKNat_lt_paperHugeWitnessNat_mul_ceil_paperT1 hκ0 hT1)
-        hHChoose
-  have hReveal :
-      (((I.card * (Cx.section4F1 I ∪ Cx.section4F2 I ε).card : ℕ) : ℝ)) ≤
-        ε1 * Twobites.paperK κ n ^ 2 := by
-    exact
-      Cx.cast_section4RevealBudget_le_eps_mul_paperKSq_of_goodEventD_of_witnessBounds
-        hD I hn hεQuarter hI hLargeWitness hHugeWitness hRevealArith
-  have hLarge :
-      ((Cx.partPairCount I (Cx.LPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    Cx.paper_large_deterministic hD I (show 0 ≤ Twobites.paperT1 n by linarith) hI
-      hLargeWitness hLargeBound
-  have hMedium :
-      ((Cx.partPairCount I (Cx.MPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    Cx.paper_medium_deterministic hD I hI hMediumWitness hMediumBound
-  have hSmall :
-      ((Cx.partPairCount I (Cx.SPart I ε) : ℕ) : ℝ) ≤
-        ε1 * Twobites.paperK κ n ^ 2 :=
-    Cx.paper_small_deterministic hD I hI hSmallCard hSmallBound
-  have hHuge :
-      (((Cx.redProjectionPairCount I ((Cx.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
-          ε1 * Twobites.paperK κ n ^ 2) ∧
-        (((Cx.blueProjectionPairCount I ((Cx.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
-            ε1 * Twobites.paperK κ n ^ 2) ∧
-          (((Cx.blueProjectionPairCount I ((Cx.HPart I).filter IsRedBaseVertex) : ℕ) : ℝ) ≤
-              (1 + ε1) *
-                ((Cx.paperHugeBlueCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) ∧
-            (((Cx.redProjectionPairCount I ((Cx.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ) ≤
-                (1 + ε1) *
-                  ((Cx.paperHugeRedCrossTargetNat I κ (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ)) :=
-    Cx.paper_huge_deterministic_of_paperHugeWitness_of_eps1Slack_of_three_of_diagScale_of_codegScale_of_doubleEps_of_kSmall
-      hD I hI hred hblue hblueCap hblueCapWeight hredCap hredCapWeight hn hκ hρR hρB
-      hβ hε2 hε1pos hε1le hloglogGap (le_of_lt hε1pos) hdiagScale hcodegScale hsumGap
-      hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B hκ2B
-      hredCrossSmall
-  rcases hHuge with ⟨hHugeRed, hHugeBlue, _, _⟩
+  rcases
+      Cx.section4UniformContributionBounds_of_paperDeterministic hD I hn hεQuarter hI hκ
+        hT2 hT1 hLChoose hLargeBound hMediumWitness hMediumBound hSmallCard hSmallBound
+        hHChoose hRevealArith hred hblue hblueCap hblueCapWeight hredCap hredCapWeight
+        hρR hρB hβ hε2 hε1pos hε1le hloglogGap hdiagScale hcodegScale hsumGap
+        hdegBound hchooseCodegBound hcodegBound hgap2R hκ2R hblueCrossSmall hgap2B
+        hκ2B hredCrossSmall
+    with ⟨hReveal, hLarge, hMedium, hSmall, hHugeRed, hHugeBlue⟩
   have hLMS :
       ((Cx.partPairCount I (Cx.LPart I ε ∪ Cx.MPart I ε ∪ Cx.SPart I ε) : ℕ) : ℝ) ≤
         ε1 * Twobites.paperK κ n ^ 2 +

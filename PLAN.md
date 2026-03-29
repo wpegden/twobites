@@ -219,7 +219,12 @@
       now exposes that deterministic `12 * ε₁ * k²` package directly for one good graph pair, so
       the remaining graph-pair work can focus on manufacturing the literal nat-valued total-error
       inequality and the manuscript loss-gap bound without reopening the deterministic
-      large/medium/small/huge contribution arithmetic. The new helper
+      large/medium/small/huge contribution arithmetic. The new reusable helper
+      `section4UniformContributionBounds_of_paperDeterministic` now centralizes the repeated
+      reveal/L/M/S/huge-diagonal `GoodEventD` package itself and is consumed by the current
+      deterministic target-gap, direct manuscript-loss-gap, and nat-valued `section4F` graph-pair
+      shells, so any later direct huge-case rewrite only has to retarget one deterministic
+      contribution lemma instead of several near-duplicate wrappers. The new helper
       `section4SecondStageLossNat_add_witnessCaps_cast_le_totalError_of_LMS_totalError` likewise
       isolates the coercion step from the literal
       `section4SecondStageLossNat + u_R + u_B ≤ reveal + 3 * LMS + huge` counting inequality into a
