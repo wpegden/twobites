@@ -366,9 +366,11 @@
       convert the near-one graph-pair inequality to manuscript `paperRISILossGap` via
       `graphPair_paperRISILossGap_of_paperNearOneReal_of_two_div_le_loglog` and then reuse the
       lighter reduced manuscript shell rather than the heavier direct deterministic-bounds route.
-      This gives the near-one branch the same reduced fixed-embedding and fixed-set interface as
-      the generic manuscript-loss-gap branch, leaving the actual three-pool combinatorial collapse
-      as the remaining substantive blocker.
+      Together with the new extraction wrapper
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`,
+      this gives the near-one branch the same reduced fixed-embedding, fixed-set, and final
+      witness-existence interface as the generic manuscript-loss-gap branch, leaving the actual
+      three-pool combinatorial collapse as the remaining substantive blocker.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
