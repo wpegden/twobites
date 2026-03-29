@@ -314,6 +314,14 @@
       now lift that reduced manuscript-loss-gap route above graph-pair level, so later three-pool
       combinatorial lemmas can remain in manuscript `paperRISILossGap` coordinates all the way up
       to the current filtered bad-event mass shell.
+      The reusable graph-pair deterministic contribution wrapper
+      `goodSurvivingGraphPair_section4UniformContributionBounds_of_paperDeterministicBounds`
+      now exposes the reveal/L/M/S/huge-diagonal estimates directly from
+      `goodSurvivingGraphPairPred`, and the main pointwise deterministic target-gap,
+      manuscript-loss-gap, and nat-valued `section4F` total-error shells have been refactored to
+      use that wrapper. This removes another layer of repeated `GoodEventD` unpacking from the
+      graph-pair frontier and isolates the remaining work to the genuinely graph-dependent
+      three-pool collapse hypotheses themselves.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
