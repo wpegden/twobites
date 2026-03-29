@@ -386,6 +386,12 @@
       counting hypotheses needed for the fixed-embedding collapse now has a reusable deterministic
       wrapper of its own, leaving the genuinely graph-dependent three-pool cap/cardinality inputs
       as the remaining live obstruction.
+      There is now also a graph-pair-native deterministic wrapper for the more general open-pair
+      target-gap inequality with caller-supplied closed-pair error budgets:
+      `goodSurvivingGraphPair_paperSection4OpenPairTargetNat_sub_openError_le_baseOpenPairSet_card_of_paperDeterministicBounds`.
+      This keeps one more layer of the remaining collapse in literal natural-number error-budget
+      coordinates before specializing to the manuscript `⌈10 ε₁ k²⌉` shell, which should make the
+      eventual three-pool red/blue error assembly easier to feed into the existing RI endpoints.
       The near-one branch now also reaches the reduced uniform-paper-error shell above graph-pair
       level: the new wrappers
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`

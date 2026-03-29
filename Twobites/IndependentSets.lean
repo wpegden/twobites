@@ -25118,6 +25118,129 @@ theorem
 
 set_option linter.style.longLine false in
 set_option maxHeartbeats 1200000 in
+-- This graph-pair wrapper exposes the deterministic natural-number open-pair target gap with a
+-- caller-supplied `openError`, so later three-pool collapse lemmas can target the literal
+-- red/blue closed-pair error budgets before specializing to the manuscript `10 ε₁ k²` shell.
+theorem
+    goodSurvivingGraphPair_paperSection4OpenPairTargetNat_sub_openError_le_baseOpenPairSet_card_of_paperDeterministicBounds
+    {ρR ρB β κ ε ε1 ε2 βdeg qcodeg δsumGap δgapR δgapB : ℝ}
+    {fiberBound degreeBound codegreeBound projCodegreeBound mediumWitness smallBound redError blueError openError : ℕ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m) (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    (hgood :
+      goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e x)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hn : 1 < n)
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hκ : 1 ≤ κ) (hT2 : 2 < Twobites.paperT2 ε n)
+    (hLChoose :
+      (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound ≤
+        Twobites.paperKNat κ n)
+    (hLargeBound :
+      (Twobites.paperT1 n / 2) *
+          (Twobites.paperKNat κ n +
+            (Twobites.paperLargeWitnessNat κ ε n).choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMediumWitness :
+      Twobites.paperKNat κ n < mediumWitness * ⌈Twobites.paperT3 ε n⌉₊ -
+        mediumWitness.choose 2 * codegreeBound)
+    (hMediumBound :
+      (Twobites.paperT2 ε n / 2) *
+          (Twobites.paperKNat κ n + mediumWitness.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmallCard :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε).card ≤
+        smallBound)
+    (hSmallBound :
+      (Twobites.paperT3 ε n / 2) *
+          (Twobites.paperKNat κ n + smallBound.choose 2 * codegreeBound : ℕ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hred :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card ≤
+        Twobites.paperKNat ρR n)
+    (hblue :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card ≤
+        Twobites.paperKNat ρB n)
+    (hblueCap :
+      ∀ y ∈ (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+          IsRedBaseVertex,
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionImage I y).card ≤
+          Twobites.paperCapNat β ε2 n)
+    (hblueCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionWeight I
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+            IsRedBaseVertex))
+    (hredCap :
+      ∀ y ∈ (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+          IsBlueBaseVertex,
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionImage I y).card ≤
+          Twobites.paperCapNat β ε2 n)
+    (hredCapWeight :
+      Twobites.paperCapNat β ε2 n ≤
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionWeight I
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+            IsBlueBaseVertex))
+    (hρR : 0 ≤ ρR) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2)
+    (hε1pos : 0 < ε1) (hε1le : ε1 ≤ 1)
+    (hloglogGap : 2 / ε1 ≤ Real.log (Real.log (n : ℝ)))
+    (hdiagScale :
+      3 * βdeg * Real.log (Real.log (n : ℝ)) ≤ ε1 * Twobites.paperS n)
+    (hcodegScale :
+      ((((9 : ℝ) / 2) * κ ^ 2 * (Real.log (Real.log (n : ℝ)) ^ 2) * qcodeg) /
+        Real.sqrt ((n : ℝ) * Real.log (n : ℝ))) ≤
+      ε1 * κ)
+    (hsumGap : 1 ≤ Twobites.paperK δsumGap n)
+    (hdegBound : (degreeBound : ℝ) ≤ Twobites.paperP βdeg n * Twobites.paperM n)
+    (hchooseCodegBound : (codegreeBound : ℝ) ≤ qcodeg)
+    (hcodegBound : (projCodegreeBound : ℝ) ≤ qcodeg)
+    (hgap2R : 2 ≤ Twobites.paperK δgapR n)
+    (hκ2R :
+      ρR + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapR ≤ κ)
+    (hblueCrossSmall :
+      6 * Twobites.paperK κ n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρR n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hgap2B : 2 ≤ Twobites.paperK δgapB n)
+    (hκ2B :
+      ρB + (1 + ε2) * β + 2 * ε1 * κ + δsumGap + δgapB ≤ κ)
+    (hredCrossSmall :
+      6 * Twobites.paperK κ n ≤
+        (((Twobites.paperKNat κ n - Twobites.paperKNat ρB n -
+            Twobites.paperCapNat β ε2 n : ℕ) : ℝ) - 1))
+    (hRedError :
+      4 * (ε1 * Twobites.paperK κ n ^ 2) +
+          ε1 *
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeRedCrossTargetNat I κ
+                (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) ≤
+        (redError : ℝ))
+    (hBlueError :
+      4 * (ε1 * Twobites.paperK κ n ^ 2) +
+          ε1 *
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeBlueCrossTargetNat I κ
+                (Twobites.paperCapNat β ε2 n) : ℕ) : ℝ) ≤
+        (blueError : ℝ))
+    (hOpenError : redError + blueError ≤ openError) :
+    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat I κ
+        (Twobites.paperCapNat β ε2 n) - openError ≤
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseOpenPairSet I).card := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  have hgood' :
+      GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        Cx.SurvivesAsIndependent I := by
+    simpa [goodSurvivingGraphPairPred, Cx] using hgood
+  simpa [Cx] using
+    Cx.paperSection4OpenPairTargetNat_sub_openError_le_baseOpenPairSet_card_of_paperDeterministic
+      hgood'.1 I hgood'.2 ht21 ht32 (show 0 ≤ Twobites.paperT1 n by linarith) hn hI hκ hT2
+      hLChoose hLargeBound hMediumWitness hMediumBound hSmallCard hSmallBound hred hblue
+      hblueCap hblueCapWeight hredCap hredCapWeight hρR hρB hβ hε2 hε1pos hε1le
+      hloglogGap hdiagScale hcodegScale hsumGap hdegBound hchooseCodegBound hcodegBound
+      hgap2R hκ2R hblueCrossSmall hgap2B hκ2B hredCrossSmall hRedError hBlueError
+      hOpenError
+
+set_option linter.style.longLine false in
+set_option maxHeartbeats 1200000 in
 -- This graph-pair wrapper exposes the deterministic natural-number target-gap bound directly from
 -- `goodSurvivingGraphPairPred`, so later pointwise shells do not need to rebuild the same
 -- `GoodEventD` and independence unpacking.
