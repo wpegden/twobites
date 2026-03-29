@@ -329,6 +329,13 @@
       refactored through it. This keeps one more step of the fixed-embedding collapse in natural
       counting coordinates and makes the remaining three-pool/cardinality assembly closer to the
       literal manuscript inequalities.
+      The full huge diagonal/cross package is now also exposed directly at graph-pair level via
+      `goodSurvivingGraphPair_hugeContributionBounds_of_paperDeterministicBounds`, and the new
+      pointwise bridge
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperRISILossGap_of_uniformPaperErrorBounds_of_paperSection4Bound_of_paperDeterministicHugeBounds`
+      uses that helper to feed the reduced manuscript-loss-gap shell without requiring callers to
+      provide the four huge inequalities separately. This further compresses the graph-pair
+      interface toward the actual three-pool combinatorial hypotheses that still need to be proved.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
