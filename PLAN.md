@@ -179,7 +179,14 @@
       also bypasses that bridge entirely when later combinatorial lemmas can prove the literal
       Section 4 total-error inequality together with `paperRISILossGap` on one good graph pair, so
       the remaining fixed-embedding collapse can now target those manuscript-native hypotheses
-      directly instead of rebuilding the intermediate target-gap cast step.
+      directly instead of rebuilding the intermediate target-gap cast step. The new lifted shells
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_section4FTotalError_of_paperRISILossGap_of_paperSection4Bound`
+      and
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_section4FTotalError_of_paperRISILossGap_of_paperSection4Bound`
+      now carry that same direct `hTotal` + `paperRISILossGap` interface through the filtered
+      embedding and fixed-set mass reductions, so the remaining combinatorial step can aim at those
+      manuscript-native graph-pair hypotheses all the way up to the choose-multiplied bad-event
+      estimate.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
