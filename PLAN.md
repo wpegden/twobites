@@ -368,6 +368,14 @@
       uses that helper to feed the reduced manuscript-loss-gap shell without requiring callers to
       provide the four huge inequalities separately. This further compresses the graph-pair
       interface toward the actual three-pool combinatorial hypotheses that still need to be proved.
+      The new helper
+      `goodSurvivingGraphPair_uniformPaperErrorBounds_of_paperDeterministicBounds`
+      now bundles the reveal/L/M/S/huge-diagonal and huge-cross packages together in the exact
+      eight-field order consumed by the reduced deterministic-target-gap and manuscript-loss-gap
+      shells, and the pointwise theorem
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperDeterministicTargetGap_of_paperSection4Bound`
+      has already been refactored through that bundled graph-pair interface. This trims one more
+      layer of duplicated deterministic wrapper plumbing from the live RI frontier.
       The near-one branch now also reaches the reduced uniform-paper-error shell above graph-pair
       level: the new wrappers
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
