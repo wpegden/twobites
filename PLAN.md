@@ -268,6 +268,10 @@
       pair-count bounds, the embedding and fixed-set mass shells no longer need any separate
       projection-cap-weight hypotheses. This better matches the checked three-pool witness
       decomposition, whose remaining job is precisely to prove those graph-pair counting bounds.
+      The matching final extraction wrapper
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperDeterministicTargetGap_of_uniformPaperErrorBounds_of_paperSection4Bound_lt_explicitGoodMass`
+      now carries that reduced target-gap route through the explicit-good-mass witness theorem as
+      well, so the reduced shell no longer stops at a fixed-set bad-event estimate.
       fixed-embedding collapse supplying those same loss-gap / `SPart` / projection-cap hypotheses.
       On the near-one route, the manuscript loss-gap step is now factored out already at raw
       graph-pair level by `graphPair_paperRISILossGap_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog`,
