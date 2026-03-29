@@ -174,6 +174,12 @@
       wrapper
       `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperRISILossGap_via_paperDeterministicTargetGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`
       now carries that bridge route all the way to the paper-facing witness theorem as well.
+      The new direct pointwise endpoint
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_section4FTotalError_of_paperRISILossGap_of_paperSection4Bound`
+      also bypasses that bridge entirely when later combinatorial lemmas can prove the literal
+      Section 4 total-error inequality together with `paperRISILossGap` on one good graph pair, so
+      the remaining fixed-embedding collapse can now target those manuscript-native hypotheses
+      directly instead of rebuilding the intermediate target-gap cast step.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
