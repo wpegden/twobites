@@ -167,7 +167,10 @@
       now convert `paperRISILossGap` directly into the stronger `hLossLeTarget` shell via
       `goodSurvivingGraphPair_section4LossLeTarget_of_paperRISILossGap`, so later combinatorial
       lemmas can stay in manuscript loss-gap coordinates while reusing the deterministic
-      contribution bounds already discharged from `GoodEventD`.
+      contribution bounds already discharged from `GoodEventD`. The corresponding final extraction
+      wrapper
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperRISILossGap_via_paperDeterministicTargetGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`
+      now carries that bridge route all the way to the paper-facing witness theorem as well.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
