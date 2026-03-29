@@ -213,7 +213,12 @@
       now internalize the routine `12 * ε₁ * k²` estimate coming from the checked reveal/L/M/S/huge
       deterministic bounds, so the nat manuscript-native route is narrowed further: above the
       graph-pair level, only the genuinely graph-dependent `paperRISILossGap`, `SPart`, and
-      opposite-color projection-cap hypotheses still remain to be supplied uniformly.
+      opposite-color projection-cap hypotheses still remain to be supplied uniformly. The final
+      extraction wrapper
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_section4FTotalErrorNat_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`
+      now carries that nat deterministic-bounds manuscript-native route through the explicit-good-mass
+      endpoint as well, so the only unfinished step on that branch is the genuinely graph-dependent
+      fixed-embedding collapse supplying those same loss-gap / `SPart` / projection-cap hypotheses.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
