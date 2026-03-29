@@ -214,6 +214,12 @@
       deterministic bounds, so the nat manuscript-native route is narrowed further: above the
       graph-pair level, only the genuinely graph-dependent `paperRISILossGap`, `SPart`, and
       opposite-color projection-cap hypotheses still remain to be supplied uniformly. The final
+      fixed-embedding direct manuscript-loss-gap shell
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
+      now exposes the same deterministic-bounds route without naming the intermediate
+      deterministic target-gap bridge, so the remaining combinatorial collapse can target a direct
+      manuscript-loss-gap interface already at the embedding-sum layer.
+      The final
       extraction wrapper
       `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_section4FTotalErrorNat_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`
       now carries that nat deterministic-bounds manuscript-native route through the explicit-good-mass
