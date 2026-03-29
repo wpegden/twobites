@@ -225,7 +225,14 @@
       `section4SecondStageLossNat + u_R + u_B ≤ reveal + 3 * LMS + huge` counting inequality into a
       reusable theorem before the exponential shell, so the remaining three-pool collapse can target
       the actual graph-pair counting statement directly rather than redoing the cast arithmetic
-      inside `section4ProjectionChoiceMassSum_section4F_le_exp_of_LMS_totalError`. The final
+      inside `section4ProjectionChoiceMassSum_section4F_le_exp_of_LMS_totalError`. The new
+      graph-pair helpers
+      `goodSurvivingGraphPair_section4SecondStageLossNat_le_revealBudget_add_two_mul_partPairCount_LMS_add_huge_of_paperSection4Bound`
+      and
+      `goodSurvivingGraphPair_section4SecondStageLossNat_add_witnessCaps_cast_le_totalError_of_LMS_totalError_of_paperSection4Bound`
+      now discharge the residual `H_I ⊆ F₂` side condition automatically from `GoodEventD` at the
+      literal Section 4 loss layer, so the remaining three-pool witness decomposition only needs to
+      manufacture the actual counting inequalities themselves. The final
       fixed-embedding direct manuscript-loss-gap shell
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
       now exposes the same deterministic-bounds route without naming the intermediate
