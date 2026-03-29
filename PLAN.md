@@ -264,7 +264,15 @@
       `..._of_red_le_blue_...`, and the merged dispatcher
       `graphPair_paperRISILossGap_of_paperNearOneReal_of_two_div_le_loglog`, so later fixed-embedding
       combinatorics can target that standalone per-pair hypothesis directly instead of reopening the
-      `ConstructionData.paper_risi_hLossGap...` lemmas inside each pointwise endpoint.
+      `ConstructionData.paper_risi_hLossGap...` lemmas inside each pointwise endpoint. The new
+      graph-pair wrappers
+      `graphPair_paperRISILossGap_of_blueLeft_of_redRight_gapLower_of_card_le_of_two_le_gap_of_le`
+      and
+      `graphPair_paperRISILossGap_of_blueRight_of_redLeft_gapLower_of_card_le_of_two_le_gap_of_le`
+      now factor out the exact mixed-branch manuscript step one level further: later three-pool
+      fixed-embedding lemmas can aim directly at a branch-local image-card bound, a separate
+      `2 ≤ paperK η n` right-gap lower bound, and the literal mixed deficit inequality, without
+      routing back through the specialized near-one `ConstructionData` lemmas.
       The fixed-embedding, fixed-set, and final explicit-good-mass near-one wrappers
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,
       `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,

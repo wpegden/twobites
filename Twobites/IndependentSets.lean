@@ -26663,6 +26663,68 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    graphPair_paperRISILossGap_of_blueLeft_of_redRight_gapLower_of_card_le_of_two_le_gap_of_le
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    {ρB β ε2 δ η κ ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hblue :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card ≤
+        Twobites.paperKNat ρB n)
+    (hn : 0 < n) (hρB : 0 ≤ ρB) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ)
+    (hgap2 : 2 ≤ Twobites.paperK η n)
+    (hκ : ρB + (1 + ε2) * β + δ + η ≤ κ)
+    (hLoss :
+      (paperRISILossNat κ ε1 n : ℝ) +
+          (((Twobites.paperKNat κ n -
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card) :
+                ℕ) :
+              ℕ) :
+            ℝ) *
+            ((Twobites.paperKNat κ n : ℝ) - 1) ≤
+        (Twobites.paperCapNat β ε2 n : ℝ) * (Twobites.paperKNat δ n : ℝ)) :
+    paperRISILossNat κ ε1 n ≤
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat
+        I κ (Twobites.paperCapNat β ε2 n) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  simpa [Cx] using
+    (Cx.paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_card_le_of_two_le_gap_of_le
+      I hI hblue hn hρB hβ hε2 hδ hgap2 hκ hLoss)
+
+set_option linter.style.longLine false in
+theorem
+    graphPair_paperRISILossGap_of_blueRight_of_redLeft_gapLower_of_card_le_of_two_le_gap_of_le
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    {ρR β ε2 δ η κ ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat κ n)
+    (hred :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card ≤
+        Twobites.paperKNat ρR n)
+    (hn : 0 < n) (hρR : 0 ≤ ρR) (hβ : 0 ≤ β) (hε2 : -1 ≤ ε2) (hδ : 0 ≤ δ)
+    (hgap2 : 2 ≤ Twobites.paperK η n)
+    (hκ : ρR + (1 + ε2) * β + δ + η ≤ κ)
+    (hLoss :
+      (paperRISILossNat κ ε1 n : ℝ) +
+          (((Twobites.paperKNat κ n -
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card) :
+                ℕ) :
+              ℕ) :
+            ℝ) *
+            ((Twobites.paperKNat κ n : ℝ) - 1) ≤
+        (Twobites.paperCapNat β ε2 n : ℝ) * (Twobites.paperKNat δ n : ℝ)) :
+    paperRISILossNat κ ε1 n ≤
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat
+        I κ (Twobites.paperCapNat β ε2 n) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  simpa [Cx] using
+    (Cx.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_card_le_of_two_le_gap_of_le
+      I hI hred hn hρR hβ hε2 hδ hgap2 hκ hLoss)
+
+set_option linter.style.longLine false in
+theorem
     graphPair_paperRISILossGap_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog
     (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
     (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
@@ -26693,9 +26755,30 @@ theorem
       ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat
         I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
   let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
-  simpa [Cx] using
-    (Cx.paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog
-      I hI hsum hblueLeRed hn hεpos (by linarith) hnearLoglog hLoss)
+  have hblue :
+      (Cx.blueImage I).card ≤ Twobites.paperKNat (((1 + ε) * (2 + ε)) / 4) n :=
+    Cx.blueImage_card_le_paperKNat_of_paperNearOneReal_of_blue_le_red I hsum hblueLeRed hεpos.le
+  have hηpos : 0 < ε * (1 - ε) / 8 := by
+    nlinarith
+  have hηle : ε * (1 - ε) / 8 ≤ 1 := by
+    nlinarith
+  have hδ : 0 ≤ ε * (1 - ε) / 8 := by
+    linarith
+  have hgap2 : 2 ≤ Twobites.paperK (ε * (1 - ε) / 8) n :=
+    Twobites.two_le_paperK_of_two_div_le_of_le_one hn hηpos hηle hnearLoglog
+  have hκ :
+      (((1 + ε) * (2 + ε)) / 4 : ℝ) +
+          (1 + (0 : ℝ)) * (1 / 2 : ℝ) +
+          ε * (1 - ε) / 8 + ε * (1 - ε) / 8 ≤
+        1 + ε := by
+    nlinarith
+  exact
+    graphPair_paperRISILossGap_of_blueLeft_of_redRight_gapLower_of_card_le_of_two_le_gap_of_le
+      (n := n) (m := m) I e x
+      (ρB := ((1 + ε) * (2 + ε)) / 4) (β := (1 / 2 : ℝ)) (ε2 := 0)
+      (δ := ε * (1 - ε) / 8) (η := ε * (1 - ε) / 8) (κ := 1 + ε) (ε1 := ε1)
+      hI hblue (show 0 < n by exact Nat.lt_trans Nat.zero_lt_one hn)
+      (by nlinarith) (by norm_num) (by norm_num) hδ hgap2 hκ hLoss
 
 set_option linter.style.longLine false in
 theorem
@@ -26729,9 +26812,30 @@ theorem
       ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat
         I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
   let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
-  simpa [Cx] using
-    (Cx.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOneReal_of_red_le_blue_of_two_div_le_loglog
-      I hI hsum hredLeBlue hn hεpos (by linarith) hnearLoglog hLoss)
+  have hred :
+      (Cx.redImage I).card ≤ Twobites.paperKNat (((1 + ε) * (2 + ε)) / 4) n :=
+    Cx.redImage_card_le_paperKNat_of_paperNearOneReal_of_red_le_blue I hsum hredLeBlue hεpos.le
+  have hηpos : 0 < ε * (1 - ε) / 8 := by
+    nlinarith
+  have hηle : ε * (1 - ε) / 8 ≤ 1 := by
+    nlinarith
+  have hδ : 0 ≤ ε * (1 - ε) / 8 := by
+    linarith
+  have hgap2 : 2 ≤ Twobites.paperK (ε * (1 - ε) / 8) n :=
+    Twobites.two_le_paperK_of_two_div_le_of_le_one hn hηpos hηle hnearLoglog
+  have hκ :
+      (((1 + ε) * (2 + ε)) / 4 : ℝ) +
+          (1 + (0 : ℝ)) * (1 / 2 : ℝ) +
+          ε * (1 - ε) / 8 + ε * (1 - ε) / 8 ≤
+        1 + ε := by
+    nlinarith
+  exact
+    graphPair_paperRISILossGap_of_blueRight_of_redLeft_gapLower_of_card_le_of_two_le_gap_of_le
+      (n := n) (m := m) I e x
+      (ρR := ((1 + ε) * (2 + ε)) / 4) (β := (1 / 2 : ℝ)) (ε2 := 0)
+      (δ := ε * (1 - ε) / 8) (η := ε * (1 - ε) / 8) (κ := 1 + ε) (ε1 := ε1)
+      hI hred (show 0 < n by exact Nat.lt_trans Nat.zero_lt_one hn)
+      (by nlinarith) (by norm_num) (by norm_num) hδ hgap2 hκ hLoss
 
 set_option linter.style.longLine false in
 theorem
