@@ -17411,6 +17411,13 @@ theorem section4ProjectionChoiceMassSum_eq_closedForm
     _ = ((1 + p) ^ uRMax) * ((1 + p) ^ uBMax) * (1 - p) ^ remaining := by
       simp [hR, hB, c]
 
+theorem section4ProjectionChoiceMassSum_eq_singleBudget_left
+    (p : ℝ) (remaining uRMax uBMax : ℕ) :
+    section4ProjectionChoiceMassSum p remaining uRMax uBMax =
+      section4ProjectionChoiceMassSum p remaining (uRMax + uBMax) 0 := by
+  rw [section4ProjectionChoiceMassSum_eq_closedForm, section4ProjectionChoiceMassSum_eq_closedForm]
+  rw [pow_add, pow_zero, mul_one]
+
 theorem section4ProjectionChoiceMassSum_mono
     {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
     {remaining₁ remaining₂ uRMax₁ uRMax₂ uBMax₁ uBMax₂ : ℕ}
@@ -24352,6 +24359,67 @@ theorem
         (degreeBound := degreeBound) (codegreeBound := codegreeBound)
         (projCodegreeBound := projCodegreeBound) I e x hgood hfiberBound hdegreeBound
         hn hβ0 hβhalf hεlow hε hloglog hfiberScale)
+
+set_option linter.style.longLine false in
+theorem
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_section4ProjectionChoiceMassSum_of_paperSection4Bound_of_partPairCount_LMS
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    (hgood :
+      goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e x)
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε) * Twobites.paperS n)
+    (hdegreeBound : (degreeBound : ℝ) ≤ (1 + ε) * Twobites.paperP β n * Twobites.paperM n)
+    (hn : 1 < n) (hβ0 : 0 ≤ β) (hβhalf : β ≤ (1 / 2 : ℝ)) (hεlow : -1 ≤ ε)
+    (hε : ε ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε) / 2) :
+    goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x ≤
+      section4ProjectionChoiceMassSum (Twobites.paperP β n)
+        ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+            ConstructionData n m).baseOpenPairSet I).card -
+          ({ redBase := x.1, blueBase := x.2, embedding := e } :
+              ConstructionData n m).section4SecondStageLossNat I ε)
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+          (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε ∪
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε ∪
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε))
+        0 := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  let A := Cx.LPart I ε ∪ Cx.MPart I ε ∪ Cx.SPart I ε
+  have hbase :
+      goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x ≤
+        section4ProjectionChoiceMassSum (Twobites.paperP β n)
+          ((Cx.baseOpenPairSet I).card - Cx.section4SecondStageLossNat I ε)
+          (Cx.partPairCount I (A.filter IsBlueBaseVertex))
+          (Cx.partPairCount I (A.filter IsRedBaseVertex)) := by
+    simpa [Cx, A] using
+      goodSurvivingGraphPairProjectionChoiceMassBound_le_section4ProjectionChoiceMassSum_of_paperSection4Bound
+        (n := n) (m := m) (β := β) (ε := ε) (fiberBound := fiberBound)
+        (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+        (projCodegreeBound := projCodegreeBound) I e x hgood hp0 hp1 hfiberBound
+        hdegreeBound hn hβ0 hβhalf hεlow hε hloglog hfiberScale
+  have hsplit :
+      Cx.partPairCount I (A.filter IsBlueBaseVertex) +
+          Cx.partPairCount I (A.filter IsRedBaseVertex) =
+        Cx.partPairCount I A := by
+    simpa [A, add_comm] using
+      Cx.partPairCount_filter_isRed_add_partPairCount_filter_isBlue I A
+  calc
+    goodSurvivingGraphPairProjectionChoiceMassBound β n m I e ε x ≤
+        section4ProjectionChoiceMassSum (Twobites.paperP β n)
+          ((Cx.baseOpenPairSet I).card - Cx.section4SecondStageLossNat I ε)
+          (Cx.partPairCount I (A.filter IsBlueBaseVertex))
+          (Cx.partPairCount I (A.filter IsRedBaseVertex)) := hbase
+    _ =
+        section4ProjectionChoiceMassSum (Twobites.paperP β n)
+          ((Cx.baseOpenPairSet I).card - Cx.section4SecondStageLossNat I ε)
+          (Cx.partPairCount I A) 0 := by
+      rw [section4ProjectionChoiceMassSum_eq_singleBudget_left]
+      rw [hsplit]
 
 set_option linter.style.longLine false in
 set_option maxHeartbeats 800000 in
@@ -33926,6 +33994,117 @@ theorem
 set_option linter.style.longLine false in
 open scoped Classical in
 theorem
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_section4ProjectionChoiceMass_of_paperSection4Bound_of_partPairCount_LMS
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε) * Twobites.paperS n)
+    (hdegreeBound : (degreeBound : ℝ) ≤ (1 + ε) * Twobites.paperP β n * Twobites.paperM n)
+    (hn : 1 < n) (hβ0 : 0 ≤ β) (hβhalf : β ≤ (1 / 2 : ℝ)) (hεlow : -1 ≤ ε)
+    (hε : ε ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε) / 2) :
+    constructionEmbeddingUniformWeight n m *
+        paperGoodSurvivingGraphPairMass β n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I e ≤
+      Twobites.paperRIOuterEventMass m
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).redImage I).card
+          (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+              ConstructionData n m).blueImage I).card
+          I.card *
+        ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                projCodegreeBound I e x then
+            section4ProjectionChoiceMassSum (Twobites.paperP β n)
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                  ConstructionData n m).baseOpenPairSet I).card -
+                ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).section4SecondStageLossNat I ε)
+              (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                  ConstructionData n m).partPairCount I
+                (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).LPart I ε ∪
+                  ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                      ConstructionData n m).MPart I ε ∪
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).SPart I ε))
+              0
+          else
+            0 := by
+  refine
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e ?_
+  intro x hgood
+  exact
+    goodSurvivingGraphPairProjectionChoiceMassBound_le_section4ProjectionChoiceMassSum_of_paperSection4Bound_of_partPairCount_LMS
+      (n := n) (m := m) (β := β) (ε := ε) (fiberBound := fiberBound)
+      (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) I e x hgood hp0 hp1 hfiberBound
+      hdegreeBound hn hβ0 hβhalf hεlow hε hloglog hfiberScale
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_section4ProjectionChoiceMass_of_paperSection4Bound_of_partPairCount_LMS
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n))
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε) * Twobites.paperS n)
+    (hdegreeBound : (degreeBound : ℝ) ≤ (1 + ε) * Twobites.paperP β n * Twobites.paperM n)
+    (hn : 1 < n) (hβ0 : 0 ≤ β) (hβhalf : β ≤ (1 / 2 : ℝ)) (hεlow : -1 ≤ ε)
+    (hε : ε ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε) / 2) :
+    constructionEventMass (paperConstructionWeight β n m)
+        (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I) ≤
+      ∑ e : Fin n ↪ Fin m × Fin m,
+        Twobites.paperRIOuterEventMass m
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).redImage I).card
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).blueImage I).card
+            I.card *
+          ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+            if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                  projCodegreeBound I e x then
+              section4ProjectionChoiceMassSum (Twobites.paperP β n)
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).baseOpenPairSet I).card -
+                  ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                      ConstructionData n m).section4SecondStageLossNat I ε)
+                (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).partPairCount I
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                      ConstructionData n m).LPart I ε ∪
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).MPart I ε ∪
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                          ConstructionData n m).SPart I ε))
+                0
+            else
+              0 := by
+  refine
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_by_embedding_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound)
+      (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) (I := I) ?_
+  intro e
+  exact
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_section4ProjectionChoiceMass_of_paperSection4Bound_of_partPairCount_LMS
+      (n := n) (m := m) (β := β) (ε := ε) (fiberBound := fiberBound)
+      (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) hp0 hp1 I e hfiberBound hdegreeBound
+      hn hβ0 hβhalf hεlow hε hloglog hfiberScale
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
     paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_totalBudget_of_le
     {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
@@ -38193,6 +38372,100 @@ theorem
         (degreeBound := degreeBound) (codegreeBound := codegreeBound)
         (projCodegreeBound := projCodegreeBound) I e x hgood hfiberBound hdegreeBound
         hn hβ0 hβhalf hεlow hε hloglog hfiberScale
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
+    exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_section4ProjectionChoiceMass_of_paperSection4Bound_of_partPairCount_LMS_lt_explicitGoodMass
+    {β ε : ℝ} {b fiberBound degreeBound codegreeBound projCodegreeBound : ℕ} {B : ℝ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1) (hB : 0 ≤ B)
+    (hfiberBound : (fiberBound : ℝ) ≤ (1 + ε) * Twobites.paperS n)
+    (hdegreeBound : (degreeBound : ℝ) ≤ (1 + ε) * Twobites.paperP β n * Twobites.paperM n)
+    (hn : 1 < n) (hβ0 : 0 ≤ β) (hβhalf : β ≤ (1 / 2 : ℝ)) (hεlow : -1 ≤ ε)
+    (hε : ε ≤ (1 / 8 : ℝ))
+    (hloglog : 2 ≤ Real.log (Real.log (n : ℝ)))
+    (hfiberScale :
+      (1 + ε) * Real.log (n : ℝ) ≤ (n : ℝ) ^ ((1 / 8 : ℝ) - ε) / 2)
+    (hbound :
+      ∀ I ∈ (Finset.univ : Finset (Fin n)).powersetCard (Twobites.paperKNat (1 + ε) n),
+        ((n.choose (Twobites.paperKNat (1 + ε) n) : ℕ) : ℝ) *
+            (∑ e : Fin n ↪ Fin m × Fin m,
+              Twobites.paperRIOuterEventMass m
+                  (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                      ConstructionData n m).redImage I).card
+                  (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                      ConstructionData n m).blueImage I).card
+                  I.card *
+                ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+                  if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                        projCodegreeBound I e x then
+                    section4ProjectionChoiceMassSum (Twobites.paperP β n)
+                      ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                          ConstructionData n m).baseOpenPairSet I).card -
+                        ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                            ConstructionData n m).section4SecondStageLossNat I ε)
+                      (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                          ConstructionData n m).partPairCount I
+                        (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                            ConstructionData n m).LPart I ε ∪
+                          ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                              ConstructionData n m).MPart I ε ∪
+                            ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                                ConstructionData n m).SPart I ε))
+                      0
+                  else
+                    0) ≤
+          B)
+    (hnmb : n ≤ m * b) (hb : b ≤ m) (hfb : b ≤ fiberBound)
+    (hgood :
+      B <
+        ((1 - Twobites.paperP β n) ^ Fintype.card (Sym2 (Fin m))) *
+          (((1 - Twobites.paperP β n) ^ Fintype.card (Sym2 (Fin m))) *
+            constructionEmbeddingUniformWeight n m)) :
+    ∃ C : ConstructionData n m,
+      GoodEventD C fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        triangleFreeWithSmallIndepNum ε n := by
+  refine
+    exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_lt_explicitGoodMass_of_massBound
+      (n := n) (m := m) (β := β) (ε := ε) (b := b)
+      (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (B := B)
+      (M := fun I =>
+        ∑ e : Fin n ↪ Fin m × Fin m,
+          Twobites.paperRIOuterEventMass m
+              (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                  ConstructionData n m).redImage I).card
+              (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                  ConstructionData n m).blueImage I).card
+              I.card *
+            ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+              if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                    projCodegreeBound I e x then
+                section4ProjectionChoiceMassSum (Twobites.paperP β n)
+                  ((({ redBase := x.1, blueBase := x.2, embedding := e } :
+                      ConstructionData n m).baseOpenPairSet I).card -
+                    ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).section4SecondStageLossNat I ε)
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                      ConstructionData n m).partPairCount I
+                    (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                        ConstructionData n m).LPart I ε ∪
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                          ConstructionData n m).MPart I ε ∪
+                        ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                            ConstructionData n m).SPart I ε))
+                  0
+              else
+                0)
+      hp0 hp1 hB ?_ hbound hnmb hb hfb hgood
+  intro I hI
+  exact
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_section4ProjectionChoiceMass_of_paperSection4Bound_of_partPairCount_LMS
+      (n := n) (m := m) (β := β) (ε := ε) (fiberBound := fiberBound)
+      (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) hp0 hp1 I hfiberBound hdegreeBound
+      hn hβ0 hβhalf hεlow hε hloglog hfiberScale
 
 set_option maxHeartbeats 3000000 in
 -- This wrapper only packages the final extraction step, but it still elaborates the full
