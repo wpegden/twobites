@@ -26681,6 +26681,111 @@ theorem
 
 set_option linter.style.longLine false in
 theorem
+    graphPair_paperRISILossGap_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    {ε ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hsum :
+      ((((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card : ℕ) :
+          ℝ)) ≤
+        (1 + ε / 2) * Twobites.paperK (1 + ε) n)
+    (hblueLeRed :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card ≤
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card)
+    (hn : 1 < n) (hεpos : 0 < ε) (hε : ε ≤ (1 / 8 : ℝ))
+    (hnearLoglog : 2 / (ε * (1 - ε) / 8) ≤ Real.log (Real.log (n : ℝ)))
+    (hLoss :
+      (paperRISILossNat (1 + ε) ε1 n : ℝ) +
+          (((Twobites.paperKNat (1 + ε) n -
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card) :
+                ℕ) :
+              ℕ) :
+            ℝ) *
+            ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) ≤
+        (Twobites.paperCapNat (1 / 2) 0 n : ℝ) *
+          (Twobites.paperKNat (ε * (1 - ε) / 8) n : ℝ)) :
+    paperRISILossNat (1 + ε) ε1 n ≤
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat
+        I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  simpa [Cx] using
+    (Cx.paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog
+      I hI hsum hblueLeRed hn hεpos (by linarith) hnearLoglog hLoss)
+
+set_option linter.style.longLine false in
+theorem
+    graphPair_paperRISILossGap_of_paperNearOneReal_of_red_le_blue_of_two_div_le_loglog
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    {ε ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hsum :
+      ((((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card : ℕ) :
+          ℝ)) ≤
+        (1 + ε / 2) * Twobites.paperK (1 + ε) n)
+    (hredLeBlue :
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card ≤
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card)
+    (hn : 1 < n) (hεpos : 0 < ε) (hε : ε ≤ (1 / 8 : ℝ))
+    (hnearLoglog : 2 / (ε * (1 - ε) / 8) ≤ Real.log (Real.log (n : ℝ)))
+    (hLoss :
+      (paperRISILossNat (1 + ε) ε1 n : ℝ) +
+          (((Twobites.paperKNat (1 + ε) n -
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card) :
+                ℕ) :
+              ℕ) :
+            ℝ) *
+            ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) ≤
+        (Twobites.paperCapNat (1 / 2) 0 n : ℝ) *
+          (Twobites.paperKNat (ε * (1 - ε) / 8) n : ℝ)) :
+    paperRISILossNat (1 + ε) ε1 n ≤
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat
+        I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  simpa [Cx] using
+    (Cx.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOneReal_of_red_le_blue_of_two_div_le_loglog
+      I hI hsum hredLeBlue hn hεpos (by linarith) hnearLoglog hLoss)
+
+set_option linter.style.longLine false in
+theorem
+    graphPair_paperRISILossGap_of_paperNearOneReal_of_two_div_le_loglog
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    {ε ε1 : ℝ}
+    (hI : I.card ≤ Twobites.paperKNat (1 + ε) n)
+    (hsum :
+      ((((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+            (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card : ℕ) :
+          ℝ)) ≤
+        (1 + ε / 2) * Twobites.paperK (1 + ε) n)
+    (hn : 1 < n) (hεpos : 0 < ε) (hε : ε ≤ (1 / 8 : ℝ))
+    (hnearLoglog : 2 / (ε * (1 - ε) / 8) ≤ Real.log (Real.log (n : ℝ)))
+    (hLoss :
+      (paperRISILossNat (1 + ε) ε1 n : ℝ) +
+          (((Twobites.paperKNat (1 + ε) n -
+                ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redImage I).card +
+                  (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueImage I).card) :
+                ℕ) :
+              ℕ) :
+            ℝ) *
+            ((Twobites.paperKNat (1 + ε) n : ℝ) - 1) ≤
+        (Twobites.paperCapNat (1 / 2) 0 n : ℝ) *
+          (Twobites.paperKNat (ε * (1 - ε) / 8) n : ℝ)) :
+    paperRISILossNat (1 + ε) ε1 n ≤
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat
+        I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  simpa [Cx] using
+    (Cx.paper_risi_hLossGap_of_paperNearOneReal_of_two_div_le_loglog
+      I hI hsum hn hεpos (by linarith) hnearLoglog hLoss)
+
+set_option linter.style.longLine false in
+theorem
     goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog_of_paperSection4Bound
     {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
@@ -26813,13 +26918,13 @@ theorem
           Twobites.paperP (1 / 2) n *
             ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTarget I
               (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n)) := by
-  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
   have hLossGap :
       paperRISILossNat (1 + ε) ε1 n ≤
-        Cx.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat
+          I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
     exact
-      Cx.paper_risi_hLossGap_of_blueLeft_of_redRight_gapLower_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog
-        I hI hsum hblueLeRed hn hεpos (by linarith) hnearLoglog hLoss
+      graphPair_paperRISILossGap_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog
+        (n := n) (m := m) I e x hI hsum hblueLeRed hn hεpos hε hnearLoglog hLoss
   exact
     goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperRISILossGap_of_paperSection4Bound
       (n := n) (m := m) (fiberBound := fiberBound) (degreeBound := degreeBound)
@@ -26969,13 +27074,13 @@ theorem
           Twobites.paperP (1 / 2) n *
             ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTarget I
               (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n)) := by
-  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
   have hLossGap :
       paperRISILossNat (1 + ε) ε1 n ≤
-        Cx.paperSection4OpenPairTargetNat I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
+        ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat
+          I (1 + ε) (Twobites.paperCapNat (1 / 2) 0 n) := by
     exact
-      Cx.paper_risi_hLossGap_of_blueRight_of_redLeft_gapLower_of_paperNearOneReal_of_red_le_blue_of_two_div_le_loglog
-        I hI hsum hredLeBlue hn hεpos (by linarith) hnearLoglog hLoss
+      graphPair_paperRISILossGap_of_paperNearOneReal_of_red_le_blue_of_two_div_le_loglog
+        (n := n) (m := m) I e x hI hsum hredLeBlue hn hεpos hε hnearLoglog hLoss
   exact
     goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperRISILossGap_of_paperSection4Bound
       (n := n) (m := m) (fiberBound := fiberBound) (degreeBound := degreeBound)

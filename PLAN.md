@@ -254,6 +254,12 @@
       now carries that nat deterministic-bounds manuscript-native route through the explicit-good-mass
       endpoint as well, so the only unfinished step on that branch is the genuinely graph-dependent
       fixed-embedding collapse supplying those same loss-gap / `SPart` / projection-cap hypotheses.
+      On the near-one route, the manuscript loss-gap step is now factored out already at raw
+      graph-pair level by `graphPair_paperRISILossGap_of_paperNearOneReal_of_blue_le_red_of_two_div_le_loglog`,
+      `..._of_red_le_blue_...`, and the merged dispatcher
+      `graphPair_paperRISILossGap_of_paperNearOneReal_of_two_div_le_loglog`, so later fixed-embedding
+      combinatorics can target that standalone per-pair hypothesis directly instead of reopening the
+      `ConstructionData.paper_risi_hLossGap...` lemmas inside each pointwise endpoint.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
