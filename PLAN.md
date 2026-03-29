@@ -219,7 +219,13 @@
       now exposes that deterministic `12 * ε₁ * k²` package directly for one good graph pair, so
       the remaining graph-pair work can focus on manufacturing the literal nat-valued total-error
       inequality and the manuscript loss-gap bound without reopening the deterministic
-      large/medium/small/huge contribution arithmetic. The final
+      large/medium/small/huge contribution arithmetic. The new helper
+      `section4SecondStageLossNat_add_witnessCaps_cast_le_totalError_of_LMS_totalError` likewise
+      isolates the coercion step from the literal
+      `section4SecondStageLossNat + u_R + u_B ≤ reveal + 3 * LMS + huge` counting inequality into a
+      reusable theorem before the exponential shell, so the remaining three-pool collapse can target
+      the actual graph-pair counting statement directly rather than redoing the cast arithmetic
+      inside `section4ProjectionChoiceMassSum_section4F_le_exp_of_LMS_totalError`. The final
       fixed-embedding direct manuscript-loss-gap shell
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
       now exposes the same deterministic-bounds route without naming the intermediate

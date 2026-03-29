@@ -18179,6 +18179,52 @@ set_option maxHeartbeats 800000 in
 -- This LMS-specialized corollary inherits the same large specialized arithmetic footprint as the
 -- total-error version above, so we give Lean additional heartbeats to elaborate the wrappers.
 theorem
+    section4SecondStageLossNat_add_witnessCaps_cast_le_totalError_of_LMS_totalError
+    (C : ConstructionData n m) (I : Finset (Fin n)) {ε totalError : ℝ}
+    (hHsubset : C.baseImage I ∩ C.HPart I ⊆ C.section4F2 I ε)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hTotal :
+      (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+            3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+            C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+            C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) ≤
+        totalError) :
+    (C.section4SecondStageLossNat I ε : ℝ) +
+        (C.redProjectionPairCount I
+            ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr) : ℝ) +
+        (C.blueProjectionPairCount I
+            ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl) : ℝ) ≤
+      totalError := by
+  let uRBound :=
+    C.redProjectionPairCount I
+      ((Finset.univ.filter fun b : Fin m => Sum.inr b ∉ C.section4F I ε).image Sum.inr)
+  let uBBound :=
+    C.blueProjectionPairCount I
+      ((Finset.univ.filter fun r : Fin m => Sum.inl r ∉ C.section4F I ε).image Sum.inl)
+  have hTotalNat :
+      C.section4SecondStageLossNat I ε + uRBound + uBBound ≤
+        I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+          3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+          C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+          C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) := by
+    simpa [uRBound, uBBound] using
+      C.section4SecondStageLossNat_add_witnessCaps_le_revealBudget_add_three_mul_partPairCount_LMS_add_huge
+        I hHsubset ht21 ht32
+  have hTotalNatR :
+      (C.section4SecondStageLossNat I ε : ℝ) + (uRBound : ℝ) + (uBBound : ℝ) ≤
+        (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
+              3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
+              C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
+              C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) := by
+    exact_mod_cast hTotalNat
+  exact hTotalNatR.trans hTotal
+
+set_option linter.style.longLine false in
+set_option maxHeartbeats 800000 in
+-- This LMS-specialized corollary inherits the same large specialized arithmetic footprint as the
+-- total-error version above, so we give Lean additional heartbeats to elaborate the wrappers.
+theorem
     section4ProjectionChoiceMassSum_section4F_le_exp_of_LMS_totalError
     (C : ConstructionData n m) (I : Finset (Fin n)) {ε p totalError : ℝ} {N : ℕ}
     (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
@@ -18233,14 +18279,9 @@ theorem
         I hHsubset ht21 ht32
   have hTotal' :
       (C.section4SecondStageLossNat I ε : ℝ) + (uRBound : ℝ) + (uBBound : ℝ) ≤ totalError := by
-    have hTotalNatR :
-        (C.section4SecondStageLossNat I ε : ℝ) + (uRBound : ℝ) + (uBBound : ℝ) ≤
-          (((I.card * (C.section4F1 I ∪ C.section4F2 I ε).card +
-                3 * C.partPairCount I (C.LPart I ε ∪ C.MPart I ε ∪ C.SPart I ε) +
-                C.redProjectionPairCount I ((C.HPart I).filter IsRedBaseVertex) +
-                C.blueProjectionPairCount I ((C.HPart I).filter IsBlueBaseVertex) : ℕ) : ℝ)) := by
-      exact_mod_cast hTotalNat
-    exact hTotalNatR.trans hTotal
+    exact
+      C.section4SecondStageLossNat_add_witnessCaps_cast_le_totalError_of_LMS_totalError
+        I hHsubset ht21 ht32 hTotal
   exact
     C.section4ProjectionChoiceMassSum_section4F_le_exp_of_totalError
       (I := I) (ε := ε) (p := p) (N := N)
