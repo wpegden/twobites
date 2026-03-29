@@ -33627,6 +33627,76 @@ theorem paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_by_embedding_
 set_option linter.style.longLine false in
 open scoped Classical in
 theorem
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_section4ProjectionChoiceMass_of_le
+    {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
+    (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
+    (I : Finset (Fin n))
+    {remaining uRMax uBMax :
+      (Fin n ↪ Fin m × Fin m) → (SimpleGraph (Fin m) × SimpleGraph (Fin m)) → ℕ}
+    (hremaining :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            remaining e x ≤
+              (({ redBase := x.1, blueBase := x.2, embedding := e } :
+                  ConstructionData n m).baseOpenPairSet I).card -
+                ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                    ConstructionData n m).section4SecondStageLossNat I ε)
+    (hUR :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+                ((Finset.univ.filter fun b : Fin m =>
+                    Sum.inr b ∉
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                          ConstructionData n m).section4F I ε).image Sum.inr) ≤
+              uRMax e x)
+    (hUB :
+      ∀ e : Fin n ↪ Fin m × Fin m,
+        ∀ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+          goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+              projCodegreeBound I e x →
+            ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+                ((Finset.univ.filter fun r : Fin m =>
+                    Sum.inl r ∉
+                      ({ redBase := x.1, blueBase := x.2, embedding := e } :
+                          ConstructionData n m).section4F I ε).image Sum.inl) ≤
+              uBMax e x) :
+    constructionEventMass (paperConstructionWeight β n m)
+        (goodSurvivingIndepSetEventSet n m fiberBound degreeBound codegreeBound
+          projCodegreeBound I) ≤
+      ∑ e : Fin n ↪ Fin m × Fin m,
+        Twobites.paperRIOuterEventMass m
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).redImage I).card
+            (({ redBase := ⊥, blueBase := ⊥, embedding := e } :
+                ConstructionData n m).blueImage I).card
+            I.card *
+          ∑ x : SimpleGraph (Fin m) × SimpleGraph (Fin m),
+            if goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound
+                  projCodegreeBound I e x then
+              section4ProjectionChoiceMassSum (Twobites.paperP β n) (remaining e x)
+                (uRMax e x) (uBMax e x)
+            else
+              0 := by
+  refine
+    paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_by_embedding_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound)
+      (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+      (projCodegreeBound := projCodegreeBound) (I := I) ?_
+  intro e
+  exact
+    constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_section4ProjectionChoiceMass_of_le
+      (n := n) (m := m) (β := β) (fiberBound := fiberBound) (degreeBound := degreeBound)
+      (codegreeBound := codegreeBound) (projCodegreeBound := projCodegreeBound)
+      (ε := ε) hp0 hp1 I e (hremaining e) (hUR e) (hUB e)
+
+set_option linter.style.longLine false in
+open scoped Classical in
+theorem
     paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_totalBudget_of_le
     {β ε : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound : ℕ}
     (hp0 : 0 ≤ Twobites.paperP β n) (hp1 : Twobites.paperP β n ≤ 1)
