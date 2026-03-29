@@ -25117,6 +25117,154 @@ theorem
       hredCrossSmall
 
 set_option linter.style.longLine false in
+-- This graph-pair wrapper packages the manuscript-native uniform paper-error open-pair target gap
+-- directly from `goodSurvivingGraphPairPred`, so later graph-pair shells can work with the
+-- bundled large/medium/small/huge error hypotheses without reopening `ConstructionData`.
+theorem
+    goodSurvivingGraphPair_paperSection4OpenPairTargetNat_sub_openError_le_baseOpenPairSet_card_of_uniformPaperErrorBounds
+    {κ ε ε1 : ℝ}
+    {fiberBound degreeBound codegreeBound projCodegreeBound cap redError blueError openError : ℕ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    (hgood :
+      goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e x)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLarge :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHuge :
+      (((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsRedBaseVertex) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsBlueBaseVertex) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsRedBaseVertex) : ℕ) :
+          ℝ) ≤
+        (1 + ε1) *
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeBlueCrossTargetNat I κ
+              cap : ℕ) : ℝ)) ∧
+      (((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsBlueBaseVertex) : ℕ) :
+          ℝ) ≤
+        (1 + ε1) *
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeRedCrossTargetNat I κ
+              cap : ℕ) : ℝ)))
+    (hRedError :
+      4 * (ε1 * Twobites.paperK κ n ^ 2) +
+          ε1 *
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeRedCrossTargetNat I κ
+                cap : ℕ) : ℝ) ≤
+        (redError : ℝ))
+    (hBlueError :
+      4 * (ε1 * Twobites.paperK κ n ^ 2) +
+          ε1 *
+            ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeBlueCrossTargetNat I κ
+                cap : ℕ) : ℝ) ≤
+        (blueError : ℝ))
+    (hOpenError : redError + blueError ≤ openError) :
+    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat I κ
+        cap - openError ≤
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseOpenPairSet I).card := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  have hgood' :
+      GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        Cx.SurvivesAsIndependent I := by
+    simpa [goodSurvivingGraphPairPred, Cx] using hgood
+  simpa [Cx] using
+    Cx.paperSection4OpenPairTargetNat_sub_openError_le_baseOpenPairSet_card_of_uniformPaperErrorBounds
+      I hgood'.2 ht21 ht32 hLarge hMedium hSmall hHuge hRedError hBlueError hOpenError
+
+set_option linter.style.longLine false in
+-- This graph-pair wrapper records the rounded `⌈10 ε₁ k²⌉` open-pair target gap directly from
+-- the bundled uniform paper-error hypotheses.
+theorem
+    goodSurvivingGraphPair_paperSection4OpenPairTargetNat_sub_ceil_ten_mul_eps_mul_paperKSq_le_baseOpenPairSet_card_of_uniformPaperErrorBounds
+    {κ ε ε1 : ℝ} {fiberBound degreeBound codegreeBound projCodegreeBound cap : ℕ}
+    (I : Finset (Fin n)) (e : Fin n ↪ Fin m × Fin m)
+    (x : SimpleGraph (Fin m) × SimpleGraph (Fin m))
+    (hgood :
+      goodSurvivingGraphPairPred n m fiberBound degreeBound codegreeBound projCodegreeBound
+        I e x)
+    (ht21 : Twobites.paperT2 ε n ≤ Twobites.paperT1 n)
+    (ht32 : Twobites.paperT3 ε n ≤ Twobites.paperT2 ε n)
+    (hLarge :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).LPart I ε) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hMedium :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).MPart I ε) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hSmall :
+      ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).partPairCount I
+              (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).SPart I ε) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2)
+    (hHuge :
+      (((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsRedBaseVertex) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsBlueBaseVertex) : ℕ) :
+          ℝ) ≤
+        ε1 * Twobites.paperK κ n ^ 2) ∧
+      (((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).blueProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsRedBaseVertex) : ℕ) :
+          ℝ) ≤
+        (1 + ε1) *
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeBlueCrossTargetNat I κ
+              cap : ℕ) : ℝ)) ∧
+      (((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).redProjectionPairCount I
+              ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).HPart I).filter
+                IsBlueBaseVertex) : ℕ) :
+          ℝ) ≤
+        (1 + ε1) *
+          ((({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperHugeRedCrossTargetNat I κ
+              cap : ℕ) : ℝ)))
+    (hκ : 1 ≤ κ)
+    (hε1 : 0 ≤ ε1)
+    (hk : 1 ≤ Twobites.paperK κ n) :
+    ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat I κ
+        cap - ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ ≤
+      (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseOpenPairSet I).card := by
+  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
+  have hgood' :
+      GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound ∧
+        Cx.SurvivesAsIndependent I := by
+    simpa [goodSurvivingGraphPairPred, Cx] using hgood
+  simpa [Cx] using
+    Cx.paperSection4OpenPairTargetNat_sub_ceil_ten_mul_eps_mul_paperKSq_le_baseOpenPairSet_card_of_uniformPaperErrorBounds
+      I hgood'.2 ht21 ht32 hLarge hMedium hSmall hHuge hκ hε1 hk
+
+set_option linter.style.longLine false in
 set_option maxHeartbeats 1200000 in
 -- This graph-pair wrapper exposes the deterministic natural-number open-pair target gap with a
 -- caller-supplied `openError`, so later three-pool collapse lemmas can target the literal
@@ -25566,22 +25714,20 @@ theorem
           Twobites.paperP β n *
             ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTarget I κ
               cap) := by
-  let Cx : ConstructionData n m := { redBase := x.1, blueBase := x.2, embedding := e }
-  have hgood' :
-      GoodEventD Cx fiberBound degreeBound codegreeBound projCodegreeBound ∧
-        Cx.SurvivesAsIndependent I := by
-    simpa [goodSurvivingGraphPairPred, Cx] using hgood
   have hk : 1 ≤ Twobites.paperK κ n := by
     have hbase : Twobites.paperT1 n ≤ Twobites.paperK κ n :=
       Twobites.paperT1_le_paperK (by linarith) hκ
     linarith
   have hTargetGap :
-      Cx.paperSection4OpenPairTargetNat I κ cap -
+      ({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).paperSection4OpenPairTargetNat I κ cap -
           ⌈10 * (ε1 * Twobites.paperK κ n ^ 2)⌉₊ ≤
-        (Cx.baseOpenPairSet I).card := by
+        (({ redBase := x.1, blueBase := x.2, embedding := e } : ConstructionData n m).baseOpenPairSet I).card := by
     exact
-      Cx.paperSection4OpenPairTargetNat_sub_ceil_ten_mul_eps_mul_paperKSq_le_baseOpenPairSet_card_of_uniformPaperErrorBounds
-        I hgood'.2 ht21 ht32 hLarge hMedium hSmall
+      goodSurvivingGraphPair_paperSection4OpenPairTargetNat_sub_ceil_ten_mul_eps_mul_paperKSq_le_baseOpenPairSet_card_of_uniformPaperErrorBounds
+        (n := n) (m := m) (κ := κ) (ε := ε) (ε1 := ε1) (fiberBound := fiberBound)
+        (degreeBound := degreeBound) (codegreeBound := codegreeBound)
+        (projCodegreeBound := projCodegreeBound) (cap := cap)
+        I e x hgood ht21 ht32 hLarge hMedium hSmall
         ⟨hHugeRedDiag, hHugeBlueDiag, hHugeBlueCross, hHugeRedCross⟩ hκ hε1 hk
   exact
     goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_uniformError_of_paperLargeWitness_of_paperHugeWitness_of_targetGap_of_paperSection4Bound
