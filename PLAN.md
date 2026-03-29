@@ -314,6 +314,15 @@
       now lift that reduced manuscript-loss-gap route above graph-pair level, so later three-pool
       combinatorial lemmas can remain in manuscript `paperRISILossGap` coordinates all the way up
       to the current filtered bad-event mass shell.
+      The deterministic-bounds/image-bounds lifts
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperRISILossGap_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
+      and
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_paperRISILossGap_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`,
+      together with the final extraction wrapper
+      `exists_triangleFreeWithSmallIndepNum_of_paperChooseMulLe_sum_if_good_sectionExp_of_paperRISILossGap_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds_lt_explicitGoodMass`,
+      now carry that same reduced manuscript interface through the embedding-only image hypotheses,
+      the routine deterministic Section 4 contribution bounds, and the explicit-good-mass witness
+      theorem as well.
       The reusable graph-pair deterministic contribution wrapper
       `goodSurvivingGraphPair_section4UniformContributionBounds_of_paperDeterministicBounds`
       now exposes the reveal/L/M/S/huge-diagonal estimates directly from
