@@ -302,6 +302,11 @@
       combinatorial lemmas can choose between proving the direct nat-valued `section4F`
       total-error route or proving the reduced `hLossLeTarget` / huge-cross-count route, without
       reopening the heavier cap-weight deterministic interface.
+      The standalone graph-pair lemma
+      `goodSurvivingGraphPair_section4LossLeTarget_of_paperRISILossGap_of_uniformPaperErrorBounds`
+      now isolates that reduced `hLossLeTarget` conclusion itself, so the remaining combinatorial
+      collapse can target a literal natural inequality on one good graph pair before worrying about
+      the exponential mass shell.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
