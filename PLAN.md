@@ -358,6 +358,17 @@
       uses that helper to feed the reduced manuscript-loss-gap shell without requiring callers to
       provide the four huge inequalities separately. This further compresses the graph-pair
       interface toward the actual three-pool combinatorial hypotheses that still need to be proved.
+      The near-one branch now also reaches the reduced uniform-paper-error shell above graph-pair
+      level: the new wrappers
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
+      and
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_paperNearOneReal_of_two_div_le_loglog_of_uniformPaperErrorBounds_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
+      convert the near-one graph-pair inequality to manuscript `paperRISILossGap` via
+      `graphPair_paperRISILossGap_of_paperNearOneReal_of_two_div_le_loglog` and then reuse the
+      lighter reduced manuscript shell rather than the heavier direct deterministic-bounds route.
+      This gives the near-one branch the same reduced fixed-embedding and fixed-set interface as
+      the generic manuscript-loss-gap branch, leaving the actual three-pool combinatorial collapse
+      as the remaining substantive blocker.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
