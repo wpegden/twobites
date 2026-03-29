@@ -184,9 +184,14 @@
       and
       `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_section4FTotalError_of_paperRISILossGap_of_paperSection4Bound`
       now carry that same direct `hTotal` + `paperRISILossGap` interface through the filtered
-      embedding and fixed-set mass reductions, so the remaining combinatorial step can aim at those
-      manuscript-native graph-pair hypotheses all the way up to the choose-multiplied bad-event
-      estimate.
+      embedding and fixed-set mass reductions, and the new embedding-image-bounds specializations
+      `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_section4FTotalError_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds`
+      and
+      `paperConstructionMass_goodSurvivingIndepSetEventSet_le_sum_if_good_sectionExp_of_section4FTotalError_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds`
+      factor the red/blue image-size hypotheses out of that direct route as well. The remaining
+      combinatorial step can therefore aim at the manuscript-native graph-pair hypotheses
+      `hTotal`, `paperRISILossGap`, `hSmallCard`, and the opposite-color projection-cap bounds all
+      the way up to the choose-multiplied bad-event estimate.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
