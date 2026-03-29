@@ -292,6 +292,16 @@
       `paperRISILossGap` shell all the way to the witness-existence endpoint, so the remaining
       near-one obstruction is the same graph-dependent fixed-embedding collapse as on the direct
       manuscript-loss-gap branch.
+      The new reduced graph-pair bridge
+      `goodSurvivingGraphPairProjectionChoiceMassBound_le_exp_of_paperRISILossGap_of_uniformPaperErrorBounds_of_paperSection4Bound`,
+      built on top of
+      `section4LossTargetNat_le_ceil_nine_mul_eps_mul_paperKSq_of_uniformBounds` and
+      `section4LossLeTarget_of_paperRISILossGap_of_uniformPaperErrorBounds`,
+      now also feeds the manuscript `paperRISILossGap` hypothesis directly into the lighter
+      uniform-paper-error deterministic-target-gap shell. This means later three-pool
+      combinatorial lemmas can choose between proving the direct nat-valued `section4F`
+      total-error route or proving the reduced `hLossLeTarget` / huge-cross-count route, without
+      reopening the heavier cap-weight deterministic interface.
   7. Section 4 layer:
      - formalize the reveal process
      - prove the unrevealed-open-pair lower bound
