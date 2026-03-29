@@ -213,7 +213,13 @@
       now internalize the routine `12 * ε₁ * k²` estimate coming from the checked reveal/L/M/S/huge
       deterministic bounds, so the nat manuscript-native route is narrowed further: above the
       graph-pair level, only the genuinely graph-dependent `paperRISILossGap`, `SPart`, and
-      opposite-color projection-cap hypotheses still remain to be supplied uniformly. The final
+      opposite-color projection-cap hypotheses still remain to be supplied uniformly. The new
+      helper
+      `goodSurvivingGraphPair_section4FTotalErrorNat_cast_le_twelve_mul_eps_mul_paperKSq_of_paperDeterministicBounds`
+      now exposes that deterministic `12 * ε₁ * k²` package directly for one good graph pair, so
+      the remaining graph-pair work can focus on manufacturing the literal nat-valued total-error
+      inequality and the manuscript loss-gap bound without reopening the deterministic
+      large/medium/small/huge contribution arithmetic. The final
       fixed-embedding direct manuscript-loss-gap shell
       `constructionEmbeddingUniformWeight_mul_paperGoodSurvivingGraphPairMass_le_outerMass_mul_sum_if_good_sectionExp_of_paperRISILossGap_of_paperSection4Bound_of_embeddingImageBounds_of_paperDeterministicBounds`
       now exposes the same deterministic-bounds route without naming the intermediate
