@@ -1,0 +1,39 @@
+\begin{helper}
+For every \(\eta>0\) and \(0<\varepsilon_1\le1\), there is \(n_0\) such that
+for every \(n>n_0\), if \(L=\log n\), then
+\[
+\frac{2000(5(1+\eta))^2(\log L)^2L^3}
+{\varepsilon_1(1+\eta)\sqrt{nL}}\le1.
+\]
+\end{helper}
+\begin{proof}
+Put \(\kappa=1+\eta\).  Since \(\kappa>0\), choose a positive constant
+\[
+c=\varepsilon_1(100000\kappa)^{-1}
+\]
+small enough that
+\[
+2000(5\kappa)^2c^5\le\varepsilon_1\kappa.
+\]
+This last inequality follows from \(0<\varepsilon_1\le1\) and
+\(\kappa\ge1\).  Since \(\log n=o(n^{1/10})\), after increasing \(n_0\) we
+may assume, for every \(n>n_0\), that \(n\ge1\), \(L=\log n\ge1\), and
+\[
+L\le c\,n^{1/10}.
+\]
+For such \(n\), \(\log L\le L\), hence
+\[
+(\log L)^2L^3\le L^5\le c^5\sqrt n.
+\]
+Multiplying by \(2000(5\kappa)^2\) gives
+\[
+2000(5\kappa)^2(\log L)^2L^3
+\le \varepsilon_1\kappa\sqrt n.
+\]
+Because \(L\ge1\), we have \(\sqrt n\le\sqrt{nL}\).  Therefore
+\[
+2000(5(1+\eta))^2(\log L)^2L^3
+\le \varepsilon_1(1+\eta)\sqrt{nL},
+\]
+and division by the positive denominator proves the claimed bound.
+\end{proof}

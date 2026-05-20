@@ -1,0 +1,76 @@
+\begin{helper}
+Let \(n,m\) be natural numbers, let \(U_0,V_0,T\subseteq \operatorname{Fin} n\),
+let \(\rho:\operatorname{Fin}n\to \operatorname{Fin}m\), and let
+\(\eta:U_0\to \operatorname{Fin}m\).  Put
+\[
+S=\operatorname{im}(\eta),\qquad
+R_i=\{v:\rho(v)=i\}.
+\]
+For each row \(i\), let \(d_i\) be the number of injective maps
+\(f:R_i\to\operatorname{Fin}m\) satisfying \(f(u)=\eta(u)\) for every
+\(u\in U_0\cap R_i\), and let \(g_i\) be the number of such maps which also
+send every \(v\in T\cap R_i\) into \(S\).  Assume \(T\subseteq V_0\), assume
+that every \(U_0\)-row is disjoint from every \(V_0\)-row, and assume every
+\(d_i\) is nonzero.  Then every row quotient \(g_i/d_i\) is nonnegative and
+\[
+\frac{g_i}{d_i}\le
+\left(\frac{|S|}{m}\right)^{|T\cap R_i|}
+\]
+for every row \(i\).
+\end{helper}
+\begin{proof}
+Fix a row \(i\).  The numbers \(d_i\) and \(g_i\) are cardinalities of
+finite sets, so they are nonnegative.  Since \(d_i\ne0\), in fact
+\(d_i>0\) as a real number.  Therefore \(g_i/d_i\ge0\).
+
+It remains to prove the upper bound.  First suppose that
+\(T\cap R_i=\varnothing\).  Then the extra condition in the definition of
+\(g_i\),
+\[
+\forall v\in R_i,\quad v\in T\Rightarrow f(v)\in S,
+\]
+is vacuous.  Hence the set counted by \(g_i\) is exactly the set counted by
+\(d_i\), so \(g_i=d_i\).  Since \(d_i\ne0\),
+\[
+\frac{g_i}{d_i}=1.
+\]
+Also \(|T\cap R_i|=0\), so the right side of the desired inequality is
+\((|S|/m)^0=1\).  The bound follows in this case.
+
+Now suppose \(T\cap R_i\ne\varnothing\), and choose \(v_0\in T\cap R_i\).
+Because \(T\subseteq V_0\), we have \(v_0\in V_0\).  We claim that
+\(U_0\cap R_i=\varnothing\).  If \(u\in U_0\cap R_i\), then
+\(\rho(u)=i=\rho(v_0)\), contradicting the row-disjointness hypothesis
+applied to \(u\in U_0\) and \(v_0\in V_0\).  Thus no eta constraint is
+present in row \(i\).  Consequently \(d_i\) is simply the number of
+injective maps \(R_i\to\operatorname{Fin}m\), and \(g_i\) is the number of
+such injective maps that send every element of \(T\cap R_i\) into \(S\).
+
+To put this in the form of \(\noderef{OppositeProjectionRowInjectionCounting}\),
+let \(q=|R_i|\) and choose a bijection
+\(\alpha:\operatorname{Fin}q\to R_i\).  Let
+\[
+T'=\alpha^{-1}(T\cap R_i)\subseteq \operatorname{Fin}q,
+\]
+so \(|T'|=|T\cap R_i|\).  Apply
+\(\noderef{OppositeProjectionRowInjectionCounting}\) with domain
+\(\operatorname{Fin}q\), the constant red-coordinate map with value \(i\),
+the same target set \(S\subseteq\operatorname{Fin}m\), and the subset
+\(T'\).  Its denominator is nonzero because, under the bijection
+\(\alpha\), its admissible injections are exactly injective maps
+\(R_i\to\operatorname{Fin}m\), the set counted by \(d_i\), and \(d_i\ne0\).
+
+Under the same reindexing, the child theorem's favorable numerator is
+exactly the set counted by \(g_i\): the condition that every point of
+\(T'\) lands in \(S\) translates through \(\alpha\) to the condition that
+every point of \(T\cap R_i\) lands in \(S\), and there are no eta
+constraints in this row.  Therefore
+\(\noderef{OppositeProjectionRowInjectionCounting}\) gives
+\[
+\frac{g_i}{d_i}\le
+\left(\frac{|S|}{m}\right)^{|T'|}
+=\left(\frac{|S|}{m}\right)^{|T\cap R_i|}.
+\]
+This proves the desired upper bound for the nonempty case as well, and the
+two cases cover every row.
+\end{proof}

@@ -1,0 +1,52 @@
+\begin{lemma}
+Let \(\varepsilon>0\).  Then, for all sufficiently large \(n\), with
+\(L=\log n\), both strengthened absorption estimates
+\[
+36e(1+\varepsilon)L^3\le n^{2\varepsilon}
+\]
+and
+\[
+24L^2\le (1+\varepsilon)\sqrt L\,n^\varepsilon
+\]
+hold.
+\end{lemma}
+\begin{proof}
+Since \(\varepsilon>0\), also \(2\varepsilon>0\) and \(1+\varepsilon>0\).
+The standard logarithm-versus-power estimate, formalized in Mathlib as
+\(\log x=o(x^a)\) for every \(a>0\), implies that every fixed positive power
+of \(\log n\) is eventually dominated by every fixed positive power of \(n\).
+Applying this with the positive exponent \(2\varepsilon\) and the positive
+constant \(1/(36e(1+\varepsilon))\), there is \(N_1\) such that for all
+\(n>N_1\),
+\[
+(\log n)^3\le \frac{1}{36e(1+\varepsilon)}\,n^{2\varepsilon}.
+\]
+Multiplying by the positive constant \(36e(1+\varepsilon)\) gives
+\[
+36e(1+\varepsilon)(\log n)^3\le n^{2\varepsilon}. \tag{1}
+\]
+
+Apply the same logarithm-versus-power estimate with the positive exponent
+\(\varepsilon\) and the positive constant \((1+\varepsilon)/24\).  There is
+\(N_2\) such that for all \(n>N_2\),
+\[
+(\log n)^2\le \frac{1+\varepsilon}{24}\,n^\varepsilon,
+\]
+and therefore
+\[
+24(\log n)^2\le (1+\varepsilon)n^\varepsilon. \tag{2}
+\]
+Finally enlarge the threshold to \(N_3\) so that \(\log n\ge1\) whenever
+\(n>N_3\).  Then \(\sqrt{\log n}\ge1\), so multiplying the right side of
+(2) by \(\sqrt{\log n}\) can only increase it:
+\[
+(1+\varepsilon)n^\varepsilon
+\le (1+\varepsilon)\sqrt{\log n}\,n^\varepsilon.
+\]
+Combining this inequality with (2) gives
+\[
+24(\log n)^2\le (1+\varepsilon)\sqrt{\log n}\,n^\varepsilon. \tag{3}
+\]
+Taking \(N=\max(N_1,N_2,N_3)\), the two desired estimates are exactly (1)
+and (3) for every \(n>N\).
+\end{proof}

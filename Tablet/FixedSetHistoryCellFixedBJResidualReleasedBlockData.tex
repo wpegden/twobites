@@ -1,0 +1,111 @@
+\begin{helper}
+Fix a history cell, the terminal coordinate set \(U\), the nodup terminal
+reveal order, a fixed blue support label \(B\), and a fixed red label \(J\).
+Use the branch/transcript interface supplied by
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\): branch labels
+\(\beta\), transcript labels \(\tau=(P_\tau,A_\tau,Z_\tau)\), decoded red
+supports \(R_{\beta,J}\), the realized-cell predicate, and the complete
+assignment compatibility predicate.  Assume the fixed-\((B,J)\) realized
+geometry, compatibility soundness, compatibility uniqueness, and the
+non-realized cell exclusion exported by that interface.  In addition assume
+the fixed residual scan/completeness interface for this \(B,J\): every
+residual assignment \(A_{\rm res}\subseteq U\) satisfying
+\[
+P_\tau\setminus(B\cup R_{\beta,J})\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset
+\]
+reconstructs to a complete assignment compatible with \((\beta,\tau)\), and
+if the same residual assignment has compatible reconstructed complete
+assignments for two realized pairs \((\beta,\tau)\) and
+\((\beta',\tau')\), then \(\beta=\beta'\) and \(\tau=\tau'\).
+
+Then there are fixed-\((B,J)\) released residual blocks
+\[
+\mathcal R_{\beta,\tau}\subseteq 2^U
+\]
+for every realized pair \((\beta,\tau)\), with the following properties.
+Every block assignment \(A_{\rm res}\in\mathcal R_{\beta,\tau}\) is a
+residual assignment on \(U\), and the reconstructed full terminal assignment
+\[
+(A_{\rm res}\setminus Z_\tau)\cup B\cup R_{\beta,J}
+\]
+is compatible with \((\beta,\tau)\).  Conversely, if a residual assignment
+\(A_{\rm res}\subseteq U\) reconstructs to a full assignment compatible with
+\((\beta,\tau)\), then \(A_{\rm res}\in\mathcal R_{\beta,\tau}\).  Blocks
+for distinct realized pairs are disjoint.  Finally, the full residual
+cylinder obtained after releasing the fixed supports and the selected
+absences is contained in the block:
+\[
+\{A_{\rm res}\subseteq U:
+P_\tau\setminus(B\cup R_{\beta,J})\subseteq A_{\rm res},\
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset\}
+\subseteq \mathcal R_{\beta,\tau}.
+\]
+\end{helper}
+\begin{proof}
+The construction is the fixed-\((B,J)\) residual version of the reveal-order
+argument in the paper.  The paper reveals all blue terminal choices first
+and then the red choices; after the blue trace is fixed, the red choices
+available for \(U_R\) are determined by that trace.  The node
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\) is precisely the
+finite branch/transcript interface for this deterministic scan: \(\beta\)
+records the complete blue terminal trace, \(J\) records the fixed red support
+choice, and \(\tau=(P_\tau,A_\tau,Z_\tau)\) records the prefix transcript
+and selected absences.
+
+For a realized pair \((\beta,\tau)\), define the released block
+\(\mathcal R_{\beta,\tau}\) to be the set of residual assignments
+\(A_{\rm res}\subseteq U\) whose reconstructed full terminal assignment
+\[
+A^{\mathrm{full}}_{\beta,\tau}(A_{\rm res})
+  =(A_{\rm res}\setminus Z_\tau)\cup B\cup R_{\beta,J}
+\]
+is accepted by the same fixed scan as compatible with
+\((\beta,\tau)\).  This definition immediately gives the block-membership
+soundness assertion: membership says \(A_{\rm res}\subseteq U\) and that the
+displayed reconstruction is compatible.  The converse membership assertion
+is the reverse implication in the same definition.
+
+It remains to check cylinder coverage and disjointness.  Let
+\(A_{\rm res}\) lie in the displayed residual cylinder.  The realized
+geometry from
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\) gives
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad
+Z_\tau\subseteq A_\tau,\qquad P_\tau\cap A_\tau=\emptyset .
+\]
+Thus the reconstruction contains every coordinate in \(P_\tau\): the fixed
+support coordinates \(B\cup R_{\beta,J}\) are inserted explicitly, and the
+remaining coordinates \(P_\tau\setminus(B\cup R_{\beta,J})\) are present in
+\(A_{\rm res}\).  It also avoids every coordinate of \(A_\tau\setminus
+Z_\tau\), because those coordinates are excluded from \(A_{\rm res}\) by
+the residual cylinder and are not reinserted.  The residual
+scan/completeness hypothesis is exactly the converse implication for this
+calculation: with \(B,J,\beta,\tau\) fixed, these residual cylinder
+constraints imply that the reconstructed complete assignment is compatible
+with \((\beta,\tau)\).  This is the formal version of the paper's
+blue-first/red-second reveal order: once the complete blue trace is fixed,
+the later red scan sees a determined set of relevant terminal pairs.  The
+scan stability calculation is the content isolated in
+\(\noderef{FixedSetHistoryCellRISIResidualScanStability}\).  Hence
+\(A_{\rm res}\in\mathcal R_{\beta,\tau}\).
+
+For disjointness, suppose one residual assignment belonged to both
+\(\mathcal R_{\beta,\tau}\) and \(\mathcal R_{\beta',\tau'}\).  The two
+memberships say that the appropriate reconstructed full assignments are
+accepted by the fixed deterministic residual scan for the two realized
+pairs.  The single-owner hypothesis is formulated at the residual assignment
+level, so it applies even though the two reconstructed complete assignments
+may use different selected sets or red supports.  It forces
+\(\beta=\beta'\) and \(\tau=\tau'\).  This is the residual analogue of the
+functional-scan uniqueness recorded in
+\(\noderef{FixedSetHistoryCellRedFunctionalScanDisjointness}\), but with the
+extra converse reconstruction information supplied explicitly.  Hence
+blocks indexed by distinct realized pairs are disjoint.
+
+The construction uses exactly the support demanded by the product-tree
+packing step: block membership, reconstructed-assignment soundness,
+converse membership from reconstructed compatibility, disjointness, and
+residual-cylinder containment.  These are the fixed-\((B,J)\) residual
+blocks needed for the partition and decision-tree package.
+\end{proof}

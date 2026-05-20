@@ -1,0 +1,51 @@
+\begin{helper}
+Let \(\eta\in\mathbb R\) and \(n\in\mathbb N\).  Put
+\[
+L=\log n,\quad
+k_R=(1+\eta)\sqrt{nL},\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad
+k=(K:\mathbb R),
+\]
+and
+\[
+p=\frac12\sqrt{\frac Ln}.
+\]
+Assume \(0<\eta\), \(0<n\), \(0<L\), \(k_R\le k<2k_R\), and
+\[
+\frac{8\log(2(1+\eta)\sqrt{nL})}
+{(1+\eta)^2\sqrt n\,L^{3/2}}
+\le\frac{\eta^3}{2}.
+\]
+Then
+\[
+4\log k\le\frac{\eta^3}{2}pk^2.
+\]
+\end{helper}
+\begin{proof}
+Since \(0<\eta\), \(1+\eta>0\), and hence \(k_R>0\).  From
+\(k_R\le k\) we have \(k>0\), and from \(k<2k_R\) the monotonicity of
+\(\log\) gives
+\[
+\log k\le \log(2k_R)
+=\log(2(1+\eta)\sqrt{nL}).
+\]
+The displayed threshold, multiplied by the positive denominator, gives
+\[
+8\log(2(1+\eta)\sqrt{nL})
+\le \frac{\eta^3}{2}(1+\eta)^2\sqrt n\,L^{3/2}.
+\]
+Dividing by \(2\) yields the corresponding bound with the coefficient \(4\).
+Using
+\[
+pk_R^2
+=\frac12\sqrt{\frac Ln}\,(1+\eta)^2 nL
+=\frac{(1+\eta)^2}{2}\sqrt n\,L^{3/2},
+\]
+this becomes
+\[
+4\log(2(1+\eta)\sqrt{nL})
+\le \frac{\eta^3}{2}p k_R^2.
+\]
+Finally, \(p\ge0\) and \(0\le k_R\le k\), so \(p k_R^2\le p k^2\).
+Combining these inequalities proves the claim.
+\end{proof}

@@ -1,0 +1,18 @@
+\begin{definition}
+For a two-bite sample \(\omega\), the two-bite overlay
+\(\widetilde G(\omega)\) is the colored red-blue multigraph on \(V(G)\) with
+separate edge sets
+\[
+\widetilde E_R(G)=
+\{uv:\pi_R(u)\pi_R(v)\in E(G_R)\}
+\]
+and
+\[
+\widetilde E_B(G)=
+\{uv:\pi_B(u)\pi_B(v)\in E(G_B)\}.
+\]
+Edges in \(\widetilde E_R(G)\) are red and edges in \(\widetilde E_B(G)\) are
+blue.  If \(uv\in \widetilde E_R(G)\cap\widetilde E_B(G)\), both colored
+copies are retained; the overlay is not collapsed to a simple graph before the
+deletion step.
+\end{definition}

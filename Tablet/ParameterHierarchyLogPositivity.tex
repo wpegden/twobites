@@ -1,0 +1,21 @@
+\begin{helper}
+Assume \(\noderef{ParameterHierarchyEventualComparisons}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\) and let \(n>n_0\). Then
+\[
+\log n > 0.
+\]
+\end{helper}
+\begin{proof}
+The first line of \(\noderef{ParameterHierarchyEventualComparisons}\) gives
+\[
+0 < M
+\]
+and
+\[
+1 \le 2pM,
+\]
+where \(M=\noderef{TwoBiteNaturalReducedVertexCount}(n)\) and \(p=\noderef{TwoBiteEdgeProbability}(1/2,n)=\frac{1}{2}\sqrt{\frac{\log n}{n}}\). Because \(M>0\), the inequality \(1 \le 2pM\) implies \(p>0\). Since \(p>0\), the term inside the square root must be strictly positive, meaning
+\[
+\frac{\log n}{n} > 0.
+\]
+Because \(n>0\) (otherwise the fraction would be zero), we must have \(\log n > 0\).
+\end{proof}

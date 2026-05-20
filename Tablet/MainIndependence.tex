@@ -1,0 +1,86 @@
+\begin{theorem}
+For every real \(\varepsilon>0\), there is an integer \(n_0\) such that for
+every integer \(n\ge n_0\) there exists a simple graph \(G\) on
+\(\mathrm{Fin}(n)\) satisfying
+\[
+G.\mathrm{CliqueFree}(3)
+\]
+and
+\[
+\noderef{IndependenceNumberLess}
+\left(G,(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right).
+\]
+Equivalently, for all sufficiently large \(n\) there is an \(n\)-vertex
+triangle-free graph with
+\(\alpha(G)<(1+\varepsilon)\sqrt{n\log n}\).
+\end{theorem}
+\begin{proof}
+Fix \(\varepsilon>0\).  Apply \(\noderef{TwoBitePositiveExistence}\) with this
+\(\varepsilon\).  It gives a threshold \(n_0\) such that, for every integer
+\(n\ge n_0\), there exist an integer \(m\), a real number \(p\), and a sample
+\[
+\omega\in \mathrm{TwoBiteSample}(n,m,p)
+\]
+with the conclusions recorded in that child node.  The present theorem does
+not use the displayed definitions of \(m\) and \(p\); it only needs the final
+shadow graph and the two final graph properties supplied for that same
+\(\omega\).
+
+Fix \(n\ge n_0\), and choose \(m,p,\omega\) from
+\(\noderef{TwoBitePositiveExistence}\).  Define
+\[
+G=(\noderef{TwoBiteFinalGraph}(\omega)).2.2 .
+\]
+By the definition of \(\noderef{TwoBiteFinalGraph}\), this third component is
+the simple shadow graph on the vertex type \(\mathrm{Fin}(n)\).  Thus \(G\) is
+a simple graph on \(\mathrm{Fin}(n)\), exactly as required in the statement.
+
+We first prove \(G.\mathrm{CliqueFree}(3)\).  The no-triangle conjunct supplied
+for \(\omega\) says exactly that there do not exist vertices
+\(u,v,w\in\mathrm{Fin}(n)\) such that
+\[
+u\ne v,\qquad u\ne w,\qquad v\ne w
+\]
+and all three shadow adjacencies
+\[
+G.\mathrm{Adj}(u,v),\qquad G.\mathrm{Adj}(u,w),\qquad G.\mathrm{Adj}(v,w)
+\]
+hold.  This is the shadow-graph conclusion proved in
+\(\noderef{TwoBiteDeletionTriangleFree}\) and included in
+\(\noderef{TwoBitePositiveExistence}\).
+
+Now unpack the finite \(3\)-clique condition.  If \(G\) had a clique of size
+\(3\), then its three vertices could be named \(u,v,w\).  Because the clique
+has cardinality \(3\), these vertices are pairwise distinct:
+\[
+u\ne v,\qquad u\ne w,\qquad v\ne w.
+\]
+Because it is a clique, each pair of distinct vertices in it is adjacent, so
+\[
+G.\mathrm{Adj}(u,v),\qquad G.\mathrm{Adj}(u,w),\qquad G.\mathrm{Adj}(v,w).
+\]
+This would be exactly the forbidden triple above.  Conversely, any pairwise
+distinct \(u,v,w\) with these three adjacencies would form a \(3\)-clique on
+the finite set \(\{u,v,w\}\).  Hence the no-distinct-triple assertion is
+equivalent to \(G.\mathrm{CliqueFree}(3)\), and in particular it proves
+\[
+G.\mathrm{CliqueFree}(3).
+\]
+
+It remains to prove the independence-number bound.  The last conjunct supplied
+by \(\noderef{TwoBitePositiveExistence}\), for the same \(m,p,\omega\) and the
+same \(n\), is already
+\[
+\noderef{IndependenceNumberLess}\!\left(
+(\noderef{TwoBiteFinalGraph}(\omega)).2.2,\,
+(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right).
+\]
+Since \(G=(\noderef{TwoBiteFinalGraph}(\omega)).2.2\), this is precisely
+\[
+\noderef{IndependenceNumberLess}\!\left(
+G,\,(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right).
+\]
+Thus the chosen graph \(G\) satisfies both required conclusions for this
+\(n\).  Since the construction works for every \(n\ge n_0\), the theorem
+follows.
+\end{proof}

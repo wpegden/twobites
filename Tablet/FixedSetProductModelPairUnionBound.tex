@@ -1,0 +1,48 @@
+\begin{helper}[Pair Red/Blue Coordinate Union Bound]
+Fix $n, m_{sub} \in \mathbb{N}$, a probability $p_{sub} \in \mathbb{R}$ with $0 \le p_{sub} \le 1$, an embedding $\pi : \mathrm{Fin}(n) \hookrightarrow \mathrm{Fin}(m_{sub}) \times \mathrm{Fin}(m_{sub})$, and a subset $I \subseteq \mathrm{Fin}(n)$.
+For any $u, w \in I$ such that $\pi(u)_1 \neq \pi(w)_1$ and $\pi(u)_2 \neq \pi(w)_2$, let $q = \noderef{FixedSetProductModelMassFn}(p_{sub}, P_R, P_B)$ where $P_R, P_B$ are the projections of $I$.
+Then the probability of the following event is at most
+\(2m_{sub}p_{sub}^2\): either one of the first \(m_{sub}\) coordinates has
+first component containing both \(\pi(u)_1,\pi(w)_1\), or one of the last
+\(m_{sub}\) coordinates has second component containing both
+\(\pi(u)_2,\pi(w)_2\).
+\end{helper}
+\begin{proof}
+Let
+\[
+r_1=\pi(u)_1,\quad r_2=\pi(w)_1,\qquad
+b_1=\pi(u)_2,\quad b_2=\pi(w)_2.
+\]
+Since \(u,w\in I\), we have \(r_1,r_2\in P_R\) and \(b_1,b_2\in P_B\).
+The hypotheses give \(r_1\ne r_2\) and \(b_1\ne b_2\).
+
+Fix one of the first \(m_{sub}\) coordinates \(x\).  Applying
+\(\noderef{FixedSetProductModelCoordinateMarginal}\) with target sets
+\(\{r_1,r_2\}\) in the first component and \(\emptyset\) in the second
+component gives
+\[
+\Pr(r_1,r_2\in (v_x)_1)=p_{sub}^{|\{r_1,r_2\}|}=p_{sub}^2,
+\]
+because \(\{r_1,r_2\}\subseteq P_R\) and \(r_1\ne r_2\).  There are exactly
+\(m_{sub}\) such red coordinates, namely those \(x\in\mathrm{Fin}(2m_{sub})\)
+with \(x<m_{sub}\).  The union bound over only these red coordinates gives a
+red contribution at most \(m_{sub}p_{sub}^2\).
+
+Similarly, fix one of the last \(m_{sub}\) coordinates \(x\), those with
+\(m_{sub}\le x<2m_{sub}\).  Applying
+\(\noderef{FixedSetProductModelCoordinateMarginal}\) with target sets
+\(\emptyset\) in the first component and \(\{b_1,b_2\}\) in the second
+component gives
+\[
+\Pr(b_1,b_2\in (v_x)_2)=p_{sub}^{|\{b_1,b_2\}|}=p_{sub}^2.
+\]
+The union bound over these \(m_{sub}\) blue coordinates gives a blue
+contribution at most \(m_{sub}p_{sub}^2\).
+
+The event in the statement is the union of the red-coordinate event and the
+blue-coordinate event.  A final union bound therefore gives
+\[
+m_{sub}p_{sub}^2+m_{sub}p_{sub}^2
+=2m_{sub}p_{sub}^2.
+\]
+\end{proof}

@@ -1,0 +1,313 @@
+\begin{helper}
+Fix \(I\subseteq[n]\), integers \(k,\ell_R,\ell_B\), and parameters
+\(m,p,\varepsilon\).  On the projection-size event
+\[
+S=\{\omega:
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)\}
+\]
+there is a finite disjoint partition \(S=\dot\bigcup_{h\in H}C_h\) with the
+following adaptive cylinder structure.  For every history \(h\) there are a
+representative sample \(\omega_h\in C_h\), a recorded coordinate set \(R_h\),
+a terminal candidate set \(U_h\), and a terminal order \(L_h\) listing
+\(U_h\) without repetition, such that
+\[
+\omega\in C_h
+\quad\Longleftrightarrow\quad
+\omega\hbox{ has the same injection as }\omega_h
+\hbox{ and agrees with }\omega_h
+\hbox{ on every coordinate of }R_h.
+\tag{1}
+\]
+The recorded set \(R_h\) is the pre-terminal recorded set:
+\[
+e\in R_h
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)
+\qquad(\omega\in C_h).
+\tag{2}
+\]
+In particular, every coordinate of \(R_h\) is in the canonical terminal
+coordinate universe: it is tagged red or blue, has distinct endpoints, and is
+written in increasing endpoint order.
+The terminal set is the full unrecorded terminal coordinate universe:
+\[
+e\in U_h
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)
+\hbox{ and }e\notin R_h. \tag{3}
+\]
+Thus membership in \(C_h\) fixes only the injection and the \(R_h\)-truth
+table.  It imposes no condition on any coordinate of \(U_h\).
+
+For every \(\omega\in C_h\),
+\[
+e\in\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)
+\quad\Longrightarrow\quad
+e\in U_h. \tag{4}
+\]
+The reverse implication is not asserted: \(U_h\) may contain coordinates that
+are not projected pairs of \(I\), are touched, or become \(C^+(I)\)
+same-color closed during the terminal scan.
+
+The order \(L_h\) is prefix safe.  If
+\[
+L_h=P,e,Q,
+\]
+and \(\omega\in C_h\), then any second sample \(\omega'\) with the same
+injection as \(\omega\), the same edge values as \(\omega\) on \(R_h\), and
+the same edge values as \(\omega\) on the prefix \(P\), has the same terminal
+decision data as \(\omega\) for the current coordinate \(e\):
+\[
+e\in\noderef{TwoBiteStagedOpenPairs}(-,\varepsilon,I),\qquad
+\noderef{TwoBiteProjectionPairTouched}(-,\varepsilon,I,e),\qquad
+\noderef{TwoBiteProjectionPairSameColorClosed}(-,I,e),\qquad
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(-,\varepsilon,I).
+\tag{5}
+\]
+No agreement is required on the current coordinate \(e\) or on any later
+coordinate of \(Q\).
+\end{helper}
+\begin{proof}
+Apply \(\noderef{FixedSetPreTerminalHistoryPartition}\) to
+\(I,k,\ell_R,\ell_B,m,p,\varepsilon\).  Denote the finite history type by
+\(H\), its cells by \(C_h\), its recorded sets by \(R_h\), and its
+representatives by \(\omega_h\).  We record the child facts with the names
+used below; the recorded-coordinate hygiene (8'') is then derived from (8')
+and the definition of the pre-terminal recorded set:
+\[
+\omega\in S \Longleftrightarrow \exists h\in H,\ \omega\in C_h, \tag{5}
+\]
+\[
+h\ne h'\Longrightarrow C_h\cap C_{h'}=\varnothing, \tag{6}
+\]
+\[
+\omega_h\in C_h, \tag{7}
+\]
+\[
+\omega\in C_h
+\Longleftrightarrow
+\omega\hbox{ has the same injection as }\omega_h
+\hbox{ and agrees with }\omega_h\hbox{ on }R_h, \tag{8}
+\]
+\[
+\omega\in C_h
+\Longrightarrow
+\bigl(e\in R_h\Longleftrightarrow
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\bigr),
+\tag{8'}
+\]
+\[
+e\in R_h\Longrightarrow e\hbox{ is written with increasing endpoints},
+\tag{8''}
+\]
+\[
+\omega\in C_h\Longrightarrow \omega\in S, \tag{9}
+\]
+\[
+\omega\in C_h,\ \omega'\equiv\omega\hbox{ on the injection and on }R_h
+\Longrightarrow
+\begin{cases}
+\noderef{TwoBiteStageRevealedVertex}(\omega,\varepsilon,I,x)
+\Longleftrightarrow
+\noderef{TwoBiteStageRevealedVertex}(\omega',\varepsilon,I,x),\\
+\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,c)
+\Longleftrightarrow
+\noderef{TwoBiteProjectionPairTouched}(\omega',\varepsilon,I,c),
+\end{cases}
+\tag{10}
+\]
+for every base vertex \(x\) and every tagged coordinate \(c\), and finally
+\[
+\omega\in C_h,\ e\in\noderef{TwoBiteStagedOpenPairs}
+(\omega,\varepsilon,I)
+\Longrightarrow
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)
+\hbox{ and }e\notin R_h. \tag{11}
+\]
+The disjointness in (6) is the canonical pre-terminal transcript
+disjointness proved in that child: the injection and the \(R_h\)-truth table
+uniquely replay the same pre-terminal recorded set and table.
+
+For each fixed history \(h\), apply
+\(\noderef{FixedSetTerminalSupportClassification}\) to the recorded set
+\(R_h\).  This supplies a terminal set \(U_h\) and an order \(L_h\).  Its
+conclusions are
+\[
+e\in U_h
+\Longleftrightarrow
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)\hbox{ and }e\notin R_h,
+\tag{12}
+\]
+\[
+L_h\hbox{ has no repetitions and }(L_h)_{\mathrm{finset}}=U_h, \tag{13}
+\]
+\[
+e\in U_h\Longrightarrow e\notin R_h, \tag{14}
+\]
+\[
+e\in U_h\Longrightarrow e\hbox{ is written with increasing endpoints},
+\tag{15}
+\]
+and the support-classification property: if
+\[
+L_h=P,e,Q,
+\tag{16}
+\]
+then every one-sided coordinate that can support a
+\(C^+(I)\) same-color witness for \(e\) lies in
+\[
+R_h\cup P_{\mathrm{finset}}. \tag{17}
+\]
+Concretely, for \(e=\operatorname{red}(a,b)\) and every red base vertex
+\(r<a,b\), both \(\operatorname{red}(r,a)\) and
+\(\operatorname{red}(r,b)\) lie in (17), and the blue case is the identical
+blue-copy assertion.  The choices of \(U_h\) and \(L_h\) for all histories
+are legitimate because the history type \(H\) is finite.
+
+We now verify the conjuncts of the statement in order.  The finite partition,
+the cover of \(S\), the disjointness of distinct cells, the representative
+condition, the exact cylinder description, the exact pre-terminal recorded-set
+identity, and the containment \(C_h\subseteq S\) are precisely (5), (6), (7),
+(8), (8'), and (9).  The order
+conjunct
+\[
+L_h.\mathrm{Nodup}\quad\hbox{and}\quad L_h.\mathrm{toFinset}=U_h
+\]
+is (13).  The recorded-coordinate hygiene (8'') is obtained as follows:
+given \(e\in R_h\), apply (8') with the representative
+\(\omega_h\in C_h\).  Then
+\[
+e\in\noderef{TwoBitePreTerminalRecordedPairs}
+(\omega_h,\varepsilon,I).
+\]
+By the definition of \(\noderef{TwoBitePreTerminalRecordedPairs}\), this
+finite set is a filter of
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\).  Hence \(e\) lies in the
+terminal coordinate universe, and the definition of that universe says
+exactly that \(e\) is a tagged red or blue non-loop coordinate in increasing
+endpoint order.  The terminal-universe identity (3) is (12), the statement
+that terminal coordinates are outside \(R_h\) is (14), and the increasing
+non-loop coordinate hygiene is (15).  Since (8) fixes only the injection and
+the \(R_h\)-truth table, and since (12) makes \(U_h\) disjoint from \(R_h\),
+no cell condition fixes any terminal coordinate value.  Moreover, because
+both recorded and terminal coordinates are canonical, a terminal coordinate
+cannot be fixed indirectly by a reversed recorded coordinate.
+
+Next prove the staged-open inclusion (4).  Let \(\omega\in C_h\) and
+suppose
+\[
+e\in\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I).
+\]
+By (11), \(e\) lies in
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\) and does not lie in
+\(R_h\).  Substituting these two facts into (12) gives \(e\in U_h\).  This is
+only the asserted one-way inclusion; \(U_h\) may still contain coordinates
+that are not projected pairs of \(I\), are touched, or are
+\(C^+(I)\) same-color closed.
+
+It remains to prove prefix safety.  Fix \(h\), \(\omega\in C_h\), and a
+decomposition \(L_h=P,e,Q\).  Let \(\omega'\) have the same injection as
+\(\omega\), agree with \(\omega\) on every coordinate of \(R_h\), and agree
+with \(\omega\) on every coordinate in \(P_{\mathrm{finset}}\).  Since
+\(\omega\in C_h\), the cylinder identity (8) says that \(\omega\) has the
+same injection as \(\omega_h\) and agrees with \(\omega_h\) on \(R_h\).  The
+same-injection assumption between \(\omega\) and \(\omega'\), combined with
+the same-injection relation between \(\omega\) and \(\omega_h\), gives the
+same injection relation between \(\omega'\) and \(\omega_h\).  Likewise, if
+\(c\in R_h\), then \(\omega'\) and \(\omega\) have the same truth value for
+\(\noderef{TwoBiteEdgeCoordinateValue}(-,c)\), and \(\omega\) and
+\(\omega_h\) have the same truth value for that coordinate.  Chaining these
+two equivalences gives agreement between \(\omega'\) and \(\omega_h\) on
+every coordinate of \(R_h\).  Applying (8) in the reverse direction therefore
+puts \(\omega'\) in the same history cell \(C_h\).  This is the only point at
+which membership of \(\omega'\) in \(C_h\) is used, and it is obtained without
+any information about the current coordinate \(e\) or the suffix \(Q\).
+
+Applying the pre-terminal replay clause (10) to \(\omega\) and \(\omega'\) gives, for
+every base vertex \(x\),
+\[
+\noderef{TwoBiteStageRevealedVertex}(\omega,\varepsilon,I,x)
+\Longleftrightarrow
+\noderef{TwoBiteStageRevealedVertex}(\omega',\varepsilon,I,x),
+\tag{18}
+\]
+and, for every tagged coordinate \(c\),
+\[
+\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,c)
+\Longleftrightarrow
+\noderef{TwoBiteProjectionPairTouched}(\omega',\varepsilon,I,c).
+\tag{19}
+\]
+The common injection also fixes the red and blue projection images of \(I\).
+Indeed, unfolding the red and blue projections shows that the projected image
+of each final vertex of \(I\) is computed from the common injection alone;
+hence the two red image sets and the two blue image sets are equal.  Unfolding
+\(\noderef{TwoBiteProjectionPairSet}\), which is the tagged union of base
+pairs in those two image sets, gives for every coordinate \(c\)
+\[
+c\in\noderef{TwoBiteProjectionPairSet}(\omega,I)
+\Longleftrightarrow
+c\in\noderef{TwoBiteProjectionPairSet}(\omega',I).
+\tag{19a}
+\]
+In particular, projected-pair membership for the current coordinate \(e\) is
+fixed before any edge value at \(e\) is queried.
+
+The exact-recorded identity (8') applies to both \(\omega\) and \(\omega'\),
+because both samples lie in \(C_h\).  Hence, for the current coordinate \(e\),
+\[
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)
+\Longleftrightarrow e\in R_h
+\Longleftrightarrow
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega',\varepsilon,I).
+\tag{19'}
+\]
+
+For same-color closedness of \(e\), take the support set
+\[
+S_h(P)=R_h\cup P_{\mathrm{finset}}.
+\]
+The displayed decomposition of \(L_h\) lets us use (17).  In the red case
+\(e=\operatorname{red}(a,b)\), every possible same-color witness for
+\(\noderef{TwoBiteProjectionPairSameColorClosed}(-,I,e)\) uses, for some red
+base vertex \(r<a,b\), only the two one-sided coordinates
+\(\operatorname{red}(r,a)\) and \(\operatorname{red}(r,b)\); (17) places both
+coordinates in \(S_h(P)\).  In the blue case, every possible blue witness is
+supported on \(\operatorname{blue}(s,a)\) and \(\operatorname{blue}(s,b)\),
+and (17) again places both coordinates in \(S_h(P)\).  The samples agree on
+all of \(S_h(P)\): if a support coordinate lies in \(R_h\), use the recorded
+agreement; if it lies in \(P_{\mathrm{finset}}\), use the prefix agreement.
+These two cases cover the whole support set by its definition, and neither
+case mentions the current coordinate \(e\) unless \(e\) was already recorded
+or in the prefix.  For the displayed split \(L_h=P,e,Q\), that cannot happen:
+\(L_h\) has no repetitions, \(e\in U_h\) because it appears in the list
+listed by \(L_h\), and \(U_h\) is disjoint from \(R_h\).  The argument
+therefore never asks for a fresh value of \(e\), and it never asks for any
+coordinate in \(Q\).
+Thus \(\noderef{FixedSetSameColorClosedWitnessCylinder}\), applied with
+support \(S_h(P)\), gives
+\[
+\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e)
+\Longleftrightarrow
+\noderef{TwoBiteProjectionPairSameColorClosed}(\omega',I,e).
+\tag{20}
+\]
+
+Finally unfold the definition of
+\(\noderef{TwoBiteStagedOpenPairs}\) at the current coordinate \(e\).  The
+projected-pair predicate is fixed by (19a), the touched
+predicate is fixed by (19) with \(c=e\), and the same-color-closed predicate
+is fixed by (20).  The pre-terminal recorded predicate is fixed by (19').
+Hence
+\[
+e\in\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)
+\Longleftrightarrow
+e\in\noderef{TwoBiteStagedOpenPairs}(\omega',\varepsilon,I).
+\]
+Equation (19) with \(c=e\) gives the touched equivalence, and (20) gives the
+same-color-closed equivalence; (19') gives the pre-terminal recorded
+equivalence.  The argument used the common injection, recorded agreement on
+\(R_h\), and prefix agreement on \(P_{\mathrm{finset}}\) only.  It did not use
+the value of the current coordinate \(e\), and it did not use any coordinate
+in the suffix \(Q\).  This proves the full adaptive cylinder package.
+\end{proof}

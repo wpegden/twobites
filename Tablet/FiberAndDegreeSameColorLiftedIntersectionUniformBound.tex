@@ -1,0 +1,63 @@
+\begin{helper}[Uniform fixed-graphs same-color lifted intersection bound]
+Let \(n,m\in\mathbb N\) and \(p\in\mathbb R\) satisfy
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}(1/2,n),
+\]
+\[
+n\le m^2,\qquad 1\le \log n,\qquad
+n\le 2(\log n)^2m.
+\]
+Fix red and blue base graphs \(G_R,G_B\) on \(\operatorname{Fin}(m)\) with
+decidable adjacency.  Assume the same-color base-codegree bounds
+\[
+\forall r\ne s,\quad
+\bigl|\{t\in\operatorname{Fin}(m):G_R.Adj(r,t)\land G_R.Adj(s,t)\}\bigr|
+\le \log n
+\]
+and
+\[
+\forall b\ne c,\quad
+\bigl|\{t\in\operatorname{Fin}(m):G_B.Adj(b,t)\land G_B.Adj(c,t)\}\bigr|
+\le \log n.
+\]
+Let \(C(\omega)\) be the fixed-base-graphs condition
+\(\omega.1=G_R\land\omega.2.1=G_B\).  Let \(E(\omega)\) be the event that
+either there are \(r\ne s\in\operatorname{Fin}(m)\) with
+\[
+\bigl|
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(s))
+\bigr|>100(\log n)^3
+\]
+or there are \(b\ne c\in\operatorname{Fin}(m)\) with
+\[
+\bigl|
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(b))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(c))
+\bigr|>100(\log n)^3.
+\]
+Then
+\[
+\noderef{TwoBiteConditionalProbability}(n,m,p;E\mid C)
+\le
+2m^2\exp(-2(\log n)^3).
+\]
+\end{helper}
+\begin{proof}
+In a fixed base-graph cell, the only random coordinate is the injection
+\(\operatorname{Fin}(n)\hookrightarrow \operatorname{Fin}(m)\times
+\operatorname{Fin}(m)\), and
+\(\noderef{TwoBiteFixedGraphsConditionalInjectionBridge}\) expands the
+conditional probability as a uniform count of injections.  For each ordered
+red pair,
+\(\noderef{FiberAndDegreeSameColorLiftedIntersectionFixedPairInjectionTail}\)
+bounds the count of injections whose image hits the first-coordinate common
+neighbor set too often.  For each ordered blue pair,
+\(\noderef{FiberAndDegreeSameColorLiftedIntersectionSecondCoordinateTail}\)
+gives the corresponding second-coordinate bound.  A finite union bound over
+the fewer than \(m^2\) red ordered pairs and fewer than \(m^2\) blue ordered
+pairs gives the displayed \(2m^2\exp(-2(\log n)^3)\) bound.
+\end{proof}

@@ -1,0 +1,8 @@
+\begin{helper}
+Let \(N\) be a natural number. Let \(b, x \in \mathbb R^{\operatorname{Fin}(N)}\) have equal total sums, with \(b\) majorized by \(x\) on all prefixes. Suppose \(i < j\) are indices and \(\delta > 0\) is a real number such that \(\delta \le x_i - b_i\), \(\delta \le b_j - x_j\), and for all \(i < r \le j\), the prefix slack satisfies \(S_r(x) \ge \delta\). Let \(y\) be the vector obtained from \(x\) by moving \(\delta\) units from coordinate \(i\) to coordinate \(j\): \(y_i = x_i - \delta\), \(y_j = x_j + \delta\), and \(y_k = x_k\) for \(k \neq i, j\). Then \(y\) has the same total sum as \(b\), and for every \(0 \le r \le N\), the prefix sum of \(y\) is at least the prefix sum of \(b\).
+\end{helper}
+\begin{proof}
+The total sum of \(y\) is unchanged from \(x\) because the addition of \(\delta\) to \(x_j\) exactly cancels the subtraction of \(\delta\) from \(x_i\). Since \(x\) and \(b\) have equal total sums, \(y\) and \(b\) do as well.
+
+Consider the prefix sums of \(y\) compared to \(x\). For a prefix of length \(r \le i\), the modified coordinates \(i\) and \(j\) are not included, so the sum is unchanged, and thus at least the prefix sum of \(b\). For a prefix of length \(r > j\), both \(y_i\) and \(y_j\) are included, so their sum is again unchanged from \(x\), and thus at least the prefix sum of \(b\). For intermediate prefixes of length \(r\) where \(i < r \le j\), the prefix sum of \(y\) is exactly \(\delta\) less than the prefix sum of \(x\). Since \(\delta\) was chosen to be no larger than the prefix slack \(S_r(x)\), the new prefix sum remains at least the prefix sum of \(b\). Thus, \(y\) dominates \(b\) on all prefixes.
+\end{proof}

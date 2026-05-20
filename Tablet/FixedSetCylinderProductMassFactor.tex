@@ -1,0 +1,65 @@
+\begin{helper}
+Let \(0<p<1\).  Let \(C\) be a history event in the two-bite sample space,
+let \(\omega_0\in C\), let \(R\) be the recorded coordinate set, and let
+\(U\) be a finite product coordinate set.  Assume that \(C\) is exactly the
+cylinder consisting of samples with the same injection as \(\omega_0\) and
+with the same \(\noderef{TwoBiteEdgeCoordinateValue}\)-truth values as
+\(\omega_0\) on every coordinate in \(R\).  Assume every coordinate in \(R\)
+and \(U\) is canonically oriented, and assume \(U\cap R=\emptyset\).  Then,
+for every \(A\subseteq U\), the cylinder has nonzero
+\(\noderef{TwoBiteEventProbability}\)-mass and
+\[
+\noderef{TwoBiteEventProbability}
+\bigl(\{\omega:\omega\in C
+\text{ and }
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,e)\Longleftrightarrow e\in A
+\text{ for every }e\in U\}\bigr)
+=
+p^{|A|}(1-p)^{|U|-|A|}
+\noderef{TwoBiteEventProbability}(C).
+\]
+\end{helper}
+\begin{proof}
+Unfold \(\noderef{TwoBiteEventProbability}\) and
+\(\noderef{TwoBiteSampleWeight}\).  A sample consists of a red graph, a blue
+graph, and an injection, and its weight is the product of the two
+\(\noderef{GnpGraphWeight}\) factors and the
+\(\noderef{UniformInjectionWeight}\) factor.  Each graph-weight factor is a
+finite product over canonically oriented non-loop base-edge coordinates, with
+factor \(p\) when the edge is present and factor \(1-p\) when it is absent.
+The tagged red and blue coordinates are disjoint because they belong to
+different graph factors.
+
+The cylinder hypothesis says exactly that membership in \(C\) fixes the
+injection to the injection of \(\omega_0\) and fixes precisely the recorded
+coordinates in \(R\) to the truth table of \(\omega_0\).  It imposes no
+condition on coordinates outside \(R\).  Since every coordinate in \(R\) and
+\(U\) is canonically oriented, equality of the underlying graph coordinate
+between an element of \(R\) and an element of \(U\) would force equality of the
+tagged coordinates themselves.  This contradicts \(U\cap R=\emptyset\).  Thus
+the product coordinates \(U\) are genuinely unconstrained by the cylinder.
+
+Because \(\omega_0\in C\), the denominator cylinder is nonempty.  The
+injection factor is positive for the fixed injection of \(\omega_0\).  Since
+\(0<p<1\), each fixed recorded graph factor is either \(p\) or \(1-p\), hence
+positive, and all unrestricted-coordinate sums are sums of nonnegative terms
+with at least one positive term.  Therefore
+\(\noderef{TwoBiteEventProbability}(C)\ne 0\).
+
+Now fix \(A\subseteq U\).  In the numerator, the cylinder contributes exactly
+the same fixed injection factor and the same fixed \(R\)-coordinate factor as
+in the denominator.  The event on \(U\) contributes \(p\) for each coordinate
+of \(A\) and \(1-p\) for each coordinate of \(U\setminus A\), so its total
+factor is
+\[
+p^{|A|}(1-p)^{|U|-|A|}.
+\]
+All remaining coordinates are unrestricted both in the numerator and in the
+denominator; summing over each such coordinate contributes \(p+(1-p)=1\).
+Thus the numerator is exactly
+\[
+p^{|A|}(1-p)^{|U|-|A|}
+\noderef{TwoBiteEventProbability}(C),
+\]
+as claimed.
+\end{proof}

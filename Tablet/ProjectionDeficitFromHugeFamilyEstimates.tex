@@ -1,0 +1,58 @@
+\begin{helper}
+Let \(H\) be a finite family of subsets \(A_x\subseteq I\), let \(f\) be a
+projection map, and set
+\[
+S=\sum_{x\in H}|A_x|.
+\]
+Assume \(0\le\delta\) and \(0\le C\).  Assume each member has size at least
+\(t\), the family size satisfies
+\[
+|H|\le 2|I|/t,
+\]
+all pairwise intersections \(A_x\cap A_y\) have size at most \(C\), and
+\[
+(2|I|/t+1)C\le\delta t.
+\]
+Assume also that every projected piece satisfies
+\[
+|f(A_x)|\le\delta |A_x|.
+\]
+Then
+\[
+(1-2\delta)S\le |I|-|f(I)|.
+\]
+\end{helper}
+\begin{proof}
+The lower size bound gives \( |H|t\le S\).  Since
+\(|H|\le2|I|/t\), the elementary inequality
+\[
+\binom{|H|}{2}_{\mathbb R}\le |H|(2|I|/t+1)
+\]
+implies
+\[
+\binom{|H|}{2}_{\mathbb R}C
+\le |H|(2|I|/t+1)C
+\le |H|\delta t
+\le \delta S.
+\]
+Here \(0\le C\) justifies multiplying the binomial bound by \(C\), and
+\(0\le\delta\) justifies multiplying \(|H|t\le S\) by \(\delta\).
+The pointwise image estimates give
+\[
+\sum_{x\in H}|f(A_x)|\le \delta S.
+\]
+The image of the union is contained in the union of the images, so by the
+finite union bound
+\[
+\left|f\!\left(\bigcup_{x\in H}A_x\right)\right|
+\le \sum_{x\in H}|f(A_x)|
+\le\delta S.
+\]
+Thus the hypotheses of \(\noderef{ProjectionDeficitFromUnionLoss}\) are
+satisfied: the pairwise-overlap loss is at most \(\delta S\), and the image of
+the union is at most \(\delta S\).  Applying that helper gives
+\[
+(1-2\delta)S\le |I|-|f(I)|,
+\]
+as claimed.
+\end{proof}

@@ -1,0 +1,30 @@
+\begin{helper}
+In a fixed history cell, assume each complete red terminal branch supplies a
+blue exceptional set \(E_B(\beta)\) satisfying the closed-pair bound
+\(|E_B(\beta)|\le 3\varepsilon_1 k^2\) and covering every blue present
+staged-open coordinate of any regular independent completion of that branch.
+Then there is one natural number \(N_B^{\mathrm{exc}}\), independent of the
+branch, such that
+\[
+N_B^{\mathrm{exc}}\le 3\varepsilon_1 k^2,
+\]
+and every nonempty red branch admits a blue exceptional set of cardinality at
+most \(N_B^{\mathrm{exc}}\) with the same blue coverage property.
+\end{helper}
+\begin{proof}
+The argument is the color-swapped version of
+\(\noderef{FixedSetHistoryCellGlobalRedExceptionalWitness}\).  The two-bite
+sample space is finite, so the family of relevant complete red terminal
+branches is finite.  For each such branch, choose the blue exceptional set
+given by the branch hypothesis.
+
+By \(\noderef{ClosedPairsBound}\), each chosen set has cardinality at most
+\(3\varepsilon_1 k^2\), and the branch hypothesis gives its terminal
+containment and blue-coverage property for all regular completions agreeing
+with the branch on the embedding, recorded coordinates, and all red terminal
+coordinates.  Let \(N_B^{\mathrm{exc}}\) be the maximum of these finitely many
+cardinalities, or \(0\) if there are no relevant branches.  Since every
+cardinality in the finite maximum is at most \(3\varepsilon_1 k^2\), the
+maximum has the same bound.  Each branch keeps its chosen exceptional set,
+now bounded by this global maximum, which proves the claim.
+\end{proof}

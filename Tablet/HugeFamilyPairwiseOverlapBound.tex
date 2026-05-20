@@ -1,0 +1,25 @@
+\begin{helper}
+Assume \(\noderef{FiberAndDegreeEvent}\).  For any finite set \(I\) and any
+two distinct base vertices \(x\ne y\),
+\[
+|X_x(I)\cap X_y(I)|\le 100(\log n)^3.
+\]
+\end{helper}
+\begin{proof}
+Unfold \(X_z(I)\).  It is the subset of \(I\) consisting of vertices in the
+lifted neighborhood of \(z\).  Therefore
+\[
+X_x(I)\cap X_y(I)\subseteq N_x\cap N_y,
+\]
+where \(N_z\) denotes the lifted neighborhood of the base vertex \(z\).
+
+Write the two base vertices in the disjoint union of red and blue base
+vertices.  If both are red, then \(x\ne y\) is exactly the distinctness of the
+two red indices, and the red-red lifted-neighborhood intersection clause of
+\(\noderef{FiberAndDegreeEvent}\) gives the bound for \(N_x\cap N_y\).  If
+both are blue, the blue-blue clause gives the same bound.  If one is red and
+one is blue, the mixed red-blue clause gives the same bound; reversing the
+order of the two colors only uses commutativity of intersection.  In every
+case, finite-set cardinality monotonicity along the displayed inclusion gives
+the asserted bound for \(X_x(I)\cap X_y(I)\).
+\end{proof}

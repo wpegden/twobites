@@ -1,0 +1,106 @@
+\begin{helper}[Coordinate Marginal Probability]
+Fix $m_{sub} \in \mathbb{N}$, a probability $p_{sub} \in \mathbb{R}$ with $0 \le p_{sub} \le 1$, subsets $P_R, P_B \subseteq \mathrm{Fin}(m_{sub})$, a coordinate $x \in \mathrm{Fin}(2m_{sub})$, and target sets $A_R, A_B \subseteq \mathrm{Fin}(m_{sub})$.
+Let $q = \noderef{FixedSetProductModelMassFn}(p_{sub}, P_R, P_B)$.
+Then the marginal probability that the coordinate $x$ contains $A_R$ in its first component and $A_B$ in its second component is exactly $p_{sub}^{|A_R| + |A_B|}$ if $A_R \subseteq P_R$ and $A_B \subseteq P_B$, and $0$ otherwise.
+\end{helper}
+\begin{proof}
+Let
+\[
+S=\mathcal P(\mathrm{Fin}(m_{sub}))\times
+  \mathcal P(\mathrm{Fin}(m_{sub})),\qquad
+J=\mathrm{Fin}(2m_{sub}),
+\]
+and write
+\[
+W(v)=\prod_{i\in J}q(v_i).
+\]
+By \(\noderef{FixedSetProductModelMass}\), the one-coordinate mass \(q\)
+satisfies
+\[
+\sum_{a\in S}q(a)=1.
+\]
+
+First isolate the distinguished coordinate \(x\).  Let
+\(J_x=J\setminus\{x\}\).  A full assignment \(v:J\to S\) is equivalent to
+the pair consisting of its value \(a=v_x\in S\) and its restriction
+\(w:J_x\to S\).  The inverse sends a pair \((a,w)\) to the assignment whose
+value at \(x\) is \(a\) and whose value at every \(i\ne x\) is \(w_i\).
+Under this bijection the product weight factors as
+\[
+W(v)=q(a)\prod_{i\in J_x}q(w_i).
+\]
+Therefore finite Fubini gives
+\[
+\begin{aligned}
+&\sum_{v:J\to S}
+{\bf 1}_{A_R\subseteq(v_x)_1,\ A_B\subseteq(v_x)_2}W(v)\\
+&\qquad =
+\sum_{a\in S}
+{\bf 1}_{A_R\subseteq a_1,\ A_B\subseteq a_2}q(a)
+\left(
+\sum_{w:J_x\to S}\prod_{i\in J_x}q(w_i)
+\right).
+\end{aligned}
+\]
+
+The remaining-coordinate sum in parentheses is \(1\).  More generally, for
+every finite coordinate set \(T\subseteq J\), define
+\[
+R(T)=\sum_{w:T\to S}\prod_{i\in T}q(w_i).
+\]
+We prove \(R(T)=1\) by finite induction on \(T\).  For \(T=\emptyset\), there
+is one empty assignment and the empty product is \(1\).  If
+\(T=T'\cup\{j\}\) with \(j\notin T'\), then an assignment on \(T\) is
+equivalent to a value \(a\in S\) at \(j\) together with an assignment on
+\(T'\).  Hence
+\[
+R(T)=\sum_{a\in S}q(a)\,R(T')
+=\left(\sum_{a\in S}q(a)\right)R(T')=1\cdot1=1.
+\]
+Taking \(T=J_x\), the product marginal reduces to the one-coordinate sum
+\[
+\sum_{a\in S}
+{\bf 1}_{A_R\subseteq a_1,\ A_B\subseteq a_2}q(a).
+\]
+
+If \(A_R\not\subseteq P_R\), then any \(a\) with \(A_R\subseteq a_1\) has
+\(a_1\not\subseteq P_R\), so \(q(a)=0\) by
+\(\noderef{FixedSetProductModelMassFn}\).  The same argument applies if
+\(A_B\not\subseteq P_B\).  Thus the one-coordinate sum is \(0\) in the
+off-support case.
+
+Assume now that \(A_R\subseteq P_R\) and \(A_B\subseteq P_B\).  Since
+\(\noderef{FixedSetProductModelMassFn}\) is zero off the support
+\(R\subseteq P_R,\ B\subseteq P_B\), the one-coordinate sum equals
+\[
+\left(
+\sum_{A_R\subseteq R\subseteq P_R}
+  p_{sub}^{|R|}(1-p_{sub})^{|P_R|-|R|}
+\right)
+\left(
+\sum_{A_B\subseteq B\subseteq P_B}
+  p_{sub}^{|B|}(1-p_{sub})^{|P_B|-|B|}
+\right).
+\]
+For the first factor, reindex each \(R\) uniquely as
+\[
+R=A_R\cup T,\qquad T\subseteq P_R\setminus A_R.
+\]
+The two pieces are disjoint, so \(|R|=|A_R|+|T|\), and
+\(|P_R|-|R|=|P_R\setminus A_R|-|T|\).  Thus the first factor is
+\[
+p_{sub}^{|A_R|}
+\sum_{T\subseteq P_R\setminus A_R}
+  p_{sub}^{|T|}(1-p_{sub})^{|P_R\setminus A_R|-|T|}
+=p_{sub}^{|A_R|}(p_{sub}+1-p_{sub})^{|P_R\setminus A_R|}
+=p_{sub}^{|A_R|}.
+\]
+The second factor is identical, with \(A_B\) and \(P_B\) in place of
+\(A_R\) and \(P_R\), and equals \(p_{sub}^{|A_B|}\).  Multiplying the two
+factors gives
+\[
+p_{sub}^{|A_R|}p_{sub}^{|A_B|}
+=p_{sub}^{|A_R|+|A_B|},
+\]
+which proves the stated marginal in the on-support case.
+\end{proof}

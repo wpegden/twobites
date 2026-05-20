@@ -1,0 +1,118 @@
+\begin{lemma}
+Let \(U_0,V_0\subseteq\operatorname{Fin}n\) be fixed disjoint sets of
+original vertices.  Fix a red base graph \(G_R\), a red row map
+\(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), and an exposure
+\(\eta:U_0\to\operatorname{Fin}m\).  Assume the red rows used by \(U_0\) and
+\(V_0\) are disjoint:
+\[
+u\in U_0,\ v\in V_0 \quad\Longrightarrow\quad \rho(u)\ne\rho(v).
+\]
+Put \(S(\eta)=\eta(U_0)\).  Conditional on \(G_R\), on the full red row map
+\(\rho\), and on the blue-coordinate exposure \(\eta\) on \(U_0\), the
+probability that at least \(t\) vertices of \(V_0\) have blue coordinate in
+\(S(\eta)\) is at most
+\[
+\binom{|V_0|}{t}\left(\frac{|S(\eta)|}{m}\right)^t .
+\]
+\end{lemma}
+\begin{proof}
+Let
+\[
+C_0=\{\omega:\omega.1=G_R\text{ and }(\pi_R^\omega(v))=\rho(v)
+\text{ for every }v\},
+\]
+where \(\pi_R^\omega(v)\) denotes the first coordinate of the injection in
+the sample \(\omega\).  Let
+\[
+H_\eta=\{\omega:(\pi_B^\omega(u))=\eta(u)\text{ for every }u\in U_0\},
+\qquad C_\eta=C_0\cap H_\eta .
+\]
+If \(\operatorname{TwoBiteEventProbability}(C_\eta)=0\), then the conditional
+probability in \(\noderef{TwoBiteConditionalProbability}\) is defined to be
+\(0\), and the desired inequality is immediate.
+
+Assume now that \(C_\eta\) has nonzero mass.  Expand the conditional
+probability over the finite two-bite sample space.  In the conditioning cell
+\(C_0\), the red graph and the red row map are fixed.  By
+\(\noderef{TwoBiteSampleWeight}\), all remaining sample weights factor into a
+common factor depending on \(G_R\), a blue-graph weight, and the uniform
+injection weight.  The sum over blue graphs is independent of the injection
+coordinates, and the row-injection factors split over the red rows.
+
+Now pass from sample weights to injection counts.  Let \(D_\eta\) be the set
+of injections \(\phi:\operatorname{Fin}n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m\) satisfying
+\[
+(\phi(v))_1=\rho(v)\quad\text{for every }v,
+\qquad
+(\phi(u))_2=\eta(u)\quad\text{for every }u\in U_0.
+\]
+For a fixed set \(T\subseteq V_0\), let \(D_\eta(T)\subseteq D_\eta\) be the
+subset satisfying \((\phi(v))_2\in S(\eta)\) for every \(v\in T\).  Since the
+conditioning mass is nonzero, the weighted denominator for \(C_\eta\) is
+nonzero; after the common red-graph, blue-graph-sum, and uniform-injection
+factors are canceled, this implies \(|D_\eta|>0\).  Therefore conditional
+probabilities for events depending only on the injection are ratios
+\[
+\Pr(D_\eta(T)\mid C_\eta)=\frac{|D_\eta(T)|}{|D_\eta|}.
+\]
+
+Decompose these two finite sets by red rows.  For each row
+\(i\in\operatorname{Fin}m\), put
+\[
+R_i=\{v:\rho(v)=i\},\qquad A_i=U_0\cap R_i,\qquad
+B_i=T\cap R_i.
+\]
+The denominator row factor \(d_i\) is the number of injective blue-coordinate
+assignments on \(R_i\) that agree with \(\eta\) on \(A_i\).  The numerator
+row factor \(d_i(T)\) imposes in addition that the vertices of \(B_i\) land
+in \(S(\eta)\).  The global counts factor as
+\[
+|D_\eta|=\prod_i d_i,\qquad |D_\eta(T)|=\prod_i d_i(T),
+\]
+because choices in different red rows are independent and pairs with
+different first coordinate are automatically distinct.
+
+If \(B_i=\varnothing\), then the extra \(T\)-condition imposes nothing in row
+\(i\), so \(d_i(T)=d_i\).  If \(B_i\ne\varnothing\), then row-disjointness
+implies \(A_i=\varnothing\): a row containing a vertex of \(T\subseteq V_0\)
+cannot contain a vertex of \(U_0\).  Thus the exposure \(\eta\) imposes no
+condition in this row, and \(d_i(T)/d_i\) is exactly the ordinary rowwise
+fraction of injective assignments on \(R_i\) that send all vertices of
+\(B_i\) into the fixed set \(S(\eta)\).  The row-injection counting estimate
+underlying \(\noderef{OppositeProjectionRowInjectionLaw}\) gives
+\[
+\frac{d_i(T)}{d_i}\le
+\left(\frac{|S(\eta)|}{m}\right)^{|B_i|}.
+\]
+All denominator factors \(d_i\) are nonzero in the present nonzero cell; if
+some \(d_i=0\), then \(|D_\eta|=0\), contrary to \(|D_\eta|>0\).
+Multiplying the row ratios and using that the sets \(B_i=T\cap R_i\)
+partition \(T\), we get
+\[
+\frac{|D_\eta(T)|}{|D_\eta|}
+\le
+\prod_i\left(\frac{|S(\eta)|}{m}\right)^{|B_i|}
+=
+\left(\frac{|S(\eta)|}{m}\right)^{|T|}.
+\]
+Equivalently,
+\[
+\Pr(\forall v\in T,\ \pi_B^\omega(v)\in S(\eta)\mid C_\eta)
+\le \left(\frac{|S(\eta)|}{m}\right)^{|T|}.
+\]
+
+Let
+\[
+W_\eta=|\{v\in V_0:\pi_B^\omega(v)\in S(\eta)\}|.
+\]
+If \(W_\eta\ge t\), then there is a \(t\)-element subset
+\(T\subseteq V_0\) such that every \(v\in T\) has blue coordinate in
+\(S(\eta)\).  Taking the finite union over all such \(T\) gives
+\[
+\Pr(W_\eta\ge t\mid G_R,\rho,\eta)
+\le \binom{|V_0|}{t}\left(\frac{|S(\eta)|}{m}\right)^t.
+\]
+The same estimate is trivial when \(t>|V_0|\), since there are no
+\(t\)-element subsets of \(V_0\).  This proves the claimed bound.
+\end{proof}

@@ -1,0 +1,29 @@
+\begin{helper}
+Fix a history cell \(C\), a fixed-count subevent \(D\subseteq C\), a terminal
+set \(U\), and one of the two colors.  Suppose that every \(\omega\in C\cap D\)
+has a first-color terminal trace
+\[
+A(\omega)\subseteq U_{\mathrm{first}}
+\]
+such that, for each first-color terminal coordinate \(e\), the terminal value
+of \(e\) in \(\omega\) is present exactly when \(e\in A(\omega)\).  Then the
+complete first-color trace classes cover \(C\cap D\), and two distinct trace
+sets define disjoint classes.
+\end{helper}
+\begin{proof}
+Let \(U_{\mathrm{first}}\) be the first-color part of \(U\).  By hypothesis,
+for each \(\omega\in C\cap D\) there is a subset
+\(A(\omega)\subseteq U_{\mathrm{first}}\) recording exactly the present
+first-color terminal coordinates.  Therefore \(\omega\) belongs to the branch
+indexed by \(A(\omega)\), so the branches cover \(C\cap D\).
+
+For disjointness, let \(A\) and \(B\) be two different subsets of
+\(U_{\mathrm{first}}\).  Choose \(e\) in their symmetric difference.  Since
+both \(A\) and \(B\) are subsets of \(U_{\mathrm{first}}\), this coordinate is
+first-color and terminal.  If one sample \(\omega\) lay in both trace
+branches, then the branch condition for \(A\) would say
+\(X_e(\omega)=1\) exactly when \(e\in A\), while the branch condition for
+\(B\) would say the same value is present exactly when \(e\in B\).  These two
+truth values differ by the choice of \(e\), a contradiction.  Thus distinct
+complete first-color trace branches are disjoint.
+\end{proof}

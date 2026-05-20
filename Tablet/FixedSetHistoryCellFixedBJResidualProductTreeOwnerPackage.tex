@@ -1,0 +1,106 @@
+\begin{helper}
+Fix one blue support label \(B\), one red label \(J\), the terminal
+coordinate set \(U\), and the finite branch/transcript interface for the
+red-second part of the reveal order.  For a realized pair \((\beta,\tau)\),
+write
+\[
+R_{\beta,J},\qquad P_\tau,\qquad A_\tau,\qquad Z_\tau
+\]
+for the decoded red support, forced-present set, forced-absent set, and
+selected absent set.  Assume the terminal product law, \(0\le p\le1/2\),
+the fixed-\((B,J)\) realized-cell geometry, compatibility soundness and
+compatibility uniqueness for complete terminal assignments, and explicit
+released residual block data
+\[
+\mathcal R_{\beta,\tau}\subseteq 2^U
+\]
+for realized pairs.  The released blocks satisfy:
+block assignments are residual assignments on \(U\); membership in
+\(\mathcal R_{\beta,\tau}\) makes
+\[
+(A_{\rm res}\setminus Z_\tau)\cup B\cup R_{\beta,J}
+\]
+compatible with \((\beta,\tau)\); reconstructed compatibility puts
+\(A_{\rm res}\) back in \(\mathcal R_{\beta,\tau}\); blocks for distinct
+realized pairs are disjoint; and the residual cylinder
+\[
+\{A_{\rm res}\subseteq U:
+P_\tau\setminus(B\cup R_{\beta,J})\subseteq A_{\rm res},\
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset\}
+\]
+is contained in \(\mathcal R_{\beta,\tau}\).
+
+Then the fixed labels \(B,J\) admit one residual owner
+\[
+\operatorname{owner}_{B,J}:2^U\to
+  \{\hbox{branch/transcript pairs}\}\cup\{\bot\}
+\]
+whose fiber over every realized pair contains the corresponding residual
+cylinder, and a residual assignment cannot be owned by two different
+realized pairs.  Moreover there is a finite residual leaf type
+\(\Lambda_{B,J}\), a leaf map \(\iota(\beta,\tau)\), and nonnegative leaf
+masses \(\nu\), normalized by
+\[
+\sum_{\lambda\in\Lambda_{B,J}}\nu(\lambda)\le1,
+\]
+such that the leaf map is injective on realized pairs and every realized
+pair satisfies
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \nu(\iota(\beta,\tau)).
+\]
+\end{helper}
+\begin{proof}
+First construct the owner from the supplied released blocks.  For a residual
+assignment \(A_{\rm res}\), if it lies in at least one realized block
+\(\mathcal R_{\beta,\tau}\), choose one such pair and set
+\(\operatorname{owner}_{B,J}(A_{\rm res})=(\beta,\tau)\); otherwise set the
+owner to \(\bot\).  The disjointness hypothesis on the released blocks makes
+this choice independent of the chosen witness: if the same residual
+assignment lay in both \(\mathcal R_{\beta,\tau}\) and
+\(\mathcal R_{\beta',\tau'}\), then the block-disjointness assertion would
+force \(\beta=\beta'\) and \(\tau=\tau'\).  This is exactly the uniqueness
+invariant isolated by the fixed-\((B,J)\) released-block interface
+\(\noderef{FixedSetHistoryCellFixedBJResidualReleasedBlockData}\).
+
+For a realized pair \((\beta,\tau)\), the residual-cylinder containment
+hypothesis says that every assignment satisfying
+\[
+P_\tau\setminus(B\cup R_{\beta,J})\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset
+\]
+lies in \(\mathcal R_{\beta,\tau}\).  By the preceding paragraph, the owner
+of such an assignment is \((\beta,\tau)\).  Thus the owner fiber of
+\((\beta,\tau)\) contains the whole displayed residual cylinder.  If the
+same owner value were also \((\beta',\tau')\), equality of the two values of
+one function gives equality of the ordered pairs, hence
+\(\beta=\beta'\) and \(\tau=\tau'\).
+
+It remains to build the normalized leaf package.  Apply
+\(\noderef{FixedSetHistoryCellFixedBJResidualPartitionData}\) to the
+released blocks.  That node converts the terminal Bernoulli product measure
+on \(2^U\) into residual assignment masses \(\mu(A_{\rm res})\), released
+assignment sets, and released block masses \(\rho_{\beta,\tau}\).  Its
+hypotheses are exactly the block data assumed here: subset of \(2^U\),
+soundness of reconstructed compatibility, converse membership,
+disjointness, and residual-cylinder containment.  It gives
+\[
+\sum_{A_{\rm res}\subseteq U}\mu(A_{\rm res})\le1,
+\]
+disjoint released assignment blocks, and for every realized pair
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \rho_{\beta,\tau}.
+\]
+
+Now apply
+\(\noderef{FixedSetHistoryCellFixedBJResidualDecisionTreeSupport}\) to this
+partition data.  It takes the disjoint released blocks and their masses,
+uses the pair \((\beta,\tau)\) itself as the residual leaf label, assigns
+that leaf the mass \(\rho_{\beta,\tau}\) for realized pairs and mass \(0\)
+otherwise, and invokes the released-cylinder packing bound to obtain total
+leaf mass at most \(1\).  Injectivity of the leaf map is equality of ordered
+pairs, and the residual domination inequality is exactly the lower bound on
+\(\rho_{\beta,\tau}\) supplied by the partition-data node.  This yields the
+claimed residual owner and normalized product-tree leaf package.
+\end{proof}

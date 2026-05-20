@@ -1,0 +1,35 @@
+\begin{helper}
+Let \(P_I=\noderef{TwoBiteProjectionPairSet}(\omega,I)\), let
+\[
+C_I=\{e\in P_I:\noderef{TwoBiteProjectionPairClosed}(\omega,I,e)\},
+\]
+and let \(U_I=\noderef{TwoBiteUnclosedProjectedPairs}(\omega,I)\).  For any
+real numbers \(f\) and \(E\), if
+\[
+|C_I|\le |P_I|-f+E,
+\]
+then
+\[
+f-E\le |U_I|.
+\]
+\end{helper}
+\begin{proof}
+By definition, \(C_I\) is the filter of \(P_I\) by the predicate
+\(\noderef{TwoBiteProjectionPairClosed}(\omega,I,e)\), while \(U_I\) is the
+filter of the same finite set \(P_I\) by the negation of that predicate.
+Thus \(C_I\) and \(U_I\) are complementary filters inside \(P_I\).  The usual
+finite-set filter identity gives
+\[
+|C_I|+|U_I|=|P_I|.
+\]
+After viewing these natural cardinalities as real numbers, this is
+\[
+|U_I|=|P_I|-|C_I|.
+\]
+The assumed inequality \(|C_I|\le |P_I|-f+E\) is equivalent, by subtracting
+it from \(|P_I|\), to
+\[
+|P_I|-|C_I|\ge f-E.
+\]
+Substituting \(|U_I|=|P_I|-|C_I|\) gives \(f-E\le |U_I|\), as claimed.
+\end{proof}

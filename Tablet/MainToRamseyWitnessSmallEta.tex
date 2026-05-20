@@ -1,0 +1,127 @@
+\begin{lemma}
+Assume the main-independence hypothesis: for every real \(\varepsilon>0\), all
+sufficiently large \(n\) admit a graph \(G\) on \(\mathrm{Fin}(n)\) with
+\(G.\mathrm{CliqueFree}(3)\) and
+\[
+\noderef{IndependenceNumberLess}
+\left(G,(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right).
+\]
+Then, for every real \(0<\eta<1/2\), there is an integer \(k_0\) such that for
+every integer \(k\ge k_0\) there is an integer \(N\) satisfying
+\[
+\noderef{RamseyWitness}(N,k)
+\qquad\text{and}\qquad
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le (N:\mathbb R).
+\]
+\end{lemma}
+\begin{proof}
+Fix \(0<\eta<1/2\), and put
+\[
+c=\frac12-\frac{\eta}{2}.
+\]
+Then
+\[
+\frac12-\eta<c<\frac12,\qquad
+\delta:=c-\left(\frac12-\eta\right)=\frac{\eta}{2}>0.
+\]
+Because \(2c<1\), choose \(\varepsilon>0\) so small that
+\[
+2c(1+\varepsilon)^2<1. \tag{1}
+\]
+Apply the main-independence hypothesis to this \(\varepsilon\).  There is an
+integer \(n_0\) such that every \(n\ge n_0\) has a graph \(G\) on
+\(\mathrm{Fin}(n)\) with \(G.\mathrm{CliqueFree}(3)\) and
+\[
+\noderef{IndependenceNumberLess}
+\left(G,(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right). \tag{2}
+\]
+
+Choose \(k_0\) large enough that, for every \(k\ge k_0\),
+\[
+k\ge3,\qquad \log k>0,\qquad \log k>c,
+\]
+\[
+c\,\frac{k^2}{\log k}\ge n_0+1,\qquad
+c\,\frac{k^2}{\log k}\ge4,\qquad
+\delta\,\frac{k^2}{\log k}\ge1. \tag{3}
+\]
+Such a threshold exists because \(\log k\to\infty\) and
+\(k^2/\log k\to\infty\).
+
+Fix \(k\ge k_0\), abbreviate
+\[
+X=c\,\frac{k^2}{\log k},
+\]
+and set
+\[
+N=\lfloor X\rfloor. \tag{4}
+\]
+Since \(X\ge0\), the floor inequalities give
+\[
+(N:\mathbb R)\le X,\qquad X-1\le (N:\mathbb R). \tag{5}
+\]
+The last inequality in (3) gives
+\[
+1\le \delta\,\frac{k^2}{\log k}.
+\]
+Subtracting this from \(X=c\,k^2/\log k\), we get
+\[
+X-1\ge
+\left(c-\delta\right)\frac{k^2}{\log k}
+=\left(\frac12-\eta\right)\frac{k^2}{\log k}. \tag{6}
+\]
+Combining (5) and (6), and using the definition of \(\noderef{RamseyScale}\),
+\[
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le (N:\mathbb R). \tag{7}
+\]
+The first middle inequality in (3) also gives
+\[
+(N:\mathbb R)\ge X-1\ge n_0,
+\]
+so \(N\ge n_0\).  The second middle inequality in (3) gives
+\[
+(N:\mathbb R)\ge X-1\ge3,
+\]
+so \(N\ge3\).
+
+We next prove that the graph supplied by (2) for this \(N\) has no independent
+set of cardinality \(k\).  From \(N\ge3\), \(N>0\) and \(\log N>0\).  From
+\((N:\mathbb R)\le X\) and \(\log k>c>0\),
+\[
+(N:\mathbb R)\le c\,\frac{k^2}{\log k}<k^2. \tag{8}
+\]
+Thus \(0<N\le k^2\).  Monotonicity of logarithm on positive reals gives
+\[
+\log N\le \log(k^2)=2\log k. \tag{9}
+\]
+Multiplying the upper bounds in (5) and (9), and using \(\log k>0\), yields
+\[
+N\log N\le
+\left(c\,\frac{k^2}{\log k}\right)(2\log k)=2c\,k^2. \tag{10}
+\]
+Multiplying by \((1+\varepsilon)^2>0\) and using (1),
+\[
+(1+\varepsilon)^2N\log N<k^2. \tag{11}
+\]
+Both sides are nonnegative and \(k>0\), so monotonicity of square root gives
+\[
+(1+\varepsilon)\sqrt{N\log N}<k. \tag{12}
+\]
+
+Apply (2) at \(n=N\), using \(N\ge n_0\).  We get a graph \(G\) on
+\(\mathrm{Fin}(N)\) with \(G.\mathrm{CliqueFree}(3)\) and
+\[
+\noderef{IndependenceNumberLess}
+\left(G,(1+\varepsilon)\sqrt{N\log N}\right).
+\]
+If \(I\subseteq\mathrm{Fin}(N)\) were independent with \(|I|=k\), then
+\(\noderef{IndependenceNumberLess}\) and (12) would give
+\[
+(k:\mathbb R)=(|I|:\mathbb R)
+<(1+\varepsilon)\sqrt{N\log N}<k,
+\]
+a contradiction.  Hence no independent \(k\)-set exists in \(G\), and together
+with \(G.\mathrm{CliqueFree}(3)\) this is exactly
+\(\noderef{RamseyWitness}(N,k)\).  The scale lower bound is (7), so the desired
+conclusion holds for every \(k\ge k_0\).
+\end{proof}

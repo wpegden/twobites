@@ -1,0 +1,98 @@
+\begin{helper}
+Fix finite branch labels \(\mathcal T\), transcript labels \(\mathcal P\),
+a terminal coordinate set \(U\), a blue support \(B\), and red supports
+\(R_\beta\).  For a transcript \(\tau\), write
+\[
+P_\tau,\qquad A_\tau,\qquad Z_\tau
+\]
+for its forced-present, forced-absent, and selected-absent coordinate sets.
+Let \(\mathsf{Realized}(\beta,\tau)\) be the predicate that the
+branch/transcript cell is actually realized.  Assume \(0\le p\le 1/2\),
+\(|B|=u_B\), and \(B\subseteq U\).  For every realized
+\((\beta,\tau)\), assume
+\[
+|R_\beta|=u_R,\qquad R_\beta\subseteq U,\qquad
+B\cap R_\beta=\emptyset,\qquad
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+B\cup R_\beta\subseteq P_\tau,\qquad Z_\tau\subseteq A_\tau,\qquad
+L:=\max(0,a-u_R-u_B)\le |Z_\tau|.
+\]
+
+Assume the released residual cylinder mass
+\(\rho_{\beta,\tau}\) is nonnegative on realized cells and is exactly the
+product of the factors left after the mandatory present supports
+\(B\cup R_\beta\) and the selected absences \(Z_\tau\) have been removed:
+\[
+\rho_{\beta,\tau}
+=p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}.
+\]
+Assume also the fixed-support product-tree packing bound
+\[
+\sum_{\beta\in\mathcal T}
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    \rho_{\beta,\tau}\le 1.
+\]
+Then there is a finite residual leaf set \(\Lambda\), a leaf map
+\(\iota(\beta,\tau)\in\Lambda\), and nonnegative leaf masses
+\(\nu:\Lambda\to\mathbb R\) such that
+\[
+\sum_{\lambda\in\Lambda}\nu(\lambda)\le1,
+\]
+the leaf map is injective on realized branch/transcript pairs, and every
+realized pair satisfies the termwise cylinder domination
+\[
+p^{|P_\tau|}(1-p)^{|A_\tau|}
+\le
+p^{u_R}p^{u_B}(1-p)^L\,\nu(\iota(\beta,\tau)).
+\]
+\end{helper}
+\begin{proof}
+Let the residual leaves be the realized pairs
+\[
+(\beta,\tau)\quad\hbox{with}\quad
+\tau\in\mathcal P,\ \mathsf{Realized}(\beta,\tau),
+\]
+together with one dummy leaf.  Send a realized pair to its own leaf and send
+all non-realized formal pairs to the dummy leaf.  Give the realized leaf
+\((\beta,\tau)\) mass \(\rho_{\beta,\tau}\), and give the dummy leaf mass
+\(0\).  This definition is single-valued because a realized leaf is indexed
+by the pair itself.
+
+The nonnegativity of \(\nu\) is the assumed nonnegativity of
+\(\rho_{\beta,\tau}\), plus the dummy mass \(0\).  The total leaf mass is
+exactly
+\[
+\sum_{\beta\in\mathcal T}
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    \rho_{\beta,\tau}
+\]
+plus the dummy contribution \(0\), so the fixed-support packing bound gives
+\(\sum_\lambda\nu(\lambda)\le1\).  If two realized pairs have the same leaf,
+then the leaf is the same indexed realized pair, hence both the branch label
+and the transcript are equal.  This proves injectivity on realized cells.
+
+It remains to verify the displayed domination.  Put \(q=1-p\).  From
+\(0\le p\le1/2\), \(0\le q\le1\).  For a realized pair, the geometry gives
+\[
+B\cup R_\beta\subseteq P_\tau,\qquad |B|=u_B,\qquad |R_\beta|=u_R,
+\]
+and \(Z_\tau\subseteq A_\tau\).  Thus the full cylinder factor splits as
+\[
+p^{|P_\tau|}q^{|A_\tau|}
+=
+p^{u_R}p^{u_B}q^{|Z_\tau|}
+  \bigl(p^{|P_\tau|-u_R-u_B}q^{|A_\tau|-|Z_\tau|}\bigr).
+\]
+The parenthesized factor is \(\rho_{\beta,\tau}\), which is the mass of the
+realized residual leaf \(\iota(\beta,\tau)\).  Since
+\(L\le |Z_\tau|\) and \(0\le q\le1\), we have \(q^{|Z_\tau|}\le q^L\).
+Multiplying by the nonnegative fixed factors gives
+\[
+p^{|P_\tau|}q^{|A_\tau|}
+\le
+p^{u_R}p^{u_B}q^L\,\nu(\iota(\beta,\tau)).
+\]
+Substituting \(q=1-p\) proves the termwise cylinder domination.
+\end{proof}

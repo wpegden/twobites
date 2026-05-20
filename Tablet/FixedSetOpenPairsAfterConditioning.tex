@@ -1,0 +1,191 @@
+\begin{lemma}
+Let \(I\subseteq[n]\) be a fixed set with
+\[
+|I|=k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Assume \(\varepsilon_1\ge0\),
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\), and the rounded
+sample-parameter identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+If a sample \(\omega\) satisfies
+\[
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,\omega)
+\quad\text{and}\quad
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega),
+\]
+then the staged-revelation open-pair set satisfies
+\[
+\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)
+  -10\varepsilon_1 k^2
+\le
+\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|.
+\]
+\end{lemma}
+\begin{proof}
+Keep the regularity hypothesis and the projection-size hypothesis separate.
+First unfold the projection-size event
+\(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)\).  By its
+definition this is a threefold conjunction, and its three projections are the
+natural-number equalities
+\[
+h_I:\ |I|=k,\qquad
+h_R:\ |I.\operatorname{image}\pi_R^\omega|=\ell_R,\qquad
+h_B:\ |I.\operatorname{image}\pi_B^\omega|=\ell_B, \tag{1}
+\]
+where \(\pi_R^\omega=\noderef{TwoBiteRedProjection}(\omega)\) and
+\(\pi_B^\omega=\noderef{TwoBiteBlueProjection}(\omega)\).  The equality
+\(h_I\) is the same scale equality as the separately stated active hypothesis
+\(|I|=k\); either copy may be used for rewriting, and below we use the one
+coming directly from the projection-size event.  Casting (1) to \(\mathbb R\)
+gives
+\[
+h_I^{\mathbb R}:\ (|I|:\mathbb R)=(k:\mathbb R),\quad
+h_R^{\mathbb R}:\ (|I.\operatorname{image}\pi_R^\omega|:\mathbb R)
+   =(\ell_R:\mathbb R),\quad
+h_B^{\mathbb R}:\ (|I.\operatorname{image}\pi_B^\omega|:\mathbb R)
+   =(\ell_B:\mathbb R). \tag{2}
+\]
+
+The child \(\noderef{RevealingLeavesOpenPairs}\) does not take the external
+scale \(k\) as an input; it uses the scale \(|I|\).  Its independence-scale
+hypothesis is therefore
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\tag{3}
+\]
+This follows by transitivity from \(h_I:|I|=k\) and the active scale
+hypothesis
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\tag{4}
+\]
+No regularity information is used in this step.
+
+Now unfold the regularity event
+\(\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega)\).  Its first, second, and third conjuncts, in the order of the Lean
+definition, are exactly
+\[
+\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2), \tag{5a}
+\]
+\[
+\noderef{TwoBiteMediumClosedPairsEvent}(k,\varepsilon,\varepsilon_1,\omega),
+\tag{5b}
+\]
+\[
+\noderef{TwoBiteSmallClosedPairsEvent}(k,\varepsilon,\varepsilon_1,\omega).
+\tag{5c}
+\]
+The first conjunct (5a) is already the fiber-degree hypothesis required by
+\(\noderef{RevealingLeavesOpenPairs}\).  The two closed-pair conjuncts must be
+transported from the displayed scale \(k\) to the child theorem's scale
+\(|I|\).  Since \(h_I:|I|=k\), equality elimination for the family
+\[
+s\longmapsto
+\noderef{TwoBiteMediumClosedPairsEvent}(s,\varepsilon,\varepsilon_1,\omega)
+\]
+rewrites the natural-number index \(k\) in (5b) to \(|I|\).  Equivalently,
+substitute \(k=|I|\) in the defining predicate
+\[
+\forall J,\ |J|=k\to
+\text{the closed-pair bound at scale }k,
+\]
+including both the premise \(|J|=k\) and the real scale appearing in the
+closed-pair bound.  This gives
+\[
+\noderef{TwoBiteMediumClosedPairsEvent}(|I|,\varepsilon,\varepsilon_1,\omega).
+\tag{6b}
+\]
+The same equality transport for the analogous family
+\[
+s\longmapsto
+\noderef{TwoBiteSmallClosedPairsEvent}(s,\varepsilon,\varepsilon_1,\omega)
+\]
+applied to (5c) gives
+\[
+\noderef{TwoBiteSmallClosedPairsEvent}(|I|,\varepsilon,\varepsilon_1,\omega).
+\tag{6c}
+\]
+These transports change only the explicit index of the event; the sample,
+the parameters \(\varepsilon,\varepsilon_1\), and the closed-pair event
+families themselves are unchanged.
+
+All remaining hypotheses of \(\noderef{RevealingLeavesOpenPairs}\) are passed
+verbatim from the active assumptions:
+\[
+0\le\varepsilon_1,\qquad
+\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0),\qquad n_0<n,
+\tag{7}
+\]
+and the rounded parameter identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\tag{8}
+\]
+Applying \(\noderef{RevealingLeavesOpenPairs}\) to the same
+\(\omega,I,\varepsilon,\varepsilon_1,\varepsilon_2,n_0,m,p\) now matches its
+hypotheses term by term: (7) supplies \(0\le\varepsilon_1\), the hierarchy
+package, and \(n_0<n\); (8) supplies the rounded \(m\) and \(p\) identities;
+(3) supplies the child scale equality \( |I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)\);
+(5a) supplies the fiber-degree event; and (6b),(6c) supply the medium and
+small closed-pair events at the child index \(k:=|I|\).  The child conclusion
+therefore yields
+\[
+\begin{aligned}
+&\noderef{ProjectionOpenPairFunction}
+ \left((|I.\operatorname{image}\pi_R^\omega|:\mathbb R),
+       (|I.\operatorname{image}\pi_B^\omega|:\mathbb R),
+       (|I|:\mathbb R),p,(n:\mathbb R)\right)
+ -10\varepsilon_1 (|I|:\mathbb R)^2  \\
+&\hspace{5em}\le
+\left(\left|
+\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)
+\right|:\mathbb R\right).
+\end{aligned}
+\tag{9}
+\]
+
+It remains only to rewrite the left side of (9) from the child theorem's
+internal projection sizes to the active statement's named integers
+\(\ell_R,\ell_B,k\).  The function
+\(\noderef{ProjectionOpenPairFunction}\) is an ordinary five-argument real
+function, so congruence allows substitutions in any of its first three
+arguments while leaving the final two arguments \(p\) and \((n:\mathbb R)\)
+fixed.  Substitute \(h_R^{\mathbb R}\) into the first argument, substitute
+\(h_B^{\mathbb R}\) into the second argument, and substitute
+\(h_I^{\mathbb R}\) into the third argument.  The same equality
+\(h_I^{\mathbb R}\) also rewrites the penalty term:
+\[
+(|I|:\mathbb R)^2=(k:\mathbb R)^2,
+\quad\text{hence}\quad
+10\varepsilon_1(|I|:\mathbb R)^2
+  =10\varepsilon_1(k:\mathbb R)^2.
+\tag{10}
+\]
+These substitutions are made inside the whole left-hand side
+\[
+x\longmapsto
+\noderef{ProjectionOpenPairFunction}(\cdots)-10\varepsilon_1(\cdots)^2,
+\]
+so the subtraction is rewritten by the same equality congruence.  The
+arguments \(p\) and \((n:\mathbb R)\), and the right-hand side
+\(\left(|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)|:\mathbb R\right)\),
+are not changed by these substitutions.  After the three argument rewrites and
+the penalty rewrite, (9) is exactly
+\[
+\noderef{ProjectionOpenPairFunction}
+  ((\ell_R:\mathbb R),(\ell_B:\mathbb R),(k:\mathbb R),p,(n:\mathbb R))
+  -10\varepsilon_1 (k:\mathbb R)^2
+\le
+\left(\left|
+\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)
+\right|:\mathbb R\right),
+\]
+which is the asserted open-pair lower bound.
+\end{proof}

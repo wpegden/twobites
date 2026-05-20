@@ -1,0 +1,9 @@
+\begin{helper}[Non-negative event probability]
+For any sample parameters \(n, M\in\mathbb N\), \(p_0\in[0,1]\), and any sample predicate \(E\), the event probability is non-negative:
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)(E)\ge0.
+\]
+\end{helper}
+\begin{proof}
+By \(\noderef{TwoBiteSampleWeightNonnegative}\), every sample weight is non-negative since \(p_0\in[0,1]\). Since \(\noderef{TwoBiteEventProbability}\) is the sum of these non-negative weights over a subset of samples, it is also non-negative.
+\end{proof}

@@ -1,0 +1,23 @@
+\begin{helper}
+Fix a terminal coordinate set \(U\), a branch-label type \(\mathcal T\), and
+for each branch label \(\beta\) a complete terminal blue trace
+\(\operatorname{blueTrace}(\beta)\subseteq U\).  Suppose branch labels are
+functional from this blue trace: whenever two branch labels have the same
+truth table on all blue terminal coordinates, the two branch labels are
+equal.  Let \(R_{\beta,J}\) be any red support decoded from a red label
+\(J\) after the branch label is fixed.
+
+Then, for a fixed red label \(J\), the decoded red support is determined by
+the terminal blue trace.  More precisely, if two branches \(\beta,\beta'\)
+have the same blue trace on all blue coordinates of \(U\), then
+\[
+R_{\beta,J}=R_{\beta',J}.
+\]
+\end{helper}
+\begin{proof}
+Assume \(\beta\) and \(\beta'\) have the same terminal blue trace.  By the
+branch-functionality hypothesis, equality of those blue traces forces
+\(\beta=\beta'\).  The red support decoder is a function of the branch label
+and the fixed red label \(J\).  Substituting \(\beta=\beta'\) in that
+function gives \(R_{\beta,J}=R_{\beta',J}\).
+\end{proof}

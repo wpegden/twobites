@@ -1,0 +1,101 @@
+\begin{helper}
+Fix one pair of support labels \(B,J\) in a fixed history cell, and write
+\(U\) for the terminal coordinate set with nodup reveal order \(o\).  Let
+\(\mathcal P\) be the transcript family.  For each realized
+branch/transcript pair \((\beta,\tau)\), write
+\[
+P_\tau,\qquad A_\tau,\qquad Z_\tau,\qquad F_{\beta,\tau}
+\]
+for the forced-present set, forced-absent set, selected absent set, and the
+fixed present support \(B\cup R_{\beta,J}\).  Assume the realized geometry
+\[
+F_{\beta,\tau}\subseteq P_\tau,\qquad
+P_\tau,A_\tau\subseteq U,\qquad
+P_\tau\cap A_\tau=\emptyset,\qquad
+Z_\tau\subseteq A_\tau ,
+\]
+the forward compatibility consequences for complete terminal assignments,
+and functional disjointness for complete assignments compatible with two
+realized cells.
+
+Assume moreover the fixed residual scan interface supplied by
+\(\noderef{FixedSetHistoryCellFixedBJResidualScanInterface}\): there are
+one residual scan \(\operatorname{scan}_{B,J}\) and one reconstructed full
+scan \(\operatorname{scan}^{\rm full}_{B,J}\), with the
+delete-and-reinsert equality, reconstructed scan stability,
+scan-to-compatibility, compatibility-to-scan, and residual functionality
+clauses.
+
+Then the two scan facts needed by the fixed-count red summation hold.
+First, every residual assignment in the cylinder
+\[
+P_\tau\setminus F_{\beta,\tau}\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset
+\]
+reconstructs to a complete assignment compatible with \((\beta,\tau)\):
+\[
+\operatorname{Comp}\bigl(
+  (A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau},
+  \beta,\tau\bigr).
+\]
+Second, the same residual assignment has at most one realized owner: if
+\[
+\operatorname{Comp}\bigl(
+  (A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau},
+  \beta,\tau\bigr)
+\]
+and
+\[
+\operatorname{Comp}\bigl(
+  (A_{\rm res}\setminus Z_{\tau'})\cup F_{\beta',\tau'},
+  \beta',\tau'\bigr)
+\]
+hold for realized pairs \((\beta,\tau)\) and \((\beta',\tau')\), then
+\(\beta=\beta'\) and \(\tau=\tau'\).
+\end{helper}
+\begin{proof}
+Unpack the fixed scan interface from
+\(\noderef{FixedSetHistoryCellFixedBJResidualScanInterface}\).  It gives
+the residual scan \(\operatorname{scan}_{B,J}\), the reconstructed full
+scan \(\operatorname{scan}^{\rm full}_{B,J}\), and the five scan clauses
+listed in the statement.
+
+Let \(A_{\rm res}\subseteq U\) lie in the residual cylinder of a realized
+\((\beta,\tau)\), and put
+\[
+A^\ast=(A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau}.
+\]
+The realized geometry gives \(F_{\beta,\tau}\subseteq P_\tau\).  By the
+delete-and-reinsert clause, the residual scan at \(A_{\rm res}\) is the
+reconstructed full scan at
+\[
+(A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau}.
+\]
+The reconstructed-stability clause evaluates that reconstructed full scan
+on the same complete assignment.  Combining the two equalities gives
+\[
+\operatorname{scan}_{B,J}(A_{\rm res})
+=(\beta,\tau).
+\]
+Applying the scan-to-compatibility clause to this output gives
+\[
+\operatorname{Comp}(A^\ast,\beta,\tau),
+\]
+which is exactly residual-cylinder completeness.
+
+For single-owner uniqueness, suppose the same residual assignment
+\(A_{\rm res}\) reconstructs to compatible complete assignments for two
+realized pairs \((\beta,\tau)\) and \((\beta',\tau')\).  Apply the
+compatibility-to-scan clause to the first compatibility certificate:
+\[
+\operatorname{scan}_{B,J}(A_{\rm res})=(\beta,\tau).
+\]
+Apply it again to the second compatibility certificate:
+\[
+\operatorname{scan}_{B,J}(A_{\rm res})=(\beta',\tau').
+\]
+The residual functionality clause of the same fixed scan applies to these
+two outputs for the same residual assignment.  Hence
+\(\beta=\beta'\) and \(\tau=\tau'\).  This proves the two residual facts
+used directly by the released-block construction.
+\end{proof}

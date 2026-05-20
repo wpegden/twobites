@@ -1,0 +1,65 @@
+\begin{lemma}
+Fix \(n,m,p\), an event \(E\) in the two-bite sample space, and a
+nonnegative constant \(C\).  Assume \(0\le p\le1\).  Suppose that for every
+blue base graph \(G_B\) and every blue row map
+\(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), the conditional
+probability of \(E\) given the cell
+\[
+\omega.2.1=G_B,\qquad v\mapsto (\omega.2.2(v))_2=\rho(v)
+\]
+is at most \(C\).  Then the unconditional two-bite probability of \(E\) is
+at most \(C\).
+\end{lemma}
+\begin{proof}
+For a sample \(\omega\), let
+\[
+\Pi_B(\omega)=\left(\omega.2.1,\ v\mapsto(\omega.2.2(v))_2\right).
+\]
+The values of \(\Pi_B\), namely pairs \((G_B,\rho)\), index a finite
+partition of the two-bite sample space: every sample has exactly one blue
+base graph and exactly one blue-coordinate row map.  Let
+\[
+C_{G_B,\rho}=\{\omega:\Pi_B(\omega)=(G_B,\rho)\}
+\]
+be the corresponding cell, and write \(\mu(A)\) for
+\(\operatorname{TwoBiteEventProbability}(A)\).  Expanding the finite weighted
+sum by fibers of \(\Pi_B\) gives
+\[
+\mu(E)=\sum_{G_B,\rho}\mu(E\cap C_{G_B,\rho}).
+\]
+
+By \(0\le p\le1\), \(\noderef{TwoBiteSampleWeightNonnegative}\) says that
+every two-bite sample weight is nonnegative.  Fix a cell
+\(C_{G_B,\rho}\).  If \(\mu(C_{G_B,\rho})=0\), then
+\(\mu(E\cap C_{G_B,\rho})=0\) as well: the latter event is a subset of the
+cell, and a finite sum of nonnegative summands over a subset of a zero-mass
+set is again zero.  This is also the zero-mass convention in
+\(\noderef{TwoBiteConditionalProbability}\), where the conditional
+probability on such a cell is defined to be \(0\).
+
+If \(\mu(C_{G_B,\rho})\ne0\), nonnegativity gives
+\(\mu(C_{G_B,\rho})>0\), and the conditional probability on the cell is
+\[
+\frac{\mu(E\cap C_{G_B,\rho})}{\mu(C_{G_B,\rho})}.
+\]
+The hypothesis bounds this ratio by \(C\).  Multiplying by the positive cell
+mass gives
+\[
+\mu(E\cap C_{G_B,\rho})\le C\,\mu(C_{G_B,\rho}).
+\]
+The same inequality also holds in the zero-mass case because both sides are
+zero or nonnegative and \(C\ge0\).
+
+Summing over all finite blue cells gives
+\[
+\mu(E)
+\le C\sum_{G_B,\rho}\mu(C_{G_B,\rho}).
+\]
+The cells partition the sample space, so the sum of their masses is the total
+two-bite mass.  By \(\noderef{TwoBiteEventProbabilityTotalMassBound}\), this
+total mass is at most \(1\).  Since \(C\ge0\), we obtain
+\[
+\mu(E)\le C\cdot 1=C.
+\]
+This is the desired unconditional bound.
+\end{proof}

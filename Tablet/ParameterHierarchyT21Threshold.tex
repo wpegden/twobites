@@ -1,0 +1,24 @@
+\begin{helper}
+For every \(\eta>0\) with \(\eta<1/16\), there is \(n_0\) such that for
+every \(n>n_0\), if \(L=\log n\), then
+\[
+\frac{\log L}{n^{1/4-\eta}\sqrt L}<1.
+\]
+\end{helper}
+\begin{proof}
+The exponent \(1/4-\eta\) is positive because \(\eta<1/16<1/4\).
+Since \(\log n=o(n^{1/4-\eta})\), enlarge \(n_0\) so that for every
+\(n>n_0\),
+\[
+\log n\le \frac12 n^{1/4-\eta}
+\quad\text{and}\quad
+L=\log n\ge1.
+\]
+Then \(\sqrt L\ge1\), and \(\log L\le L=\log n\).  Therefore
+\[
+\log L\le L\le \frac12 n^{1/4-\eta}
+< n^{1/4-\eta}\le n^{1/4-\eta}\sqrt L.
+\]
+Dividing by the positive denominator \(n^{1/4-\eta}\sqrt L\) gives the
+claimed strict inequality.
+\end{proof}

@@ -1,0 +1,113 @@
+\begin{helper}
+For every real number \(0<\eta<1/2\), there is a real number
+\(\varepsilon>0\) such that, for every integer \(n_0\), there is an integer
+\(k_0\) with the following property.  For every integer \(k\ge k_0\), there is
+an integer \(N\) such that
+\[
+n_0\le N,
+\]
+\[
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le (N:\mathbb R),
+\]
+and
+\[
+(1+\varepsilon)\sqrt{(N:\mathbb R)\log(N:\mathbb R)}<(k:\mathbb R).
+\]
+\end{helper}
+\begin{proof}
+Fix \(0<\eta<1/2\).  Put
+\[
+c=\frac12-\frac{\eta}{2}
+\qquad\text{and}\qquad
+\delta=c-\left(\frac12-\eta\right)=\frac{\eta}{2}.
+\]
+Then \(0<c<1/2\), \(\frac12-\eta<c\), and \(\delta>0\).  Since \(2c<1\), choose
+\(\varepsilon>0\) so small that
+\[
+2c(1+\varepsilon)^2<1. \tag{1}
+\]
+This is possible because the function \(x\mapsto 2c(1+x)^2\) is continuous at
+\(0\), and its value there is \(2c<1\).
+
+Now fix \(n_0\).  Choose \(k_0\) so large that for every \(k\ge k_0\),
+\[
+k\ge3,\qquad \log k>0,\qquad \log k>c,
+\]
+\[
+c\,\frac{k^2}{\log k}\ge n_0+1,\qquad
+c\,\frac{k^2}{\log k}\ge4,\qquad
+\delta\,\frac{k^2}{\log k}\ge1. \tag{2}
+\]
+Here is the threshold justification.  Since \(\log k\to\infty\), the
+conditions \(\log k>0\) and \(\log k>c\) hold for all sufficiently large
+\(k\).  For all sufficiently large \(k\) we also have \(0<\log k\le k\); hence
+\[
+\frac{k^2}{\log k}\ge k.
+\]
+Thus \(k^2/\log k\) tends to infinity.  Therefore the three lower bounds
+involving \(k^2/\log k\) also hold eventually.  Taking \(k_0\) to be the maximum
+of these finitely many thresholds gives (2) simultaneously.
+
+Fix \(k\ge k_0\), and set
+\[
+X=c\,\frac{k^2}{\log k},\qquad N=\lfloor X\rfloor.
+\]
+By (2), \(X\ge0\).  The floor inequalities for a nonnegative real number give
+\[
+(N:\mathbb R)\le X
+\qquad\text{and}\qquad
+X-1\le (N:\mathbb R). \tag{3}
+\]
+The last inequality in (2) gives
+\[
+1\le \delta\,\frac{k^2}{\log k}.
+\]
+Subtracting this bound for \(1\) from \(X=c\,k^2/\log k\), we get
+\[
+X-1\ge
+\left(c-\delta\right)\frac{k^2}{\log k}
+=\left(\frac12-\eta\right)\frac{k^2}{\log k}. \tag{4}
+\]
+Combining (3), (4), and the definition of \(\noderef{RamseyScale}\), we obtain
+\[
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le (N:\mathbb R). \tag{5}
+\]
+The first middle inequality in (2) gives
+\[
+(N:\mathbb R)\ge X-1\ge n_0,
+\]
+so \(n_0\le N\).  The second middle inequality in (2) gives
+\[
+(N:\mathbb R)\ge X-1\ge3,
+\]
+so \(N\ge3\).
+
+It remains to prove the square-root estimate.  Since \(N\ge3\), \(0<N\) and
+\(\log N>0\).  From \((N:\mathbb R)\le X=c k^2/\log k\) and \(\log k>c>0\),
+\[
+(N:\mathbb R)\le c\,\frac{k^2}{\log k}<k^2. \tag{6}
+\]
+Thus \(0<N\le k^2\).  Monotonicity of the logarithm on positive reals gives
+\[
+\log N\le \log(k^2)=2\log k. \tag{7}
+\]
+Multiplying the bounds (3) and (7), using \(\log k>0\), yields
+\[
+N\log N\le
+\left(c\,\frac{k^2}{\log k}\right)(2\log k)=2c\,k^2. \tag{8}
+\]
+Multiplying (8) by the positive number \((1+\varepsilon)^2\) and using (1),
+\[
+(1+\varepsilon)^2N\log N<k^2. \tag{9}
+\]
+Both sides are nonnegative and \(k>0\).  Taking square roots and using
+\[
+\sqrt{(1+\varepsilon)^2N\log N}
+=(1+\varepsilon)\sqrt{N\log N}
+\]
+gives
+\[
+(1+\varepsilon)\sqrt{N\log N}<k.
+\]
+Together with (5) and \(n_0\le N\), this is the required integer \(N\).
+\end{proof}

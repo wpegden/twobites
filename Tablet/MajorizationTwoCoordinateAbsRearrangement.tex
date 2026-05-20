@@ -1,0 +1,21 @@
+\begin{helper}
+Let \(a, d, \alpha, \beta\) be real numbers such that \(a \le d\) and \(\beta \le \alpha\). Then
+\[
+|d - \alpha| + |a - \beta| \le |a - \alpha| + |d - \beta|.
+\]
+\end{helper}
+\begin{proof}
+Define \(\phi(t) = |d - t| - |a - t|\).
+If \(t \le a\), then \(\phi(t) = (d - t) - (a - t) = d - a\).
+If \(a \le t \le d\), then \(\phi(t) = (d - t) - (t - a) = d + a - 2t\), which is nonincreasing in \(t\).
+If \(d \le t\), then \(\phi(t) = (t - d) - (t - a) = a - d\).
+The three formulas agree at the interval endpoints, and the middle formula decreases from \(d - a\) to \(a - d\); hence the whole function is nonincreasing.
+Since \(\beta \le \alpha\), we get \(\phi(\alpha) \le \phi(\beta)\), namely
+\[
+|d - \alpha| - |a - \alpha| \le |d - \beta| - |a - \beta|.
+\]
+Rearranging gives the desired inequality
+\[
+|d - \alpha| + |a - \beta| \le |a - \alpha| + |d - \beta|.
+\]
+\end{proof}

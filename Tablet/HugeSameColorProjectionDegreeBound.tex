@@ -1,0 +1,87 @@
+\begin{helper}
+Assume
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\),
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and \(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\).  Then every red
+base vertex \(r\) and every blue base vertex \(b\) satisfy
+\[
+\left|
+  X_{\operatorname{inl}(r)}(I).\mathrm{image}
+    (\noderef{TwoBiteRedProjection}(\omega))
+\right|
+\le 2pm,
+\]
+and
+\[
+\left|
+  X_{\operatorname{inr}(b)}(I).\mathrm{image}
+    (\noderef{TwoBiteBlueProjection}(\omega))
+\right|
+\le 2pm.
+\]
+\end{helper}
+\begin{proof}
+We prove the red assertion first.  Fix a red base vertex \(r\).  If
+\[
+u\in X_{\operatorname{inl}(r)}(I).\mathrm{image}
+  (\noderef{TwoBiteRedProjection}(\omega)),
+\]
+then by the definition of finite-set image there is some
+\(v\in X_{\operatorname{inl}(r)}(I)\) with
+\(u=\noderef{TwoBiteRedProjection}(\omega,v)\).  Unfolding
+\(\noderef{TwoBiteX}\) and the red branch of
+\(\noderef{TwoBiteLiftedNeighborhood}\), membership of \(v\) in
+\(X_{\operatorname{inl}(r)}(I)\) gives
+\[
+(\noderef{TwoBiteRedGraph}(\omega)).Adj
+  \ r\ (\noderef{TwoBiteRedProjection}(\omega,v)).
+\]
+Substituting \(u\), this says that \(u\) lies in the filtered-universe red
+neighbor set
+\[
+\{w:(\noderef{TwoBiteRedGraph}(\omega)).Adj\ r\ w\}.
+\]
+Therefore the red projected image is contained in this neighbor set, and
+finite-cardinality monotonicity gives an upper bound by its cardinality.  By
+the definition of \(\noderef{GraphDegreeCount}\), that cardinality is exactly
+\[
+\noderef{GraphDegreeCount}(\noderef{TwoBiteRedGraph}(\omega),r).
+\]
+
+The red degree clause of \(\noderef{FiberAndDegreeEvent}\) gives
+\[
+\left|
+  \noderef{GraphDegreeCount}(\noderef{TwoBiteRedGraph}(\omega),r)-pm
+\right|\le \varepsilon_2pm.
+\]
+Hence the upper side of the absolute-value inequality gives
+\[
+\noderef{GraphDegreeCount}(\noderef{TwoBiteRedGraph}(\omega),r)
+\le (1+\varepsilon_2)pm.
+\]
+The eventual-comparisons package, with the displayed identifications of
+\(m\) and \(p\), gives \(1\le2pm\) and \(\varepsilon_2\le1\).  Thus
+\(pm\ge0\), and multiplying \(\varepsilon_2\le1\) by \(pm\) gives
+\[
+(1+\varepsilon_2)pm\le2pm.
+\]
+Combining the image containment, degree estimate, and this last inequality
+proves the red bound.
+
+The blue proof is identical with colors exchanged.  For
+\(u\in X_{\operatorname{inr}(b)}(I).\mathrm{image}
+(\noderef{TwoBiteBlueProjection}(\omega))\), choose
+\(v\in X_{\operatorname{inr}(b)}(I)\) mapping to \(u\).  Unfolding
+\(\noderef{TwoBiteX}\) and the blue branch of
+\(\noderef{TwoBiteLiftedNeighborhood}\) gives adjacency from \(b\) to \(u\) in
+\(\noderef{TwoBiteBlueGraph}(\omega)\).  Hence the image is contained in the
+filtered-universe blue neighbor set, whose cardinality is the corresponding
+\(\noderef{GraphDegreeCount}\).  The blue degree clause of
+\(\noderef{FiberAndDegreeEvent}\), followed by the same
+\(\varepsilon_2\le1\) and \(pm\ge0\) calculation, gives the bound \(2pm\).
+\end{proof}

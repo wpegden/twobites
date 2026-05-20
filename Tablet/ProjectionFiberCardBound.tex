@@ -1,0 +1,23 @@
+\begin{helper}
+Let \(A\) be a finite set and let \(\pi:A\to B\) be a projection map.  Suppose
+that every fiber of \(\pi\) inside \(A\) has size at most \(F\).  Then
+\[
+|A|\le F\,|\pi(A)|.
+\]
+\end{helper}
+\begin{proof}
+Partition \(A\) according to the value of \(\pi\).  The projection values are
+the elements of \(\pi(A)\), and the part over \(y\in\pi(A)\) is
+\[
+\{a\in A:\pi(a)=y\}.
+\]
+The map \(a\mapsto(\pi(a),a)\) injects \(A\) into the disjoint union of these
+fibers, so
+\[
+|A|\le\sum_{y\in\pi(A)}|\{a\in A:\pi(a)=y\}|.
+\]
+Each summand is at most \(F\), hence the sum is at most
+\[
+\sum_{y\in\pi(A)}F=F|\pi(A)|.
+\]
+\end{proof}

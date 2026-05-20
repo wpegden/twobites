@@ -1,0 +1,30 @@
+\begin{helper}[GnpVertexIncidentEdgeGeneratingFunction]
+Fix \(m\), \(p,z\in\mathbb R\), and \(r\in\operatorname{Fin}(m)\).  Let
+\[
+E_r=\{(a,b):a,b\in\operatorname{Fin}(m),\ a<b,\ a=r\text{ or }b=r\}
+\]
+be the represented edge coordinates incident to \(r\).  Under the
+\(\noderef{GnpGraphWeight}\) product graph weight,
+\[
+\sum_G
+\left(\prod_{e=(a,b)\in E_r}
+  \begin{cases}
+  z,&G.Adj(a,b),\\
+  1,&\neg G.Adj(a,b)
+  \end{cases}\right)
+\noderef{GnpGraphWeight}(p,G)
+=(1-p+pz)^{|E_r|}.
+\]
+\end{helper}
+\begin{proof}
+Expand \(\noderef{GnpGraphWeight}\) as the product over all represented
+unordered edge coordinates.  Summing over graphs is the same as summing over
+Boolean assignments to those coordinates.  For a coordinate not incident to
+\(r\), the extra product contributes \(1\), and the graph-weight coordinate
+sum is \(p+(1-p)=1\).  For a coordinate incident to \(r\), the absent choice
+contributes \(1\cdot(1-p)\), while the present choice contributes \(z\cdot p\),
+so the coordinate sum is \(1-p+pz\).  The finite product-sum factorization is
+the same coordinatewise collapse encoded by \(\noderef{ProductWeightSumOne}\).
+Multiplying the incident-coordinate factors gives \((1-p+pz)^{|E_r|}\), and
+all nonincident factors are \(1\).
+\end{proof}

@@ -1,0 +1,76 @@
+\begin{lemma}
+Let \(\eta>0\).  There is a threshold \(n_{\mathrm{base}}\) such that, for
+every \(n>n_{\mathrm{base}}\), writing
+\[
+L=\log n,\quad
+k_R=(1+\eta)\sqrt{nL},\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad k=(K:\mathbb R),
+\]
+\[
+m_R=\frac{n}{L^2},\quad
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\quad m=(M:\mathbb R),
+\]
+\[
+p=\frac12\sqrt{\frac Ln},\qquad
+t_1=\frac{\sqrt{nL}}{\log L},
+\]
+we have
+\[
+0<m,\quad 0\le p\le\frac12,\quad 1\le2pm,
+\]
+\[
+k_R\le k<k_R+1,\qquad m\le m_R<m+1,\qquad K\le n,\qquad k<2k_R,
+\]
+and
+\[
+0<\log L,\qquad
+\frac{2k}{t_1}+1\le5(1+\eta)\log L.
+\]
+\end{lemma}
+\begin{proof}
+Choose \(n_{\mathrm{base}}\) so large that for every \(n>n_{\mathrm{base}}\),
+\[
+n>1,\quad L>1,\quad \log L>0,\quad k_R>2,\quad m_R>2,
+\quad \sqrt{L/n}\le1,
+\]
+\[
+\frac{k_R+1}{n}\le1,\qquad
+\frac{\sqrt n}{2L^{3/2}}\ge1,\qquad \log L\ge1.
+\]
+These are eventual conditions because \(L\to\infty\), \(\log L\to\infty\),
+\(\sqrt{nL}\to\infty\), \(n/L^2\to\infty\), \(\sqrt{L/n}\to0\),
+\((k_R+1)/n\to0\), and \(\sqrt n/(2L^{3/2})\to\infty\).
+
+Since \(L>1\), both \(k_R\) and \(m_R\) are nonnegative.  Applying
+\(\noderef{NaturalParameterApproximation}\) with \(\kappa=1+\eta\) gives
+\[
+k_R\le k<k_R+1,\qquad m\le m_R<m+1.
+\]
+Because \(k_R>2\), we have \(k<k_R+1<2k_R\).  Because
+\((k_R+1)/n\le1\), we also get \(k<n\), hence \(K\le n\).  Since
+\(m_R>2\) and \(m_R<m+1\), we have
+\[
+\frac12m_R\le m\le m_R,\qquad 0<m.
+\]
+The definition of \(p\) and the inequality \(\sqrt{L/n}\le1\) give
+\[
+0\le p\le\frac12.
+\]
+Moreover,
+\[
+2pm\ge p m_R
+=\frac12\sqrt{\frac Ln}\frac n{L^2}
+=\frac{\sqrt n}{2L^{3/2}}\ge1.
+\]
+Finally, using \(k<2k_R=2(1+\eta)\sqrt{nL}\) and
+\(t_1=\sqrt{nL}/\log L\),
+\[
+\frac{2k}{t_1}+1
+<4(1+\eta)\log L+1.
+\]
+Since \(\log L\ge1\) and \(\eta>0\), the right side is at most
+\[
+5(1+\eta)\log L.
+\]
+This proves all claimed base-threshold estimates.
+\end{proof}

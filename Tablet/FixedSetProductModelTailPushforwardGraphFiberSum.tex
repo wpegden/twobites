@@ -1,0 +1,102 @@
+\begin{helper}[Graph Fiber Sum]
+Fix $n\in\mathbb N$, $I\subseteq\mathrm{Fin}(n)$, parameter $M\in\mathbb N$, and $p_0\in\mathbb R$ with $0\le p_0\le1$.
+Let $\pi:\mathrm{Fin}(n)\hookrightarrow\mathrm{Fin}(M)\times\mathrm{Fin}(M)$ be an embedding.
+Let $P_R=\{\pi(u)_1:u\in I\}$, $P_B=\{\pi(u)_2:u\in I\}$.
+Let $\mathcal D$ be the finite set of incident-data families $D=(D_R, D_B)$ where $D_R:\mathrm{Fin}(M)\setminus P_R\to\mathcal{P}(P_R)$ and $D_B:\mathrm{Fin}(M)\setminus P_B\to\mathcal{P}(P_B)$.
+For a sample $\omega$ in the cell $\mathcal C_\pi = \{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\}$, let its incident data be $D(\omega)$, defined by $D_R(x)=\{r\in P_R:\{x,r\}\text{ is a red edge}\}$ and $D_B(y)=\{b\in P_B:\{y,b\}\text{ is a blue edge}\}$.
+Then for any predicate $H$ on the data, we have
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\mathcal C_\pi\cap \{\omega:H(D(\omega))\}\bigr)
+=
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)
+\sum_{\{D\in\mathcal D: H(D)\}} \nu(D),
+\]
+where $\nu(D)$ is the mass
+\[
+\prod_{x\notin P_R} p_0^{|D_R(x)|}(1-p_0)^{|P_R|-|D_R(x)|} \prod_{y\notin P_B} p_0^{|D_B(y)|}(1-p_0)^{|P_B|-|D_B(y)|}.
+\]
+\end{helper}
+\begin{proof}
+For incident data \(D\), let \(F_D\) be the finite fiber of samples
+\(\omega=(G_R,G_B,\pi)\) in \(\mathcal C_\pi\) with \(D(\omega)=D\).  If
+\(D\) is not valid, meaning that it is nonempty on \(P_R\) or \(P_B\), or has
+some outside value not contained in \(P_R\) or \(P_B\), then no sample in the
+cell has this data, so \(F_D=\emptyset\).
+
+By unfolding \(\noderef{TwoBiteEventProbability}\), a sample in the cell has weight
+\[
+\noderef{GnpGraphWeight}(p_0,G_R)\,
+\noderef{GnpGraphWeight}(p_0,G_B)\,
+\noderef{UniformInjectionWeight}(n,M),
+\]
+and the injection factor is constant across the cell.
+Partition the red graph edge variables into three classes:
+\[
+\{r_1,r_2\}\subseteq P_R,\qquad
+\{x_1,x_2\}\subseteq \mathrm{Fin}(M)\setminus P_R,\qquad
+\{x,r\}\text{ with }x\notin P_R,\ r\in P_R.
+\]
+The incident class is fixed by \(D_R\): for every \(x\notin P_R\) and
+\(r\in P_R\), the edge \(\{x,r\}\) is present exactly when
+\(r\in D_R(x)\).  Its contribution to the red
+\(\noderef{GnpGraphWeight}\) is therefore
+\[
+\prod_{x\notin P_R}
+p_0^{|D_R(x)|}(1-p_0)^{|P_R|-|D_R(x)|}.
+\]
+
+The other two red edge classes are ignored by the incident data.  For each
+ignored red unordered pair \(e\), finite summation over its two possible
+statuses contributes
+\[
+(1-p_0)+p_0=1.
+\]
+Since the ignored red edge set is finite, repeated finite Fubini gives a total
+ignored-red contribution of \(1\).  Thus the red graph fiber sum over graphs
+with fixed valid red data \(D_R\) is exactly the displayed red incident
+factor.  The same partition and calculation for the blue graph gives the blue
+incident factor
+\[
+\prod_{y\notin P_B}
+p_0^{|D_B(y)|}(1-p_0)^{|P_B|-|D_B(y)|}.
+\]
+
+Multiplying the red factor, the blue factor, and the fixed injection weight,
+the total weight of the sample fiber \(F_D\) is
+\[
+\noderef{UniformInjectionWeight}(n,M)\,\nu(D)
+\]
+for valid \(D\), and \(0\) for invalid \(D\).
+
+The fibers \(F_D\) partition \(\mathcal C_\pi\).  Summing the previous
+identity over all valid \(D\) gives
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)
+=
+\noderef{UniformInjectionWeight}(n,M)
+\sum_{D\in\mathcal D}\nu(D).
+\]
+The data mass is \(1\): for each outside red vertex \(x\), summing the red
+factor over all subsets \(A\subseteq P_R\) gives
+\[
+\sum_{A\subseteq P_R}p_0^{|A|}(1-p_0)^{|P_R|-|A|}
+=(p_0+1-p_0)^{|P_R|}=1,
+\]
+and the same binomial calculation applies to each outside blue vertex.  Hence
+\(\sum_D\nu(D)=1\), and the full cell probability is the fixed injection
+weight.
+
+Finally restrict the same fiber partition to the event \(H(D(\omega))\).  The
+left side is the sum of the fiber masses over valid data with \(H(D)\), namely
+\[
+\noderef{UniformInjectionWeight}(n,M)
+\sum_{\{D\in\mathcal D:H(D)\}}\nu(D).
+\]
+Replacing the fixed injection weight by the equal cell probability yields
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)
+\sum_{\{D\in\mathcal D:H(D)\}}\nu(D),
+\]
+which is the claimed formula.
+\end{proof}

@@ -1,0 +1,21 @@
+\begin{helper}
+Let \(N\) be a natural number, and let \(b, y \in \mathbb{R}^{\operatorname{Fin}(N)}\).
+Suppose \(b\) is nonincreasing.
+Then there exists a vector \(u^* \in \mathbb{R}^{\operatorname{Fin}(N)}\) which is a permutation of \(y\) such that \(u^*\) is nonincreasing and
+\[
+\sum_k |u^*_k - b_k| \le \sum_k |y_k - b_k|.
+\]
+\end{helper}
+\begin{proof}
+Starting from \(u^{(0)}=y\), repeatedly swap an adjacent inversion whenever one exists. Each step is a transposition of two coordinates, so after any finite number of steps the current vector is a permutation of \(y\).
+The process terminates because the inversion count
+\[
+I(u) = |\{(r, s) : r < s \text{ and } u_r < u_s\}|
+\]
+strictly decreases at each adjacent-inversion swap. To see this, suppose the swap is at \(p, p+1\) with \(u_p < u_{p+1}\). The pair \((p, p+1)\) contributes \(1\) to \(I(u)\) before the swap and \(0\) after. The other pairs are unchanged in their contribution. Hence \(I\) decreases by exactly \(1\). Since \(I(u)\) is a nonnegative integer, only finitely many swaps can occur.
+
+Let \(u^*\) be the terminal vector. It has no adjacent inversion, so it is nonincreasing. By the distance nonincrease helper, each swap does not increase the sum \(\sum_k |u_k - b_k|\). Thus,
+\[
+\sum_k |u^*_k - b_k| \le \sum_k |y_k - b_k|.
+\]
+\end{proof}

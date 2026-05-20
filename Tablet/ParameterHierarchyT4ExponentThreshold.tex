@@ -1,0 +1,42 @@
+\begin{helper}
+Let \(0<\eta<1/16\).  For all sufficiently large \(n\), with
+\[
+L=\log n,\qquad
+k_R=(1+\eta)\sqrt{nL},\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\qquad
+k=(K:\mathbb R),
+\]
+and \(m_R=n/L^2\), one has
+\[
+(2kL+L)\bigl(16Lm_R n^{8\eta}\bigr)\le k_R^4 .
+\]
+\end{helper}
+\begin{proof}
+Since \(K=\lceil k_R\rceil\), once \(k_R\ge1\) we have
+\[
+k\le k_R+1\le2k_R .
+\]
+Also, after increasing the threshold, \(L\ge1\).  Hence
+\[
+2kL+L\le4k_RL+L\le5k_RL .
+\]
+Substituting \(m_R=n/L^2\) gives
+\[
+(2kL+L)(16Lm_Rn^{8\eta})
+\le 5k_RL\cdot16L\frac n{L^2}n^{8\eta}
+=80k_Rn^{1+8\eta}.
+\]
+Using \(k_R=(1+\eta)\sqrt{nL}\), it remains enough to have
+\[
+80(1+\eta)n^{3/2+8\eta}\sqrt L
+\le (1+\eta)^4n^2L^2 .
+\]
+Equivalently,
+\[
+80\le (1+\eta)^3 n^{1/2-8\eta}L^{3/2}.
+\]
+The exponent \(1/2-8\eta\) is positive because \(\eta<1/16\), and
+\(L=\log n\) tends to infinity.  Thus the right-hand side tends to infinity,
+so a final enlargement of the threshold makes the displayed inequality hold
+for every \(n\) above the threshold.
+\end{proof}

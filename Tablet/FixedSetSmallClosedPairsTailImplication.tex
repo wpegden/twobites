@@ -1,0 +1,30 @@
+\begin{helper}
+Let \(K, L, C, \varepsilon_1\) be real numbers. Suppose the parameters satisfy
+\[
+\frac{1}{2L} C + 2K L^2 + \frac{1}{\sqrt L} C \le \frac{2}{\sqrt L} C
+\]
+and
+\[
+\frac{2}{\sqrt L} C \le \frac{\varepsilon_1}{2} K^2.
+\]
+Let \(C_I, A_{\mathrm{int}}, A_{\mathrm{sf}}, Z_I, \mu, t\) be real numbers satisfying \(C_I \le A_{\mathrm{int}} + A_{\mathrm{sf}} + Z_I\), \(A_{\mathrm{int}} \le \frac{\varepsilon_1}{2} K^2\), \(A_{\mathrm{sf}} \le 2K L^2\), \(\mu \le \frac{C}{2L}\), and \(t = \frac{C}{\sqrt L}\). If \(C_I > \varepsilon_1 K^2\), then \(Z_I \ge \mu + t\).
+\end{helper}
+\begin{proof}
+Suppose for contradiction that \(Z_I < \mu + t\). Then
+\[
+A_{\mathrm{sf}} + Z_I < 2K L^2 + \frac{C}{2L} + \frac{C}{\sqrt L}.
+\]
+By the first parameter inequality, this implies
+\[
+A_{\mathrm{sf}} + Z_I < \frac{2}{\sqrt L} C.
+\]
+By the second parameter inequality, this implies
+\[
+A_{\mathrm{sf}} + Z_I < \frac{\varepsilon_1}{2} K^2.
+\]
+Adding the bound on \(A_{\mathrm{int}}\), we obtain
+\[
+C_I \le A_{\mathrm{int}} + A_{\mathrm{sf}} + Z_I < \frac{\varepsilon_1}{2} K^2 + \frac{\varepsilon_1}{2} K^2 = \varepsilon_1 K^2.
+\]
+This contradicts the hypothesis that \(C_I > \varepsilon_1 K^2\). Therefore \(Z_I \ge \mu + t\).
+\end{proof}

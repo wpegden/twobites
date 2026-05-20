@@ -1,0 +1,53 @@
+\begin{helper}
+Let \(U\) be the finite terminal coordinate set for a fixed history cell.
+Let \(\mathcal T\) be the branch-label type and let \(\mathcal P\) be the
+transcript-label type.  Let
+\[
+\mathsf{Realized}(\beta,\tau)
+\]
+mean that \((\beta,\tau)\) is a nonempty fixed support-pair cell, and let
+\[
+\mathsf{Comp}(A,\beta,\tau)
+\]
+mean that the complete terminal assignment \(A\subseteq U\) is compatible
+with that realized cell.
+
+Assume the branch choice and prefix scan are functional from a complete
+terminal assignment: for every \(A\subseteq U\), if
+\(\mathsf{Realized}(\beta,\tau)\) and
+\(\mathsf{Comp}(A,\beta,\tau)\), then \(\beta\) is the branch label selected
+from \(A\)'s complete terminal blue truth table and \(\tau\) is the
+transcript returned by the deterministic prefix scan on \(A\).
+Then a complete terminal assignment is compatible with at most one realized
+branch/transcript cell.  Equivalently, if \(A\subseteq U\) is compatible
+with two realized cells \((\beta,\tau)\) and \((\beta',\tau')\), then
+\[
+\beta=\beta'\qquad\text{and}\qquad \tau=\tau'.
+\]
+\end{helper}
+\begin{proof}
+Fix a complete terminal assignment \(A\subseteq U\) and suppose that it is
+compatible with two realized cells \((\beta,\tau)\) and
+\((\beta',\tau')\).  By the functionality hypothesis applied to the first
+cell, the branch label \(\beta\) is exactly the branch selected from the
+complete terminal blue truth table of \(A\), and the deterministic prefix
+scan on \(A\) returns \(\tau\).  Applying the same functionality hypothesis
+to the second cell shows that \(\beta'\) is the same selected branch label
+from the same terminal assignment \(A\), and that the same scan on \(A\)
+returns \(\tau'\).
+
+The selected branch label is a function of \(A\), so the two branch labels
+are equal:
+\[
+\beta=\beta'.
+\]
+The scan output is also a function of \(A\).  Since the same scan output is
+simultaneously \(\tau\) and \(\tau'\), the transcript labels are equal:
+\[
+\tau=\tau'.
+\]
+Thus no complete terminal assignment can support two different realized
+branch/transcript cells.  This is the precise disjoint-cylinder and
+cell-to-residual-leaf injectivity fact needed by the red residual product
+tree.
+\end{proof}

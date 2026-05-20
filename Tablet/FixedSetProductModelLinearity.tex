@@ -1,0 +1,69 @@
+\begin{helper}[Linearity of Expectation for Product Model]
+Fix $n \in \mathbb{N}$, a subset $I \subseteq \mathrm{Fin}(n)$, and parameters $\varepsilon \in \mathbb{R}$.
+Fix $m_{sub} \in \mathbb{N}$, a probability $p_{sub} \in \mathbb{R}$ with $0 \le p_{sub} \le 1$, and an embedding $\pi : \mathrm{Fin}(n) \hookrightarrow \mathrm{Fin}(m_{sub}) \times \mathrm{Fin}(m_{sub})$.
+Let $C = \noderef{RealChooseTwo}(|I|)$.
+Suppose \(B\ge0\).  Suppose that for every pair of vertices \(u,w\in I\)
+such that \(\pi(u)_1\ne\pi(w)_1\) and \(\pi(u)_2\ne\pi(w)_2\), the expected
+value under the product model of the indicator of the following event is
+bounded above by \(B\): either one of the first \(m_{sub}\) coordinates has
+first component containing both \(\pi(u)_1,\pi(w)_1\), or one of the last
+\(m_{sub}\) coordinates has second component containing both
+\(\pi(u)_2,\pi(w)_2\).
+Then the product expectation satisfies
+\[
+\sum_v \left(\prod_i q(v_i)\right) Z_{\mathrm{prod}}(v) \le C B,
+\]
+where $Z_{\mathrm{prod}}$ is given by $\noderef{FixedSetProductModelVar}$ and $q = \noderef{FixedSetProductModelMassFn}(p_{sub}, P_R, P_B)$.
+\end{helper}
+\begin{proof}
+Let
+\[
+W(v)=\prod_{i\in\mathrm{Fin}(2m_{sub})}q(v_i).
+\]
+By \(\noderef{FixedSetProductModelMass}\), all one-coordinate masses are
+nonnegative; hence \(W(v)\ge0\) for every assignment \(v\).
+
+Fix an assignment \(v\) and unfold
+\(\noderef{FixedSetProductModelVar}\).  The variable is the cardinality of a
+finite set of pairs \(e=(u,w)\).  Each such pair is rank-oriented by the
+final-pair construction used in this definition, both endpoints lie in \(I\)
+because the relevant \(X\)-set is a filtered subset of \(I\), and the final
+filter in \(\noderef{FixedSetProductModelVar}\) gives
+\(\pi(u)_1\ne\pi(w)_1\) and \(\pi(u)_2\ne\pi(w)_2\).
+
+Moreover, such a counted pair comes from some external base vertex.  If that
+base vertex is red, then the red graph in
+\(\noderef{FixedSetProductModelVar}\) is built from the first \(m_{sub}\)
+coordinates, so for the corresponding coordinate \(x<m_{sub}\) the first
+component \((v_x)_1\) contains both red projections \(\pi(u)_1,\pi(w)_1\).
+If the base vertex is blue, then the blue graph is built from the last
+\(m_{sub}\) coordinates, so for the corresponding coordinate
+\(m_{sub}\le x<2m_{sub}\) the second component \((v_x)_2\) contains both
+blue projections \(\pi(u)_2,\pi(w)_2\).  Thus every counted pair satisfies the
+pair event appearing in the hypothesis.
+
+Let \(E_{u,w}(v)\) be the indicator of that pair event.  The preceding
+paragraph gives the pointwise counting inequality
+\[
+Z_{\mathrm{prod}}(v)
+\le
+\sum_{\{u,w\}\subseteq I} E_{u,w}(v),
+\]
+where unordered pairs are represented once by the rank orientation.  Multiplying
+by the nonnegative weight \(W(v)\) preserves the inequality.  Summing over all
+assignments and using finite distributivity gives
+\[
+\sum_v W(v)Z_{\mathrm{prod}}(v)
+\le
+\sum_{\{u,w\}\subseteq I}\sum_v W(v)E_{u,w}(v).
+\]
+For pairs whose red and blue projections are distinct, the inner sum is at
+most \(B\) by hypothesis.  Pairs without distinct projections do not appear in
+the pointwise upper bound for \(Z_{\mathrm{prod}}\), so their contribution can
+be taken as \(0\), which is at most \(B\) because \(B\ge0\).  Therefore every
+one of the \(\binom{|I|}{2}=\noderef{RealChooseTwo}(|I|)=C\) rank-oriented
+unordered pairs contributes at most \(B\).  Hence
+\[
+\sum_v W(v)Z_{\mathrm{prod}}(v)\le C B.
+\]
+\end{proof}

@@ -1,0 +1,118 @@
+\begin{helper}
+Fix a finite terminal coordinate set \(U\), a number \(p\) with
+\(0\le p\le 1/2\), and a fixed blue set \(B\subseteq U\) with
+\(|B|=u_B\).  Let \(\mathcal B\) be a finite branch-label set with traces
+\(\operatorname{blueTrace}(\beta)\), let \(\mathcal T\) be a finite set of
+transcripts \(\tau=(P_\tau,A_\tau,Z_\tau)\), let \(J\) be a fixed red label,
+and let \(R_{\beta,J}\) be the red support attached to \((\beta,J)\).  Suppose
+there is a realized-cell predicate \(\operatorname{Realized}(\beta,\tau)\),
+an assignment-compatibility predicate \(\operatorname{Comp}(A,\beta,\tau)\),
+and a selected-present-sibling predicate
+\(\operatorname{Sib}(A,\beta,\tau,e)\).
+
+Assume the following reduced hypotheses, and no ambient history or terminal
+product-law data.  For every realized \((\beta,\tau)\) with
+\(\tau\in\mathcal T\), the realized-cell geometry gives
+\[
+|R_{\beta,J}|=u_R,\quad R_{\beta,J}\subseteq U,\quad
+R_{\beta,J}\text{ red},\quad
+P_\tau,A_\tau\subseteq U,\quad P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad Z_\tau\subseteq A_\tau,
+\]
+and for every blue \(e\in U\),
+\[
+e\in\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in P_\tau,
+\qquad
+e\notin\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in A_\tau .
+\]
+Also assume the span equivalence
+\[
+\operatorname{Comp}(A,\beta,\tau)\ \text{or}\
+\exists e\in Z_\tau,\operatorname{Sib}(A,\beta,\tau,e)
+\]
+is equivalent, for every \(A\subseteq U\) and realized \((\beta,\tau)\), to
+\[
+P_\tau\subseteq A,\qquad
+A\cap(A_\tau\setminus Z_\tau)=\emptyset,\qquad
+\forall\text{ blue }e\in U\setminus Z_\tau,
+  e\in\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in A .
+\]
+Finally assume span disjointness: no \(A\subseteq U\) satisfies the left-hand
+span condition for two distinct realized pairs.
+
+Let
+\[
+L=\{(\beta,\tau):\tau\in\mathcal T,
+      \operatorname{Realized}(\beta,\tau)\}.
+\]
+For \(\ell=(\beta,\tau)\in L\), let \(C_\ell\) be the set of
+\(A\subseteq U\) satisfying the three displayed released-cylinder conditions
+above.  Then
+\[
+\sum_{\ell=(\beta,\tau)\in L}
+  p^{|P_\tau|}(1-p)^{|A_\tau|-|Z_\tau|}
+\le
+\sum_{A\in \bigcup_{\ell\in L} C_\ell}
+  p^{|A|}(1-p)^{|U|-|A|}.
+\]
+\end{helper}
+\begin{proof}
+Fix a realized leaf \(\ell=(\beta,\tau)\in L\), and write
+\(\tau=(P_\tau,A_\tau,Z_\tau)\).  Set
+\[
+D_\tau=A_\tau\setminus Z_\tau .
+\]
+The realized-cell geometry gives \(P_\tau,A_\tau\subseteq U\) and
+\(P_\tau\cap A_\tau=\emptyset\).  Since \(D_\tau\subseteq A_\tau\), the
+present set \(P_\tau\) and the absent set \(D_\tau\) are disjoint.  Because
+\(Z_\tau\subseteq A_\tau\), deleting \(Z_\tau\) from \(A_\tau\) gives
+\[
+|D_\tau|=|A_\tau|-|Z_\tau|.
+\]
+
+We next check that the blue-trace part of \(C_\ell\) imposes no additional
+product factors beyond \(P_\tau\) present and \(D_\tau\) absent.  Let \(e\in U\)
+be blue.  The geometry gives
+\[
+e\in\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in P_\tau
+\]
+and
+\[
+e\notin\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in A_\tau .
+\]
+If \(e\notin Z_\tau\), the released-cylinder trace condition applies.  If
+\(e\in P_\tau\), then \(e\in\operatorname{blueTrace}(\beta)\), so the trace
+condition forces \(e\in A\).  If \(e\in A_\tau\setminus Z_\tau\), then
+\(e\notin\operatorname{blueTrace}(\beta)\), so the trace condition forces
+\(e\notin A\).  If \(e\in Z_\tau\), the coordinate is deliberately released:
+its absent \((1-p)\)-factor has been removed from the residual cylinder, and
+the trace condition imposes no value on it.  Thus selected blue absences are
+free residual coordinates, while unselected absent blue coordinates remain in
+the residual mass.  Conversely, for every unselected blue \(e\), membership in
+\(P_\tau\) and \(A_\tau\) is exactly membership and nonmembership in the trace
+by the two displayed equivalences, so the trace condition adds no third class
+of fixed blue coordinates.
+
+Thus \(C_\ell\) is precisely the complete terminal product cylinder with
+coordinates in \(P_\tau\) fixed present and coordinates in \(D_\tau\) fixed
+absent.  The free coordinates are the elements of
+\(U\setminus(P_\tau\cup D_\tau)\).  Summing over each free coordinate
+independently gives a factor \(p+(1-p)=1\); therefore
+\[
+\sum_{A\in C_\ell}p^{|A|}(1-p)^{|U|-|A|}
+=p^{|P_\tau|}(1-p)^{|D_\tau|}
+=p^{|P_\tau|}(1-p)^{|A_\tau|-|Z_\tau|}.
+\]
+
+It remains to pass from one leaf to all realized leaves.  Suppose
+\(A\subseteq U\) lies in \(C_\ell\cap C_{\ell'}\) for two realized leaves
+\(\ell=(\beta,\tau)\) and \(\ell'=(\beta',\tau')\).  By the span equivalence,
+\(A\) satisfies the compatible-or-selected-sibling span condition for both
+\((\beta,\tau)\) and \((\beta',\tau')\).  If \(\ell\ne\ell'\), this contradicts
+the span-disjointness hypothesis.  Hence the cylinders \(C_\ell\) are
+pairwise disjoint.  Summing the single-leaf identity over \(\ell\in L\), and
+using pairwise disjointness to identify the sum of the cylinder masses with
+the mass of their union, yields the asserted inequality.
+\end{proof}

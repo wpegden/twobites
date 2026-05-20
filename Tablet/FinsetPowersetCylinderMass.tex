@@ -1,0 +1,28 @@
+\begin{helper}
+Let \(U\) be a finite set and let \(P,Z\subseteq U\) be disjoint finite
+subsets.  For any real \(p\),
+\[
+\sum_{\substack{A\subseteq U\\ P\subseteq A,\ A\cap Z=\emptyset}}
+  p^{|A|}(1-p)^{|U|-|A|}
+=p^{|P|}(1-p)^{|Z|}.
+\]
+\end{helper}
+\begin{proof}
+Write \(F=U\setminus(P\cup Z)\).  Every subset \(A\subseteq U\) with
+\(P\subseteq A\) and \(A\cap Z=\emptyset\) has a unique representation
+\[
+A=P\cup V,\qquad V\subseteq F.
+\]
+Conversely every \(V\subseteq F\) gives such an \(A\).  The disjointness of
+\(P\), \(Z\), and \(V\) gives
+\[
+|A|=|P|+|V|,\qquad |U|-|A|=|Z|+|F|-|V|.
+\]
+Therefore the sum is
+\[
+p^{|P|}(1-p)^{|Z|}
+\sum_{V\subseteq F}p^{|V|}(1-p)^{|F|-|V|}.
+\]
+The remaining sum is the binomial expansion of
+\((p+(1-p))^{|F|}=1\).  This proves the formula.
+\end{proof}

@@ -1,0 +1,128 @@
+\begin{helper}
+Fix one blue support label \(B\), one red label \(J\), a terminal
+coordinate set \(U\), and a nodup terminal order \(o\) with
+\(\operatorname{toFinset}(o)=U\).  Let \(\mathcal T\) be the finite
+branch-label type and let \(\mathcal P\) be the finite transcript family.
+For a realized pair \(c=(\beta,\tau)\), write
+\[
+R_c=R_\beta,\qquad P_c=P_\tau,\qquad A_c=A_\tau,\qquad Z_c=Z_\tau .
+\]
+Assume \(0\le p\le1/2\), \(|B|=u_B\), and \(B\subseteq U\).  Assume that
+every realized pair with \(\tau\in\mathcal P\) satisfies the fixed
+\((B,J)\) geometry:
+\[
+|R_\beta|=u_R,\qquad R_\beta\subseteq U,\qquad B\cap R_\beta=\emptyset,
+\]
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,\qquad
+B\cup R_\beta\subseteq P_\tau,
+\]
+that \(P_\tau,A_\tau\) encode the complete terminal blue trace of \(\beta\),
+and that
+\[
+Z_\tau\subseteq A_\tau,\qquad
+\max(0,a-u_R-u_B)\le |Z_\tau|.
+\]
+
+Assume in addition the lower-level reveal-order residual certificate for
+this fixed pair \(B,J\).  Namely, there is a finite residual leaf type
+\(\Lambda\), a residual leaf assignment
+\[
+\iota:\mathcal T\times\mathcal P\to\Lambda,
+\]
+and a leaf mass \(\nu:\Lambda\to\mathbb R\).  The leaf masses are
+nonnegative and normalized:
+\[
+0\le \nu(\lambda)\quad(\lambda\in\Lambda),\qquad
+\sum_{\lambda\in\Lambda}\nu(\lambda)\le1.
+\]
+The leaf assignment is injective on realized cells: if
+\(\tau,\tau'\in\mathcal P\), both \((\beta,\tau)\) and
+\((\beta',\tau')\) are realized, and
+\[
+\iota(\beta,\tau)=\iota(\beta',\tau'),
+\]
+then \(\beta=\beta'\) and \(\tau=\tau'\).  Finally, every realized pair has
+the residual leaf domination
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \nu(\iota(\beta,\tau)).
+\]
+Here \(\Lambda,\iota,\nu\) are leaf-level scan data: they are not the
+cell-indexed residual masses being constructed below.
+
+Then there are residual masses \(\sigma_{\beta,\tau}\), indexed by formal
+branch/transcript pairs, such that realized allowed pairs have
+\[
+0\le\sigma_{\beta,\tau},
+\]
+the realized residual mass is a subprobability,
+\[
+\sum_{\beta}\sum_{\tau\in\mathcal P:\,(\beta,\tau)\text{ realized}}
+  \sigma_{\beta,\tau}\le1,
+\]
+and every realized allowed pair satisfies
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \sigma_{\beta,\tau}.
+\]
+\end{helper}
+\begin{proof}
+Define the cell residual mass by reading the mass of the residual leaf owned
+by that cell:
+\[
+\sigma_{\beta,\tau}:=\nu(\iota(\beta,\tau)).
+\]
+This is a formal definition for every branch/transcript pair; no
+realization condition is needed to define it.
+
+For a realized pair \((\beta,\tau)\), nonnegativity follows immediately from
+the lower-level certificate:
+\[
+0\le \nu(\iota(\beta,\tau))=\sigma_{\beta,\tau}.
+\]
+The termwise residual lower bound is exactly the leaf-domination clause of
+the certificate, after substituting the definition of \(\sigma\):
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \nu(\iota(\beta,\tau))
+  = \sigma_{\beta,\tau}.
+\]
+
+It remains to prove the subprobability bound.  Let
+\[
+\mathcal C=\{(\beta,\tau):\tau\in\mathcal P,\,
+(\beta,\tau)\text{ is realized}\}
+\]
+be the finite set of realized cells.  By the injectivity hypothesis, the map
+\[
+(\beta,\tau)\mapsto\iota(\beta,\tau)
+\]
+is injective on \(\mathcal C\).  Therefore summing \(\sigma_{\beta,\tau}\)
+over realized cells is the same as summing \(\nu\) over the image
+\(\iota(\mathcal C)\), with no residual leaf counted twice:
+\[
+\sum_{(\beta,\tau)\in\mathcal C}\sigma_{\beta,\tau}
+=
+\sum_{\lambda\in\iota(\mathcal C)}\nu(\lambda).
+\]
+The image \(\iota(\mathcal C)\) is a subset of \(\Lambda\).  Since every
+leaf mass is nonnegative, enlarging the sum from this image to all residual
+leaves can only increase it:
+\[
+\sum_{\lambda\in\iota(\mathcal C)}\nu(\lambda)
+\le
+\sum_{\lambda\in\Lambda}\nu(\lambda).
+\]
+The lower-level reveal-order product-tree certificate gives
+\[
+\sum_{\lambda\in\Lambda}\nu(\lambda)\le1.
+\]
+Combining these three displayed relations proves
+\[
+\sum_{\beta}\sum_{\tau\in\mathcal P:\,(\beta,\tau)\text{ realized}}
+  \sigma_{\beta,\tau}\le1.
+\]
+Thus the leaf-level product-tree data yield the required cell-indexed
+residual certificate.
+\end{proof}

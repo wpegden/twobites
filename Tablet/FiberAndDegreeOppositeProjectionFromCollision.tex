@@ -1,0 +1,28 @@
+\begin{helper}
+Fix a two-bite sample \(\omega\).  Suppose every lifted neighborhood has
+size at most \(2pn\), the red-red and blue-blue lifted intersections are each
+at most \(100(\log n)^3\), and the collision event supplied by
+\(\noderef{OppositeProjectionCollisionBound}\) holds for this sample.  Then
+the two opposite-projection clauses of \(\noderef{FiberAndDegreeEvent}\) hold:
+for all distinct red vertices \(r,s\),
+\[
+|\pi_B(N_r)\cap\pi_B(N_s)|\le 2\cdot 100(\log n)^3,
+\]
+and for all distinct blue vertices \(b,c\),
+\[
+|\pi_R(N_b)\cap\pi_R(N_c)|\le 2\cdot 100(\log n)^3.
+\]
+\end{helper}
+\begin{proof}
+The collision event says that the size bound implies both same-color
+opposite-projection collision estimates.  Applying it to the assumed lifted
+size bound gives, for distinct red vertices \(r,s\),
+\[
+|\pi_B(N_r)\cap\pi_B(N_s)|
+\le |N_r\cap N_s|+100(\log n)^3.
+\]
+The assumed red-red lifted-intersection bound gives
+\(|N_r\cap N_s|\le100(\log n)^3\), so the displayed inequality is at most
+\(2\cdot100(\log n)^3\).  The blue statement is identical, using the blue-blue
+lifted-intersection bound and the blue half of the collision event.
+\end{proof}

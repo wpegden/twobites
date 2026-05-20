@@ -1,0 +1,94 @@
+\begin{helper}
+Fix a finite terminal coordinate set \(U\), an ordered scan list \(o\) with
+\(\operatorname{toFinset}(o)=U\), a realized transcript
+\(\tau=(P_\tau,A_\tau,Z_\tau)\), and a fixed present support
+\(F_\tau\subseteq P_\tau\).  Assume
+\[
+P_\tau,A_\tau\subseteq U,\qquad
+Z_\tau\subseteq A_\tau,\qquad P_\tau\cap A_\tau=\emptyset .
+\]
+Let \(W\subseteq U\) be the terminal truth table of the realized witness:
+every coordinate of \(P_\tau\) is present in \(W\), and every coordinate of
+\(A_\tau\) is absent in \(W\).  Let \(A_{\rm res}\subseteq U\) satisfy the
+residual cylinder constraints
+\[
+P_\tau\setminus F_\tau\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset ,
+\]
+and set
+\[
+A_{\rm rec}=(A_{\rm res}\setminus Z_\tau)\cup F_\tau .
+\]
+
+For each coordinate \(e\in U\), let \(D_\tau(e)\subseteq U\) be the exact
+set of earlier terminal coordinates whose values are used when the ordered
+scan tests, at \(e\), staged-openness, touchedness, same-color closedness,
+and pre-terminal recordedness.  Assume the RISI dependency-coverage
+condition:
+\[
+D_\tau(e)\subseteq P_\tau\cup A_\tau\qquad(e\in U).
+\]
+Assume prefix safety in this exact form: for every terminal truth table
+\(A\subseteq U\), if \(A\) and \(W\) agree on \(D_\tau(e)\), then the four
+scan tests at \(e\) have the same values for \(A\) and \(W\).  Finally assume
+the deterministic scan-output condition: if a terminal truth table
+\(A\subseteq U\) has the same four test outcomes as the realized witness at
+every \(e\in U\), then the ordered scan chooses the same branch label
+\(\beta\) and returns the same transcript \(\tau\).
+
+Then \(A_{\rm rec}\subseteq U\), and \(W\) and \(A_{\rm rec}\) agree on
+every dependency set \(D_\tau(e)\).  Consequently the four scan tests agree
+at every terminal coordinate, and the ordered scan run on the reconstructed
+residual truth table \(A_{\rm rec}\) returns the same branch label
+\(\beta\) and transcript \(\tau\).
+\end{helper}
+\begin{proof}
+Fix \(e\in U\) and \(c\in D_\tau(e)\).  By the dependency-coverage
+hypothesis, \(c\in P_\tau\) or \(c\in A_\tau\).
+
+First suppose \(c\in P_\tau\).  The witness table \(W\) contains \(c\).  If
+\(c\in F_\tau\), then the reconstruction inserts \(c\) through the fixed
+support.  If \(c\notin F_\tau\), then
+\(c\in P_\tau\setminus F_\tau\), so the residual cylinder hypothesis gives
+\(c\in A_{\rm res}\).  Since \(Z_\tau\subseteq A_\tau\) and
+\(P_\tau\cap A_\tau=\emptyset\), this \(c\) is not in \(Z_\tau\).  Hence it
+survives in \(A_{\rm res}\setminus Z_\tau\).  In either subcase
+\[
+c\in A_{\rm rec}.
+\]
+
+Now suppose \(c\in A_\tau\).  The witness table \(W\) omits \(c\).  If
+\(c\notin Z_\tau\), then \(c\in A_\tau\setminus Z_\tau\), and residual
+avoidance gives \(c\notin A_{\rm res}\).  Also \(c\notin F_\tau\), because
+\(F_\tau\subseteq P_\tau\) and \(P_\tau\cap A_\tau=\emptyset\).  Therefore
+\(c\notin A_{\rm rec}\).  If \(c\in Z_\tau\), the reconstruction explicitly
+deletes \(Z_\tau\) from \(A_{\rm res}\), and again
+\(c\notin F_\tau\) by the same disjointness argument.  Thus
+\[
+c\notin A_{\rm rec}.
+\]
+The same containment checks also show that \(A_{\rm rec}\subseteq U\): the
+residual part is contained in \(A_{\rm res}\subseteq U\), and the fixed
+support is contained in \(F_\tau\subseteq P_\tau\subseteq U\).
+
+So in both cases
+\[
+c\in W\quad\Longleftrightarrow\quad c\in A_{\rm rec}.
+\]
+This proves agreement of \(W\) and \(A_{\rm rec}\) on every dependency set
+\(D_\tau(e)\).
+
+Apply the prefix-safety hypothesis at each \(e\in U\).  Since the two truth
+tables agree on the exact dependency set \(D_\tau(e)\), the staged-open,
+touched, same-color-closed, and pre-terminal-recorded tests at \(e\) have
+the same values for \(W\) and for \(A_{\rm rec}\).  The deterministic
+scan-output hypothesis then applies to \(A_{\rm rec}\): its ordered scan has
+the same test sequence as the realized witness scan, so it selects the same
+branch label \(\beta\) and returns the same transcript \(\tau\).
+
+In the active branch/transcript node, the comparison sample whose terminal
+truth table is \(A_{\rm rec}\) is supplied by
+\(\noderef{FixedSetHistoryCellTerminalAssignmentExtension}\).  The present
+helper is the separate RISI scan-dependency calculation: it does not assert
+released-block membership or restate the whole branch/transcript package.
+\end{proof}

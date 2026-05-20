@@ -1,0 +1,198 @@
+\begin{lemma}
+Let \(C=100\), let \(\beta=1/2\), and put
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)
+=\left\lfloor n/\log^2 n\right\rfloor,\qquad
+p(n)=\noderef{TwoBiteEdgeProbability}(\beta,n)
+=\frac12\sqrt{\frac{\log n}{n}} .
+\]
+Under the two-bite law with base size \(M(n)\) and edge probability \(p(n)\),
+with high probability the following conditional collision statement holds.
+For every sample \(\omega\), if every lifted neighborhood satisfies
+\[
+|N_x|\le 2p(n)n\qquad (x\in V_R\cup V_B),
+\tag{1}
+\]
+then for every two distinct red vertices \(r\ne s\),
+\[
+|\pi_B(N_r)\cap\pi_B(N_s)|
+\le |N_r\cap N_s|+C(\log n)^3,
+\tag{2}
+\]
+and for every two distinct blue vertices \(b\ne c\),
+\[
+|\pi_R(N_b)\cap\pi_R(N_c)|
+\le |N_b\cap N_c|+C(\log n)^3.
+\tag{3}
+\]
+\end{lemma}
+\begin{proof}
+Write \(L=\log n\), \(M=M(n)\), and \(p=p(n)\).  We prove that the
+probability that the implication in the statement fails is \(o(1)\).  It
+suffices to prove the red estimate (2), because the proof of (3) is obtained
+by interchanging the two colors and replacing blue projections by red
+projections.
+
+Fix two distinct red vertices \(r\ne s\).  Let
+\[
+A=N_{G_R}(r),\qquad B=N_{G_R}(s),
+\]
+and put
+\[
+U=N_r,\qquad V=N_s,\qquad U_0=U\setminus V,\qquad V_0=V\setminus U.
+\]
+The only random coordinates relevant to the red estimate are the red base
+graph and the injection
+\(\pi=\noderef{TwoBiteEmbedding}(\omega)\); the blue base graph may be summed
+out because its \(\noderef{GnpGraphWeight}\) total mass is \(1\).
+Condition on the red base graph and on the complete red-coordinate map
+\[
+\rho(v)=\pi_R(v),\qquad v\in V(G).
+\]
+This conditioning fixes \(A,B,U,V,U_0,V_0\).  If the size hypothesis (1) fails,
+the implication in the statement is true, so in bounding failure we may assume
+\[
+a:=|U_0|\le |U|\le 2pn,\qquad
+b:=|V_0|\le |V|\le 2pn.
+\tag{4}
+\]
+
+We now spell out the remaining conditional law from
+\(\noderef{UniformInjectionWeight}\).  For each red row \(i\in V_R\), let
+\[
+R_i=\{v:\rho(v)=i\},\qquad q_i=|R_i|.
+\]
+If some \(q_i>M\), then no injection with red-coordinate map \(\rho\) exists
+and this conditional fiber has probability \(0\).  Otherwise the number of
+injection completions with this red-coordinate map is
+\[
+\prod_{i\in V_R} (M)_{q_i},
+\]
+where \((M)_q=M(M-1)\cdots(M-q+1)\).  Indeed, in row \(i\) one must assign
+distinct blue coordinates to the \(q_i\) vertices of \(R_i\), and choices in
+different red rows are independent because different red coordinates already
+make the product cells distinct.  Since
+\(\noderef{UniformInjectionWeight}\) is constant over all injections and
+\(\noderef{TwoBiteSampleWeight}\) is the product of the two graph weights with
+this uniform-injection factor, conditioning on the nonzero fiber makes the
+blue-coordinate assignments in the rows \(R_i\) independent, each uniformly
+distributed over injections \(R_i\hookrightarrow V_B\).
+
+The row sets involved in \(U_0\) and \(V_0\) are disjoint: \(U_0\) uses red
+rows in \(A\setminus B\), while \(V_0\) uses red rows in \(B\setminus A\).
+Therefore, after conditioning further on all blue coordinates of vertices in
+\(U_0\), the assignments on the rows meeting \(V_0\) are still independent
+uniform row injections.  Let
+\[
+S=\pi_B(U_0)\subseteq V_B.
+\]
+Then \(|S|\le a\).  Define
+\[
+W=\bigl|\{v\in V_0:\pi_B(v)\in S\}\bigr|.
+\]
+Every blue value in \(\pi_B(U_0)\cap\pi_B(V_0)\) has at least one witnessing
+vertex in \(V_0\) whose blue coordinate lies in \(S\), hence
+\[
+|\pi_B(U_0)\cap\pi_B(V_0)|\le W. \tag{5}
+\]
+
+We bound the tail of \(W\) by a direct counting argument.  Fix an integer
+\(t\ge1\).  If \(W\ge t\), then some \(t\)-element set
+\(T\subseteq V_0\) has all of its blue coordinates in \(S\).  For a fixed
+such \(T\), write \(h_i=|T\cap R_i|\) for each red row used by \(V_0\).  Under
+the row-injection law, the probability that all \(h_i\) specified vertices in
+row \(i\) land in \(S\) is
+\[
+\frac{(|S|)_{h_i}}{(M)_{h_i}}
+\le \left(\frac{|S|}{M}\right)^{h_i}
+\le \left(\frac{a}{M}\right)^{h_i}.
+\]
+The first inequality follows term by term:
+\[
+\frac{|S|-j}{M-j}\le \frac{|S|}{M}\qquad (0\le j<h_i),
+\]
+because \(|S|\le M\).  Multiplying over the rows, which are conditionally
+independent, gives
+\[
+\Pr(T\hbox{ lands in }S\mid \rho,G_R,S)
+\le \left(\frac{a}{M}\right)^t .
+\]
+There are at most \(\binom bt\) choices for \(T\).  Hence
+\[
+\Pr(W\ge t\mid \rho,G_R,S)
+\le \binom bt\left(\frac{a}{M}\right)^t
+\le \left(\frac{eab}{Mt}\right)^t . \tag{6}
+\]
+If \(t>b\), then \(W\ge t\) is impossible, so the same displayed upper bound
+is harmless; otherwise the last inequality is the standard
+\(\binom bt\le(eb/t)^t\).
+This estimate is uniform in the conditioning data, so it remains valid after
+averaging over \(S,\rho\), and \(G_R\).
+
+On the size event (4),
+\[
+\frac{ab}{M}
+\le \frac{(2pn)^2}{M}
+= \frac{4p^2n^2}{M}.
+\]
+Since \(p^2n=L/4\) and, for all sufficiently large \(n\),
+\[
+M=\left\lfloor\frac n{L^2}\right\rfloor
+\ge \frac12\,\frac n{L^2},
+\]
+we get
+\[
+\frac{ab}{M}\le 2L^3. \tag{7}
+\]
+Take \(t=\lceil C L^3\rceil\).  Combining (6) and (7), and increasing \(n\)
+if necessary so that \(L\ge1\), gives
+\[
+\Pr(W\ge C L^3\mid r,s,\hbox{ size event})
+\le
+\left(\frac{2eL^3}{C L^3}\right)^{C L^3}
+\le \exp(-cL^3)
+\tag{8}
+\]
+for an absolute constant \(c>0\), because \(C=100>2e\).
+
+It remains only to relate \(W\) to the projected intersection in (2).  If
+\(y\in\pi_B(U)\cap\pi_B(V)\), choose \(u\in U\) and \(v\in V\) with
+\(\pi_B(u)=y=\pi_B(v)\).  If \(u\in V\) or \(v\in U\), then
+\(y\in\pi_B(U\cap V)\).  Otherwise \(u\in U_0\) and \(v\in V_0\), so
+\(y\in\pi_B(U_0)\cap\pi_B(V_0)\).  Thus
+\[
+\pi_B(U)\cap\pi_B(V)
+\subseteq
+\pi_B(U\cap V)\cup(\pi_B(U_0)\cap\pi_B(V_0)).
+\]
+Taking cardinalities and using \(|\pi_B(U\cap V)|\le |U\cap V|\) and (5),
+we obtain
+\[
+|\pi_B(U)\cap\pi_B(V)|
+\le |U\cap V|+W. \tag{9}
+\]
+Equations (8) and (9) show that, for this fixed red pair, the probability of
+violating (2) while the size hypothesis holds is at most \(\exp(-cL^3)\).
+
+There are fewer than \(M^2\le n^2=\exp(2L)\) ordered red pairs.  The union
+bound gives a total red-pair failure probability at most
+\[
+M^2\exp(-cL^3)=o(1).
+\]
+Repeating the same argument with colors swapped gives the same bound for all
+blue pairs.  Therefore the probability that either (2) or (3) fails for some
+same-color pair while (1) holds is \(o(1)\).  In the tablet support DAG, the
+red and blue one-color high-probability statements are packaged as
+\(\noderef{OppositeProjectionRedFailureBound}\) and
+\(\noderef{OppositeProjectionSymmetricBlue}\).  Their intersection is obtained
+using \(\noderef{WithHighProbabilityThreeIntersection}\), with the red event
+repeated as the third event and with eventual nonnegativity of sample weights
+coming from \(\noderef{OppositeProjectionEdgeProbBounds}\) and
+\(\noderef{TwoBiteSampleWeightNonnegative}\).  The resulting triple
+intersection implies the desired two-event conjunction.  This is exactly the
+\(\noderef{WithHighProbability}\) assertion for the conditional collision
+statement under the two-bite probability
+\(\noderef{TwoBiteEventProbability}\), with the rounded base size
+\(M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\) and
+\(p(n)=\noderef{TwoBiteEdgeProbability}(1/2,n)\).
+\end{proof}

@@ -1,0 +1,192 @@
+\begin{helper}
+Assume \(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\).
+For every \(\delta>0\) there are a positive internal error \(\eta>0\) and
+a threshold \(N\ge n_0\) such that, for every \(n>N\), if
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+then
+\[
+\sum_{\ell_R=0}^{K}\sum_{\ell_B=0}^{K}
+{\bf 1}_{\ell_R\ell_B\ge K}\,
+\exp\!\left(
+\left(\eta-\frac{2-\ell_R/K-\ell_B/K}{2}\right)K\log n
+\right)
+\min\!\left\{1,
+\exp\!\left(-p\bigl(f(\ell_R,\ell_B)-\varepsilon^3K^2\bigr)\right)
+\right\}
+\le
+\delta\binom nK^{-1},
+\]
+where \(f=\noderef{ProjectionOpenPairFunction}\), all cardinalities are cast to
+real numbers in the displayed expression, and the summand is \(0\) when
+\(\ell_R\ell_B<K\).
+\end{helper}
+\begin{proof}
+From \(\noderef{ParameterHierarchy}\), we have
+\[
+0<\varepsilon<\frac1{16}.
+\]
+Choose \(\eta>0\) small enough that
+\[
+\eta\le \frac{\varepsilon}{80},\qquad
+\eta\le \frac{\varepsilon^2}{320},\qquad
+\eta\le
+\frac{\varepsilon(1-\varepsilon-22\varepsilon^2)}
+     {320(1+\varepsilon)}.
+\tag{1}
+\]
+The last upper bound is positive because
+\(\varepsilon+22\varepsilon^2<1\) for \(\varepsilon<1/16\).
+
+Apply \(\noderef{FixedSetProjectionBinomialSummationMargins}\) with this
+\(\eta\) and the given \(\delta\), and apply the upper- and middle-regime
+children
+\(\noderef{FixedSetProjectionUpperRegimeExponent}\) and
+\(\noderef{FixedSetProjectionMiddleRegimeExponent}\) with the same \(\eta\).
+Let \(N\ge n_0\) be larger than the three thresholds supplied by these children.
+For \(n>N\), put
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+The binomial-summation child gives
+\[
+1\le K\le n,\qquad
+\log\binom nK\le \left(\frac12+\eta\right)K\log n, \tag{2}
+\]
+and
+\[
+2\log(K+1)+\log(\delta^{-1})\le \eta K\log n. \tag{3}
+\]
+Since \(1\le K\le n\), increasing \(N\) if necessary gives
+\[
+0\le K\log n. \tag{4}
+\]
+
+Fix a nonzero summand, so \(\ell_R\ell_B\ge K\), and put
+\[
+x_R=\ell_R/K,\qquad x_B=\ell_B/K.
+\]
+Since \(1\le K\) and \(0\le\ell_R,\ell_B\le K\), we have
+\[
+0\le x_R,x_B\le1.
+\]
+The summand multiplied by \(\binom nK\) has logarithm at most
+\[
+\left(\eta+\left(\frac12+\eta\right)-\frac{2-x_R-x_B}{2}\right)K\log n
+\]
+if the minimum contributes \(1\).  If the conditional exponential contributes,
+the same expression has the additional term
+\[
+-p\bigl(f(\ell_R,\ell_B)-\varepsilon^3K^2\bigr).
+\]
+
+First suppose \(x_R+x_B\le1-\varepsilon/2\).  The minimum is at most \(1\), and
+\(\noderef{FixedSetProjectionLowerRegimeExponent}\) applies with the natural
+boundary data \(1\le K\) from (2), \(0\le\ell_R,\ell_B\le K\) from the summation
+range, \(0\le K\log n\) from (4), and \(\eta\le\varepsilon/80\) from (1).  In
+the logarithmic exponent of \(\binom nK\) times the summand, the minimum factor
+contributes at most
+\[
+\min\left\{0,\,
+-p\left(f(\ell_R,\ell_B)-\varepsilon^3K^2\right)\right\}.
+\]
+The lower-regime child therefore gives
+\[
+\log\!\left(\binom nK\cdot\hbox{summand}\right)\le -4\eta K\log n. \tag{5}
+\]
+
+Next suppose \(x_R+x_B\ge1+\varepsilon/2\).  In the definition of
+\(f=\noderef{ProjectionOpenPairFunction}\), both minima are at most the first
+listed term, so
+\[
+f(\ell_R,\ell_B)
+\ge
+\binom{\ell_R}{2}_{\mathbb R}+\binom{\ell_B}{2}_{\mathbb R}
+-\binom{K-\ell_R}{2}_{\mathbb R}
+-\binom{K-\ell_B}{2}_{\mathbb R}.
+\]
+The upper-regime child then gives
+\[
+\log\!\left(\binom nK\cdot\hbox{summand}\right)
+\le
+-\frac{\varepsilon(x_R+x_B-1-\varepsilon^2-\varepsilon^3)}{2}K\log n
++3\eta K\log n.
+\]
+Because \(x_R+x_B\ge1+\varepsilon/2\) and \(\varepsilon<1/16\),
+\[
+-\frac{\varepsilon(x_R+x_B-1-\varepsilon^2-\varepsilon^3)}{2}
+\le -\frac{\varepsilon^2}{8}.
+\]
+Using \(\eta\le\varepsilon^2/320\), we have
+\[
+-\frac{\varepsilon^2}{8}+3\eta\le -4\eta,
+\]
+because \(7\eta\le\varepsilon^2/8\).  With (4), the upper-regime exponent is
+therefore at most
+\[
+-4\eta K\log n. \tag{6}
+\]
+
+It remains to treat
+\[
+1-\varepsilon/2<x_R+x_B<1+\varepsilon/2.
+\]
+If \(x_B\le x_R\), then the middle-regime child gives \(pn<K-\ell_B\) and
+\[
+\begin{aligned}
+&\left(\eta+\left(\frac12+\eta\right)-\frac{2-x_R-x_B}{2}\right)K\log n\\
+&\quad
+-p\left(
+\binom{\ell_R}{2}_{\mathbb R}+\binom{\ell_B}{2}_{\mathbb R}
+-\binom{K-\ell_R}{2}_{\mathbb R}
+-\binom{pn}{2}_{\mathbb R}
+-\binom{K-\ell_B-pn}{2}_{\mathbb R}
+-\varepsilon^3K^2\right)\\
+&\le
+\frac{\varepsilon(-1+\varepsilon+22\varepsilon^2)}{16(1+\varepsilon)}
+K\log n+3\eta K\log n.
+\end{aligned}
+\]
+The displayed upper bound applies to the exponent of
+\(\binom nK\) times the summand because the second minimum in \(f\) is bounded
+above by
+\[
+\binom{pn}{2}_{\mathbb R}+\binom{K-\ell_B-pn}{2}_{\mathbb R}
+\]
+and the first by \(\binom{K-\ell_R}{2}_{\mathbb R}\).  If \(x_R\le x_B\), the
+same argument applies after interchanging red and blue.  Since
+\[
+\frac{\varepsilon(-1+\varepsilon+22\varepsilon^2)}{16(1+\varepsilon)}
+=-\frac{\varepsilon(1-\varepsilon-22\varepsilon^2)}{16(1+\varepsilon)}
+\]
+and \(\eta\) satisfies (1), the right side above plus \(3\eta\) is at most
+\(-4\eta\): indeed the bound on \(\eta\) gives
+\[
+\frac{\varepsilon(1-\varepsilon-22\varepsilon^2)}{16(1+\varepsilon)}
+\ge 20\eta.
+\]
+With (4), this middle-regime exponent is also at most
+\[
+-4\eta K\log n. \tag{7}
+\]
+
+The bounds (5), (6), and (7) show that every nonzero summand is at most
+\[
+\binom nK^{-1}\exp(-4\eta K\log n).
+\]
+There are at most \((K+1)^2\) summands, and (3) together with (4) gives
+\[
+(K+1)^2\exp(-4\eta K\log n)
+\le
+\delta\exp(-3\eta K\log n)
+\le \delta.
+\]
+Multiplying by \(\binom nK^{-1}\) proves the claimed finite sum bound.  The
+summands with \(\ell_R\ell_B<K\) are \(0\) by definition, so they do not affect
+the estimate.
+\end{proof}

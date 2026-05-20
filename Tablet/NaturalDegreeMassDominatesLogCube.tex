@@ -1,0 +1,41 @@
+\begin{lemma}
+For every real constant \(A>0\), eventually in \(n\),
+\[
+A(\log n)^3
+  \leq
+  \operatorname{TwoBiteEdgeProbability}(1/2,n)\,
+  \operatorname{TwoBiteNaturalReducedVertexCount}(n).
+\]
+\end{lemma}
+\begin{proof}
+Let \(L=\log n\), \(M=\operatorname{TwoBiteNaturalReducedVertexCount}(n)\), and
+\(p=\operatorname{TwoBiteEdgeProbability}(1/2,n)\).  The definitions of
+\(p\) and \(M\) are those of \noderef{TwoBiteEdgeProbability} and
+\noderef{TwoBiteNaturalReducedVertexCount}.  By
+\noderef{TwoBiteNaturalReducedVertexRatioEventually}, eventually
+\[
+n \leq 2L^2M .
+\]
+Also \((\log n)^9=o(n)\), so for the fixed constant \(A\) we eventually have
+\[
+16A^2L^9 \leq n .
+\]
+For such \(n\), with \(L>0\), squaring the first displayed inequality gives
+\[
+n^2\leq 4L^4M^2 .
+\]
+Multiplying the second displayed inequality by \(n\) and combining these two
+inequalities yields
+\[
+16A^2L^9n \leq 4L^4M^2.
+\]
+After division by \(4L^3>0\), this is
+\[
+4A^2L^6 n \leq L M^2 .
+\]
+Since \(p=(1/2)\sqrt{L/n}\), the last inequality is exactly
+\[
+(A L^3)^2 \leq (pM)^2 .
+\]
+Both sides being squared are nonnegative, hence \(A L^3\leq pM\), as required.
+\end{proof}

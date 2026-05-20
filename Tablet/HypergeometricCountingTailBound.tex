@@ -1,0 +1,75 @@
+\begin{helper}[HypergeometricCountingTailBound]
+\label{helper:HypergeometricCountingTailBound}
+Let \(N,n,m\) be natural numbers with \(n\le N\) and \(m\le N\), and let
+\(A\subseteq\operatorname{Fin}(N)\) have \(|A|=m\).  Choose an
+\(n\)-element subset \(S\subseteq\operatorname{Fin}(N)\) uniformly, and set
+\[
+Y=|S\cap A|,\qquad q=\frac mN,\qquad \mu=nq,
+\]
+with the same real-division convention as Lean, so \(q=0\) when \(N=0\).
+For every real \(T>0\),
+\[
+\frac{\left|\{S: |S|=n,\ |S\cap A|\ge T\}\right|}{\binom Nn}
+\le \left(\frac{e\mu}{T}\right)^T .
+\]
+\end{helper}
+\begin{proof}
+If \(N=0\), then \(n=0\) and \(m=0\).  There is only the empty sample and
+\(Y=0\), so \(T>0\) makes the event \(Y\ge T\) empty.  The left side is
+\(0\), and the right side is also nonnegative, hence the desired inequality
+holds.  We may therefore assume \(N>0\).
+
+If \(\mu=0\), then \(nq=0\).  Since \(N>0\), \(q=m/N\), so either \(n=0\) or
+\(m=0\).  In both cases \(Y=0\) for every sample: if \(n=0\) the sample is
+empty, and if \(m=0\) the marked set is empty.  Because \(T>0\), the event
+\(Y\ge T\) is empty, so the left side is \(0\).  The right side is
+\((e\mu/T)^T=0\), and the inequality again holds.
+
+Assume from now on that \(\mu>0\).  The left side is a probability, so it is
+at most \(1\).  If \(T\le\mu\), then
+\[
+\frac{e\mu}{T}\ge e,
+\]
+and therefore \((e\mu/T)^T\ge1\), since \(T>0\).  The bound follows in this
+case.
+
+It remains to handle \(T>\mu>0\).  Set
+\[
+\lambda=\log(T/\mu).
+\]
+Then \(\lambda>0\).  Markov's inequality applied to the nonnegative random
+variable \(e^{\lambda Y}\) gives
+\[
+\Pr(Y\ge T)
+=\Pr(e^{\lambda Y}\ge e^{\lambda T})
+\le \mathbb E[e^{\lambda Y}]\,e^{-\lambda T}.
+\]
+By \(\noderef{HypergeometricMgfComparison}\), the hypergeometric moment
+generating function is bounded by
+\[
+\mathbb E[e^{\lambda Y}]
+\le \exp(\mu(e^\lambda-1)).
+\]
+Combining the last two displays yields
+\[
+\Pr(Y\ge T)
+\le \exp(\mu(e^\lambda-1)-\lambda T).
+\]
+The choice of \(\lambda\) gives \(e^\lambda=T/\mu\).  Hence
+\[
+\mu(e^\lambda-1)-\lambda T
+=\mu\left(\frac T\mu-1\right)-T\log(T/\mu)
+=T-\mu-T\log(T/\mu).
+\]
+Since \(\mu\ge0\),
+\[
+T-\mu-T\log(T/\mu)
+\le T-T\log(T/\mu)
+=\log\left(\left(\frac{e\mu}{T}\right)^T\right).
+\]
+Exponentiating both sides gives
+\[
+\Pr(Y\ge T)\le \left(\frac{e\mu}{T}\right)^T,
+\]
+which is the required estimate.
+\end{proof}

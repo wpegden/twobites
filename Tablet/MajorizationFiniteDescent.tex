@@ -1,0 +1,120 @@
+\begin{helper}
+Let \(N\) be a natural number, and let \(c, b, x \in \mathbb R^{\operatorname{Fin}(N)}\) have nonnegative integer entries and equal total sums. Suppose \(b\) is nonincreasing, \(x\) is a nonincreasing permutation of \(c\), and for every \(0 \le r \le N\), the prefix sum of \(x\) is at least the prefix sum of \(b\). If \(h \colon \mathbb R^{\operatorname{Fin}(N)} \to \mathbb R\) is convex and symmetric under coordinate permutations, then \(h(b) \le h(x)\).
+\end{helper}
+\begin{proof}
+Use well-founded induction on the integer-valued distance
+\[
+D(u)=\sum_{k=1}^N |u_k-b_k|
+\]
+among vectors \(u\) that are nonincreasing, have nonnegative integer entries,
+have the same total sum as \(b\), and dominate \(b\) on all prefixes.  This
+is an integer measure because every entry of \(u\) and \(b\) is a
+nonnegative integer, so every summand is an absolute value of an integer
+difference.  If \(u=b\), then \(h(b)\le h(u)\) is equality.  It remains to
+show that every \(u\ne b\) in this induction domain admits a new vector in
+the same domain with strictly smaller \(D\), and with \(h\) no larger than
+at \(u\).  We prove this for the given \(x\).
+
+Assume \(x\ne b\).  By \(\noderef{MajorizationDiscrepancyTransfer}\), there
+are indices \(i<j\) and a positive integer \(\delta\) such that
+\[
+b_i<x_i,\qquad x_j<b_j,\qquad
+\delta\le x_i-b_i,\qquad \delta\le b_j-x_j,
+\]
+and for every intermediate prefix \(i<r\le j\), the prefix slack of \(x\)
+over \(b\) is at least \(\delta\).  Define \(y\) by moving \(\delta\) units
+from coordinate \(i\) to coordinate \(j\):
+\[
+y_i=x_i-\delta,\qquad y_j=x_j+\delta,\qquad y_k=x_k\quad(k\ne i,j).
+\]
+The vector \(y\) has nonnegative integer entries.  Indeed, the entries away
+from \(i,j\) are unchanged; \(y_j\) is the sum of two integers; and
+\(\delta\le x_i-b_i\) with \(b_i\ge0\) gives \(x_i-\delta\ge b_i\ge0\).
+By \(\noderef{MajorizationTransferPrefixDominance}\), \(y\) has the same
+total sum as \(b\) and still dominates \(b\) on every prefix.
+
+The same transfer strictly lowers the distance before resorting.  At
+coordinate \(i\), the inequalities \(b_i<x_i\) and
+\(\delta\le x_i-b_i\) give
+\[
+|y_i-b_i|=|x_i-\delta-b_i|=x_i-b_i-\delta
+       =|x_i-b_i|-\delta.
+\]
+At coordinate \(j\), the inequalities \(x_j<b_j\) and
+\(\delta\le b_j-x_j\) give
+\[
+|y_j-b_j|=|x_j+\delta-b_j|=b_j-x_j-\delta
+       =|x_j-b_j|-\delta.
+\]
+Every other coordinate contribution to \(D\) is unchanged, so
+\[
+D(y)=D(x)-2\delta<D(x).
+\]
+By \(\noderef{MajorizationTransferConvexCombination}\), \(y\) is a convex
+combination
+\[
+y=(1-\theta)x+\theta\,\tau(x)
+\]
+for some \(0\le\theta\le1\), where \(\tau\) is the transposition swapping
+\(i\) and \(j\).  Convexity of \(h\) gives
+\[
+h(y)\le (1-\theta)h(x)+\theta h(\tau(x)).
+\]
+Symmetry gives \(h(\tau(x))=h(x)\), hence \(h(y)\le h(x)\).
+
+Choose a nonincreasing rearrangement \(y^\downarrow\) of \(y\).  We next
+prove the prefix-maximum property needed to keep prefix dominance after
+resorting.  Let \(F_r\) be the first \(r\) positions.  For any set \(T\) of
+\(r\) positions in a nonincreasing vector, the sum over \(F_r\) is at least
+the sum over \(T\).  If \(T\ne F_r\), choose
+\(t\in T\setminus F_r\).  Since \(|T|=|F_r|=r\), there is also some
+\(s\in F_r\setminus T\).  Then \(s<t\), so nonincreasing order gives
+\(y^\downarrow_s\ge y^\downarrow_t\).  Replacing \(t\) by \(s\) therefore
+does not decrease the selected sum.  Repeating this finite exchange removes
+all elements outside \(F_r\), and proves
+\[
+\sum_{k<r} y^\downarrow_k
+\ge
+\sum_{t\in T} y^\downarrow_t
+\]
+for every \(r\)-element set \(T\).
+
+Apply this to the \(r\) positions of \(y^\downarrow\) that correspond, under
+a permutation witnessing that \(y^\downarrow\) is a rearrangement of \(y\),
+to the original first \(r\) coordinates of \(y\).  The selected sum is
+exactly \(\sum_{k<r}y_k\).  Thus
+\[
+\sum_{k<r} y^\downarrow_k\ge \sum_{k<r} y_k.
+\]
+Since \(y\) already dominates \(b\) on prefixes, it follows that
+\[
+\sum_{k<r} b_k\le \sum_{k<r}y_k\le \sum_{k<r}y^\downarrow_k
+\]
+for every \(0\le r\le N\).  Hence \(y^\downarrow\) dominates \(b\) on all
+prefixes.
+
+We now check that \(y^\downarrow\) is again in the induction domain.  It is
+nonincreasing by construction.  It has nonnegative integer entries because
+it is a permutation of the nonnegative-integer vector \(y\).  It has the
+same total sum as \(y\), hence the same total sum as \(b\).  The preceding
+paragraph proves the required prefix dominance.  Finally,
+\(\noderef{MajorizationResortingDistance}\) gives
+\[
+D(y^\downarrow)\le D(y)<D(x),
+\]
+because \(b\) and \(y^\downarrow\) are nonincreasing and
+\(y^\downarrow\) is a permutation of \(y\).
+
+Symmetry also gives \(h(y^\downarrow)=h(y)\), so
+\[
+h(y^\downarrow)\le h(x).
+\]
+By the induction hypothesis applied to \(y^\downarrow\), whose distance from
+\(b\) is strictly smaller and which satisfies all induction-domain
+hypotheses, we have
+\[
+h(b)\le h(y^\downarrow).
+\]
+Combining the last two inequalities yields \(h(b)\le h(x)\).  This completes
+the induction and proves the claim.
+\end{proof}

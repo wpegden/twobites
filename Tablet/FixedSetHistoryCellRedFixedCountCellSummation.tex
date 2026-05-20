@@ -1,0 +1,154 @@
+\begin{helper}
+Fix a history cell \(H\), a target event \(T\), and the terminal coordinate
+set \(U\).  Assume \(0\le p\le 1/2\) and \(u_B\le u_R\).  Suppose the red
+fixed-count event is
+covered by a finite family of cells indexed by:
+\[
+B\in\mathcal B,\qquad J\in\mathcal J,\qquad
+\beta\in\mathcal T,\qquad \tau\in\mathcal P .
+\]
+Here \(\mathcal B\) is a finite set of blue support labels, each a
+\(u_B\)-set of blue terminal coordinates in \(U\), and
+\(\mathcal J\) is a finite abstract set of red labels.  The index
+\(\mathcal T\) is a finite branch/trace label type.  For each
+\(\beta\in\mathcal T\) and \(J\in\mathcal J\), there is a decoded red support
+\[
+R_{\beta,J}\subseteq U.
+\]
+Whenever the cell indexed by \((B,J,\beta,\tau)\) contains a sample, this
+decoded support has cardinality \(u_R\) and consists of red terminal
+coordinates.  Assume
+\[
+|\mathcal J|\le \binom{N_R}{u_R},\qquad
+|\mathcal B|\le \binom{N_B}{u_B}.
+\]
+A transcript \(\tau\) consists of three finite terminal-coordinate sets
+\[
+P_\tau,\qquad A_\tau,\qquad Z_\tau .
+\]
+The cell \(G_{B,J,\beta,\tau}\) fixes every coordinate of \(P_\tau\) present,
+fixes every coordinate of \(A_\tau\) absent, has
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad
+Z_\tau\subseteq A_\tau,\qquad
+P_\tau\cap A_\tau=\emptyset,
+\]
+and satisfies
+\[
+|Z_\tau|\ge \max(0,a-u_R-u_B).
+\]
+Assume each cell has nonnegative weight \(w_{B,J,\beta,\tau}\), bounded by
+the terminal cylinder factor
+\[
+w_{B,J,\beta,\tau}
+\le p^{|P_\tau|}(1-p)^{|A_\tau|},
+\]
+and that the raw cell mass satisfies
+\[
+\Pr(T\cap H\cap G_{B,J,\beta,\tau})
+\le
+\Pr(H)\,w_{B,J,\beta,\tau}.
+\]
+Finally assume the finite branch/transcript overcount estimate: for every
+fixed pair of support labels \(B,J\),
+\[
+\sum_{\beta,\tau} w_{B,J,\beta,\tau}
+\le
+p^{u_R}p^{u_B}(1-p)^{\max(0,a-u_R-u_B)}.
+\]
+Then
+\[
+\Pr(T\mid H)\le
+\binom{N_R}{u_R}p^{u_R}
+\binom{N_B}{u_B}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)} .
+\]
+\end{helper}
+\begin{proof}
+Let
+\[
+L=\max(0,a-u_R-u_B).
+\]
+The hypotheses give a genuine finite cover of \(T\cap H\): every sample in
+\(T\cap H\) belongs to at least one cell \(G_{B,J,\beta,\tau}\), with
+\(B\in\mathcal B\), \(J\in\mathcal J\), \(\beta\in\mathcal T\), and
+\(\tau\) one of the prefix transcripts.  Since sample weights are
+nonnegative, the raw probability of the covered event is bounded by the sum
+of the raw probabilities of the cells.  This is exactly the finite
+subadditivity mechanism formalized by
+\(\noderef{FixedSetHistoryCellBranchTranscriptSummation}\), applied after
+combining the two support labels into the support index and using the
+branch/trace label and prefix transcript as the branch/transcript indices.
+Thus
+\[
+\Pr(T\cap H)\le
+\sum_{B\in\mathcal B}\sum_{J\in\mathcal J}
+\sum_{\beta,\tau}
+\Pr(T\cap H\cap G_{B,J,\beta,\tau}).
+\]
+
+For each cell, the transcript data \(P_\tau,A_\tau,Z_\tau\) record the
+terminal values fixed by the branch/trace label and by the prefix scan, not
+only the mandatory support and selected-absence coordinates.  The inclusion
+\(B\cup R_{\beta,J}\subseteq P_\tau\), the inclusion \(Z_\tau\subseteq A_\tau\), and
+the disjointness \(P_\tau\cap A_\tau=\emptyset\) make this a single terminal
+cylinder.  Applying \(\noderef{FixedSetHistoryCellFixedCylinderCharge}\) with
+the terminal product law for the history cell gives the displayed raw cell
+bound
+\[
+\Pr(T\cap H\cap G_{B,J,\beta,\tau})
+\le
+\Pr(H)\,w_{B,J,\beta,\tau},
+\]
+where \(w_{B,J,\beta,\tau}\le p^{|P_\tau|}(1-p)^{|A_\tau|}\).  The complete
+cell-geometry condition ensures that every value fixed by the branch label
+or transcript is charged through the same present/absent terminal cylinder,
+so repeated appearances of the same coordinate do not produce repeated
+Bernoulli factors.
+
+Fix \(B\) and \(J\).  The overcount estimate in the statement is the
+paper-specific residual summation step: when all branch/trace labels and all
+prefix transcripts compatible with these support labels are summed, every
+auxiliary terminal value fixed only for the trace or transcript is paired
+with the complementary value over the same finite residual coordinate set, so
+its total contribution is \(p+(1-p)=1\).  The only factors that remain
+uniformly are the decoded mandatory red support \(R_{\beta,J}\), the
+mandatory blue support \(B\), and the selected absent coordinates
+\(Z_\tau\).  Since \(|R_{\beta,J}|=u_R\) in every nonempty cell,
+\(|B|=u_B\), and \(|Z_\tau|\ge L\), and since \(0\le p\le1/2\) gives
+\(0\le1-p\le1\), the sum of cell weights for this fixed support pair is at
+most
+\[
+p^{u_R}p^{u_B}(1-p)^L .
+\]
+This is not a count of traces or transcripts; it is the finite
+branch/transcript weight sum after all of their terminal values have been
+included in \(P_\tau\) or \(A_\tau\).
+
+Substituting the cell estimates and then the fixed-support overcount estimate
+gives
+\[
+\Pr(T\cap H)\le
+\Pr(H)
+|\mathcal J|\,|\mathcal B|\,
+p^{u_R}p^{u_B}(1-p)^L .
+\]
+The support-label cardinality assumptions give
+\[
+|\mathcal J|\le\binom{N_R}{u_R},
+\qquad
+|\mathcal B|\le\binom{N_B}{u_B}.
+\]
+Therefore
+\[
+\Pr(T\cap H)\le
+\Pr(H)\binom{N_R}{u_R}p^{u_R}
+\binom{N_B}{u_B}p^{u_B}(1-p)^L .
+\]
+If \(\Pr(H)=0\), the definition of
+\(\noderef{TwoBiteConditionalProbability}\) makes \(\Pr(T\mid H)=0\), and
+the displayed upper bound is nonnegative because all cell weights are
+nonnegative and the support sums are nonnegative.  If \(\Pr(H)>0\), divide
+the raw inequality by \(\Pr(H)\).  This yields the claimed conditional
+probability bound.
+\end{proof}

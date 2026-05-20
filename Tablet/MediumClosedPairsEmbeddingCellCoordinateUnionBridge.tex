@@ -1,0 +1,59 @@
+\begin{lemma}
+Fix an embedding \(\pi:\mathrm{Fin}(n)\hookrightarrow
+\mathrm{Fin}(m)\times\mathrm{Fin}(m)\), finite red centers \(B_R\), blue
+centers \(B_B\), red projections \(P_R\), and blue projections \(P_B\).
+Assume \(0<p<1\).  Let \(C\) be the finite set of tagged normalized nonloop
+candidate coordinates obtained as follows: for each nonloop ordered pair in
+\(B_R\times P_R\), normalize the two endpoints to increasing order and tag the
+coordinate red; do the analogous construction for \(B_B\times P_B\) and tag
+the coordinate blue.
+
+Then the \(\noderef{TwoBiteEventProbability}\) of the event that
+\(\noderef{TwoBiteEmbedding}(\omega)=\pi\) and at least \(t\) coordinates of
+\(C\) are present, where presence is evaluated by
+\(\noderef{TwoBiteEdgeCoordinateValue}\), is at most
+\[
+\left(\binom{|B_R||P_R|+|B_B||P_B|}{t}p^t\right)
+\Pr(\noderef{TwoBiteEmbedding}(\omega)=\pi).
+\]
+\end{lemma}
+\begin{proof}
+Let \(C_R\) and \(C_B\) be the red and blue normalized coordinate sets, and
+let \(C=C_R\cup C_B\).  Since \(C_R\) is an image of the nonloop subset of
+\(B_R\times P_R\), its cardinality is at most \(|B_R||P_R|\).  Similarly
+\(|C_B|\le |B_B||P_B|\).  Hence
+\[
+|C|\le |B_R||P_R|+|B_B||P_B|.
+\]
+
+For any \(t\)-element subset \(A\subseteq C\), every coordinate in \(A\) is
+normalized and nonloop, hence its endpoints are in increasing order.  Apply
+\(\noderef{FixedSetCylinderProductMassFactor}\) to the cylinder
+\(\noderef{TwoBiteEmbedding}(\omega)=\pi\), with no recorded graph
+coordinates and with product set \(A\).  The representative sample is any
+sample with embedding \(\pi\).  The cylinder condition is exactly the statement
+that the embedding coordinate is fixed to \(\pi\), and there are no recorded
+coordinates.  Taking the selected subset in the product law to be all of
+\(A\), the product event is precisely that every coordinate of \(A\) is
+present.  Thus
+\[
+\Pr(\noderef{TwoBiteEmbedding}(\omega)=\pi
+  \text{ and all coordinates in }A\text{ are present})
+=p^{|A|}
+  \Pr(\noderef{TwoBiteEmbedding}(\omega)=\pi)
+=p^t\Pr(\noderef{TwoBiteEmbedding}(\omega)=\pi).
+\]
+
+If a sample in the embedding cell has at least \(t\) present coordinates of
+\(C\), finite subset selection gives a \(t\)-element subset
+\(A\subseteq C\) all of whose coordinates are present.  Therefore this event
+is contained in the union over \(A\in\binom Ct\) of the fixed-\(A\) events
+above.  By \(\noderef{TwoBiteEventProbabilityUnionBound}\), using
+nonnegativity of the two-bite sample weights, its probability is at most
+\[
+\binom{|C|}{t}p^t
+\Pr(\noderef{TwoBiteEmbedding}(\omega)=\pi).
+\]
+The cardinality bound on \(C\), monotonicity of binomial coefficients, and
+nonnegativity of the final factor give the displayed estimate.
+\end{proof}

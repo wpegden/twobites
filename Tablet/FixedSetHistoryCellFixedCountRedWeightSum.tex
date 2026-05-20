@@ -1,0 +1,343 @@
+\begin{helper}
+In the fixed history cell, assume \(u_B\le u_R\).  With
+\[
+a=f(\ell_R,\ell_B)-10\varepsilon_1 k^2,
+\]
+there are natural numbers \(N_R,N_B\) such that
+\[
+N_R\le 3\varepsilon_1 k^2,\qquad N_B\le k^2,
+\]
+and the conditional probability of the fixed-count target is at most
+\[
+\binom{N_R}{u_R}p^{u_R}\binom{N_B}{u_B}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)}.
+\]
+Here red is the later-color support controlled by the exceptional sets, and
+blue is the first-color support controlled by the \(k\)-set projection
+universe.
+\end{helper}
+\begin{proof}
+Let \(H\) be the history cell and let \(T_{u_R,u_B}\) be the target event:
+regularity holds, the final \(I\)-set is independent, and the red and blue
+present staged-open supports have sizes \(u_R\) and \(u_B\).  Put
+\[
+L=\max(0,a-u_R-u_B).
+\]
+All terminal randomness is contained in the finite terminal coordinate set,
+which we denote by \(U\), and the complete terminal product law is available through
+\(\noderef{FixedSetHistoryCellTerminalProductPartition}\).
+
+First use \(\noderef{FixedSetHistoryCellGlobalRedExceptionalWitness}\).  It
+turns the branch-dependent red exceptional sets into one global number
+\(N_R\le3\varepsilon_1k^2\).  For each complete blue terminal branch, every
+regular independent completion has its red present staged-open support inside
+one exceptional set of cardinality at most \(N_R\).  For each complete blue
+branch we pad its exceptional set to \(N_R\) slots and label a red support by
+a \(u_R\)-subset of those slots.  Thus the red support has at most
+\(\binom{N_R}{u_R}\) labels, and a label is decoded to an actual red terminal
+support only after the complete blue trace is fixed.
+
+Next let \(U_B\) be the finite universe of blue projected terminal pairs
+coming from pairs of vertices in \(I\).  Since \(|I|=k\), this universe has
+cardinality at most \(k^2\); call its cardinality \(N_B\).  The blue present
+support of every sample in \(H\cap T_{u_R,u_B}\) is a \(u_B\)-subset of this
+universe, so there are at most \(\binom{N_B}{u_B}\) blue support labels.
+
+Fix a blue support label \(B\) and a red label \(J\).  The branch label
+\(\beta\) records a complete blue terminal trace
+\(\operatorname{blueTrace}(\beta)\), a subset of the blue terminal part of
+\(U\): for every blue terminal coordinate \(e\), a sample in the branch
+\(\beta\) has \(X_e=1\) exactly when
+\(e\in\operatorname{blueTrace}(\beta)\).  The cover and disjointness of the
+complete blue traces are supplied by
+\(\noderef{FixedSetHistoryCellAdaptiveBranchPartition}\), and
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\) chooses a branch
+label uniquely from this terminal blue truth table: two labels that agree on
+all blue coordinates of \(U\) are equal, and
+\(\operatorname{blueTrace}(\beta)\) contains no red or nonterminal
+coordinates.  Once \(\beta\) is fixed, the padded exceptional-set ordering
+decodes \(J\) to a red terminal support \(R_{\beta,J}\).  If \(J\) uses a
+padding slot, or if the decoded set does not have cardinality \(u_R\), the
+corresponding cells are declared empty and receive weight \(0\).  Otherwise
+\(R_{\beta,J}\) is a \(u_R\)-subset of the exceptional set for the
+representative branch of \(\beta\).  The global red witness then says that
+every regular independent completion in this blue trace has its red present
+staged-open support equal to one of the decoded \(R_{\beta,J}\)'s.
+
+For a fixed nonempty pair \((B,J)\), refine each blue trace by the canonical
+prefix scan.  The scan reads the terminal order from left to right.  At the
+moment a coordinate is inspected, the prefix-safety hypothesis in the active
+statement says that staged-openness, touchedness, same-color closedness, and
+recordedness are functions only of the history and the earlier terminal
+values.  Therefore the scan can be encoded by the finite transcript
+\[
+\tau=(P_\tau,A_\tau,Z_\tau),
+\]
+where \(P_\tau\) is the set of terminal coordinates whose value is fixed
+present by the complete trace, the decoded support, or the scan; \(A_\tau\)
+is the analogous absent set; and \(Z_\tau\subseteq A_\tau\) is the selected
+absence set produced by the canonical scan.  The set \(Z_\tau\) is not
+assumed to be red-only.  A selected absence may be a red coordinate, or it may
+be an absent blue coordinate already fixed by the complete blue trace.  These
+are coordinate sets, not ordered role lists: if a
+terminal coordinate occurs both as a support coordinate and later as a scan
+datum, it is inserted once into \(P_\tau\), and similarly for \(A_\tau\).
+The transcript is admitted only when
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad
+Z_\tau\subseteq A_\tau,\qquad
+P_\tau\cap A_\tau=\emptyset .
+\]
+The canonical absence lemma
+\(\noderef{FixedSetHistoryCellCanonicalAbsenceSelection}\) gives
+\(|Z_\tau|\ge L\), disjointness from the present red and blue supports, and
+the prefix measurability of the selected coordinates in the residual scan.
+The later summation will extract the factors for all coordinates of
+\(Z_\tau\) from the combined fixed cylinder at once; if a member of
+\(Z_\tau\) is blue, the factor is the same \((1-p)\)-factor already present
+in the complete blue trace cylinder, not a second charge.
+
+The resulting cells \(G_{B,J,\beta,\tau}\) cover \(H\cap T_{u_R,u_B}\).
+Indeed a target sample supplies \(B\) as its blue present staged-open support
+and \(\beta\) as its complete blue terminal trace; the red exceptional
+witness supplies the label \(J\) whose decoded support is its red present
+staged-open support; and the deterministic prefix scan supplies \(\tau\).
+Conversely, every nonempty cell forces all red and blue present staged-open
+coordinates to be in \(R_{\beta,J}\cup B\), requires the selected coordinates
+of \(Z_\tau\) to be absent, and keeps all fixed terminal values inside the
+terminal universe.  If a sample belonged to two cells with the same \(B,J\),
+the complete-trace disjointness first forces the same blue trace, and the
+terminal-blue uniqueness clause in
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\) forces the same
+\(\beta\): agreement on every blue coordinate of \(U\), not equality of an
+unrestricted auxiliary set, is the uniqueness criterion.  With \(\beta\)
+fixed, prefix-safety makes the scan deterministic from the earlier terminal
+values, hence the same sample gives the same transcript \(\tau\).  Thus
+there is no multiplicity inside the fixed support-label summation.
+
+For each nonempty cell set its cylinder weight to
+\[
+w_{B,J,\beta,\tau}=
+p^{|P_\tau|}(1-p)^{|A_\tau|},
+\]
+and set the weight to \(0\) for empty cells.  Since \(P_\tau\) and
+\(A_\tau\) are disjoint subsets of the terminal set, the terminal product law
+and \(\noderef{FixedSetHistoryCellFixedCylinderCharge}\) give
+\[
+\Pr(T_{u_R,u_B}\cap H\cap G_{B,J,\beta,\tau})
+\le
+\Pr(H)\,w_{B,J,\beta,\tau}.
+\]
+The use of coordinate sets here is essential: repeated appearances of one
+terminal coordinate in different logical roles do not multiply the Bernoulli
+factor, because the cylinder charges one coordinate value exactly once.
+
+It remains to verify, for this fixed pair \((B,J)\), the fixed-support
+branch/transcript weight sum required by
+\(\noderef{FixedSetHistoryCellRedFixedCountCellSummation}\).  The
+verification is deliberately carried out on realized cells first and only
+then extended to the formal index set.  Let
+\(\mathcal C_{B,J}\) be the finite set of realized, nonempty
+trace/transcript cells.  Formal pairs outside \(\mathcal C_{B,J}\) include
+all padding labels, bad decodes of the wrong size or color, prefix
+transcripts inconsistent with the complete assignment, and empty cylinders.
+Every non-realized formal pair is assigned weight \(0\); no geometric
+assertion is required for it.
+For \(c=(\beta,\tau)\), write
+\[
+R_c=R_{\beta,J},\qquad
+Z_c=Z_\tau,\qquad
+P_c=P_\tau,\qquad
+A_c=A_\tau .
+\]
+The cell construction in
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\) gives, in every
+nonempty cell,
+\[
+|R_c|=u_R,\qquad |B|=u_B,\qquad
+B\cup R_c\subseteq P_c,\qquad Z_c\subseteq A_c,
+\]
+\[
+P_c\cap A_c=\emptyset,\qquad |Z_c|\ge L.
+\]
+It also records the complete terminal blue trace in the transcript: for
+every blue terminal coordinate \(e\), \(e\) belongs to the branch trace
+exactly when \(e\in P_c\), and otherwise \(e\in A_c\).  In particular the
+fixed blue support \(B\) is part of the branch trace and is charged inside
+\(P_c\).
+The weights supplied by
+\(\noderef{FixedSetHistoryCellRedCellCylinderMass}\) satisfy
+\[
+0\le w_c\le p^{|P_c|}(1-p)^{|A_c|}.
+\]
+These are the only geometric facts used in the fixed-support summation below.
+In particular, \(Z_c\) is only an absent selected set of size at least \(L\);
+we do not assume that it consists of red coordinates.
+
+Put \(q=1-p\).  Then \(1/2\le q\le1\).  For a nonempty cell
+\(c=(\beta,\tau)\), let
+\[
+M_c=B\cup R_c.
+\]
+The sets \(B\) and \(R_c\) are disjoint because \(B\) is blue-only and
+\(R_c\) is red-only, so \(|M_c|=u_B+u_R\).  Also
+\[
+M_c\subseteq P_c,\qquad Z_c\subseteq A_c,\qquad P_c\cap A_c=\emptyset.
+\]
+Thus the mandatory present coordinates \(M_c\) and the selected absent
+coordinates \(Z_c\) are pairwise disjoint pieces of the same terminal
+cylinder.  The remaining factors in
+\(P_c\setminus M_c\) and \(A_c\setminus Z_c\) are precisely the auxiliary
+values used to choose the complete blue trace and to run the prefix scan.
+Those auxiliary values will be summed as residual product-tree factors; they
+are not counted by a separate multiplicity bound.
+
+At this point the proof needs fixed-\((B,J)\) released residual blocks, not
+merely the forward compatibility and functionality statements exported by
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\).  The
+branch/transcript construction also supplies the fixed residual
+compatibility inputs: residual-cylinder completeness after deleting
+selected absences and reinserting \(B\cup R_{\beta,J}\), and single-owner
+uniqueness for one residual assignment.  Apply
+\(\noderef{FixedSetHistoryCellFixedBJResidualScanInterface}\) to these
+inputs to construct one residual scan and one reconstructed full scan tied
+to the fixed labels.  Then apply
+\(\noderef{FixedSetHistoryCellFixedBJResidualScanData}\), which extracts
+from that interface exactly the two facts needed here:
+residual-cylinder completeness and single-owner uniqueness for the same
+residual assignment, even when the two candidate reconstructions use
+different selected sets or fixed supports.  These are not consequences of
+forward compatibility alone.  With those scan facts in place, apply
+\(\noderef{FixedSetHistoryCellFixedBJResidualReleasedBlockData}\).
+It supplies blocks
+\(\mathcal R_{\beta,\tau}\) whose membership is exactly reconstructed
+compatibility for
+\[
+(A_{\rm res}\setminus Z_\tau)\cup B\cup R_{\beta,J},
+\]
+whose blocks are disjoint for distinct realized pairs, and whose blocks
+contain the residual cylinder obtained by releasing
+\(B\cup R_{\beta,J}\) and \(Z_\tau\).
+
+Now apply
+\(\noderef{FixedSetHistoryCellFixedBJResidualProductTreeOwnerPackage}\) to
+these released blocks together with the realized geometry just listed:
+\(B\) has size \(u_B\) and is contained in the terminal set, each realized
+\(R_{\beta,J}\) has size \(u_R\) and is red-only, \(B\cup R_{\beta,J}
+\subseteq P_\tau\), \(Z_\tau\subseteq A_\tau\), \(P_\tau\cap A_\tau=\emptyset\),
+and the complete blue trace is encoded by \(P_\tau,A_\tau\) on all blue
+terminal coordinates.  For the fixed labels \(B,J\) the package supplies one
+owner function
+\[
+\operatorname{owner}_{B,J}:2^U\to
+  \{\hbox{branch/transcript pairs}\}\cup\{\bot\},
+\]
+not a candidate-dependent reconstruction rule.  For every realized
+\((\beta,\tau)\), its owner fiber contains the residual cylinder
+\[
+\{A_{\rm res}\subseteq U:
+P_\tau\setminus(B\cup R_{\beta,J})\subseteq A_{\rm res},\ 
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset\}.
+\]
+The owner uniqueness is justified by the released-block disjointness: if
+one assignment lay in the blocks for two realized pairs, the disjointness
+invariant would force equality of both the branch label and the transcript.
+The selected coordinates \(Z_\tau\) are released from this residual tree
+uniformly; they may be red or blue, and their \((1-p)\)-factors are charged
+only once.
+
+The same package also returns the normalized residual leaf certificate
+needed by \(\noderef{FixedSetHistoryCellMixedBranchTranscriptWeightPackage}\).
+For the fixed \(B,J\) it gives a finite leaf type, nonnegative leaf masses
+with total mass at most \(1\), injectivity of the leaf map on realized
+branch/transcript cells, and for every realized \((\beta,\tau)\) the
+domination
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \nu(\iota(\beta,\tau)).
+\]
+This is exactly the residual subprobability estimate for the auxiliary
+values in \(P_\tau\setminus(B\cup R_{\beta,J})\) and
+\(A_\tau\setminus Z_\tau\).
+
+For a realized cell \(c=(\beta,\tau)\), set
+\[
+R_c=R_{\beta,J}.
+\]
+The coordinate sets charged as mandatory factors are disjoint:
+\[
+B\cap R_c=\emptyset,\qquad
+Z_\tau\cap(B\cup R_c)=\emptyset .
+\]
+The first disjointness is by color, and the second follows from
+\[
+B\cup R_c\subseteq P_\tau,\qquad Z_\tau\subseteq A_\tau,\qquad
+P_\tau\cap A_\tau=\emptyset .
+\]
+Thus each realized cell cylinder has a unique factorization
+\[
+p^{|P_\tau|}q^{|A_\tau|}
+=
+p^{u_R}p^{u_B}q^{|Z_\tau|}\,\rho_{\beta,\tau},
+\]
+where \(\rho_{\beta,\tau}\) is the product of all remaining terminal factors
+from \(P_\tau\setminus(B\cup R_c)\) and \(A_\tau\setminus Z_\tau\).  If a
+selected absent coordinate is blue, its factor is the same \(q\)-factor
+already present in the complete blue trace; it is removed once into
+\(q^{|Z_\tau|}\), and no second factor is introduced.  If an absent blue
+coordinate is not selected, its \(q\)-factor stays in the residual factor.
+The fixed-\((B,J)\) leaf certificate just cited says that these residual
+factors can be charged to injective leaves of a normalized product tree, so
+their total contribution over realized cells is at most \(1\).
+
+The cell-mass helper
+\(\noderef{FixedSetHistoryCellRedCellCylinderMass}\) gives
+\[
+0\le w_{B,J,\beta,\tau}
+\le p^{|P_\tau|}q^{|A_\tau|}
+\]
+for realized cells, and every non-realized formal pair has weight \(0\).
+Since \(|Z_\tau|\ge L\) by
+\(\noderef{FixedSetHistoryCellCanonicalAbsenceSelection}\) and \(q=1-p\le1\),
+we have \(q^{|Z_\tau|}\le q^L\).  Therefore
+\[
+\begin{aligned}
+\sum_{\beta,\tau}w_{B,J,\beta,\tau}
+&=
+\sum_{\beta,\tau:\mathsf{Realized}(\beta,\tau)}
+  w_{B,J,\beta,\tau} \\
+&\le
+\sum_{\beta,\tau:\mathsf{Realized}(\beta,\tau)}
+  p^{u_R}p^{u_B}q^{|Z_\tau|}\rho_{\beta,\tau} \\
+&\le
+p^{u_R}p^{u_B}q^L
+\sum_{\beta,\tau:\mathsf{Realized}(\beta,\tau)}
+  \rho_{\beta,\tau} \\
+&\le p^{u_R}p^{u_B}q^L .
+\end{aligned}
+\]
+This is exactly the finite branch/transcript overcount estimate required for
+the fixed support labels.  It uses the complete blue trace as part of the
+same terminal product tree, rather than conditioning on a blue trace and then
+trying to prove that the selected absences are red-only.
+
+Applying
+\(\noderef{FixedSetHistoryCellMixedBranchTranscriptWeightPackage}\) with the
+cell geometry, non-realized-cell exclusion, compatibility disjointness, and
+the residual leaf certificate just constructed supplies cell weights with the
+same pointwise cylinder bound and fixed-\((B,J)\) sum bound.  The hypotheses of
+\(\noderef{FixedSetHistoryCellRedFixedCountCellSummation}\) are therefore
+satisfied.  Its blue support-label family is the \(u_B\)-subsets of the
+\(I\)-projection universe, so it has size at most \(\binom{N_B}{u_B}\).  Its
+red support-label family is the padded family of \(u_R\)-slot choices from
+the global red witness, so it has size at most \(\binom{N_R}{u_R}\).  The
+cell cover, the cylinder mass estimate, and the fixed-support
+branch/transcript sum are exactly the conclusions established above.
+Applying that helper yields
+\[
+\Pr(T_{u_R,u_B}\mid H)\le
+\binom{N_R}{u_R}p^{u_R}\binom{N_B}{u_B}p^{u_B}(1-p)^L,
+\]
+which is the displayed bound.  Its proof also handles the zero-history-mass
+case through \(\noderef{TwoBiteConditionalProbability}\).
+\end{proof}

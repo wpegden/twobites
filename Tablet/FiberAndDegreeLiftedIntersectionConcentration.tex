@@ -1,0 +1,198 @@
+\begin{helper}
+Let \(\beta=1/2\), and let
+\[
+m(n)=M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n).
+\]
+Put \(p(n)=\noderef{TwoBiteEdgeProbability}(\beta,n)\).  Under
+\(\noderef{TwoBiteEventProbability}(n,m(n),p(n))\), with high probability in
+the sense of \(\noderef{WithHighProbability}\), every distinct red pair and
+every distinct blue pair has lifted-neighborhood intersection size at most
+\[
+100(\log n)^3.
+\]
+Equivalently, with high probability,
+\[
+\begin{aligned}
+&\forall r\ne s\in \operatorname{Fin}(m(n)),\quad
+\left|
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(s))
+\right|
+\le 100(\log n)^3,\\
+&\forall b\ne c\in \operatorname{Fin}(m(n)),\quad
+\left|
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(b))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(c))
+\right|
+\le 100(\log n)^3 .
+\end{aligned}
+\]
+\end{helper}
+\begin{proof}
+Write \(L=\log n\), \(M=M(n)\), and
+\[
+p=p(n)=\frac12\sqrt{\frac{L}{n}}.
+\]
+By \(\noderef{TwoBiteNaturalReducedVertexCount}\), together with
+\(\noderef{TwoBiteReducedVertexCount}\) and \(\noderef{TwoBiteStretch}\), for
+all sufficiently large \(n\),
+\[
+M=\left\lfloor\frac n{L^2}\right\rfloor,\qquad
+\frac12\frac n{L^2}\le M\le\frac n{L^2},\qquad n\le M^2.
+\tag{1}
+\]
+The support and normalization facts needed for the injection coordinate at
+this rounded size are supplied eventually by
+\(\noderef{TwoBiteNaturalTotalMassOneEventually}\), and
+\(\noderef{OppositeProjectionEdgeProbBounds}\) gives \(0\le p\le1\) after
+discarding finitely many \(n\).  These finite initial values do not affect
+the high-probability limit.  From \(M\le n/L^2\) and the displayed formula
+for \(p\),
+\[
+Mp^2\le \frac1{4L},\qquad M^2\le n^2=\exp(2L).
+\tag{2}
+\]
+
+We first record the sharper same-color base common-neighbor estimate needed
+for this lifted-intersection slice.  Fix distinct red vertices
+\(r,s\in\operatorname{Fin}(M)\).  By \(\noderef{TwoBiteSample}\), an outcome
+is a triple consisting of a red graph \(G_R=\noderef{TwoBiteRedGraph}(\omega)\),
+a blue graph \(G_B=\noderef{TwoBiteBlueGraph}(\omega)\), and an injection of
+the \(n\) final vertices into the \(M^2\) product cells.  If \(A\) is any
+event depending only on \(G_R\), then
+\(\noderef{TwoBiteEventProbability}\) writes its probability as the finite
+sum of \(\noderef{TwoBiteSampleWeight}\) over all triples satisfying \(A\).
+The summands are nonnegative by \(\noderef{TwoBiteSampleWeightNonnegative}\)
+and \(0\le p\le1\).  The definition of
+\(\noderef{TwoBiteSampleWeight}\) factors each summand as
+\[
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,M).
+\tag{3}
+\]
+Because \(A\) ignores \(G_B\) and the injection, the sum over blue graphs is
+\(1\) by \(\noderef{GnpGraphWeightSumOne}\), and the sum over injections is
+\(1\) because \(n\le M^2\) and
+\(\noderef{UniformInjectionWeight}(n,M)\) is uniform on the nonempty set of
+injections.  Hence the red marginal under the two-bite law is exactly the
+\(G(M,p)\) product law described by \(\noderef{GnpGraphWeight}\).  Reversing
+red and blue gives the same product-law marginal for
+\(\noderef{TwoBiteBlueGraph}\).
+
+For \(t\notin\{r,s\}\), the edge indicators of \(\{r,t\}\) and \(\{s,t\}\)
+are independent Bernoulli \(p\) variables under this product law, and for
+different \(t\)'s all involved edge coordinates are distinct.  Thus the red
+base common-neighbor count
+\[
+a_{r,s}=\left|\{t:\,G_R.Adj\,r\,t\ \text{and}\ G_R.Adj\,s\,t\}\right|
+\]
+has distribution \(\operatorname{Bin}(M-2,p^2)\), with mean at most
+\(Mp^2\le 1/(4L)\).  The identical statement holds for each distinct blue
+pair \(b,c\).
+
+Use the elementary counting tail bound
+\[
+\Pr(Y\ge T)\le \left(\frac{e\mu}{T}\right)^T
+\tag{4}
+\]
+for a binomial or hypergeometric count \(Y\) with mean \(\mu\): if \(Y\ge T\),
+some \(T\)-set of candidate coordinates is entirely marked, and the union
+bound over \(T\)-sets gives
+\(\binom{N}{T}q^T\le(eNq/T)^T=(e\mu/T)^T\).  Apply (4) with
+\(T=\lceil L\rceil\) to the variable \(a_{r,s}\).  Since
+\(\mu\le1/(4L)\), for all large \(n\),
+\[
+\Pr(a_{r,s}>L)\le
+\left(\frac{e/(4L)}{L}\right)^L
+\le \exp(-{\tfrac12}L\log L).
+\tag{5}
+\]
+There are fewer than \(M^2\le\exp(2L)\) ordered red pairs and the same number
+of ordered blue pairs.  The union bound and (5) imply that, with probability
+tending to \(1\), the event \(\mathcal B_n\) holds: all distinct same-color
+base pairs, red and blue, have common-neighbor count at most \(L\).
+
+Now condition on the red base graph and assume \(\mathcal B_n\).  Fix a
+distinct red pair \(r,s\), and set
+\[
+a=a_{r,s}\le L.
+\]
+By the definitions of \(\noderef{TwoBiteLiftedNeighborhood}\),
+\(\noderef{TwoBiteRedProjection}\), and \(\noderef{TwoBiteEmbedding}\), a
+final vertex belongs to both lifted neighborhoods
+\[
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\quad\text{and}\quad
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(s))
+\]
+exactly when its injected product cell has red coordinate in
+\(N_{G_R}(r)\cap N_{G_R}(s)\).  Therefore the marked product cells are
+\[
+(N_{G_R}(r)\cap N_{G_R}(s))\times\operatorname{Fin}(M),
+\]
+and this marked set has cardinality \(aM\).
+
+Conditional on the fixed red graph, the blue graph weights again normalize
+to \(1\) by \(\noderef{GnpGraphWeightSumOne}\), and
+\(\noderef{UniformInjectionWeight}\) makes the injection a uniform ordered
+sample of \(n\) distinct cells from the \(M^2\) product cells.  Hence the
+lifted intersection size
+\[
+H_{r,s}=
+\left|
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(s))
+\right|
+\]
+is hypergeometric with population size \(M^2\), marked-set size \(aM\), and
+sample size \(n\).  Its conditional mean is
+\[
+\mu_{r,s}=n\frac{aM}{M^2}=\frac{na}{M}
+\le \frac{nL}{M}\le 2L^3,
+\tag{6}
+\]
+where the last inequality uses (1).  This is the same without-replacement
+model controlled by \(\noderef{HypergeometricMgfComparison}\), and the
+counting bound (4) also applies directly to it because \(H_{r,s}\ge T\)
+requires some \(T\) of the sampled coordinates to lie in the marked set.
+With
+\[
+T=\lceil 100L^3\rceil,
+\]
+the event \(H_{r,s}>100L^3\) implies \(H_{r,s}\ge T\), and (4), (6) give
+\[
+\Pr(H_{r,s}>100L^3\mid G_R,\mathcal B_n)
+\le \left(\frac{2eL^3}{100L^3}\right)^{100L^3}
+\le \exp(-c_1L^3)
+\tag{7}
+\]
+for a fixed constant \(c_1>0\) and all sufficiently large \(n\).
+
+The blue case is identical.  Conditioning on
+\(G_B=\noderef{TwoBiteBlueGraph}(\omega)\), the marked cells for a distinct
+blue pair \(b,c\) are
+\[
+\operatorname{Fin}(M)\times (N_{G_B}(b)\cap N_{G_B}(c)),
+\]
+and \(\noderef{TwoBiteBlueProjection}\) identifies the blue lifted
+intersection with the final vertices injected into this marked set.  On
+\(\mathcal B_n\), its marked-cell count is at most \(LM\), so the same
+hypergeometric bound (7) holds.
+
+There are fewer than \(M^2\) ordered red pairs and fewer than \(M^2\) ordered
+blue pairs.  On \(\mathcal B_n\), the union bound gives conditional failure
+probability at most
+\[
+2M^2\exp(-c_1L^3)
+\le 2\exp(2L-c_1L^3)\to0.
+\tag{8}
+\]
+Since \(\Pr(\mathcal B_n)\to1\), (8) proves that, with high probability, all
+red-red and blue-blue lifted-neighborhood intersections are bounded by
+\(100(\log n)^3\).  The mixed red-blue intersection estimate is a different
+slice and is not included here.
+\end{proof}

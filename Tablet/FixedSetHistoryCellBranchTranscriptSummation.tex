@@ -1,0 +1,52 @@
+\begin{helper}
+Let \(C\) be a base event and \(T\) a target event in the finite two-bite
+sample space, with \(0\le p\le1\), and let probabilities be computed by
+\(\noderef{TwoBiteEventProbability}\).  Suppose \(T\cap C\) is covered by a
+finite family of cells
+\[
+G_{b,s,t},
+\]
+where \(b\) indexes complete first-color traces, \(s\) indexes later support
+choices, and \(t\) indexes prefix transcripts.  Suppose each cell has a
+nonnegative assigned weight \(w_{b,s,t}\), and that
+\[
+\Pr(T\cap C\cap G_{b,s,t})\le w_{b,s,t}
+\]
+for every triple \((b,s,t)\).  If \(M\ge0\) and
+\[
+\sum_{b,s,t} w_{b,s,t}\le M,
+\]
+then
+\[
+\Pr(T\cap C)\le M.
+\]
+\end{helper}
+\begin{proof}
+By \(\noderef{TwoBiteSampleWeightNonnegative}\), the assumptions
+\(0\le p\le1\) make every sample weight nonnegative.  Thus every probability
+below is a finite sum of nonnegative weights.  For every sample
+\(\omega\in T\cap C\), the covering hypothesis supplies at least one triple
+\((b,s,t)\) with \(\omega\in G_{b,s,t}\).  Therefore
+\[
+T\cap C\subseteq \bigcup_{b,s,t}(T\cap C\cap G_{b,s,t}).
+\]
+Finite subadditivity for nonnegative weights gives
+\[
+\Pr(T\cap C)
+\le
+\sum_{b,s,t}\Pr(T\cap C\cap G_{b,s,t}).
+\]
+Apply the assumed cell estimate to every summand:
+\[
+\sum_{b,s,t}\Pr(T\cap C\cap G_{b,s,t})
+\le
+\sum_{b,s,t} w_{b,s,t}.
+\]
+The final assumed weight-sum bound gives
+\[
+\Pr(T\cap C)\le M.
+\]
+No factor counting the number of complete traces appears: the traces and
+prefix transcripts enter only through their actual cylinder weights, and the
+hypothesis requires those weights themselves to sum to \(M\).
+\end{proof}

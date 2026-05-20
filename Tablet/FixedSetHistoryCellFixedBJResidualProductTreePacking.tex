@@ -1,0 +1,118 @@
+\begin{helper}
+Fix one blue support label \(B\) and one red label \(J\).  Let \(U\) be the
+terminal coordinate set, let \(o\) be a nodup terminal order with
+\(\operatorname{toFinset}(o)=U\), let \(\mathcal T\) be the finite
+branch-label type, and let \(\mathcal P\) be the finite transcript set.  For
+a realized pair \(c=(\beta,\tau)\), write
+\[
+R_c=R_\beta,\qquad P_c=P_\tau,\qquad A_c=A_\tau,\qquad Z_c=Z_\tau .
+\]
+Assume \(B\subseteq U\) and \(|B|=u_B\).  Assume the fixed-\((B,J)\)
+geometry: for every realized \(c=(\beta,\tau)\) with
+\(\tau\in\mathcal P\),
+\[
+|R_\beta|=u_R,\qquad R_\beta\subseteq U,\qquad B\cap R_\beta=\emptyset,
+\]
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,\qquad
+B\cup R_\beta\subseteq P_\tau,
+\]
+and \(P_\tau,A_\tau\) encode the complete terminal blue trace of \(\beta\).
+Also assume \(Z_\tau\subseteq A_\tau\) and
+\[
+L:=\max(0,a-u_R-u_B)\le |Z_\tau|.
+\]
+
+Assume the lower-level residual leaf certificate for this fixed \(B,J\):
+there is a finite residual leaf set \(\Lambda\), a leaf assignment
+\[
+\iota:\mathcal T\times\mathcal P\to\Lambda,
+\]
+and a nonnegative normalized leaf mass
+\(\nu:\Lambda\to\mathbb R\).  The assignment is injective on realized
+branch/transcript cells, and for every realized cell
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \nu(\iota(\beta,\tau)).
+\]
+
+If \(0\le p\le1/2\), then there are nonnegative masses
+\(\rho_{\beta,\tau}\), indexed by all branch/transcript pairs for this fixed
+\((B,J)\), such that
+\[
+\sum_{\beta,\tau\in\mathcal P}\rho_{\beta,\tau}\le1
+\]
+and, for every realized \(c=(\beta,\tau)\),
+\[
+p^{|P_c|}(1-p)^{|A_c|}
+\le
+p^{u_R}p^{u_B}(1-p)^L\rho_{\beta,\tau}.
+\]
+\end{helper}
+\begin{proof}
+Invoke \(\noderef{FixedSetHistoryCellFixedBJResidualCertificateConstruction}\)
+with the same fixed \(B,J\), terminal order \(o\), branch traces,
+transcripts, realized predicate, residual leaf assignment, and residual leaf
+mass.  That node converts the leaf-level scan certificate into
+cell-indexed residual masses \(\sigma_{\beta,\tau}\) satisfying
+\[
+0\le\sigma_{\beta,\tau}
+\]
+for realized allowed pairs,
+\[
+\sum_{\beta}
+  \sum_{\tau\in\mathcal P:\,(\beta,\tau)\text{ realized}}
+    \sigma_{\beta,\tau}\le1,
+\]
+and
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+\le \sigma_{\beta,\tau}
+\]
+for every realized allowed pair.
+
+Define
+\[
+\rho_{\beta,\tau}=
+\begin{cases}
+\sigma_{\beta,\tau},&\text{if }\tau\in\mathcal P
+  \text{ and }(\beta,\tau)\text{ is realized},\\
+0,&\text{otherwise.}
+\end{cases}
+\]
+Nonnegativity is immediate from the certificate on realized cells and from
+the zero definition off realized cells.  The displayed certificate sum gives
+\[
+\sum_{\beta,\tau\in\mathcal P}\rho_{\beta,\tau}\le1.
+\]
+
+Fix a realized allowed pair \(c=(\beta,\tau)\).  From
+\(B\cup R_\beta\subseteq P_\tau\) we have both \(B\subseteq P_\tau\) and
+\(R_\beta\subseteq P_\tau\).  The fixed geometry gives
+\[
+|B|=u_B,\qquad |R_\beta|=u_R,\qquad B\cap R_\beta=\emptyset,
+\]
+\[
+Z_\tau\subseteq A_\tau,\qquad P_\tau\cap A_\tau=\emptyset,\qquad
+L\le |Z_\tau|.
+\]
+The residual domination supplied by
+\(\noderef{FixedSetHistoryCellFixedBJResidualCertificateConstruction}\)
+gives
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+\le \rho_{\beta,\tau}.
+\]
+Applying \(\noderef{FixedSetHistoryCellRedTermwiseCylinderDomination}\) with
+\[
+R=R_\beta,\qquad P=P_\tau,\qquad A=A_\tau,\qquad Z=Z_\tau
+\]
+therefore yields
+\[
+p^{|P_\tau|}(1-p)^{|A_\tau|}
+\le
+p^{u_R}p^{u_B}(1-p)^L\rho_{\beta,\tau}.
+\]
+This is the desired bound for \(c\).  Non-realized pairs have no termwise
+claim and receive mass \(0\), so the same family \(\rho\) proves the helper.
+\end{proof}

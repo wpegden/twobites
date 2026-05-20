@@ -1,0 +1,19 @@
+\begin{helper}
+For all natural numbers \(n,K\), if \(n>0\), then
+\[
+\binom nK\le \exp(K\log n)
+\]
+after viewing both sides as real numbers.
+\end{helper}
+\begin{proof}
+The standard binomial estimate gives
+\[
+\binom nK\le n^K.
+\]
+Casting this inequality to the real numbers preserves the inequality.  Since
+\(n>0\), the real power identity gives
+\[
+n^K=\exp(K\log n).
+\]
+Combining these two facts proves the claim.
+\end{proof}

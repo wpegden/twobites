@@ -1,0 +1,244 @@
+\begin{lemma}
+Assume \(\varepsilon_1\ge0\), the eventual-comparisons package
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\), and
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Suppose also that the sample parameters are the rounded hierarchy parameters
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+Let \(I\) be a \(k\)-set.  Conditioned on
+\(\mathcal D=\noderef{FiberAndDegreeEvent}\), the huge vertices satisfy the
+following bounds.  For \(H_R=H_I\cap V_R\) and \(H_B=H_I\cap V_B\), the
+same-color projected contributions
+\[
+\sum_{x\in H_R}\binom{|\pi_R(X_x(I))|}{2}_{\mathbb R},
+\qquad
+\sum_{x\in H_B}\binom{|\pi_B(X_x(I))|}{2}_{\mathbb R}
+\]
+are each \(\varepsilon_1k^2\)-small, and their sum is also
+\(\varepsilon_1k^2\)-small.  The two opposite-color projected contributions
+are bounded by
+\[
+(1+\varepsilon_1)\min\left\{\binom{k-\ell}{2},
+\binom{pn}{2}+\binom{k-\ell-pn}{2}\right\}
+\]
+with \(\ell=|\pi_R(I)|\) or \(|\pi_B(I)|\), respectively.
+\end{lemma}
+\begin{proof}
+Let
+\[
+H_I=\{x:\noderef{TwoBiteHugeClass}(\omega,I,x)\}
+\]
+be the full huge filter.  Define the two local huge-color filters by
+\[
+H_R=H_I\cap V_R,\qquad H_B=H_I\cap V_B.
+\]
+Equivalently, in the Lean statement
+\[
+\mathsf{hugeRed}(x)\iff
+\noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists r,\ x=\operatorname{inl}(r),
+\]
+and
+\[
+\mathsf{hugeBlue}(x)\iff
+\noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists b,\ x=\operatorname{inr}(b).
+\]
+The finite filters for these predicates are precisely
+\[
+H_R=\operatorname{univ}.\operatorname{filter}(\mathsf{hugeRed}),
+\qquad
+H_B=\operatorname{univ}.\operatorname{filter}(\mathsf{hugeBlue}),
+\]
+which are the Lean filters used in the two child statements and in the
+present statement.
+
+We instantiate both child lemmas with the same data as in the present node:
+the same sample \(\omega\), the same set \(I\), the same integers \(n\) and
+\(m\), the same real \(p\), the same integer \(k\), the same parameters
+\(\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), the same nonnegativity
+hypothesis \(0\le\varepsilon_1\), the same
+\(\noderef{ParameterHierarchyEventualComparisons}\) hypothesis, the same
+strict inequality \(n_0<n\), the same rounded sample-parameter identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+the same rounded independence-scale identity
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+the same \(k\)-set hypothesis \(|I|=k\), and the same event
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\).  Thus every
+hierarchy comparison involving \(p,m,k\) is applied only after the same
+rounded-parameter identifications as in this node.
+
+First apply \(\noderef{HugeSameColorProjectionBound}\) with this
+instantiation.  Set
+\[
+A_R=\noderef{TwoBiteProjectedPairSum}
+  (\omega,I,\mathsf{hugeRed},\noderef{TwoBiteRedProjection}(\omega)),
+\]
+\[
+A_B=\noderef{TwoBiteProjectedPairSum}
+  (\omega,I,\mathsf{hugeBlue},\noderef{TwoBiteBlueProjection}(\omega)).
+\]
+Unfolding \(\noderef{TwoBiteProjectedPairSum}\), these are the finite sums
+\[
+\sum_{x\in H_R}\noderef{RealChooseTwo}
+  \Bigl(\bigl|X_x(I).\operatorname{image}
+    (\noderef{TwoBiteRedProjection}(\omega))\bigr|:\mathbb R\Bigr)=A_R,
+\]
+and
+\[
+\sum_{x\in H_B}\noderef{RealChooseTwo}
+  \Bigl(\bigl|X_x(I).\operatorname{image}
+    (\noderef{TwoBiteBlueProjection}(\omega))\bigr|:\mathbb R\Bigr)=A_B.
+\]
+The displayed cardinalities are the real casts of the finite image
+cardinalities in the Lean terms.  In the shorter paper notation these are
+\(\sum_{x\in H_R}\binom{|\pi_R(X_x(I))|}{2}_{\mathbb R}\) and
+\(\sum_{x\in H_B}\binom{|\pi_B(X_x(I))|}{2}_{\mathbb R}\).
+The child conclusion is the triple
+\[
+\noderef{ClosedPairsBound}(A_R,\varepsilon_1,(k:\mathbb R))
+\quad\wedge\quad
+\noderef{ClosedPairsBound}(A_B,\varepsilon_1,(k:\mathbb R))
+\quad\wedge\quad
+\noderef{ClosedPairsBound}(A_R+A_B,\varepsilon_1,(k:\mathbb R)).
+\]
+Since \(\noderef{ClosedPairsBound}(Q,\varepsilon_1,(k:\mathbb R))\) unfolds
+to \(Q\le\varepsilon_1(k:\mathbb R)^2\), these are exactly the red
+same-color, blue same-color, and combined same-color conjuncts, in that
+order, of the present Lean statement.
+Call these three conclusions \(h_{RR}\), \(h_{BB}\), and \(h_{\mathrm{same}}\).
+No estimate is extracted from the proof of the child node here: after the
+shared hypotheses are supplied, these are simply the three fields of
+\(\noderef{HugeSameColorProjectionBound}\), with the same let-bound
+\(\mathsf{hugeRed}\) and \(\mathsf{hugeBlue}\) predicates as in the present
+statement.
+
+Now apply \(\noderef{HugeOppositeColorProjectionBound}\), again with the same
+\(\omega,I,n,m,k,p,\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), the same
+\(0\le\varepsilon_1\), the same
+\(\noderef{ParameterHierarchyEventualComparisons}\), the same \(n_0<n\), the
+same rounded identities for \(m,p,k\), the same \(k\)-set hypothesis, and the
+same \(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\).  Define
+\[
+C_R=\noderef{TwoBiteProjectedPairSum}
+  (\omega,I,\mathsf{hugeRed},\noderef{TwoBiteBlueProjection}(\omega)),
+\]
+\[
+C_B=\noderef{TwoBiteProjectedPairSum}
+  (\omega,I,\mathsf{hugeBlue},\noderef{TwoBiteRedProjection}(\omega)).
+\]
+For the first opposite-color conclusion, the child uses the red huge filter
+\(H_R\) but the opposite projection \(\pi_B\).  Unfolding
+\(\noderef{TwoBiteProjectedPairSum}\), its left side is
+\[
+\sum_{x\in H_R}\noderef{RealChooseTwo}
+  \Bigl(\bigl|X_x(I).\operatorname{image}
+    (\noderef{TwoBiteBlueProjection}(\omega))\bigr|:\mathbb R\Bigr)=C_R,
+\]
+that is, \(\sum_{x\in H_R}\binom{|\pi_B(X_x(I))|}{2}_{\mathbb R}\).  The
+projection-size parameter on the right hand side is not a blue projection
+size.  It is
+\[
+\ell_R=\bigl((I.\operatorname{image}
+  (\noderef{TwoBiteRedProjection}(\omega))).\operatorname{card}:\mathbb R\bigr),
+\]
+the real cast of the red projection image cardinality.  Therefore the child
+gives exactly
+\[
+\begin{aligned}
+C_R
+&\le
+(1+\varepsilon_1)\,
+\min\Bigl(
+  \noderef{RealChooseTwo}\bigl((k:\mathbb R)-\ell_R\bigr),\\
+&\hspace{7em}
+  \noderef{RealChooseTwo}\bigl(p\cdot(n:\mathbb R)\bigr)
+  +\noderef{RealChooseTwo}
+    \bigl((k:\mathbb R)-\ell_R-p\cdot(n:\mathbb R)\bigr)
+\Bigr).
+\end{aligned}
+\]
+This is the fourth conjunct of the present Lean statement: its left side is
+\[
+\noderef{TwoBiteProjectedPairSum}
+  (\omega,I,\mathsf{hugeRed},\noderef{TwoBiteBlueProjection}(\omega)),
+\]
+while its deficit uses the red projection size
+\(((I.\operatorname{image}(\noderef{TwoBiteRedProjection}(\omega))).\operatorname{card}:\mathbb R)\),
+and its rounded edge-density term is exactly \(p\cdot(n:\mathbb R)\).
+Denote this fourth target conjunct by \(h_{RB}\).  The notation is meant to
+record the bookkeeping: the huge vertices are red and the summand uses the
+opposite blue projection, but the deficit term is measured by the red
+projection size of \(I\).
+
+For the second opposite-color conclusion, the child swaps colors: it uses the
+blue huge filter \(H_B\) and the opposite projection \(\pi_R\).  Its left side
+unfolds to
+\[
+\sum_{x\in H_B}\noderef{RealChooseTwo}
+  \Bigl(\bigl|X_x(I).\operatorname{image}
+    (\noderef{TwoBiteRedProjection}(\omega))\bigr|:\mathbb R\Bigr)=C_B,
+\]
+that is, \(\sum_{x\in H_B}\binom{|\pi_R(X_x(I))|}{2}_{\mathbb R}\).  Its
+right-hand projection-size parameter is
+\[
+\ell_B=\bigl((I.\operatorname{image}
+  (\noderef{TwoBiteBlueProjection}(\omega))).\operatorname{card}:\mathbb R\bigr),
+\]
+the real cast of the blue projection image cardinality.  Therefore the child
+gives exactly
+\[
+\begin{aligned}
+C_B
+&\le
+(1+\varepsilon_1)\,
+\min\Bigl(
+  \noderef{RealChooseTwo}\bigl((k:\mathbb R)-\ell_B\bigr),\\
+&\hspace{7em}
+  \noderef{RealChooseTwo}\bigl(p\cdot(n:\mathbb R)\bigr)
+  +\noderef{RealChooseTwo}
+    \bigl((k:\mathbb R)-\ell_B-p\cdot(n:\mathbb R)\bigr)
+\Bigr).
+\end{aligned}
+\]
+This is the fifth conjunct of the present Lean statement: its left side is
+\[
+\noderef{TwoBiteProjectedPairSum}
+  (\omega,I,\mathsf{hugeBlue},\noderef{TwoBiteRedProjection}(\omega)),
+\]
+but its deficit uses the blue projection size
+\(((I.\operatorname{image}(\noderef{TwoBiteBlueProjection}(\omega))).\operatorname{card}:\mathbb R)\),
+and again the rounded edge-density term is exactly \(p\cdot(n:\mathbb R)\).
+Denote this fifth target conjunct by \(h_{BR}\): the huge vertices are blue,
+the summand uses the opposite red projection, and the deficit is measured by
+the blue projection size of \(I\).
+
+The three same-color conjuncts from
+\(\noderef{HugeSameColorProjectionBound}\) and the two opposite-color
+conjuncts from \(\noderef{HugeOppositeColorProjectionBound}\) are, in the
+Lean statement order,
+\[
+h_{RR},\qquad h_{BB},\qquad h_{\mathrm{same}},\qquad h_{RB},\qquad h_{BR}.
+\]
+The target conjunction is right-associated as
+\[
+h_{RR}\wedge
+  \bigl(h_{BB}\wedge
+    (h_{\mathrm{same}}\wedge(h_{RB}\wedge h_{BR}))\bigr),
+\]
+which is obtained by repeated use of the constructor for conjunction.  No
+disjointness argument or additional numerical estimate is being used in this
+aggregation step; all numerical work is contained in the two child nodes.
+This conjunction assembly proves the lemma.
+\end{proof}

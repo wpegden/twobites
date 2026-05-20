@@ -1,0 +1,49 @@
+\begin{helper}
+Let \(B\) be a finite index set and let \(\{A_x:x\in B\}\) be finite sets.
+Suppose that every two distinct indices satisfy
+\[
+|A_x\cap A_y|\le C.
+\]
+Then
+\[
+\left|\bigcup_{x\in B}A_x\right|
+\ge
+\sum_{x\in B}|A_x|-\binom{|B|}{2}_{\mathbb R}C.
+\]
+\end{helper}
+\begin{proof}
+Induct on the finite set \(B\).  The empty case is immediate.  For the
+inductive step write \(B=\{a\}\cup S\), with \(a\notin S\), and put
+\(U=\bigcup_{x\in S}A_x\).  The finite-cardinality identity
+\[
+|A_a\cup U|+|A_a\cap U|=|A_a|+|U|
+\]
+gives, after casting to real numbers,
+\[
+|A_a\cup U|=|A_a|+|U|-|A_a\cap U|.
+\]
+The intersection \(A_a\cap U\) is contained in
+\[
+\bigcup_{y\in S}(A_a\cap A_y),
+\]
+so the finite union bound and the pairwise-overlap hypothesis give
+\[
+|A_a\cap U|\le\sum_{y\in S}|A_a\cap A_y|\le |S|C.
+\]
+By the induction hypothesis,
+\[
+|U|\ge\sum_{x\in S}|A_x|-\binom{|S|}{2}_{\mathbb R}C.
+\]
+Combining these inequalities yields
+\[
+|A_a\cup U|
+\ge |A_a|+\sum_{x\in S}|A_x|
+  -\left(\binom{|S|}{2}_{\mathbb R}+|S|\right)C.
+\]
+Finally
+\[
+\binom{|S|+1}{2}_{\mathbb R}
+=\binom{|S|}{2}_{\mathbb R}+|S|,
+\]
+which is exactly the asserted bound for \(B=\{a\}\cup S\).
+\end{proof}

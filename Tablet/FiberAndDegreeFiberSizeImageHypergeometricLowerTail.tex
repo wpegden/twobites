@@ -1,0 +1,48 @@
+\begin{lemma}
+Let \(K\subseteq \operatorname{Fin}(m)\times \operatorname{Fin}(m)\) have
+cardinality \(m\), with \(m>0\), and suppose \(n\le m^2\).  For every real
+\(\delta\) with \(0<\delta\le 1/2\), the number of injections
+\(\pi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) for which the sampled image
+\(\pi(\operatorname{Fin}(n))\) meets \(K\) in fewer than
+\((1-\delta)n/m\) points is at most
+\[
+\exp\!\left(
+-\bigl(\delta+(1-\delta)\log(1-\delta)\bigr)\frac{n}{m}
+\right)
+\cdot
+\#\{\pi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(m)\times\operatorname{Fin}(m)\}.
+\]
+\end{lemma}
+\begin{proof}
+Put \(\mu=n/m\) and \(a=(1-\delta)\mu\).  Use
+\(\noderef{UniformInjectionImage}\) with the full domain
+\(\operatorname{Fin}(n)\) and the predicate \(|S\cap K|<a\).  This shows that
+the injection count divided by the total number of injections is exactly the
+corresponding count of \(n\)-element image subsets divided by \(\binom{m^2}{n}\).
+
+Transport those image subsets across the standard equivalence
+\(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\simeq
+\operatorname{Fin}(m^2)\).  By
+\(\noderef{FinProductLowerTailCountEquiv}\), the transported event is the
+lower-tail event \(|S\cap K'|<a\) for the image \(K'\subseteq
+\operatorname{Fin}(m^2)\).  The set \(K'\) has cardinality \(m\), so the
+hypergeometric mean is
+\[
+n\frac{m}{m^2}=\frac{n}{m}=\mu,
+\]
+using \(m>0\).
+
+Since \(0<\delta\le 1/2\), in particular \(0<\delta<1\).  Applying
+\(\noderef{HypergeometricCountingLowerTailBound}\) with population \(m^2\),
+sample size \(n\), marked-set size \(m\), and this value of \(\delta\) gives
+that the transported subset proportion is at most
+\[
+\exp\!\left(
+-\bigl(\delta+(1-\delta)\log(1-\delta)\bigr)\mu
+\right).
+\]
+Multiplying by the total number of injections gives exactly the stated
+injection bound.
+\end{proof}

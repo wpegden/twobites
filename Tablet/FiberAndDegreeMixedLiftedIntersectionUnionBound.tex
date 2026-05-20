@@ -1,0 +1,121 @@
+\begin{helper}[FiberAndDegreeMixedLiftedIntersectionUnionBound]
+\label{helper:FiberAndDegreeMixedLiftedIntersectionUnionBound}
+Assume
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}(1/2,n),\qquad
+n\le m^2,\qquad \log n\ge1.
+\]
+Then the
+\(\noderef{TwoBiteEventProbability}(n,m,p)\)-probability of the bad mixed
+intersection event
+\[
+\neg\left(
+\forall r,b\in\operatorname{Fin}(m),\
+\left|
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(b))
+\right|
+\le 100(\log n)^3
+\right)
+\]
+is at most the probability of the bad base-degree event
+\[
+\neg\left(
+\left[\forall r\in\operatorname{Fin}(m),\
+\noderef{GraphDegreeCount}(\omega.1,r)\le2pm\right]
+\wedge
+\left[\forall b\in\operatorname{Fin}(m),\
+\noderef{GraphDegreeCount}(\omega.2.1,b)\le2pm\right]
+\right)
+\]
+plus
+\[
+m^2\exp(-2(\log n)^3).
+\]
+\end{helper}
+
+\begin{proof}
+Let \(A\) be the event that all mixed lifted intersections are at most
+\(100(\log n)^3\), and let \(B\) be the event that all red and blue base
+degrees are at most \(2pm\), exactly as displayed in the statement.  Put
+\[
+C=m^2\exp(-2(\log n)^3).
+\]
+We first prove the initial probability split.  If \(\omega\in A^c\), then
+either \(\omega\notin B\), in which case \(\omega\in B^c\), or
+\(\omega\in B\), in which case \(\omega\in A^c\cap B\).  Equivalently, for
+every sample \(\omega\),
+\[
+\mathbf 1_{A^c}(\omega)
+\le
+\mathbf 1_{B^c}(\omega)+\mathbf 1_{A^c\cap B}(\omega).
+\tag{1a}
+\]
+To pass from this pointwise inequality to probabilities, first note that the
+specialized value of \(p\) lies in \([0,1]\).  Indeed,
+\[
+p=\noderef{TwoBiteEdgeProbability}(1/2,n)
+=\frac12\sqrt{\frac{\log n}{n}},
+\]
+and the hypothesis \(\log n\ge1\) implies \(n>0\) and
+\(\log n\ge0\).  The elementary inequality \(\log x\le x\) for
+\(x>0\), applied to \(x=n\), gives \((\log n)/n\le1\).  Hence
+\[
+0\le p\le \frac12\le1.
+\tag{1b}
+\]
+By \(\noderef{TwoBiteSampleWeightNonnegative}\), every summand
+\(\noderef{TwoBiteSampleWeight}(\omega)\) in the
+\(\noderef{TwoBiteEventProbability}\) sums is therefore nonnegative.  Multiply
+(1a) by this nonnegative weight and sum over the finite sample space
+\(\noderef{TwoBiteSample}(n,m,p)\).  Using the definition of
+\(\noderef{TwoBiteEventProbability}\) as the corresponding finite weighted
+indicator sum, we obtain
+\[
+\Pr(A^c)\le \Pr(B^c)+\Pr(A^c\cap B).
+\tag{1}
+\]
+
+It remains to bound the second term in (1).  Let
+\[
+E=A^c\cap B.
+\]
+We verify the hypothesis of
+\(\noderef{FiberAndDegreeMixedLiftedIntersectionConditioning}\) for the event
+\(E\) with the constant \(C\).  Fix an ordered pair of base graphs
+\((G_R,G_B)\), and condition on the cell
+\[
+\omega.1=G_R,\qquad \omega.2.1=G_B.
+\]
+If these fixed graphs do not satisfy the degree event \(B\), then no sample
+in this conditioning cell can lie in \(E=A^c\cap B\).  Thus the conditional
+probability of \(E\) in this cell is \(0\), hence at most \(C\).
+
+Suppose instead that \(G_R,G_B\) satisfy \(B\).  Then, for every \(r,b\), the
+two degree bounds required in
+\(\noderef{FiberAndDegreeMixedLiftedIntersectionUniformBound}\) hold.  The
+specialized hypotheses \(m=\noderef{TwoBiteNaturalReducedVertexCount}(n)\),
+\(p=\noderef{TwoBiteEdgeProbability}(1/2,n)\), \(n\le m^2\), and
+\(\log n\ge1\) are exactly the additional hypotheses of that node.  Therefore
+the conditional probability of \(A^c\) in this cell is bounded by \(C\):
+\[
+\Pr(A^c\mid G_R,G_B)\le C.
+\tag{2}
+\]
+Since \(E\subseteq A^c\), conditional monotonicity gives
+\[
+\Pr(E\mid G_R,G_B)\le C
+\]
+in the good-degree cells as well.  We have proved the same conditional bound
+for every pair \((G_R,G_B)\).  Applying
+\(\noderef{FiberAndDegreeMixedLiftedIntersectionConditioning}\), which
+averages a uniform per-base-graph conditional bound over the base-graph
+cells, yields
+\[
+\Pr(A^c\cap B)=\Pr(E)\le C=m^2\exp(-2(\log n)^3).
+\tag{3}
+\]
+Combining (1) and (3) is exactly the asserted inequality.
+\end{proof}

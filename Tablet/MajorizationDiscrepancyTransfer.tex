@@ -1,0 +1,12 @@
+\begin{helper}
+Let \(N\) be a natural number. Let \(b, x \in \mathbb R^{\operatorname{Fin}(N)}\) have nonnegative integer entries and equal total sums, with \(b\) nonincreasing. Suppose that for every \(0 \le r \le N\), the prefix slack \(S_r(x) = \sum_{k < r} x_k - \sum_{k < r} b_k\) is nonnegative. If \(x \neq b\), then there exist indices \(i < j\) such that \(x_i > b_i\), \(x_j < b_j\), and for all \(i < r \le j\), \(S_r(x) > 0\). Furthermore, there is a positive integer \(\delta\) such that \(\delta \le x_i - b_i\), \(\delta \le b_j - x_j\), and for all \(i < r \le j\), \(\delta \le S_r(x)\).
+\end{helper}
+\begin{proof}
+Let \(i\) be the first coordinate at which \(x_i \neq b_i\). Since all earlier coordinates agree, \(S_{i+1}(x) = x_i - b_i\). The prefix inequality forces \(x_i > b_i\); it cannot be \(x_i < b_i\). Because the total discrepancy \(S_N(x)\) is zero, some later coordinate must satisfy \(x_j < b_j\). Let \(j > i\) be the first such coordinate.
+
+For every prefix ending between \(i\) and \(j-1\), a positive discrepancy at \(i\) has appeared and no negative discrepancy has yet canceled it, so the slack is strictly positive. Define
+\[
+\delta = \min\Bigl(x_i - b_i,\ b_j - x_j,\ \min_{i < r \le j} S_r(x)\Bigr).
+\]
+All quantities in this minimum are positive integers: the entries of \(b\) and \(x\) are nonnegative integers, and \(S_r(x)\) is an integer for all \(r\). Hence \(\delta\) is a positive integer satisfying all required bounds.
+\end{proof}

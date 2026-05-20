@@ -1,0 +1,45 @@
+\begin{lemma}
+Let \(M\) be a finite family of medium base vertices, let
+\(w(x)\in\mathbb N\) be the number of incidences charged to \(x\), and let
+\(E(B)\in\mathbb N\) be the number of distinct present base edges charged by a
+subfamily \(B\subseteq M\).  Suppose \(A\ge0\), \(L>0\),
+\[
+A<\sum_{x\in M} w(x),
+\]
+each \(x\in M\) satisfies \(w(x)\le t_2\) and
+\(\ell\le w(x)\), and every subfamily satisfies the charge inequality
+\[
+\sum_{x\in B} w(x)\le L\,E(B).
+\]
+Then there is a nonempty subfamily \(B\subseteq M\) such that
+\[
+A<\sum_{x\in B} w(x)\le A+t_2,\qquad
+|B|\,\ell\le A+t_2,\qquad
+E(B)>A/L.
+\]
+\end{lemma}
+\begin{proof}
+Choose, among all subfamilies \(C\subseteq M\) with
+\(A<\sum_{x\in C}w(x)\), one of minimum cardinality, and call it \(B\).
+Such a \(B\) exists because the full family \(M\) has sum larger than \(A\).
+The empty family has sum \(0\le A\), so \(B\) is nonempty.
+
+Fix \(b\in B\).  By the cardinal-minimal choice of \(B\), deleting \(b\)
+cannot leave a subfamily whose sum is still larger than \(A\).  Hence
+\[
+\sum_{x\in B\setminus\{b\}}w(x)\le A.
+\]
+Adding back the single term \(w(b)\), and using \(w(b)\le t_2\), gives
+\[
+\sum_{x\in B}w(x)\le A+t_2.
+\]
+The lower bound \(\ell\le w(x)\) for each \(x\in B\) gives
+\[
+|B|\ell\le \sum_{x\in B}w(x)\le A+t_2.
+\]
+Finally, the charge inequality for this same \(B\) gives
+\[
+A<\sum_{x\in B}w(x)\le L E(B).
+\]
+Since \(L>0\), division by \(L\) yields \(E(B)>A/L\).
+\end{proof}

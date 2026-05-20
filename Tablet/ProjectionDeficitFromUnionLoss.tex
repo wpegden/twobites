@@ -1,0 +1,47 @@
+\begin{helper}
+Let \(H\) be a finite family of subsets \(A_x\subseteq I\), let \(f\) be a
+projection map, and put
+\[
+S=\sum_{x\in H}|A_x|.
+\]
+Assume \(0\le\delta\).  Assume the pairwise-overlap loss is at most
+\(\delta S\),
+\[
+\binom{|H|}{2}_{\mathbb R} C\le \delta S,
+\]
+and that the image of the union is also at most \(\delta S\),
+\[
+\left|f\!\left(\bigcup_{x\in H}A_x\right)\right|\le\delta S.
+\]
+If every pairwise intersection \(A_x\cap A_y\), \(x\ne y\), has size at most
+\(C\), then
+\[
+(1-2\delta)S\le |I|-\left|f(I)\right|.
+\]
+\end{helper}
+\begin{proof}
+Write \(W=\bigcup_{x\in H}A_x\).  Since every \(A_x\subseteq I\), also
+\(W\subseteq I\).  The finite union lower bound with pairwise overlap cap
+\(C\) gives
+\[
+S-\binom{|H|}{2}_{\mathbb R}C\le |W|.
+\]
+By the assumed overlap-loss estimate, this implies
+\[
+(1-\delta)S\le |W|.
+\]
+The assumed image-loss estimate gives
+\[
+|f(W)|\le\delta S.
+\]
+Therefore
+\[
+(1-2\delta)S\le |W|-|f(W)|.
+\]
+Finally, since \(W\subseteq I\), the projection deficit cannot decrease when
+we pass from \(W\) to \(I\):
+\[
+|W|-|f(W)|\le |I|-|f(I)|.
+\]
+Combining the last two inequalities proves the claim.
+\end{proof}

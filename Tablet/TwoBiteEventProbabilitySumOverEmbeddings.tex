@@ -1,0 +1,6 @@
+\begin{helper}
+For any event, if its probability conditional on each fixed embedding \(\pi\) is bounded by \(P_{\text{bound}}\) (where \(P_{\text{bound}} \ge 0\)), then the unconditional event probability is bounded by \(P_{\text{bound}}\).
+\end{helper}
+\begin{proof}
+Partition the event according to the finite set of embeddings \(\pi\). By hypothesis, the intersection of the event with the cell for \(\pi\) has probability at most \(P_{\text{bound}}\) times the total probability of the cell for \(\pi\). Summing over all \(\pi\) yields at most \(P_{\text{bound}}\) times the total probability mass over all cells. By \(\noderef{TwoBiteEventProbabilityTotalMassBound}\), the total probability mass is at most 1, so the result follows because \(P_{\text{bound}} \ge 0\).
+\end{proof}

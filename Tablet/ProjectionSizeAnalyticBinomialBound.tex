@@ -1,0 +1,141 @@
+\begin{lemma}
+For every fixed \(\delta>0\) and \(\varepsilon>0\), there is a threshold
+\(n_0\) such that the following holds for every \(n\ge n_0\).  Let
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n)
+=\left\lfloor\frac{n}{\log^2 n}\right\rfloor,
+\qquad
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)
+  =\left\lceil(1+\varepsilon)\sqrt{n\log n}\right\rceil .
+\]
+For integers \(\ell_R,\ell_B\) with \(\ell_R\ell_B\ge k\), put
+\[
+x_R=\frac{\ell_R}{k},\qquad x_B=\frac{\ell_B}{k}.
+\]
+If \(2\delta k < (2-x_R-x_B)k\), then
+\[
+\frac{\binom m{\ell_R}\binom m{\ell_B}\binom{\ell_R\ell_B}{k}}{\binom{m^2}{k}}
+\le
+\exp\left(\left(\delta-\frac{2-x_R-x_B}{2}\right)k\log n\right).
+\]
+\end{lemma}
+\begin{proof}
+Write \(L=\log n\) and
+\[
+s=(2-x_R-x_B)k.
+\]
+The hypothesis says \(s>2\delta k\).  In particular \(k>0\), \(s>0\), and
+\[
+x_R+x_B<2,\qquad 0<s\le 2k,
+\]
+because \(x_R,x_B\ge0\).
+
+Increase \(n_0\), if necessary, so that the conclusions of
+\(\noderef{ProjectionSizeAnalyticParameterBounds}\) hold and also
+\[
+L\ge 1,\qquad
+2\left(\frac52\log L+\log(4(1+\varepsilon))\right)+3\le \delta L.
+\]
+This is possible because \(\log L=o(L)\).  The parameter bound gives
+\[
+m\ge \frac{n}{2L^2},\qquad
+k\le 2(1+\varepsilon)\sqrt{nL},\qquad
+1\le k\le n,\qquad n\le m^2.
+\]
+Thus \(\binom{m^2}{k}>0\), so the denominator is positive.  If
+\(\ell_R>m\) or \(\ell_B>m\), then one of
+\(\binom m{\ell_R}\), \(\binom m{\ell_B}\) is zero, and the desired
+inequality is immediate.  Hence assume \(\ell_R,\ell_B\le m\).  Since
+\(\ell_R\ell_B\ge k\ge1\), both \(\ell_R\) and \(\ell_B\) are positive, so
+all logarithms below are legitimate.
+
+We use the elementary estimates
+\[
+\binom ab\le \left(\frac{ea}{b}\right)^b
+\quad(1\le b\le a),
+\qquad
+\binom Nk\ge \left(\frac Nk\right)^k
+\quad(1\le k\le N).
+\]
+Applying these to the three numerator factors and the denominator gives
+\[
+\frac{\binom m{\ell_R}\binom m{\ell_B}\binom{\ell_R\ell_B}{k}}
+{\binom{m^2}{k}}
+\le
+\frac{
+\left(\frac{em}{\ell_R}\right)^{\ell_R}
+\left(\frac{em}{\ell_B}\right)^{\ell_B}
+\left(\frac{e\ell_R\ell_B}{k}\right)^k}
+\left(\frac{m^2}{k}\right)^k}.
+\]
+Taking logarithms and using
+\(\ell_R=kx_R\), \(\ell_B=kx_B\), we obtain
+\[
+\begin{aligned}
+\log R
+&\le
+kx_R\left(1+\log\frac{m}{k}-\log x_R\right)
++kx_B\left(1+\log\frac{m}{k}-\log x_B\right)  \\
+&\quad
++k\left(1+\log k+\log x_R+\log x_B\right)
+-k\left(2\log m-\log k\right),
+\end{aligned}
+\]
+where \(R\) denotes the binomial ratio on the left.  Since
+\(2\log k-2\log m=-2\log(m/k)\), this simplifies to
+\[
+\log R
+\le
+k(1+x_R+x_B)
+-s\log\frac{m}{k}
++k(1-x_R)\log x_R
++k(1-x_B)\log x_B.
+\]
+For every \(x>0\), \((1-x)\log x\le0\): it is negative for \(x<1\), zero at
+\(x=1\), and negative for \(x>1\).  Therefore
+\[
+\log R\le k(1+x_R+x_B)-s\log\frac{m}{k}
+=(3k-s)-s\log\frac{m}{k}.
+\]
+
+It remains to lower-bound \(\log(m/k)\).  From the parameter estimates,
+\[
+\frac{m}{k}
+\ge
+\frac{n/(2L^2)}{2(1+\varepsilon)\sqrt{nL}}
+=
+\frac{\sqrt n}{4(1+\varepsilon)L^{5/2}}.
+\]
+Thus
+\[
+\log\frac{m}{k}
+\ge
+\frac12 L-\frac52\log L-\log(4(1+\varepsilon)).
+\]
+Let
+\[
+E=\frac52\log L+\log(4(1+\varepsilon)).
+\]
+Since \(L\ge1\) and \(\varepsilon>0\), we have \(E\ge0\).
+Then
+\[
+\log R
+\le
+3k-s-s\left(\frac12 L-E\right)
+=-\frac{s}{2}L+(sE+3k-s).
+\]
+Because \(0<s\le2k\), the error term satisfies
+\[
+sE+3k-s\le 2kE+3k\le \delta kL
+\]
+by the choice of \(n_0\).  Hence
+\[
+\log R\le -\frac{s}{2}L+\delta kL
+=\left(\delta-\frac{2-x_R-x_B}{2}\right)k\log n.
+\]
+Exponentiating both sides, using monotonicity of \(\exp\), gives exactly
+\[
+R\le
+\exp\left(\left(\delta-\frac{2-x_R-x_B}{2}\right)k\log n\right).
+\]
+\end{proof}

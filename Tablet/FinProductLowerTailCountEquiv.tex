@@ -1,0 +1,34 @@
+\begin{helper}
+For every \(m,n\), every \(K\subseteq \operatorname{Fin}(m)\times
+\operatorname{Fin}(m)\), and every real threshold \(T\), the number of
+\(n\)-element subsets \(S\subseteq \operatorname{Fin}(m)\times
+\operatorname{Fin}(m)\) satisfying
+\[
+|S\cap K|<T
+\]
+is equal to the corresponding lower-tail count after transporting
+\(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) across the standard
+equivalence with \(\operatorname{Fin}(m^2)\).
+\end{helper}
+\begin{proof}
+Let \(e:\operatorname{Fin}(m)\times\operatorname{Fin}(m)\simeq
+\operatorname{Fin}(m^2)\) be the standard equivalence.  The map
+\(S\mapsto e(S)\) is a bijection from \(n\)-element subsets of
+\(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) to \(n\)-element subsets
+of \(\operatorname{Fin}(m^2)\).  Its inverse is \(S'\mapsto e^{-1}(S')\), and
+cardinality is preserved because \(e\) and \(e^{-1}\) are injective.
+
+For every subset \(S\), the image of the intersection is the intersection of
+the images:
+\[
+e(S\cap K)=e(S)\cap e(K).
+\]
+Injectivity of \(e\) preserves the cardinality of this intersection, so
+\[
+|S\cap K|=|e(S)\cap e(K)|.
+\]
+Hence the predicate \(|S\cap K|<T\) is carried exactly to the predicate
+\(|S'\cap e(K)|<T\).  Summing the indicator of this predicate over the
+\(n\)-element subsets of \(\operatorname{Fin}(m^2)\) therefore gives exactly
+the original lower-tail count.
+\end{proof}

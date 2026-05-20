@@ -1,0 +1,25 @@
+\begin{helper}
+Let \(L=\log n\).  If \(n>0\), \(L\ge0\), and
+\[
+\frac{200L^3}{n^\eta}\le1,
+\]
+then
+\[
+100(n^{1/4}+1/2)L^3\le n^{1/4+\eta}.
+\]
+\end{helper}
+\begin{proof}
+Since \(n\) is a positive integer, \(n\ge1\), so \(n^{1/4}\ge1\).  Hence
+\[
+n^{1/4}+1/2\le2n^{1/4}.
+\]
+Therefore
+\[
+100(n^{1/4}+1/2)L^3\le200n^{1/4}L^3.
+\]
+The threshold hypothesis gives \(200L^3\le n^\eta\).  Multiplying this
+inequality by the nonnegative number \(n^{1/4}\) yields
+\[
+200n^{1/4}L^3\le n^{1/4}n^\eta=n^{1/4+\eta}.
+\]
+\end{proof}

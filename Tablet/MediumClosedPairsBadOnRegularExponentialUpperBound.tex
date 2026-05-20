@@ -1,0 +1,58 @@
+\begin{helper}
+Fix \(n,m,k\), an edge density \(p\), and parameters
+\(\varepsilon,\varepsilon_1,\varepsilon_2\).  Let \(\iota\) be a finite
+candidate index type, and let \(C_i(\omega)\) be candidate events.  Suppose
+that the bad-on-regular event
+\[
+\neg\noderef{TwoBiteMediumClosedPairsEvent}_{k,\varepsilon,\varepsilon_1}
+  (\omega)
+\quad\text{and}\quad
+\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)
+\]
+is covered by the candidates: every sample satisfying it lies in some
+\(C_i\).  Suppose also that, after conditioning on each embedding cell
+\(\noderef{TwoBiteEmbedding}(\omega)=\pi\), each candidate satisfies
+\[
+\noderef{TwoBiteEventProbability}
+  (n,m,p,\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\ \text{and}\ C_i(\omega)\})
+\le
+e^{-T}\,
+\noderef{TwoBiteEventProbability}
+  (n,m,p,\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\})
+\]
+for a tail exponent \(T\).  If the number of candidates is at most \(e^C\),
+then
+\[
+\noderef{TwoBiteEventProbability}
+  (n,m,p,\{\omega:
+    \neg\noderef{TwoBiteMediumClosedPairsEvent}_{k,\varepsilon,\varepsilon_1}
+      (\omega)
+    \ \text{and}\
+    \noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\})
+\le e^{C-T}.
+\]
+\end{helper}
+\begin{proof}
+For a fixed candidate \(i\), apply
+\(\noderef{TwoBiteEventProbabilitySumOverEmbeddings}\) to the event \(C_i\).
+The displayed embedding-cell estimate is exactly the required per-cell
+inequality with the bound \(e^{-T}\), and \(e^{-T}\) is nonnegative.  Hence
+\[
+\noderef{TwoBiteEventProbability}(n,m,p,C_i)\le e^{-T}
+\]
+for every \(i\).
+
+Now apply \(\noderef{MediumClosedPairsFiniteCandidateUnionBound}\) to the
+bad-on-regular event and the finite family \((C_i)_{i\in\iota}\).  The cover
+hypothesis gives the event inclusion needed by that lemma, and \(0\le p\le1\)
+gives nonnegativity of the sample weights.  Therefore
+\[
+\noderef{TwoBiteEventProbability}(\text{bad-on-regular})
+\le |\iota|\,e^{-T}.
+\]
+Using \(|\iota|\le e^C\) and \(e^{-T}\ge0\), this is at most
+\[
+e^C e^{-T}=e^{C-T},
+\]
+which proves the claimed finite-\(n\) exponential upper bound.
+\end{proof}

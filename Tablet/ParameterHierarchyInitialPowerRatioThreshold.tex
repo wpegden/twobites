@@ -1,0 +1,73 @@
+\begin{helper}
+Let \(\eta,\varepsilon_1\) be real numbers with
+\[
+0<\eta,\qquad 0<\varepsilon_1,\qquad \eta<\frac1{16}.
+\]
+Then there is \(n_0\) such that, for every \(n>n_0\), if
+\[
+L=\log n,\qquad k_R=(1+\eta)\sqrt{nL},
+\]
+then
+\[
+n^{4\eta}\le\frac{\varepsilon_1}{2}k_R
+\qquad\text{and}\qquad
+2L^2\le\frac{\varepsilon_1}{8}k_R.
+\]
+\end{helper}
+\begin{proof}
+Put
+\[
+c_1=\frac{\varepsilon_1}{2}(1+\eta),\qquad
+c_2=\frac{\varepsilon_1}{8}(1+\eta).
+\]
+Both constants are positive because \(\varepsilon_1>0\) and
+\(1+\eta>0\).  Since \(\eta<1/16\), we have \(4\eta<1/4\).
+
+First choose the threshold so large that \(n\ge1\), \(L=\log n\ge1\), and
+\[
+1\le c_1 n^{1/4}.
+\]
+These are eventual conditions: \(n\to\infty\), \(\log n\to\infty\), and
+\(c_1n^{1/4}\to\infty\).  For such \(n\), monotonicity of real powers on
+\([1,\infty)\) gives
+\[
+n^{4\eta}\le n^{1/4}.
+\]
+Multiplying \(1\le c_1n^{1/4}\) by \(n^{1/4}\ge0\) gives
+\[
+n^{1/4}\le c_1n^{1/2}=c_1\sqrt n.
+\]
+Since \(L\ge1\), we also have \(n\le nL\), hence
+\(\sqrt n\le\sqrt{nL}\).  Combining these inequalities gives
+\[
+n^{4\eta}\le c_1\sqrt{nL}
+=\frac{\varepsilon_1}{2}(1+\eta)\sqrt{nL}
+=\frac{\varepsilon_1}{2}k_R.
+\]
+
+For the second inequality choose
+\[
+\delta=\sqrt{c_2/4}>0.
+\]
+Because \(\log n=o(n^{1/4})\), enlarge the threshold so that, for every
+\(n>n_0\),
+\[
+L=\log n\le\delta n^{1/4}.
+\]
+Together with \(L\ge0\), squaring gives
+\[
+L^2\le \delta^2 n^{1/2}=\delta^2\sqrt n.
+\]
+Since \(\delta^2=c_2/4\), we have \(2\delta^2\le c_2\), and therefore
+\[
+2L^2\le c_2\sqrt n.
+\]
+As above, \(L\ge1\) implies \(\sqrt n\le\sqrt{nL}\).  Thus
+\[
+2L^2\le c_2\sqrt{nL}
+=\frac{\varepsilon_1}{8}(1+\eta)\sqrt{nL}
+=\frac{\varepsilon_1}{8}k_R.
+\]
+Taking the maximum of the finitely many thresholds used above proves the
+claim.
+\end{proof}

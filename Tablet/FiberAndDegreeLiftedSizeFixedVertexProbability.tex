@@ -1,0 +1,35 @@
+\begin{helper}[Fixed-base-vertex lifted-size probability tail]
+Fix \(n,m\), an edge probability \(p\), a side and a base vertex \(x\), and
+let \(0<\delta\le 1/2\).  Assume \(n\le m^2\), \(m>0\), and \(0\le p\le1\).
+For samples in which the corresponding red or blue base degree of \(x\) is
+within relative error \(\delta\) of \(pm\), the two-bite probability that the
+lifted neighborhood of \(x\) is not within relative error \(3\delta\) of
+\(pn\) is at most
+\[
+  \exp\!\left(-(\delta+(1-\delta)\log(1-\delta))(1-\delta)pn\right)
+  +
+  \exp\!\left(-(((1+\delta)\log(1+\delta)-\delta)(1-\delta)pn)\right).
+\]
+\end{helper}
+\begin{proof}
+Condition on the two base graphs.  If the selected base degree of \(x\) is not
+within relative error \(\delta\) of \(pm\), the conditioned event is empty.
+Otherwise let \(K\subseteq\operatorname{Fin}(m)\times\operatorname{Fin}(m)\)
+be the marked set \(N_G(x)\times\operatorname{Fin}(m)\) on the red side, or
+\(\operatorname{Fin}(m)\times N_G(x)\) on the blue side.  Its cardinality is
+\(|N_G(x)|m\).  The base-degree hypothesis implies
+\[
+  \operatorname{WithinRelativeError}\!\left(
+    \delta,\; pn,\; n|K|/m^2
+  \right),
+\]
+by dividing the degree estimate by \(m\) and multiplying by \(n\).
+For a fixed pair of base graphs, the lifted-neighborhood size is exactly the
+number of points in the injection image lying in \(K\).  Therefore
+\(\noderef{FiberAndDegreeLiftedSizeFixedVertexTail}\) bounds the bad
+injections by the displayed Chernoff factor times the total number of
+injections.  Multiplying by the uniform injection weight cancels the total
+number of injections.  Finally, summing over the two independent base graphs
+uses \(\noderef{GnpGraphWeightSumOne}\) twice, while nonnegativity follows
+from \(0\le p\le1\).
+\end{proof}

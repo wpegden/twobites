@@ -1,0 +1,41 @@
+\begin{helper}
+For the T4 notation
+\[
+L=\log n,\quad k_R=(1+\eta)\sqrt{nL},\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad
+k=(K:\mathbb R),
+\]
+and \(m_R=n/L^2\), \(m=\noderef{TwoBiteNaturalReducedVertexCount}(n)\),
+assume \(n>0\), \(L>0\), \(m>0\), \(k_R\ge0\), \(2\le k\),
+\(k_R\le k\), \(m\le m_R\), and
+\[
+(2kL+L)\bigl(16Lm_R n^{8\eta}\bigr)\le k_R^4 .
+\]
+Then
+\[
+2kL+L\le
+\frac{\noderef{RealChooseTwo}(k)^2}{Lm n^{8\eta}}.
+\]
+\end{helper}
+\begin{proof}
+By \(\noderef{RealChooseTwoQuadraticBounds}\), since \(2\le k\),
+\[
+\frac{k^2}{4}\le \noderef{RealChooseTwo}(k).
+\]
+In particular \(\noderef{RealChooseTwo}(k)\ge0\), and squaring gives
+\[
+k^4\le16\,\noderef{RealChooseTwo}(k)^2.
+\]
+Because \(0\le k_R\le k\), we also have \(k_R^4\le k^4\).
+The hypotheses \(L>0\), \(m>0\), \(n>0\), and \(m\le m_R\) imply
+\[
+16Lm n^{8\eta}\le16Lm_R n^{8\eta}.
+\]
+Moreover \(2kL+L\ge0\).  Therefore the assumed threshold inequality yields
+\[
+(2kL+L)(16Lm n^{8\eta})
+\le16\,\noderef{RealChooseTwo}(k)^2.
+\]
+Dividing by \(16\) and then by the positive quantity \(Lm n^{8\eta}\)
+proves the asserted lower bound on the exponent magnitude.
+\end{proof}

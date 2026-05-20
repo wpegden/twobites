@@ -1,0 +1,72 @@
+\begin{helper}
+Let \(\eta,\varepsilon_1,\varepsilon_2,\beta\in\mathbb R\) and
+\(n_0\in\mathbb N\).  If \(\beta=1/2\) and
+\(\noderef{ParameterHierarchy}(\eta,\varepsilon_1,\varepsilon_2,n_0)\), then
+the \(\eta\)-scale regularity event
+\[
+\noderef{TwoBiteRegularityEvent}
+\bigl(k=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),
+\eta,\varepsilon_1,\varepsilon_2,\omega\bigr)
+\]
+holds with high probability under the two-bite law
+\[
+\noderef{TwoBiteEventProbability}
+\left(n,\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\noderef{TwoBiteEdgeProbability}(\beta,n),-\right).
+\]
+\end{helper}
+\begin{proof}
+Write
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+K(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),
+\]
+and
+\[
+\mathbb P_n(E)=
+\noderef{TwoBiteEventProbability}
+\bigl(n,M(n),\noderef{TwoBiteEdgeProbability}(\beta,n),E\bigr).
+\]
+Unfolding \(\noderef{TwoBiteRegularityEvent}\), the target regularity event is
+the intersection of the three events
+\[
+D_n(\omega)=\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2),
+\]
+\[
+M_n(\omega)=
+\noderef{TwoBiteMediumClosedPairsEvent}(k=K(n),\eta,\varepsilon_1,\omega),
+\]
+and
+\[
+S_n(\omega)=
+\noderef{TwoBiteSmallClosedPairsEvent}(k=K(n),\eta,\varepsilon_1,\omega).
+\]
+
+The hierarchy hypothesis begins with \(0<\varepsilon_2\).  Hence
+\(\noderef{FiberAndDegreeConcentration}\), with the function
+\(n\mapsto M(n)\) and the equality \(\beta=1/2\), gives
+\(\mathbb P_n(D_n)\to1\).
+
+Apply \(\noderef{MediumClosedPairsBound}\) with parameters
+\(\eta,\varepsilon_1,\varepsilon_2,\beta,n_0\), the same function
+\(n\mapsto M(n)\), and the function \(n\mapsto K(n)\).  Its two function
+identities are tautological from the definitions of \(M\) and \(K\), and its
+hierarchy and \(\beta=1/2\) assumptions are exactly the standing hypotheses.
+Therefore \(\mathbb P_n(M_n)\to1\).  The same argument with
+\(\noderef{SmallClosedPairsBound}\) gives \(\mathbb P_n(S_n)\to1\).
+
+It remains only to pass from the three high-probability events to their
+intersection.  For any tolerance \(\rho>0\), choose thresholds after which
+each of \(D_n,M_n,S_n\) has probability greater than \(1-\rho/3\).  The
+complement of \(D_n\cap M_n\cap S_n\) is contained in
+\(D_n^c\cup M_n^c\cup S_n^c\).  Since
+\(\noderef{TwoBiteEventProbability}\) is a finite sum of nonnegative sample
+weights, the finite union bound gives
+\[
+\mathbb P_n((D_n\cap M_n\cap S_n)^c)
+\le
+\mathbb P_n(D_n^c)+\mathbb P_n(M_n^c)+\mathbb P_n(S_n^c)<\rho.
+\]
+Equivalently, \(\mathbb P_n(D_n\cap M_n\cap S_n)>1-\rho\) eventually.  This
+is precisely convergence of the regularity-event probability to \(1\).
+\end{proof}

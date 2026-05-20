@@ -1,0 +1,43 @@
+\begin{lemma}
+Assume the eventual parameter comparisons, \(n>n_0\), the rounded identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\frac12\sqrt{\frac{\log n}{n}},
+\]
+the fixed-set scale identity
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+and the fiber-degree event.  If a red staged-open coordinate
+\(\operatorname{red}(q)\) has an opposite-color witness \(b\), meaning
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b)))\bigr),
+\]
+then it has such a witness \(b\) which is large, medium, or small.  Symmetrically,
+if a blue staged-open coordinate \(\operatorname{blue}(q)\) has an
+opposite-color witness \(r\), meaning
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_B^\omega(\noderef{TwoBiteX}(\omega,I,\operatorname{red}(r)))\bigr),
+\]
+then it has such a witness \(r\) which is large, medium, or small.
+\end{lemma}
+\begin{proof}
+We prove the red statement; the blue statement is identical with the colors
+interchanged.  Let \(\operatorname{red}(q)\) be staged-open and suppose that
+\(b\) is an opposite-color witness.  By
+\(\noderef{TwoBiteClassSmallMediumLargeOrHuge}\), the blue base vertex \(b\)
+is small, medium, large, or huge.  In the small, medium, and large cases, the
+same witness \(b\) gives the desired large/medium/small conclusion.
+
+It remains to exclude the huge case.  If \(b\) is huge, then the red half of
+\(\noderef{FixedSetHugeOppositeWitnessTouched}\), applied with the present
+eventual-comparisons, rounded-parameter, scale, and fiber-degree hypotheses,
+says that \(\operatorname{red}(q)\) is pre-terminal recorded and in particular
+is not in \(\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\).  This
+contradicts the staged-open assumption.  Therefore the huge alternative is
+impossible, and the witness may be chosen large, medium, or small.  The blue
+case uses the blue half of
+\(\noderef{FixedSetHugeOppositeWitnessTouched}\) in the same way.
+\end{proof}

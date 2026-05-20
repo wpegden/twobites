@@ -1,0 +1,70 @@
+\begin{helper}
+Fix the same data as in the red released-cylinder normalization node:
+the history cell \(H\), terminal coordinate set \(U\), fixed blue support
+\(B\), red label \(J\), branch labels \(\beta\), and transcript labels
+\(\tau=(P_\tau,A_\tau,Z_\tau)\).  Assume the complete terminal product law,
+the fixed support hypotheses, branch functionality from complete blue traces,
+the realized-cell geometry, the open-candidate support exhaustion, the
+selected-sibling pruning clause, the span and disjointness hypotheses for the
+enlarged released cylinders, and the forward, reverse, and functional
+compatibility clauses.
+
+Then the total released-cylinder product weight over all realized
+branch/transcript pairs is bounded by the fixed red and blue present support
+weight:
+\[
+\sum_{\substack{\beta,\tau\in\mathcal T\\ \mathsf{Realized}(\beta,\tau)}}
+  p^{|P_\tau|}(1-p)^{|A_\tau|-|Z_\tau|}
+\le p^{u_R}p^{u_B}.
+\]
+The selected absences \(Z_\tau\) are released and therefore do not contribute
+to the absent factor in this released-cylinder weight.
+\end{helper}
+\begin{proof}
+Let \(q=1-p\).  For each realized \((\beta,\tau)\), let
+\(C_{\beta,\tau}\) be the enlarged released cylinder of complete terminal
+assignments \(A\subseteq U\): the coordinates in \(P_\tau\) are present, the
+coordinates in \(A_\tau\setminus Z_\tau\) are absent, and the blue terminal
+truth table outside \(Z_\tau\) agrees with
+\(\operatorname{blueTrace}(\beta)\).  The realized-cell geometry says that
+every coordinate of \(Z_\tau\) is red, so this release does not remove any
+blue absent constraint.
+
+The span hypothesis identifies \(C_{\beta,\tau}\) with the compatible
+assignments for the realized cell together with the selected present sibling
+pieces.  The selected-sibling pruning hypothesis says that a selected present
+sibling assignment is not compatible with any realized cell.  The disjointness
+hypothesis for the span, together with the branch/scan functionality
+\(\noderef{FixedSetHistoryCellRedFunctionalScanDisjointness}\), gives
+pairwise disjointness of the released cylinders for distinct realized
+\((\beta,\tau)\).
+
+By the terminal product partition
+\(\noderef{FixedSetHistoryCellTerminalProductPartition}\), the product weight
+of \(C_{\beta,\tau}\) is
+\[
+\mu(C_{\beta,\tau})
+=p^{|P_\tau|}q^{|A_\tau|-|Z_\tau|}.
+\]
+The fixed support hypotheses give \(B\cup R_{\beta,J}\subseteq P_\tau\),
+\(|B|=u_B\), \(|R_{\beta,J}|=u_R\), and blue/red color separation.  The red
+support \(R_{\beta,J}\) is determined once the complete blue trace is fixed,
+by \(\noderef{FixedSetHistoryCellRedSupportDeterminedByBlueTrace}\).  Hence,
+after summing over mutually exclusive complete blue traces, the union
+\[
+E=\bigcup_{\mathsf{Realized}(\beta,\tau)} C_{\beta,\tau}
+\]
+has product weight at most \(p^{u_R}p^{u_B}\).
+Since the cylinders are pairwise disjoint and have product weights
+\[
+\mu(C_{\beta,\tau})
+=p^{|P_\tau|}q^{|A_\tau|-|Z_\tau|},
+\]
+finite additivity gives
+\[
+\sum_{\mathsf{Realized}(\beta,\tau)}
+  p^{|P_\tau|}q^{|A_\tau|-|Z_\tau|}
+=\mu(E)\le p^{u_R}p^{u_B}.
+\]
+This is exactly the asserted finite union weight bound.
+\end{proof}

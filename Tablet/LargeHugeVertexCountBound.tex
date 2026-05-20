@@ -1,0 +1,298 @@
+\begin{lemma}
+Assume \(\noderef{FiberAndDegreeEvent}\), the eventual-comparisons package
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\), and
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Then
+\[
+|\noderef{TwoBiteLargeHugeVertices}(\omega,\varepsilon,I)|<n^{1/4}.
+\]
+\end{lemma}
+\begin{proof}
+Fix \(n,m,p,\omega,I,\varepsilon,\varepsilon_1,\varepsilon_2,n_0\) satisfying
+the hypotheses.  Put
+\[
+K=|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),\qquad
+r=n^{1/4},\qquad
+t_2=\noderef{TwoBiteLargeCutoff}(\varepsilon,n)=n^{1/4+\varepsilon},
+\]
+and set
+\[
+C_n=100(\log n)^3.
+\]
+Let
+\[
+A=\noderef{TwoBiteLargeHugeVertices}(\omega,\varepsilon,I)=L_I\cup H_I.
+\]
+Write \(a=|A|\).
+Since \(n_0<n\) and \(n_0\) is a natural number, \(1\le n\), hence
+\[
+r=n^{1/4}\ge1>0.
+\]
+If \(A=\emptyset\), then \(a=0<r\) and the conclusion is immediate.  Thus the
+only remaining case to exclude is the case where \(A\) is nonempty, and the
+contradiction argument below will in fact choose a nonempty subfamily of \(A\).
+
+We first record the pointwise lower bound for every \(x\in A\).  Unfolding
+\(\noderef{TwoBiteLargeHugeVertices}\), membership \(x\in A\) means that either
+\[
+\noderef{TwoBiteLargeClass}(\omega,\varepsilon,I,x)
+\quad\text{or}\quad
+\noderef{TwoBiteHugeClass}(\omega,I,x)
+\]
+holds.  In the large case, the definition of
+\(\noderef{TwoBiteLargeClass}\), together with
+\(\noderef{TwoBiteLargeCutoff}\), gives directly
+\[
+|X_x(I)|>t_2.
+\]
+In the huge case, the definition of \(\noderef{TwoBiteHugeClass}\) gives
+\[
+\noderef{TwoBiteHugeCutoff}(n)<|X_x(I)|.
+\]
+Unfolding \(\noderef{TwoBiteHugeCutoff}\), this cutoff is exactly
+\[
+t_1=\frac{\sqrt{n\log n}}{\log\log n}.
+\]
+The eventual-comparisons hypothesis, applied to the present \(n>n_0\), contains
+the explicit cutoff comparison
+\[
+\noderef{TwoBiteLargeCutoff}(\varepsilon,n)
+<\noderef{TwoBiteHugeCutoff}(n).
+\]
+Since \(t_2=\noderef{TwoBiteLargeCutoff}(\varepsilon,n)\), the huge case also
+implies \(|X_x(I)|>t_2\).  Hence, for all \(x\in A\),
+\[
+|X_x(I)|>t_2. \tag{1}
+\]
+
+Next, \(\noderef{TwoBiteX}\) says
+\[
+X_x(I)=I\cap N_x.
+\]
+Therefore \(X_x(I)\subseteq I\) for every \(x\).  If \(x,y\in A\) are distinct,
+then
+\[
+X_x(I)\cap X_y(I)\subseteq N_x\cap N_y.
+\]
+We now match this containment to the three lifted-neighborhood intersection
+clauses of \(\noderef{FiberAndDegreeEvent}\).  Write base vertices as elements
+of \(V_R\cup V_B\).  If \(x=r_i\in V_R\) and \(y=r_j\in V_R\), then
+\(x\ne y\) means \(i\ne j\), and the red-red lifted-neighborhood clause gives
+\[
+|N_{r_i}\cap N_{r_j}|\le100(\log n)^3=C_n.
+\]
+If \(x=b_i\in V_B\) and \(y=b_j\in V_B\), then \(i\ne j\), and the blue-blue
+lifted-neighborhood clause gives
+\[
+|N_{b_i}\cap N_{b_j}|\le100(\log n)^3=C_n.
+\]
+If \(x=r_i\in V_R\) and \(y=b_j\in V_B\), or conversely, the mixed red-blue
+lifted-neighborhood clause gives
+\[
+|N_{r_i}\cap N_{b_j}|\le100(\log n)^3=C_n.
+\]
+In each case the containment above gives
+\[
+|X_x(I)\cap X_y(I)|\le C_n \tag{2}
+\]
+for every distinct \(x,y\in A\).
+
+We now spell out the finite inclusion-exclusion estimate.  Let
+\(B\subseteq A\) be any finite subfamily, enumerate it as
+\[
+B=\{x_1,\ldots,x_b\},
+\]
+where \(b=|B|\), and put \(Y_i=X_{x_i}(I)\).  Since each \(Y_i\subseteq I\),
+\[
+K=|I|\ge\left|\bigcup_{i=1}^bY_i\right|.
+\]
+For these \(b\) sets one has
+\[
+\left|\bigcup_{i=1}^bY_i\right|
+\ge
+\sum_{i=1}^b |Y_i|
+-
+\sum_{1\le i<j\le b}|Y_i\cap Y_j|. \tag{3}
+\]
+Indeed, (3) follows by induction on \(b\).  The step from \(b\) to \(b+1\) uses
+\[
+|U\cup Y_{b+1}|=|U|+|Y_{b+1}|-|U\cap Y_{b+1}|,
+\qquad U=\bigcup_{i=1}^bY_i,
+\]
+and the containment
+\[
+U\cap Y_{b+1}
+\subseteq
+\bigcup_{i=1}^b(Y_i\cap Y_{b+1}),
+\]
+so
+\[
+|U\cap Y_{b+1}|
+\le
+\sum_{i=1}^b |Y_i\cap Y_{b+1}|.
+\]
+Combining (1), (2), and (3) gives the following estimate for every finite
+subfamily \(B\subseteq A\):
+\[
+K\ge
+b\,t_2-\binom{b}{2}_{\mathbb R}C_n.
+\]
+If \(B\ne\emptyset\), then \(b>0\), and the first sum is a nonempty sum of
+strict inequalities \(|Y_i|>t_2\).  In that case the estimate is strict:
+\[
+K>
+b\,t_2-\binom{b}{2}_{\mathbb R}C_n. \tag{4}
+\]
+Here is the real-valued chain explicitly.  First cast all finite cardinalities
+in (3) to \(\mathbb R\).  Since \(K=|I|\) as natural numbers and
+\(\bigcup_iY_i\subseteq I\), the left side gives
+\[
+K\ge \left|\bigcup_{i=1}^bY_i\right|.
+\]
+If \(b>0\), the lower bound (1) gives, term by term after coercion to real
+numbers,
+\[
+\sum_{i=1}^b |Y_i|> b\,t_2.
+\]
+When \(b=0\), the corresponding statement is the equality \(0=0\), giving
+only the weak version above.  In the nonempty case used below, the displayed
+strict inequality is valid.
+For the intersections, (2) gives
+\[
+\sum_{1\le i<j\le b}|Y_i\cap Y_j|
+\le \binom{b}{2}_{\mathbb R}C_n,
+\]
+because there are exactly \(b(b-1)/2\) index pairs
+\((i,j)\) with \(1\le i<j\le b\), and
+\[
+\binom{b}{2}_{\mathbb R}
+=\noderef{RealChooseTwo}((b:\mathbb R))
+=\frac{(b:\mathbb R)((b:\mathbb R)-1)}2
+\]
+is the real cast of that pair count.  Thus
+\[
+\left|\bigcup_iY_i\right|
+>
+b\,t_2-\binom{b}{2}_{\mathbb R}C_n,
+\]
+which proves (4).  After casting the integer pair count to \(\mathbb R\), the
+factor is
+\[
+\binom{b}{2}_{\mathbb R}=\noderef{RealChooseTwo}((b:\mathbb R)).
+\]
+In particular, when \(A\ne\emptyset\), taking \(B=A\) and viewing
+\(a=|A|\) as a real number yields the real-valued lower bound
+\[
+K>
+a\,t_2-\noderef{RealChooseTwo}(a)C_n. \tag{5}
+\]
+This is the promised conversion from the set-theoretic estimate to the
+real-valued expression with \(a=|A|\).
+
+It remains to rule out \(a\ge r\).  Suppose for contradiction that
+\(a\ge r\).  Let \(A_{\mathbb N}=|A|\), so \(a=(A_{\mathbb N}:\mathbb R)\).
+Since \(r\ge0\), let \(b=\lceil r\rceil\) be the least natural number whose
+real cast is at least \(r\).  The inequality \(r\le a=(A_{\mathbb N}:\mathbb R)\)
+therefore implies \(b\le A_{\mathbb N}=|A|\).  Hence there is a
+\(b\)-element subfamily
+\(B\subseteq A\) with
+\[
+|B|=b=\lceil r\rceil
+\]
+by choosing any \(b\) elements of the finite set \(A\).  Since \(b\) is a
+ceiling of the real number \(r\), we have
+\[
+r\le b\le r+1.
+\]
+Also \(r\ge1\), so \(b\ge1\) and this chosen subfamily is nonempty.  Therefore
+the strict version of (4) applies to this \(B\).  Define
+\[
+f(u)=u\,t_2-\noderef{RealChooseTwo}(u)C_n.
+\]
+The value of \(f(b)\) is exactly the right side of (4) for this
+\(b\)-element subfamily, while \(f(r)\) is the real expression that appears in
+the hierarchy gap.  We compare \(f(b)\) and \(f(r)\) without any limiting
+argument.  Since
+\(\noderef{RealChooseTwo}(u)=u(u-1)/2\), for real numbers
+\(r\le u\le v\le r+1\) we have the exact identity
+\[
+\begin{aligned}
+f(v)-f(u)
+&=(v-u)t_2-\frac{C_n}{2}\bigl(v(v-1)-u(u-1)\bigr)\\
+&=(v-u)\left(t_2-\frac{C_n}{2}(u+v-1)\right).
+\end{aligned}
+\tag{6}
+\]
+Here \(v-u\ge0\), and from \(u,v\le r+1\) we get
+\[
+\frac{u+v-1}{2}\le r+\frac12.
+\]
+Also \(n_0<n\) implies \(1\le n\), so \(\log n\ge0\) and hence
+\[
+C_n=100(\log n)^3\ge0.
+\]
+The eventual-comparisons hypothesis contains exactly the comparison needed to
+make the parenthesized factor in (6) nonnegative.  Substituting
+\(r=n^{1/4}\) and \(C_n=100(\log n)^3\), that listed comparison is
+\[
+\noderef{TwoBiteLargeCutoff}(\varepsilon,n)
+\ge
+100\left(n^{1/4}+\frac12\right)(\log n)^3,
+\]
+and the left side is \(t_2\).  Thus for every \(r\le u\le v\le r+1\),
+\[
+t_2-\frac{C_n}{2}(u+v-1)\ge
+t_2-C_n\left(r+\frac12\right)\ge0.
+\]
+This use of the previous inequality is purely algebraic: multiplying
+\((u+v-1)/2\le r+1/2\) by the nonnegative quantity \(C_n\) gives
+\[
+\frac{C_n}{2}(u+v-1)\le C_n\left(r+\frac12\right),
+\]
+and subtracting these quantities from \(t_2\) reverses the direction in the
+expected way:
+\[
+t_2-\frac{C_n}{2}(u+v-1)
+\ge t_2-C_n\left(r+\frac12\right).
+\]
+The hierarchy comparison then identifies the final lower bound with \(0\).
+The identity (6) then gives \(f(v)\ge f(u)\) on this whole interval.  Applying
+this with the real numbers \(u=r\) and \(v=b=\lceil n^{1/4}\rceil\), using
+\(r\le b\le r+1\), gives \(f(b)\ge f(r)\).  No monotonicity outside this
+one-unit interval is used.  Therefore
+\[
+f(b)\ge f(r)
+=n^{1/4}t_2
+ -\noderef{RealChooseTwo}(n^{1/4})100(\log n)^3. \tag{7}
+\]
+From (4) applied to \(B\), \(K>f(b)\).  Combining this with (7) gives
+\[
+K>
+n^{1/4}t_2
+ -\noderef{RealChooseTwo}(n^{1/4})100(\log n)^3. \tag{8}
+\]
+But the eventual-comparisons hypothesis
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), applied to the present
+\(n>n_0\) and the present
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+contains exactly the strict large-huge gap
+\[
+K<
+n^{1/4}t_2
+ -\noderef{RealChooseTwo}(n^{1/4})100(\log n)^3. \tag{9}
+\]
+The right side in (8) is literally the same real number as the right side in
+(9).  Thus (8) says \(K\) is strictly larger than that real number, while (9)
+says \(K\) is strictly smaller than it, an impossibility by transitivity of
+the strict order on \(\mathbb R\).  Therefore \(a<r\), i.e.
+\[
+|\noderef{TwoBiteLargeHugeVertices}(\omega,\varepsilon,I)|<n^{1/4},
+\]
+as required.
+\end{proof}

@@ -1,0 +1,48 @@
+\begin{helper}[Natural reduced-vertex edge-mass exponential remainder]
+For every constant \(c>0\), and every natural reduced-vertex count
+\(m(n)=\text{\(\noderef{TwoBiteNaturalReducedVertexCount}\)}(n)\), one has
+\[
+  m(n)\exp\!\left(
+    -c\,\text{\(\noderef{TwoBiteEdgeProbability}\)}(1/2,n)\,n
+  \right)\longrightarrow 0 .
+\]
+\end{helper}
+\begin{proof}
+By \(\noderef{NaturalDegreeMassDominatesLogCube}\), applied with \(c^{-1}\),
+eventually
+\[
+  c^{-1}(\log n)^3
+  \le
+  \text{\(\noderef{TwoBiteEdgeProbability}\)}(1/2,n)
+  \text{\(\noderef{TwoBiteNaturalReducedVertexCount}\)}(n).
+\]
+Multiplying by \(c\) gives
+\[
+  (\log n)^3
+  \le
+  c\,\text{\(\noderef{TwoBiteEdgeProbability}\)}(1/2,n)\,
+  \text{\(\noderef{TwoBiteNaturalReducedVertexCount}\)}(n).
+\]
+The floor definition of
+\(\text{\(\noderef{TwoBiteNaturalReducedVertexCount}\)}(n)\), together with
+the reduced-vertex formula from \(\noderef{TwoBiteReducedVertexCount}\) and
+\(\noderef{TwoBiteStretch}\), gives
+\(\text{\(\noderef{TwoBiteNaturalReducedVertexCount}\)}(n)\le n\) for all
+large \(n\).  Since
+\(\text{\(\noderef{TwoBiteEdgeProbability}\)}(1/2,n)\ge0\), the preceding
+display implies eventually
+\[
+  (\log n)^3
+  \le c\,\text{\(\noderef{TwoBiteEdgeProbability}\)}(1/2,n)\,n .
+\]
+Also \(m(n)\le n\).  Hence the displayed sequence is eventually bounded above
+by
+\[
+  n\exp(-(\log n)^3)
+  =
+  \exp(\log n-(\log n)^3).
+\]
+The function \(y\mapsto y-y^3\) tends to \(-\infty\) as \(y\to\infty\), and
+\(\log n\to\infty\), so the last expression tends to \(0\).  The original
+sequence is nonnegative, and the squeeze theorem proves the claim.
+\end{proof}

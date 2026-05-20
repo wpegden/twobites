@@ -1,0 +1,48 @@
+\begin{helper}
+Let \(\eta,\varepsilon_1\in\mathbb R\) and \(n\in\mathbb N\).  Put
+\[
+L=\log n,\quad
+k_R=(1+\eta)\sqrt{nL},\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad k=(K:\mathbb R),
+\]
+\[
+t_1=\frac{\sqrt{nL}}{\log L}.
+\]
+Assume \(0<\eta\), \(0<\varepsilon_1\), \(0<n\), \(0<L\), \(1\le L\),
+\(0<\log L\), \(0\le k\), \(k_R\le k\), \(0<t_1\),
+\[
+\frac{2k}{t_1}+1\le5(1+\eta)\log L,
+\]
+and
+\[
+\frac{400000(5(1+\eta))^2(\log L)^2L^5}
+{\varepsilon_1(1+\eta)^2n}\le1.
+\]
+Then
+\[
+\noderef{RealChooseTwo}\left(\frac{2k}{t_1}+1\right)
+\noderef{RealChooseTwo}(200L^3)\le\frac{\varepsilon_1}{10}k^2.
+\]
+\end{helper}
+\begin{proof}
+Let \(x=2k/t_1+1\), \(y=200L^3\), and \(A=5(1+\eta)\log L\).
+The hypotheses give \(x\ge0\), \(y\ge0\), and \(2\le y\).  Hence
+\(\noderef{RealChooseTwoQuadraticBounds}\) gives
+\[
+\noderef{RealChooseTwo}(x)\le x^2\le A^2,\qquad
+0\le\noderef{RealChooseTwo}(y),\qquad
+\noderef{RealChooseTwo}(y)\le y^2.
+\]
+Thus
+\[
+\noderef{RealChooseTwo}(x)\noderef{RealChooseTwo}(y)\le A^2y^2.
+\]
+Now \(A^2=(5(1+\eta))^2(\log L)^2\) and \(y^2=40000L^6\).  The threshold
+assumption, multiplied by \(L/10\), gives
+\[
+A^2y^2\le\frac{\varepsilon_1}{10}(1+\eta)^2nL
+=\frac{\varepsilon_1}{10}k_R^2.
+\]
+Since \(0\le k_R\le k\), we have \(k_R^2\le k^2\).  Multiplying by the
+positive factor \(\varepsilon_1/10\) proves the claim.
+\end{proof}

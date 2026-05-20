@@ -1,0 +1,38 @@
+\begin{definition}
+For a sample \(\omega\), parameter \(\varepsilon\), and finite set \(I\), the
+pre-terminal recorded projected coordinates are the tagged coordinates recorded
+before the terminal Bernoulli scan.  They are the elements of
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\) satisfying one of the two
+pre-terminal recording conditions below.
+
+First, the coordinate may be an incident coordinate revealed for a
+staged-revealed vertex.  A red coordinate \(\operatorname{red}(q)\) is recorded
+in this way if, for some red base vertices \(r,s\), the coordinate \(q\) is
+\((r,s)\) or \((s,r)\), and either
+\[
+\noderef{TwoBiteStageRevealedVertex}
+(\omega,\varepsilon,I,\operatorname{red}(r))
+\quad\text{and}\quad
+\noderef{TwoBiteProjectionContains}
+(\omega,I,\operatorname{red}(s)),
+\]
+or the same assertion holds with \(r\) and \(s\) interchanged.  The blue branch
+is identical with red replaced by blue.  This branch records the neighbor and
+non-neighbor queries made for \(F_0\), \(F_1\), and \(F_2\); in particular it
+contains the same-color coordinates queried while evaluating \(F_2\), because
+the \(F_2\) count only asks for adjacencies to \(F_1\)-vertices, and
+\(F_1\subseteq F\).
+
+Second, after \(F=F_0\cup F_1\cup F_2\) is known, the coordinate may be
+recorded by the paper's instruction to reveal all pairs in \(X_x(I)\) for
+\(x\in F\).  Thus a red coordinate \(\operatorname{red}(q)\) is recorded in
+this way if there is a base vertex \(x\) with
+\[
+\noderef{TwoBiteStageRevealedVertex}(\omega,\varepsilon,I,x)
+\quad\text{and}\quad
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}(\omega,I,x))\bigr).
+\]
+For a blue coordinate \(\operatorname{blue}(q)\), the same condition holds
+with \(\pi_B^\omega\) in place of \(\pi_R^\omega\).
+\end{definition}

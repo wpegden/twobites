@@ -1,0 +1,144 @@
+\begin{helper}
+Fix the history cell \(H\), terminal coordinate set \(U\), blue support
+\(B\), red label \(J\), branch labels \(\beta\), and transcript labels
+\(\tau=(P_\tau,A_\tau,Z_\tau)\) as in the red residual leaf construction.
+Assume the terminal product law on \(U\), \(0\le p\le 1/2\), the fixed blue
+support hypotheses for \(B\), the branch functionality from complete blue
+terminal traces, the realized-cell geometry for \(R_{\beta,J}\), \(P_\tau\),
+\(A_\tau\), and \(Z_\tau\), the open-candidate support exhaustion, the
+selected-sibling pruning clause, the enlarged-cylinder span and disjointness
+clauses, and the forward, reverse, and functional compatibility clauses.
+
+Then there is a nonnegative mass
+\[
+\nu:\operatorname{Option}(\mathcal T\times\mathcal P)\to\mathbb R
+\]
+such that
+\[
+\sum_{\lambda\in \operatorname{Option}(\mathcal T\times\mathcal P)}
+  \nu(\lambda)\le 1,
+\]
+and for every realized \((\beta,\tau)\),
+\[
+p^{|P_\tau|}(1-p)^{|A_\tau|}
+\le
+p^{u_R}p^{u_B}(1-p)^{|Z_\tau|}\nu(\operatorname{some}(\beta,\tau)).
+\]
+The factors for absent blue coordinates in the complete branch trace remain
+inside \(\nu\); only the fixed present factors from \(B\) and
+\(R_{\beta,J}\), together with the released selected absences \(Z_\tau\), are
+factored out.
+\end{helper}
+\begin{proof}
+Write \(q=1-p\).  For a realized pair \((\beta,\tau)\), define the enlarged
+released cylinder \(C_{\beta,\tau}\) to be the family of complete terminal
+assignments \(A\subseteq U\) satisfying the right-hand side of the span
+hypothesis: \(P_\tau\subseteq A\), \(A\) is disjoint from
+\(A_\tau\setminus Z_\tau\), and on every blue terminal coordinate outside
+\(Z_\tau\) the membership of \(A\) agrees with
+\(\operatorname{blueTrace}(\beta)\).  Since the realized-cell geometry says
+that every member of \(Z_\tau\) is red, no absent blue-coordinate condition is
+released.  The span clause identifies this cylinder with the disjoint union
+of the compatible assignments for \((\beta,\tau)\) and the selected present
+sibling pieces.  The selected-sibling pruning clause says that sibling pieces
+are not compatible with any realized cell.  The disjointness clause says that
+the cylinders \(C_{\beta,\tau}\) for distinct realized pairs are pairwise
+disjoint; equivalently, by
+\(\noderef{FixedSetHistoryCellRedFunctionalScanDisjointness}\), a complete
+terminal assignment cannot have two realized compatible branch/transcript
+outputs.
+
+By the terminal product law supplied by
+\(\noderef{FixedSetHistoryCellTerminalProductPartition}\), the conditional
+mass of \(C_{\beta,\tau}\) is the product mass obtained by forcing the
+coordinates of \(P_\tau\) present, forcing the coordinates of
+\(A_\tau\setminus Z_\tau\) absent, and leaving all other terminal coordinates
+free.  Thus
+\[
+\mu(C_{\beta,\tau})
+=p^{|P_\tau|}q^{|A_\tau|-|Z_\tau|}.
+\]
+The containment \(B\cup R_{\beta,J}\subseteq P_\tau\), the cardinalities
+\(|B|=u_B\) and \(|R_{\beta,J}|=u_R\), the blue-only and red-only color
+conditions, and the disjointness of present and absent transcript coordinates
+allow the fixed present factors \(p^{u_B}\) and \(p^{u_R}\) to be factored
+from this cylinder mass.  The red support is determined once the blue trace
+is fixed, by
+\(\noderef{FixedSetHistoryCellRedSupportDeterminedByBlueTrace}\), so the
+events for different branch traces do not introduce extra multiplicity from
+several red-support choices.
+
+The finite released-cylinder union estimate is isolated in
+\(\noderef{FixedSetHistoryCellRedReleasedCylinderWeightNormalization}\).
+Applied to the present data, it gives
+\[
+\sum_{\beta,\tau:\mathsf{Realized}(\beta,\tau)}
+  p^{|P_\tau|}q^{|A_\tau|-|Z_\tau|}
+\le p^{u_R}p^{u_B}.
+\]
+All absent blue-coordinate factors are still part of this released-cylinder
+weight; no reciprocal absent-blue factor is introduced.
+
+Define \(\nu(\operatorname{none})=0\), define
+\(\nu(\operatorname{some}(\beta,\tau))=0\) for non-realized pairs, and for a
+realized pair proceed as follows.  If \(p^{u_R}p^{u_B}>0\), define
+\[
+\nu(\operatorname{some}(\beta,\tau))
+=
+\frac{\mu(C_{\beta,\tau})}{p^{u_R}p^{u_B}}.
+\]
+If \(p^{u_R}p^{u_B}=0\), define
+\(\nu(\operatorname{some}(\beta,\tau))=0\).  This is the only degenerate
+case requiring a convention.
+
+Nonnegativity follows from \(0\le p\le 1/2\), hence \(0\le q\le 1\), and
+from nonnegativity of finite product masses.  In the nondegenerate case,
+\(\noderef{FixedSetHistoryCellRedReleasedCylinderWeightNormalization}\)
+gives
+\[
+\sum_{\beta,\tau:\mathsf{Realized}(\beta,\tau)}
+  \mu(C_{\beta,\tau})
+\le p^{u_R}p^{u_B}.
+\]
+Therefore
+\[
+\sum_{\beta,\tau:\mathsf{Realized}(\beta,\tau)}
+  \nu(\operatorname{some}(\beta,\tau))
+=
+\frac{\sum_{\mathsf{Realized}(\beta,\tau)}\mu(C_{\beta,\tau})}
+     {p^{u_R}p^{u_B}}
+\le 1,
+\]
+using the positive fixed denominator.  In the degenerate case all assigned
+masses are zero, so the same inequality is immediate.  The
+\(\operatorname{none}\) and non-realized terms are zero in both cases, so
+the displayed bound is the full sum over
+\(\operatorname{Option}(\mathcal T\times\mathcal P)\).
+
+It remains to check the domination inequality for a realized pair.  In the
+degenerate case \(p^{u_R}p^{u_B}=0\), the finite union estimate from
+\(\noderef{FixedSetHistoryCellRedReleasedCylinderWeightNormalization}\)
+says that a sum of nonnegative released weights is at most \(0\).  Hence the
+released weight
+\(p^{|P_\tau|}q^{|A_\tau|-|Z_\tau|}\) of the realized pair is \(0\), and
+multiplying by the nonnegative factor \(q^{|Z_\tau|}\) gives
+\(p^{|P_\tau|}q^{|A_\tau|}=0\).  The right side is also \(0\) by the
+definition of \(\nu\), so the inequality holds.  In the nondegenerate case,
+multiplying the definition of \(\nu\) by \(p^{u_R}p^{u_B}\) gives
+\[
+p^{u_R}p^{u_B}\nu(\operatorname{some}(\beta,\tau))
+=\mu(C_{\beta,\tau})
+=p^{|P_\tau|}q^{|A_\tau|-|Z_\tau|}.
+\]
+Multiplying both sides by \(q^{|Z_\tau|}\) gives
+\[
+p^{|P_\tau|}q^{|A_\tau|}
+=
+p^{u_R}p^{u_B}q^{|Z_\tau|}
+  \nu(\operatorname{some}(\beta,\tau)).
+\]
+The equality uses \(Z_\tau\subseteq A_\tau\), so
+\(|A_\tau|=(|A_\tau|-|Z_\tau|)+|Z_\tau|\) in the exponent calculation.  This
+is the required domination inequality, and the normalization has divided only
+by the fixed present factors \(p^{u_R}p^{u_B}\).
+\end{proof}

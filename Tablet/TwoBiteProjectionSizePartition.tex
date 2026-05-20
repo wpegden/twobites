@@ -1,0 +1,25 @@
+\begin{helper}
+Fix \(I\subseteq\mathrm{Fin}(n)\) with \(|I|=k\).  For every event \(A\),
+\[
+\noderef{TwoBiteEventProbability}(A)
+=\sum_{\ell_R=0}^k\sum_{\ell_B=0}^k
+\noderef{TwoBiteEventProbability}\bigl(A\cap
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B)\bigr).
+\]
+\end{helper}
+\begin{proof}
+For any sample \(\omega\), the red image size
+\(|I.\mathrm{image}(\pi_R^\omega)|\) and blue image size
+\(|I.\mathrm{image}(\pi_B^\omega)|\) are uniquely determined.  Each is at
+most \(|I|=k\), so the pair lies in \(\{0,\ldots,k\}^2\).  With this pair,
+\(\omega\) satisfies the corresponding
+\(\noderef{TwoBiteProjectionSizeEvent}\).  Conversely, every sample in one of
+these cell intersections is in \(A\).  Thus the cells cover \(A\).
+
+The cells are disjoint: if a sample lies in two cells, the two red cardinality
+equalities force the red indices to be equal, and the two blue cardinality
+equalities force the blue indices to be equal.  Since
+\(\noderef{TwoBiteEventProbability}\) is the finite sum of sample weights,
+finite additivity over this disjoint finite partition gives the displayed
+double-sum identity.
+\end{proof}

@@ -1,0 +1,88 @@
+\begin{helper}
+Let \(\mathcal C\) and \(\Lambda\) be finite types.  Think of
+\(\mathcal C\) as a finite set of cells and \(\Lambda\) as a finite set of
+residual leaves, with decidable equality on \(\Lambda\).  Let
+\[
+w:\mathcal C\to\mathbb R,\qquad
+\iota:\mathcal C\to\Lambda,\qquad
+\mu:\Lambda\to\mathbb R
+\]
+be respectively a cell-weight function, a cell-to-leaf map, and a leaf-mass
+function.  Let \(M\in\mathbb R\).  Assume
+\[
+0\le M,
+\]
+\[
+0\le \mu(\lambda)\quad\text{for every }\lambda\in\Lambda,
+\]
+\[
+\sum_{\lambda\in\Lambda}\mu(\lambda)\le1,
+\]
+that \(\iota\) is injective, and that every cell weight is termwise dominated
+by the mass of its assigned leaf:
+\[
+w(c)\le M\,\mu(\iota(c))
+\quad\text{for every }c\in\mathcal C.
+\]
+Then there is a residual-mass function \(r:\mathcal C\to\mathbb R\) such
+that
+\[
+\sum_{c\in\mathcal C} M r(c)\le M
+\]
+and
+\[
+w(c)\le M r(c)
+\quad\text{for every }c\in\mathcal C.
+\]
+\end{helper}
+\begin{proof}
+Define
+\[
+r(c)=\mu(\iota(c))
+\]
+for every cell \(c\in\mathcal C\).  With this definition, the required
+termwise domination is exactly the assumed inequality
+\[
+w(c)\le M\,\mu(\iota(c))=M r(c).
+\]
+
+It remains to prove the total residual-mass bound.  Since \(\iota\) is
+injective, summing \(M\mu(\iota(c))\) over \(c\in\mathcal C\) is the same as
+summing \(M\mu(\lambda)\) over the image \(\iota(\mathcal C)\), with no
+leaf counted twice:
+\[
+\sum_{c\in\mathcal C} M r(c)
+=
+\sum_{\lambda\in\iota(\mathcal C)} M\mu(\lambda).
+\]
+The image \(\iota(\mathcal C)\) is a subset of the full finite leaf type
+\(\Lambda\).  For every leaf \(\lambda\), the hypotheses \(0\le M\) and
+\(0\le\mu(\lambda)\) give
+\[
+0\le M\mu(\lambda).
+\]
+Therefore enlarging the sum from \(\iota(\mathcal C)\) to all of
+\(\Lambda\) can only increase it:
+\[
+\sum_{\lambda\in\iota(\mathcal C)} M\mu(\lambda)
+\le
+\sum_{\lambda\in\Lambda} M\mu(\lambda).
+\]
+Factoring out the constant \(M\) gives
+\[
+\sum_{\lambda\in\Lambda} M\mu(\lambda)
+=
+M\sum_{\lambda\in\Lambda}\mu(\lambda).
+\]
+Finally, using \(\sum_{\lambda\in\Lambda}\mu(\lambda)\le1\) and
+\(0\le M\),
+\[
+M\sum_{\lambda\in\Lambda}\mu(\lambda)\le M\cdot1=M.
+\]
+Combining these displayed inequalities proves
+\[
+\sum_{c\in\mathcal C} M r(c)\le M.
+\]
+Together with the termwise domination already proved, this is the desired
+residual-mass certificate.
+\end{proof}

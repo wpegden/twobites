@@ -1,0 +1,18 @@
+\begin{helper}
+For every \(n,m\in\mathbb N\), every \(p\in\mathbb R\), the total
+\(\noderef{TwoBiteEventProbability}\) mass of the whole two-bite sample space is
+at most \(1\):
+\[
+\noderef{TwoBiteEventProbability}(n,m,p,\mathrm{True})\le 1.
+\]
+\end{helper}
+\begin{proof}
+Unfold the two-bite sample weight.  The total mass factors as the product of
+the red graph total mass, the blue graph total mass, and the total mass of the
+uniform injection coordinate.  By \(\noderef{GnpGraphWeightSumOne}\), each graph
+coordinate has total mass \(1\).  If there are no injections, the injection
+weight is \(0\), so its total mass is \(0\).  Otherwise the injection weight is
+the reciprocal of the number of injections, and summing this constant over all
+injections gives \(1\).  Hence the full product is either \(0\) or \(1\), and in
+particular is at most \(1\).
+\end{proof}

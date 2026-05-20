@@ -1,0 +1,230 @@
+\begin{lemma}
+Let \(C(x)=\binom{x}{2}_{\mathbb R}=x(x-1)/2\).  Assume
+\[
+0\le\varepsilon_1,\qquad 0\le\varepsilon_2\le1,\qquad
+3\varepsilon_2\le\varepsilon_1/10,
+\]
+and let \(D,b,T\in\mathbb R\) satisfy
+\[
+D\ge98,\qquad b\ge0,\qquad T\ge0,\qquad
+T\le(1+\varepsilon_2)D.
+\]
+Assume also that \(D\) and \(T\) are nonnegative integers, viewed as real
+numbers.
+Then
+\[
+C(T)\le(1+\varepsilon_1)C(D).
+\]
+Moreover, with \(M=(1+\varepsilon_2)b\), if \(T\le M\), then
+\[
+C(T)\le(1+\varepsilon_1)\bigl(C(b)+C(D-b)\bigr),
+\]
+and if \(M\le T\), then
+\[
+C(M)+C(T-M)
+\le
+(1+\varepsilon_1)\bigl(C(b)+C(D-b)\bigr).
+\]
+\end{lemma}
+\begin{proof}
+First record two elementary facts about \(C\).  For \(1\le u\le v\),
+\[
+C(v)-C(u)=\frac{(v-u)(u+v-1)}2\ge0,
+\]
+so \(C\) is monotone on \([1,\infty)\), and this is the only monotonicity
+used below.  Also
+\[
+C(b)+C(D-b)
+=\left(b-\frac D2\right)^2+\frac{D(D-2)}4. \tag{1}
+\]
+Since \(D\ge98\), the right hand side is nonnegative for every \(b\).
+
+The hierarchy-type hypothesis gives the small numerical conversion
+\[
+10\varepsilon_2\le\varepsilon_1. \tag{2}
+\]
+Indeed \(3\varepsilon_2\le\varepsilon_1/10\) implies
+\(30\varepsilon_2\le\varepsilon_1\).
+
+For the one-block estimate, if \(T\le1\), then \(C(T)\le0\), while
+\((1+\varepsilon_1)C(D)\ge0\) by \(D\ge98\) and \(\varepsilon_1\ge0\).  If
+\(1\le T\), monotonicity on \([1,\infty)\) and
+\(T\le(1+\varepsilon_2)D\) give
+\[
+C(T)\le C((1+\varepsilon_2)D).
+\]
+Expanding and using \(D\ge2\), \(0\le\varepsilon_2\le1\), gives
+\[
+\frac{C((1+\varepsilon_2)D)}{C(D)}
+=(1+\varepsilon_2)
+  \frac{(1+\varepsilon_2)D-1}{D-1}
+\le 1+10\varepsilon_2.
+\]
+By (2), \(C((1+\varepsilon_2)D)\le(1+\varepsilon_1)C(D)\).  This proves the
+one-block estimate.
+
+We next prove the small-mass conditional estimate.  Write
+\[
+Q(b)=C(b)+C(D-b).
+\]
+By (1), \(Q(b)\ge0\).  If \(T\le1\), then \(C(T)\le0\), so the desired
+inequality follows.  Assume \(T\ge1\) and \(T\le M=(1+\varepsilon_2)b\).
+There are two regimes.
+
+First suppose \(D-b\le0\) or \(1\le D-b\).  The following
+cleared-denominator estimate applies:
+\[
+2\bigl((1+10\varepsilon_2)Q(b)-C((1+\varepsilon_2)b)\bigr)
+ =
+(D-b)(D-b-1)+
+\varepsilon_2\bigl(18b^2-20Db+10D^2-10D+b\bigr)
+-\varepsilon_2^2b^2. \tag{3}
+\]
+On this regime the first term is nonnegative.  The remaining
+\(\varepsilon_2\)-part is also nonnegative: since \(\varepsilon_2\le1\), it
+is enough to check
+\[
+17b^2-20Db+10D^2-10D+b\ge0.
+\]
+This quadratic in \(b\) has positive leading coefficient and discriminant
+\[
+(-20D+1)^2-68(10D^2-10D)=-280D^2+640D+1,
+\]
+which is negative for \(D\ge98\).  Thus
+\[
+C((1+\varepsilon_2)b)
+\le(1+10\varepsilon_2)Q(b). \tag{4}
+\]
+Monotonicity on \([1,\infty)\), applied only because \(1\le T\le M\), gives
+\[
+C(T)\le C(M)=C((1+\varepsilon_2)b)\le(1+10\varepsilon_2)Q(b).
+\]
+Using (2) proves the desired bound in this first regime.
+
+It remains to treat the only regime where a real binomial term can become
+negative:
+\[
+0<D-b<1. \tag{5}
+\]
+Write \(D=d\) and \(T=t\) with \(d,t\in\mathbb N\), and put
+\(u=d-b\), so \(0<u<1\).  If \(t\le d-1\), then monotonicity on
+\([1,\infty)\) and the identity
+\[
+Q(d-u)-C(d-1)=(1-u)(d-u-1)\ge0,
+\qquad u=d-b\in(0,1),
+\]
+give \(C(T)\le Q(b)\), hence the result.  It remains to consider all
+integer values \(t\ge d\).  Write \(t=d+r\), where \(r\in\mathbb N\).  The
+small-mass hypothesis \(T\le(1+\varepsilon_2)b\) becomes
+\[
+d+r\le(1+\varepsilon_2)(d-u),
+\]
+or equivalently
+\[
+r+u\le\varepsilon_2(d-u)\le\varepsilon_2d. \tag{6}
+\]
+Thus \(\varepsilon_2\ge(r+u)/d\), and \(r\le d\).  Moreover
+\[
+Q(d-u)-C(d-1)=(1-u)(d-u-1)\ge0,
+\]
+so \(Q(b)\ge C(d-1)\).  Finally,
+\[
+\begin{aligned}
+C(d+r)-Q(d-u)
+&= rd+\frac{r(r-1)}2+u(d-u)  \\
+&\le \frac32\,d(r+u).
+\end{aligned}
+\]
+Combining this with (6) and \(Q(b)\ge C(d-1)\), and using \(d\ge98\), gives
+\[
+C(T)-Q(b)
+\le \frac32\,d(r+u)
+\le \frac32\,\varepsilon_2 d^2
+\le 30\varepsilon_2 C(d-1)
+\le 30\varepsilon_2 Q(b)
+\le \varepsilon_1 Q(b),
+\]
+where the last inequality is (2).  Hence
+\(C(T)\le(1+\varepsilon_1)Q(b)\).  This covers every allowed integer
+\(T=t\) in the exceptional interval (5), including \(t\ge d+1\), and
+therefore completes the small-mass conditional estimate.
+
+It remains to prove the large-mass conditional estimate.  Suppose \(M\le T\).
+Together with \(T\le(1+\varepsilon_2)D\), this implies \(b\le D\), and hence
+\[
+0\le T-M\le(1+\varepsilon_2)(D-b). \tag{7}
+\]
+Put \(u=D-b\) and \(y=T-M\).  If \(1\le y\), then monotonicity on
+\([1,\infty)\) and (7) give
+\[
+C(y)\le C((1+\varepsilon_2)u).
+\]
+The first block is exactly \(C(M)=C((1+\varepsilon_2)b)\).  For the two
+stretched blocks together, clearing denominators gives
+\[
+\begin{aligned}
+&2\Bigl((1+10\varepsilon_2)\bigl(C(b)+C(D-b)\bigr)
+  -C((1+\varepsilon_2)b)
+  -C((1+\varepsilon_2)(D-b))\Bigr)  \\
+&\qquad =
+\varepsilon_2\Bigl((8-\varepsilon_2)
+  \bigl(b^2+(D-b)^2\bigr)-9D\Bigr).
+\end{aligned}
+\]
+Because \(0\le b\le D\), the sum \(b^2+(D-b)^2\) is at least \(D^2/2\).
+Together with \(D\ge98\) and \(\varepsilon_2\le1\), the right hand side is
+nonnegative.  Hence, using (2),
+\[
+C((1+\varepsilon_2)b)+C((1+\varepsilon_2)(D-b))
+\le
+(1+\varepsilon_1)\bigl(C(b)+C(D-b)\bigr).
+\]
+Combining the preceding two displays proves the large-mass conditional
+estimate when \(1\le y\).
+
+It remains to handle \(0\le y\le1\).  If \(u=0\) or \(1\le u\), then
+\(C(y)\le0\), and estimate (4), applied to
+\(C((1+\varepsilon_2)b)\), gives
+\[
+C(M)+C(y)\le(1+\varepsilon_1)Q(b).
+\]
+The only leftover case is
+\[
+0<u=D-b<1,\qquad 0\le y\le1. \tag{8}
+\]
+Write again \(D=d\).  Since \(M=(1+\varepsilon_2)(d-u)\ge d-u>d-1\) and
+\(M\le T\), the integer \(T=t\) satisfies \(t\ge d\).  Write
+\(T=t=d+r\) with \(r\in\mathbb N\).  Since
+\(T\le(1+\varepsilon_2)D\), we have
+\[
+r\le\varepsilon_2 d. \tag{9}
+\]
+Also \(y-u=r-\varepsilon_2b\), so
+\[
+|y-u|\le r+\varepsilon_2b\le2\varepsilon_2d. \tag{10}
+\]
+For \(0\le a,c\le1\),
+\[
+C(a)-C(c)=\frac{(a-c)(a+c-1)}2\le\frac{|a-c|}{2}.
+\]
+Using this with \(a=y\) and \(c=u\), and then using (10), gives
+\[
+C(y)-C(u)\le\varepsilon_2d. \tag{11}
+\]
+For the first block,
+\[
+C((1+\varepsilon_2)b)-C(b)
+=\frac{\varepsilon_2b((2+\varepsilon_2)b-1)}2
+\le\frac32\,\varepsilon_2d^2, \tag{12}
+\]
+because \(0\le b\le d\) and \(\varepsilon_2\le1\).  Adding (11) and (12),
+and using \(d\ge98\), gives
+\[
+C(M)+C(y)-Q(b)\le 2\varepsilon_2d^2
+\le 30\varepsilon_2 C(d-1)
+\le 30\varepsilon_2 Q(b)
+\le \varepsilon_1 Q(b).
+\]
+This proves \(C(M)+C(T-M)\le(1+\varepsilon_1)Q(b)\) in the exceptional
+large-mass subcase (8), and completes the proof.
+\end{proof}

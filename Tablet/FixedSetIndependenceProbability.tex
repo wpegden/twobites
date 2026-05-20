@@ -1,0 +1,225 @@
+\begin{lemma}
+For every \(\delta>0\), and for every parameter tuple satisfying
+\[
+\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0),
+\]
+there is a threshold \(N\ge n_0\) such that, for every \(n>N\), every
+\(m,p\) with
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+m=M(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and every set \(I\subseteq\mathrm{Fin}(n)\) with
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+one has
+\[
+\noderef{TwoBiteEventProbability}\!\left(n,m,p,\,
+\{\omega:
+I\text{ is independent in }\noderef{TwoBiteFinalGraph}(\omega)_0
+\text{ and }
+\noderef{TwoBiteRegularityEvent}
+(|I|,\varepsilon,\varepsilon_1,\varepsilon_2,\omega)\}\right)
+\le
+\delta\binom n{|I|}^{-1}.
+\]
+\end{lemma}
+\begin{proof}
+Fix \(\delta>0\) and assume
+\(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\).
+Unfolding the hierarchy gives, in particular,
+\[
+0<\varepsilon_2<\varepsilon_1<\varepsilon<1
+\]
+and
+\[
+\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0).
+\]
+Consequently
+\[
+0<\varepsilon,\qquad 0\le\varepsilon_1,\qquad \varepsilon_1\le1. \tag{H}
+\]
+
+Apply \(\noderef{FixedSetProjectionCellSummationBound}\) to the same
+\(\delta\) and the present parameter hierarchy.  It gives an internal error
+\(\eta>0\) and a threshold \(N_1\ge n_0\) such that the projection-cell double
+sum is at most \(\delta\binom nK^{-1}\) for every \(n>N_1\).  Apply
+\(\noderef{ProjectionSizeProbabilityBound}\) with this \(\eta\) and
+\(\varepsilon\), using \(\eta>0\) and \(0<\varepsilon\); let \(N_2\) be its
+threshold.  Define
+\[
+N=\max\{n_0,N_1,N_2\}.
+\]
+Then \(N\ge n_0\).  If \(n>N\), then
+\[
+n_0<n,\qquad N_1<n,\qquad N_2\le n, \tag{T}
+\]
+so all child thresholds are available.
+
+Now fix \(n,m,p\) and \(I\subseteq\mathrm{Fin}(n)\) satisfying the hypotheses
+of the theorem.  Put
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+p_0=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+The active hypotheses give
+\[
+|I|=K,\qquad m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad p=p_0.
+\tag{K}
+\]
+Let \(\mathcal B_I(\omega)\) be the event that \(I\) is independent in
+\(\noderef{TwoBiteFinalGraph}(\omega)\).  Let
+\[
+\mathcal R_I(\omega)=
+\noderef{TwoBiteRegularityEvent}(|I|,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega),
+\]
+which is the regularity event appearing in the Lean statement.  By \(|I|=K\),
+this event is the same as
+\[
+\mathcal R_K(\omega)=
+\noderef{TwoBiteRegularityEvent}(K,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega). \tag{R}
+\]
+
+For \(0\le\ell_R,\ell_B\le K\), define the projection-size cell
+\[
+\mathcal S_{\ell_R,\ell_B}(\omega)=
+\noderef{TwoBiteProjectionSizeEvent}(I,K,\ell_R,\ell_B,\omega).
+\]
+Unfolding \(\noderef{TwoBiteProjectionSizeEvent}\), this cell records exactly
+\[
+|I|=K,\qquad
+|\pi_R^\omega(I)|=\ell_R,\qquad
+|\pi_B^\omega(I)|=\ell_B. \tag{S}
+\]
+Because \(|I|=K\), every sample has unique projection-image sizes
+\(|\pi_R^\omega(I)|\) and \(|\pi_B^\omega(I)|\), each at most \(K\).  Hence
+the cells \(\mathcal S_{\ell_R,\ell_B}\), for
+\(\ell_R,\ell_B\in\{0,\ldots,K\}\), form a finite disjoint partition of the
+sample space.  Since
+\(\noderef{TwoBiteEventProbability}\) is the sum of sample weights over the
+finite satisfying set, finite additivity over this disjoint partition gives
+\[
+\Pr(\mathcal B_I\cap\mathcal R_I)
+=
+\sum_{\ell_R=0}^{K}\sum_{\ell_B=0}^{K}
+\Pr(\mathcal B_I\cap\mathcal R_K\cap\mathcal S_{\ell_R,\ell_B}),
+\tag{1}
+\]
+where we used the rewrite (R) in the numerator event.
+
+Fix a cell.  If \(\ell_R\ell_B<K\), then
+\(\mathcal S_{\ell_R,\ell_B}\) is empty.  Indeed, the injective image
+\(\pi_\omega(I)\) has \(K\) points, while (S) would place it inside the
+rectangle \(\pi_R^\omega(I)\times\pi_B^\omega(I)\), which has only
+\(\ell_R\ell_B<K\) points.  Therefore the corresponding summand in (1) is
+\(0\), matching the zero branch in the summation helper.
+
+Assume now \(\ell_R\ell_B\ge K\).  If
+\(\Pr(\mathcal S_{\ell_R,\ell_B})=0\), then
+\[
+\Pr(\mathcal B_I\cap\mathcal R_K\cap\mathcal S_{\ell_R,\ell_B})=0
+\]
+because the numerator event is a subset of the cell.  Otherwise the definition
+of \(\noderef{TwoBiteConditionalProbability}\) gives the exact factorization
+\[
+\Pr(\mathcal B_I\cap\mathcal R_K\cap\mathcal S_{\ell_R,\ell_B})
+=
+\Pr(\mathcal S_{\ell_R,\ell_B})\,
+\Pr(\mathcal B_I\cap\mathcal R_K\mid\mathcal S_{\ell_R,\ell_B}). \tag{2}
+\]
+The conditional factor is at most \(1\).  It is also bounded by
+\(\noderef{FixedSetConditionalIndependenceBound}\), applied with
+\[
+k=K,\qquad \ell_R=\ell_R,\qquad \ell_B=\ell_B,
+\]
+the same \(I,n,m,p,\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), and the
+hypotheses (H), (T), and (K).  The regularity event in the child numerator is
+\(\mathcal R_K\), which is exactly the rewritten version of the active event
+from (R).  Thus
+\[
+\Pr(\mathcal B_I\cap\mathcal R_K\mid\mathcal S_{\ell_R,\ell_B})
+\le
+\min\!\left\{1,\,
+\exp\!\left(
+-p\left(
+\noderef{ProjectionOpenPairFunction}
+((\ell_R:\mathbb R),(\ell_B:\mathbb R),(K:\mathbb R),p,(n:\mathbb R))
+-\varepsilon^3(K:\mathbb R)^2\right)\right)\right\}. \tag{3}
+\]
+The minimum combines the trivial \(1\)-bound with the child exponential bound.
+
+Next apply \(\noderef{ProjectionSizeProbabilityBound}\) to the cell.  The
+threshold \(N_2\le n\), the rounded \(m\)-identity in (K), the equalities
+\(|I|=K\) and
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+and the nonempty-cell hypothesis \(\ell_R\ell_B\ge K\) are precisely its
+hypotheses.  Therefore, with
+\[
+x_R=\frac{\ell_R}{K},\qquad x_B=\frac{\ell_B}{K},
+\]
+we have
+\[
+\Pr(\mathcal S_{\ell_R,\ell_B})
+\le
+\exp\!\left(
+\left(\eta-\frac{2-x_R-x_B}{2}\right)(K:\mathbb R)\log(n:\mathbb R)
+\right). \tag{4}
+\]
+
+Combining (2), (3), and (4), every nonempty cell contributes at most
+\[
+\exp\!\left(
+\left(\eta-\frac{2-(\ell_R:\mathbb R)/(K:\mathbb R)
+        -(\ell_B:\mathbb R)/(K:\mathbb R)}{2}\right)
+  (K:\mathbb R)\log(n:\mathbb R)\right)
+\min\!\left\{1,\,
+\exp\!\left(
+-p\left(
+\noderef{ProjectionOpenPairFunction}
+((\ell_R:\mathbb R),(\ell_B:\mathbb R),(K:\mathbb R),p,(n:\mathbb R))
+-\varepsilon^3(K:\mathbb R)^2\right)\right)\right\}.
+\tag{5}
+\]
+Together with the empty-cell \(0\) case, substituting (5) into (1) gives
+exactly the finite sum
+\[
+\sum_{\ell_R=0}^{K}\sum_{\ell_B=0}^{K}
+\begin{cases}
+0, & \ell_R\ell_B<K,\\
+\text{the expression in (5)}, & \ell_R\ell_B\ge K.
+\end{cases}
+\tag{6}
+\]
+After rewriting \(p=p_0=\noderef{TwoBiteEdgeProbability}(\frac12,n)\), (6) is
+the double sum appearing in
+\(\noderef{FixedSetProjectionCellSummationBound}\), with its
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)
+\]
+and with all natural parameters cast to real numbers in the same positions:
+the two projection sizes, \(K\), the \(n\)-argument of
+\(\noderef{ProjectionOpenPairFunction}\), the square
+\((K:\mathbb R)^2\), and the logarithmic factor.
+
+Since \(N_1<n\), the summation helper now yields
+\[
+\Pr(\mathcal B_I\cap\mathcal R_I)
+\le
+\delta\,(\binom nK:\mathbb R)^{-1}. \tag{7}
+\]
+Finally \(K=|I|\) by (K), so
+\[
+(\binom nK:\mathbb R)^{-1}
+=
+\left(\binom n{|I|}:\mathbb R\right)^{-1}.
+\]
+Substituting this in (7) is exactly the bound in the Lean statement.
+\end{proof}

@@ -1,0 +1,26 @@
+\begin{lemma}
+Let \(q\) be a blue projected coordinate in the staged-open set for \(I\).
+If the blue base pair \(q\) is present and the final shadow graph is
+independent on \(I\), then there is a red base vertex \(r\) such that
+\(q\) is a blue projected pair from
+\(X(\operatorname{red}(r))\).
+\end{lemma}
+\begin{proof}
+Unpack staged-openness. The coordinate \(q\) is represented by two
+endpoints \(u,v\in I\), and it is not same-color closed. The present blue
+base edge gives a blue overlay edge between \(u\) and \(v\).
+
+If this overlay edge survived in the final shadow graph, it would be a
+final shadow edge inside \(I\), contradicting independence. Therefore the
+blue deletion alternative in \(\noderef{TwoBiteFinalGraph}\) holds.
+
+If the deletion is caused by a blue triangle, the rank comparisons say that
+the third blue coordinate is lower than both projected endpoints by
+\(\noderef{FinPairRankThirdLessOfLatest}\). Thus both endpoints lie in the
+corresponding \(X^+\)-fiber, making \(q\) same-color closed, contrary to
+staged-openness. Hence the only remaining deletion alternative is the
+mixed one: there is a red center adjacent in red to both endpoints.
+Taking \(r\) to be its red projection places \(u\) and \(v\) in
+\(X(\operatorname{red}(r))\), so \(q\) is the required opposite-color
+projected pair.
+\end{proof}

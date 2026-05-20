@@ -1,0 +1,39 @@
+\begin{helper}
+Let \(\varepsilon_1,\eta\in\mathbb R\) and \(n\in\mathbb N\).  Put
+\[
+L=\log n,\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\qquad k=(K:\mathbb R).
+\]
+If \(0\le k\), \(2\le k\), \(0<\sqrt L\), and
+\[
+\frac1{\sqrt L}\le\frac{\varepsilon_1}{2},
+\]
+then
+\[
+\frac2{\sqrt L}\noderef{RealChooseTwo}(k)
+\le \frac{\varepsilon_1}{2}k^2.
+\]
+\end{helper}
+\begin{proof}
+By \(\noderef{RealChooseTwoQuadraticBounds}\), the assumptions \(0\le k\)
+and \(2\le k\) imply
+\[
+\noderef{RealChooseTwo}(k)\le \frac{k^2}{2}.
+\]
+The factor \(2/\sqrt L\) is nonnegative because \(\sqrt L>0\), so multiplying
+by this factor preserves the inequality:
+\[
+\frac2{\sqrt L}\noderef{RealChooseTwo}(k)
+\le \frac2{\sqrt L}\cdot\frac{k^2}{2}
+=\frac1{\sqrt L}k^2.
+\]
+Since \(k^2\ge0\), multiplying the threshold
+\[
+\frac1{\sqrt L}\le\frac{\varepsilon_1}{2}
+\]
+by \(k^2\) gives
+\[
+\frac1{\sqrt L}k^2\le\frac{\varepsilon_1}{2}k^2.
+\]
+Combining the two displayed inequalities proves the claim.
+\end{proof}

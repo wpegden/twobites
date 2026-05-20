@@ -1,0 +1,29 @@
+\begin{helper}
+For every two-bite sample \(\omega\), the shadow graph of
+\(\noderef{TwoBiteFinalGraph}\), obtained by forgetting colors of surviving
+edges, has no triangle on three distinct vertices.
+\end{helper}
+\begin{proof}
+Let \(G_R\), \(G_B\), and \(G_0\) be the final red graph, final blue graph, and
+shadow graph.  Suppose that distinct vertices \(u,v,w\) form a triangle in
+\(G_0\).  By the definition of the shadow graph in
+\(\noderef{TwoBiteFinalGraph}\), each shadow edge is witnessed by a surviving
+colored edge: for each of \(uv,uw,vw\), choose either a final red edge or a
+final blue edge witnessing that shadow adjacency.
+
+There are eight possible color choices for the three witnessed edges.  If all
+three are red, the witnesses form a red triangle, contradicting
+\(\noderef{TwoBiteFinalGraphNoRedTriangle}\).  If all three are blue, they form
+a blue triangle, contradicting \(\noderef{TwoBiteFinalGraphNoBlueTriangle}\).
+
+In every remaining case exactly two witnessed edges have one color and the
+third has the other color.  The two same-colored edges share one of the
+vertices \(u,v,w\).  If the repeated color is red, relabel that common endpoint
+as the center; the two red edges from the center and the opposite blue edge
+give the forbidden pattern of
+\(\noderef{TwoBiteFinalGraphNoRedRedBlueTriangle}\).  If the repeated color is
+blue, the same relabelling gives the forbidden pattern of
+\(\noderef{TwoBiteFinalGraphNoBlueBlueRedTriangle}\).  Thus every possible
+coloring of the three shadow edges contradicts one of the four colored
+triangle exclusions, so \(G_0\) is triangle-free.
+\end{proof}

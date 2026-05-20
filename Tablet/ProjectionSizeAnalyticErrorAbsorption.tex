@@ -1,0 +1,8 @@
+\begin{helper}[Projection size analytic error absorption]
+\label{helper:ProjectionSizeAnalyticErrorAbsorption}
+For any $\delta > 0$ and $\varepsilon > 0$, there exists an integer $n_0$ such that for all $n \ge n_0$, if we let $L = \log n$, then $L \ge 1$ and
+$$ 3 + 2 \left( \frac{5}{2} \log L + \log(4(1+\varepsilon)) \right) \le \delta L. $$
+\end{helper}
+\begin{proof}
+This follows since $\log L = o(L)$ as $L \to \infty$, and $L \to \infty$ as $n \to \infty$. Thus, the linear term $\delta L$ eventually dominates the constant and logarithmic terms.
+\end{proof}

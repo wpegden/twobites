@@ -1,0 +1,63 @@
+\begin{helper}
+Let \(C(x)=\binom{x}{2}_{\mathbb R}=x(x-1)/2\).  Suppose
+\[
+0\le \varepsilon_2,\qquad 30\varepsilon_2\le \varepsilon_1,\qquad
+98\le d,
+\]
+and let \(r,u\in\mathbb R\) satisfy
+\[
+0\le r,\qquad 0\le u\le1,\qquad r\le d,\qquad
+r+u\le \varepsilon_2 d.
+\]
+Then
+\[
+C(d+r)\le
+(1+\varepsilon_1)\bigl(C(d-u)+C(u)\bigr).
+\]
+\end{helper}
+\begin{proof}
+Put \(Q=C(d-u)+C(u)\).  First,
+\[
+Q-C(d-1)=(1-u)(d-u-1).
+\]
+Since \(0\le u\le1\) and \(d\ge98\), both factors are nonnegative, so
+\[
+C(d-1)\le Q. \tag{1}
+\]
+Also \(C(d-1)\ge0\), hence \(Q\ge0\).
+
+Expanding the difference gives
+\[
+C(d+r)-Q=dr+\frac{r(r-1)}2+u(d-u). \tag{2}
+\]
+Because \(0\le r\le d\), we have \(r^2\le dr\).  Because \(u^2\ge0\),
+we have \(u(d-u)\le du\).  Using these two estimates in (2) gives
+\[
+C(d+r)-Q\le \frac32 d(r+u). \tag{3}
+\]
+The hypothesis \(r+u\le\varepsilon_2d\) and \(d\ge0\) imply
+\[
+\frac32 d(r+u)\le \frac32\varepsilon_2d^2. \tag{4}
+\]
+For \(d\ge98\),
+\[
+\frac32d^2\le30C(d-1),
+\]
+so, multiplying by \(\varepsilon_2\ge0\),
+\[
+\frac32\varepsilon_2d^2\le30\varepsilon_2C(d-1). \tag{5}
+\]
+Combining (1) with \(30\varepsilon_2\ge0\) gives
+\[
+30\varepsilon_2C(d-1)\le30\varepsilon_2Q. \tag{6}
+\]
+Finally, \(30\varepsilon_2\le\varepsilon_1\) and \(Q\ge0\) give
+\[
+30\varepsilon_2Q\le\varepsilon_1Q. \tag{7}
+\]
+Equations (3)--(7) yield \(C(d+r)-Q\le\varepsilon_1Q\).  Therefore
+\[
+C(d+r)\le Q+\varepsilon_1Q=(1+\varepsilon_1)Q,
+\]
+which is the desired inequality.
+\end{proof}

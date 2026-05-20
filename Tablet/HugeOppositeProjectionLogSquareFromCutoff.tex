@@ -1,0 +1,48 @@
+\begin{helper}
+If \(n\ge 1\) and the huge cutoff satisfies
+\[
+100\le \noderef{TwoBiteHugeCutoff}(n),
+\]
+then
+\[
+2\le (\log n)^2.
+\]
+\end{helper}
+\begin{proof}
+Write \(L=\log n\).  Since the cutoff is positive, its denominator
+\(\log L\) must be positive: the numerator \(\sqrt{nL}\) is nonnegative, so a
+nonpositive denominator would make
+\(\sqrt{nL}/\log L=\noderef{TwoBiteHugeCutoff}(n)\) nonpositive.  Hence
+\(\log L>0\), and therefore \(L>1\).  In particular \(n>e>2\), so \(n\ge3\).
+
+We first get a fixed positive lower bound for \(\log L\).  From \(n\ge3\),
+\(L=\log n\ge\log3\).  The standard numerical exponential estimates give
+\(e<14/5\) and \(e^{1/19}\le19/18\), hence
+\[
+e^{20/19}=e\,e^{1/19}<3.
+\]
+Thus \(20/19\le\log3\le L\).  Also
+\[
+e^{1/20}\le \frac1{1-1/20}=\frac{20}{19},
+\]
+so \(e^{1/20}\le L\), and consequently
+\[
+\frac1{20}\le \log L.
+\]
+
+Multiplying \(100\le \sqrt{nL}/\log L\) by the positive denominator
+\(\log L\) gives
+\[
+100\log L\le\sqrt{nL}.
+\]
+The previous lower bound on \(\log L\) yields \(5\le\sqrt{nL}\), and squaring
+gives
+\[
+25\le nL. \tag{1}
+\]
+
+Suppose for contradiction that \(L^2<2\).  Since \(L>0\), this implies
+\(L<2\).  Therefore \(n<e^2<9\), again by the standard bound \(e<3\), so
+\(n\le8\).  Combining \(n\le8\) with \(L<2\) gives \(nL<16\), contradicting
+(1).  Hence \(2\le L^2=(\log n)^2\), as claimed.
+\end{proof}

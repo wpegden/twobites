@@ -1,0 +1,35 @@
+\begin{helper}
+Let \(N,n,m\) be natural numbers with \(m\le N\).  Put
+\[
+q=\frac{m}{N}
+\]
+using Lean's real-division convention when \(N=0\), and put \(\mu=nq\).  For
+every \(L\in\mathbb R\),
+\[
+(1-q+q e^L)^n\le \exp(\mu(e^L-1)).
+\]
+\end{helper}
+\begin{proof}
+The real number \(q\) is nonnegative because it is the quotient of two
+nonnegative natural-number casts.  Also \(q\le 1\).  If \(N=0\), then
+\(m\le N\) forces \(m=0\), so \(q=0\).  If \(N>0\), then division by the
+positive real number \(N\) preserves the inequality \(m\le N\), giving
+\(m/N\le 1\).
+
+Since \(0\le q\le 1\) and \(e^L>0\), both terms \(1-q\) and \(q e^L\) are
+nonnegative, hence \(1-q+q e^L\ge0\).  The elementary exponential inequality
+\(1+x\le e^x\), applied to \(x=q(e^L-1)\), gives
+\[
+1-q+q e^L = 1+q(e^L-1)\le \exp(q(e^L-1)).
+\]
+Because the left base is nonnegative, raising this inequality to the natural
+power \(n\) preserves it:
+\[
+(1-q+q e^L)^n\le \exp(q(e^L-1))^n.
+\]
+Finally \(\exp(a)^n=\exp(na)\) for natural \(n\), and with
+\(a=q(e^L-1)\) this right hand side is
+\[
+\exp(nq(e^L-1))=\exp(\mu(e^L-1)).
+\]
+\end{proof}

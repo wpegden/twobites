@@ -1,0 +1,56 @@
+\begin{lemma}
+Fix \(n\) and \(\varepsilon\), and set
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+\[
+A=\frac{K\,n^{1/4-\varepsilon}}{6(\log n)^2}.
+\]
+Assume
+\[
+A>0,\qquad p\ge0.
+\]
+Let \(B_R,B_B\) be the red and blue parts of a fixed base-vertex family and
+let \(P_R,P_B\) be the corresponding red and blue projection sets.  Suppose
+\[
+|P_R|\le K,\qquad |P_B|\le K,
+\]
+\[
+p(|B_R|+|B_B|)K\le \frac{A}{4e},
+\qquad
+\frac{A}{4}\ge n^{3/4-2\varepsilon}.
+\]
+If the fixed-pair bad event has probability, or product weight, at most
+\[
+\binom{|B_R||P_R|+|B_B||P_B|}{\lceil A\rceil}
+  p^{\lceil A\rceil},
+\]
+then it has probability, or product weight, at most
+\[
+\exp\!\left(-n^{3/4-2\varepsilon}\right).
+\]
+\end{lemma}
+\begin{proof}
+The assumptions \(A>0\) and \(p\ge0\), together with the first mean
+inequality, are exactly the positivity and mean hypotheses needed by
+\(\noderef{MediumClosedPairsFixedPairCandidateTail}\), with candidate count
+bounded by
+\[
+|B_R||P_R|+|B_B||P_B|\le (|B_R|+|B_B|)K.
+\]
+Applying that helper gives the fixed-pair bound
+\[
+P\le \exp(-A/4).
+\]
+The second displayed hypothesis gives
+\[
+-A/4\le -n^{3/4-2\varepsilon}.
+\]
+Since the exponential function is monotone, this implies
+\[
+\exp(-A/4)\le \exp(-n^{3/4-2\varepsilon}),
+\]
+and the claimed natural-parameter tail bound follows.
+\end{proof}

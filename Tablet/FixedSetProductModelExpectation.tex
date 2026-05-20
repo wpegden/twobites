@@ -1,0 +1,143 @@
+\begin{helper}[Product Model Expectation Bound]
+Fix \(n\in\mathbb N\), \(I\subseteq\mathrm{Fin}(n)\), parameters
+\(\varepsilon,\varepsilon_1,\varepsilon_2\in\mathbb R\), and
+\(n_0\in\mathbb N\).  Assume
+\[
+\noderef{ParameterHierarchyEventualComparisons}
+  (\varepsilon,\varepsilon_1,\varepsilon_2,n_0),\qquad n_0<n,
+\]
+and
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Let
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p_0=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+\[
+L=\log n,\qquad
+C=\noderef{RealChooseTwo}
+  (\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)).
+\]
+For every embedding
+\[
+\pi:\mathrm{Fin}(n)\hookrightarrow\mathrm{Fin}(M)\times\mathrm{Fin}(M),
+\]
+put
+\[
+P_R=\{\pi(u)_1:u\in I\},\qquad P_B=\{\pi(u)_2:u\in I\},
+\]
+\[
+q=\noderef{FixedSetProductModelMassFn}(p_0,P_R,P_B),
+\qquad
+Z_{\mathrm{prod}}=\noderef{FixedSetProductModelVar}(I,\varepsilon,p_0,\pi).
+\]
+Then the product expectation satisfies
+\[
+\sum_v\left(\prod_i q(v_i)\right)Z_{\mathrm{prod}}(v)
+\le \frac{C}{2L},
+\]
+where \(v\) ranges over assignments from
+\(\mathrm{Fin}(2M)\) to pairs of subsets of \(\mathrm{Fin}(M)\).
+\end{helper}
+\begin{proof}
+The product law uses independent coordinates with one-coordinate mass \(q\).
+The hierarchy gives \(0\le p_0\le1\), so
+\(\noderef{FixedSetProductModelMass}\) applies to \(P_R\) and \(P_B\).  Thus
+\[
+q(a)\ge0\quad\text{for every }a,\qquad \sum_a q(a)=1.
+\]
+Consequently the product weights
+\[
+W(v)=\prod_{i\in\mathrm{Fin}(2M)}q(v_i)
+\]
+are nonnegative and have total mass \(1\): summing over the last coordinate
+uses \(\sum_aq(a)=1\), then summing over the previous coordinate uses the same
+identity again, and iterating over the finite coordinate set leaves \(1\).
+Therefore the displayed finite sum is the expectation of
+\(\noderef{FixedSetProductModelVar}\) under this product distribution.
+
+We record the marginal calculation used below.  Fix a red coordinate \(x\) and
+two distinct red projection vertices \(r_1,r_2\in P_R\).  The event that the
+first component of \(v_x\) contains both \(r_1\) and \(r_2\) has probability
+\(p_0^2\).  Indeed, in the sum over \(a=(A_R,A_B)\), all terms with
+\(A_R\not\subseteq P_R\) or \(A_B\not\subseteq P_B\) are zero.  On the support,
+the \(A_B\)-sum is
+\[
+\sum_{A_B\subseteq P_B}
+  p_0^{|A_B|}(1-p_0)^{|P_B|-|A_B|}=1
+\]
+by the same binomial calculation as in
+\(\noderef{FixedSetProductModelMass}\).  In the \(A_R\)-sum, requiring
+\(r_1,r_2\in A_R\) factors out \(p_0^2\), and the remaining elements of
+\(P_R\setminus\{r_1,r_2\}\) contribute
+\[
+\sum_B p_0^{|B|}(1-p_0)^{|P_R|-2-|B|}
+=(p_0+(1-p_0))^{|P_R|-2}=1.
+\]
+Thus the marginal probability is \(p_0^2\).  The identical argument for a blue
+coordinate says that the second component contains two specified distinct
+vertices of \(P_B\) with probability \(p_0^2\).  Since the product weights
+factor over coordinates, all other coordinates sum out to \(1\) when this
+one-coordinate marginal is computed.
+
+Unfold \(Z_{\mathrm{prod}}\).  A counted pair is a rank-oriented final pair
+\((u,w)\) drawn from a two-element subset of \(I\) whose red projections and
+blue projections are both
+distinct, and which is supported by at least one external red or blue base
+vertex in the small class.  Fix such a pair.  Write
+\[
+r_1=\pi(u)_1,\qquad r_2=\pi(w)_1,\qquad
+b_1=\pi(u)_2,\qquad b_2=\pi(w)_2.
+\]
+The distinct-projection filter gives \(r_1\ne r_2\) and \(b_1\ne b_2\), and
+all four vertices lie in \(P_R\) or \(P_B\) as appropriate.  In the product
+sample, red witnesses are read only from the first \(M\) coordinates: a red
+coordinate can support this pair only if its first component contains both
+\(r_1\) and \(r_2\).  For each fixed red coordinate the one-coordinate
+marginal above gives probability \(p_0^2\), and the small-class and final-pair
+filters can only decrease the event.  Summing over the \(M\) red coordinates
+gives a red contribution at most \(Mp_0^2\).
+
+Blue witnesses are read only from the last \(M\) coordinates.  The identical
+argument, using the second component and the vertices \(b_1,b_2\), gives a
+blue contribution at most \(Mp_0^2\).  Thus
+\(\noderef{FixedSetProductModelPairUnionBound}\) bounds the probability that
+this fixed pair contributes anywhere by
+\[
+2Mp_0^2.
+\]
+
+From \(\noderef{ParameterHierarchyEventualComparisons}\), in the range
+\(n_0<n\) we have
+\[
+M\le \frac{n}{L^2}
+\]
+after viewing \(M\) as a real number.  Also
+\[
+p_0=\frac12\sqrt{\frac{L}{n}}.
+\]
+Consequently
+\[
+2Mp_0^2
+\le 2\frac{n}{L^2}\cdot\frac{L}{4n}
+=\frac1{2L}.
+\]
+
+The fixed-size hypothesis gives
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Thus the number of unordered pairs available in \(I\) is at most
+\[
+C=\noderef{RealChooseTwo}
+  (\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)).
+\]
+The last display is nonnegative, so the bound \(1/(2L)\) is also nonnegative.
+By \(\noderef{FixedSetProductModelLinearity}\), summing the contribution bound
+\(1/(2L)\) over these at most \(C\) pairs gives
+\[
+\mathbb E_q Z_{\mathrm{prod}}\le \frac{C}{2L}.
+\]
+\end{proof}

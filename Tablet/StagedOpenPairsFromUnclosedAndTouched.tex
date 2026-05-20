@@ -1,0 +1,155 @@
+\begin{helper}
+Let
+\[
+U_I=\noderef{TwoBiteUnclosedProjectedPairs}(\omega,I),\qquad
+T_I=\noderef{TwoBiteTouchedProjectedPairs}(\omega,\varepsilon,I),
+\]
+and let
+\[
+O_I=\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I).
+\]
+For any real number \(f\), if
+\[
+f-9\varepsilon_1|I|^2\le |U_I|
+\qquad\text{and}\qquad
+|T_I|\le \varepsilon_1|I|^2,
+\]
+then
+\[
+f-10\varepsilon_1|I|^2\le |O_I|.
+\]
+\end{helper}
+\begin{proof}
+All three sets are finite subsets of the same tagged projected-pair ambient
+set
+\[
+P_I=\noderef{TwoBiteProjectionPairSet}(\omega,I).
+\]
+Write
+\[
+C(e)\Longleftrightarrow
+\noderef{TwoBiteProjectionPairClosed}(\omega,I,e),
+\]
+\[
+C_{\mathrm{sc}}(e)\Longleftrightarrow
+\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e),
+\]
+\[
+R(e)\Longleftrightarrow
+\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,e),
+\]
+and
+\[
+Q(e)\Longleftrightarrow
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\]
+By the definitions,
+\[
+U_I=\{e\in P_I:\neg C(e)\},
+\qquad
+T_I=\{e\in P_I:R(e)\},
+\]
+and
+\[
+O_I=\{e\in P_I:\neg C_{\mathrm{sc}}(e)\wedge\neg R(e)\wedge\neg Q(e)\}.
+\]
+
+We first prove the inclusion
+\[
+U_I\setminus T_I\subseteq O_I. \tag{1}
+\]
+Fix \(e\in U_I\setminus T_I\).  Then \(e\in U_I\), so \(e\in P_I\) and
+\(\neg C(e)\).  By
+\(\noderef{TwoBiteSameColorClosedImpliesClosed}\), same-color closedness
+implies closedness:
+\[
+C_{\mathrm{sc}}(e)\Longrightarrow C(e).
+\]
+Taking the contrapositive gives \(\neg C_{\mathrm{sc}}(e)\).  Since
+\(e\notin T_I\) and \(e\in P_I\), the identity
+\(T_I=\{e\in P_I:R(e)\}\) gives \(\neg R(e)\).
+
+It remains to show \(\neg Q(e)\).  We prove the pointwise implication
+\[
+Q(e)\Longrightarrow C(e)\vee R(e). \tag{2}
+\]
+Unfold \(\noderef{TwoBitePreTerminalRecordedPairs}\).  If \(e\) is a red
+tag, there are two possible branches.  In the incident-coordinate branch,
+one red endpoint is stage-revealed and the other is projection-contained;
+unfolding \(\noderef{TwoBiteProjectionPairTouched}\) shows that the red
+tagged pair is touched, so \(R(e)\) holds.  In the \(X_x(I)\)-pair branch,
+there is a stage-revealed base vertex \(x\) and the red coordinate lies in
+\[
+\noderef{TwoBiteBasePairs}
+\bigl((\noderef{TwoBiteX}(\omega,I,x)).\mathrm{image}(\pi_R)\bigr).
+\]
+Unfolding \(\noderef{TwoBiteProjectionPairClosed}\) gives \(C(e)\), with
+the same witness \(x\).  The blue-tagged case is identical, using
+\(\pi_B\) in the \(X_x(I)\)-pair branch and the blue endpoints in the
+incident-coordinate branch.  Hence (2) holds in every case.
+
+Now if \(Q(e)\) held, (2) would give \(C(e)\vee R(e)\), contradicting the
+already obtained \(\neg C(e)\) and \(\neg R(e)\).  Therefore \(\neg Q(e)\).
+Together with \(e\in P_I\), \(\neg C_{\mathrm{sc}}(e)\), and \(\neg R(e)\),
+this is exactly the defining membership condition for \(e\in O_I\).  This
+proves (1).
+
+Next compare cardinalities.  The set \(U_I\) is the disjoint union of its
+part outside \(T_I\) and its part inside \(T_I\):
+\[
+U_I=(U_I\setminus T_I)\,\dot\cup\,(U_I\cap T_I).
+\]
+Therefore
+\[
+|U_I|=|U_I\setminus T_I|+|U_I\cap T_I|.
+\]
+Since \(U_I\cap T_I\subseteq T_I\),
+\[
+|U_I\cap T_I|\le |T_I|.
+\]
+It follows that
+\[
+|U_I|\le |U_I\setminus T_I|+|T_I|.
+\]
+After casting these natural cardinalities to real numbers and subtracting
+\(|T_I|\), we get
+\[
+(|U_I|:\mathbb R)-(|T_I|:\mathbb R)
+\le (|U_I\setminus T_I|:\mathbb R). \tag{3}
+\]
+By the inclusion (1), monotonicity of finite-set cardinality gives
+\[
+(|U_I\setminus T_I|:\mathbb R)\le (|O_I|:\mathbb R). \tag{4}
+\]
+Combining (3) and (4),
+\[
+(|U_I|:\mathbb R)-(|T_I|:\mathbb R)\le (|O_I|:\mathbb R). \tag{5}
+\]
+
+Now use the two numerical hypotheses.  The first says
+\[
+f-9\varepsilon_1|I|^2\le (|U_I|:\mathbb R),
+\]
+and the second says
+\[
+(|T_I|:\mathbb R)\le \varepsilon_1|I|^2.
+\]
+Subtracting the second inequality from the first yields
+\[
+f-9\varepsilon_1|I|^2-\varepsilon_1|I|^2
+\le (|U_I|:\mathbb R)-(|T_I|:\mathbb R).
+\]
+Together with (5), this gives
+\[
+f-9\varepsilon_1|I|^2-\varepsilon_1|I|^2\le (|O_I|:\mathbb R).
+\]
+Finally,
+\[
+9\varepsilon_1|I|^2+\varepsilon_1|I|^2
+=10\varepsilon_1|I|^2,
+\]
+so the last inequality is exactly
+\[
+f-10\varepsilon_1|I|^2\le |O_I|.
+\]
+\end{proof}

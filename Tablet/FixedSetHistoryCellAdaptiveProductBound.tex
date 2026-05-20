@@ -1,0 +1,195 @@
+\begin{helper}
+Fix one exposure-history cell \(C_h\) from
+\(\noderef{FixedSetExposureCellProductLaw}\).  Let \(U_h\) be its terminal
+coordinate set, let \(R_h\) be its recorded coordinate set, and let the
+coordinates of \(U_h\) be scanned in the fixed terminal order.  Assume the
+cell has the cylinder description, the recorded-set identity, the terminal
+universe identity, staged-open containment in \(U_h\), the exact product law
+for every fixed terminal subset, and the prefix-safety statement for the
+terminal order.  Assume also
+\[
+0\le \varepsilon_1\le 1,\qquad 0\le p\le \frac12,\qquad |I|=k,
+\]
+and the pointwise lower bound
+\[
+f(\ell_R,\ell_B)-10\varepsilon_1k^2
+\le |\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)|
+\]
+for every regular sample in this projection-size cell.
+
+Assume moreover a branch-indexed adaptive-candidate package.  For every
+branch representative \(\sigma\in C_h\), there are terminal sets
+\[
+E_R(\sigma)\subseteq U_h,\qquad E_B(\sigma)\subseteq U_h
+\]
+with the following two properties.  If a regular completion \(\omega\in C_h\)
+has the same injection and recorded values as \(\sigma\), and agrees with
+\(\sigma\) on all blue terminal coordinates, then
+\[
+\noderef{ClosedPairsBound}(|E_R(\sigma)|,3\varepsilon_1,k),
+\]
+and every present red staged-open coordinate in an independent final graph
+lies in \(E_R(\sigma)\).  Symmetrically, if \(\omega\) agrees with
+\(\sigma\) on all red terminal coordinates, then
+\[
+\noderef{ClosedPairsBound}(|E_B(\sigma)|,3\varepsilon_1,k),
+\]
+and every present blue staged-open coordinate in an independent final graph
+lies in \(E_B(\sigma)\).  Then
+\[
+\Pr(\mathcal B_I\cap\mathcal R\mid C_h)
+\le
+\max(1,k^4)\exp\!\left(
+8\sqrt{\varepsilon_1}\,pk^2
+-p\bigl(f(\ell_R,\ell_B)-10\varepsilon_1k^2\bigr)\right),
+\]
+where \(\mathcal B_I\) is final-graph independence of \(I\) and
+\(\mathcal R\) is the regularity event.
+\end{helper}
+\begin{proof}
+Put
+\[
+a=f(\ell_R,\ell_B)-10\varepsilon_1k^2.
+\]
+Since \(C_h\) is contained in the projection-size cell, the assumed open-pair
+lower bound says that every regular \(\omega\in C_h\) satisfies
+\[
+a\le
+|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)|. \tag{1}
+\]
+For such an \(\omega\), let \(P_R(\omega)\) and \(P_B(\omega)\) be the red
+and blue terminal staged-open coordinates which are present.  Write their
+cardinalities as \(u_R\) and \(u_B\).  The containment
+\(\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\subseteq U_h\)
+ensures that all these coordinates are read inside the fixed terminal product
+set.
+
+Fix \(u_R,u_B\) and first suppose \(u_R\ge u_B\).  The proof pays for the blue
+terminal support before conditioning on a complete blue branch; the actual
+cylinder scan still follows the fixed terminal order.  More explicitly, fix a
+possible blue present support \(B\).  The support \(B\) is a subset of the
+projected blue pairs of the \(k\)-set \(I\), so there are at most
+\(\binom{k}{2}\) ambient blue coordinates and hence at most
+\(\binom{N_B}{u_B}\) such choices with \(N_B\le k^2\).  During the terminal
+scan, whenever a coordinate of \(B\) is reached, prefix safety says that the
+assertion that it is currently staged-open is already determined from the
+history and earlier terminal values; requiring its Bernoulli value to be
+present therefore contributes a fresh factor \(p\).  Red coordinates and blue
+coordinates outside \(B\) that have not been selected for a required value are
+summed out by the exact product law.  Consequently the total probability mass
+of all complete blue truth-table branches extending this fixed support \(B\)
+is bounded by \(p^{u_B}\Pr(C_h)\), with any additional selected blue absences
+contributing their own factors \(1-p\) when they are selected later.  This is
+the point at which the first-color support probability is paid; it is not
+recovered after conditioning on a complete branch.
+
+Now refine this first-color support event into complete blue terminal
+branches.  For a nonempty branch choose a representative
+\(\sigma\in C_h\) with exactly that blue terminal truth table, and use the
+branch-indexed hypothesis to obtain \(E_R(\sigma)\subseteq U_h\).  For every
+regular independent completion extending this complete blue branch, all
+present red staged-open coordinates lie in \(E_R(\sigma)\), and
+\[
+\noderef{ClosedPairsBound}(|E_R(\sigma)|,3\varepsilon_1,k)
+\]
+gives
+\[
+|E_R(\sigma)|\le 3\varepsilon_1k^2. \tag{2}
+\]
+Thus, after the complete blue branch is fixed, there are at most
+\(\binom{N_R}{u_R}\) choices for the red present support \(R\), with
+\(N_R\le 3\varepsilon_1k^2\).
+
+Fix such \(B\), a complete blue branch extending \(B\), and a red support
+\(R\subseteq E_R(\sigma)\) of size \(u_R\).  For any successful completion
+with these data, (1) and the definitions of \(u_R,u_B\) imply that at least
+\[
+a-u_R-u_B
+\]
+staged-open terminal coordinates outside \(R\cup B\) are absent.  If this
+number is nonpositive, no absence condition is needed for an upper bound.  If
+it is positive, let \(r=\lceil a-u_R-u_B\rceil\).  The number of absent
+staged-open coordinates outside \(R\cup B\) is an integer at least
+\(a-u_R-u_B\), hence at least \(r\).
+
+To make the absence condition canonical, scan the fixed terminal order and
+select the first \(r\) coordinates which the prefix-measurable staged-open
+test declares to be outside \(R\cup B\).  Prefix safety is used here
+coordinate by coordinate: membership in the staged-open set, touchedness,
+same-color closedness, and recordedness at the coordinate currently being
+tested depend only on the history and previously exposed terminal values, not
+on the coordinate's own Bernoulli value or on later terminal values.  Therefore
+each selected coordinate is still a fresh Bernoulli trial when it is required
+to be absent.  If a selected absent coordinate has blue color, its
+\((1-p)\)-factor is part of the summed blue-branch mass described above; if it
+has red color, it is charged in the branch-relative red exposure.  In either
+case the combined cylinder specified by \(B\), \(R\), and the selected absent
+coordinates has probability at most
+\[
+p^{u_B}p^{u_R}(1-p)^r\Pr(C_h)
+\]
+before normalization by \(\Pr(C_h)\).  Unmentioned terminal coordinates are
+summed out by the exact product law, and the additional regularity condition
+only restricts the event further.
+
+Thus, for this fixed count pair in the case \(u_R\ge u_B\), the conditional
+probability is bounded by
+\[
+\binom{N_R}{u_R}p^{u_R}
+\binom{N_B}{u_B}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)}
+\]
+with \(N_R\le3\varepsilon_1k^2\) and \(N_B\le k^2\).  The complete blue
+branches are used only to choose the branch-dependent exceptional set
+\(E_R(\sigma)\).  Their probabilities remain the averaging weights, exactly
+as in \(\noderef{FixedSetHistoryCellBranchAveraging}\), while the separate
+first-color support calculation above supplies the \(p^{u_B}\) factor.  Hence
+there is no hidden factor for the number of blue branches and no fresh
+first-color factor is charged after conditioning on a complete branch.
+
+Applying
+\(\noderef{FixedSetHistoryCellBinomialExponentialEstimate}\) gives
+\[
+\Pr(\mathcal B_I\cap\mathcal R
+\cap\{|P_R|=u_R,\ |P_B|=u_B\}\mid C_h)
+\le
+\exp\!\left(
+8\sqrt{\varepsilon_1}\,pk^2-pa\right). \tag{3}
+\]
+The helper handles \(p=0\) before introducing \(2p\), and it treats the case
+\(a-u_R-u_B<0\) with absence exponent \(0\) rather than manipulating a
+negative absence exponent.
+
+When \(u_B\ge u_R\), the same two-stage argument is run with the colors
+interchanged.  One first pays for the red support mass in the fixed terminal
+order, then refines into complete red terminal branches in order to obtain
+\(E_B(\sigma)\), and finally charges the blue support and the canonical absent
+coordinates.  The same estimate (3) holds for every fixed ordered pair
+\((u_R,u_B)\).
+
+It remains only to sum over possible count pairs.  The projected pairs of a
+\(k\)-element set are unordered pairs represented by increasing indices, so
+each color has at most \(\binom{k}{2}\) staged-open terminal coordinates
+available.  Hence the possible values of \(u_R\) are contained in
+\[
+\{0,1,\ldots,\binom{k}{2}\},
+\]
+and similarly for \(u_B\).  If \(k=0\), this gives exactly one ordered count
+pair, and the factor \(\max(1,k^4)\) covers it.  If \(0<k\), then
+\[
+\binom{k}{2}+1\le k^2:
+\]
+for \(k=1\) both sides are \(1\), while for \(k\ge2\),
+\(\binom{k}{2}+1\le \binom{k}{2}+k\le k^2\).  Thus there are at most \(k^2\)
+possible values for each color and at most \(k^4\) ordered count pairs.  In
+all cases, the number of ordered count pairs is at most \(\max(1,k^4)\).
+Finite subadditivity of \(\noderef{TwoBiteConditionalProbability}\) on these
+disjoint count events, together with the uniform bound (3), gives
+\[
+\Pr(\mathcal B_I\cap\mathcal R\mid C_h)
+\le
+\max(1,k^4)\exp\!\left(
+8\sqrt{\varepsilon_1}\,pk^2-pa\right).
+\]
+Substituting the definition of \(a\) is exactly the claimed bound.
+\end{proof}

@@ -1,0 +1,25 @@
+\begin{helper}
+For every \(\eta>0\), there is \(n_0\) such that for every \(n>n_0\), if
+\(L=\log n\), then
+\[
+\frac{2(1+\eta)\sqrt L}{n^\eta}<\frac12.
+\]
+\end{helper}
+\begin{proof}
+Set \(c=1/(8(1+\eta))\).  Since \(\eta>0\), we have \(c>0\).  The standard
+fact \(\log n=o(n^{2\eta})\) lets us enlarge \(n_0\) so that, for every
+\(n>n_0\),
+\[
+L=\log n\le c^2 n^{2\eta}.
+\]
+Taking square roots gives
+\[
+\sqrt L\le c n^\eta.
+\]
+Therefore
+\[
+2(1+\eta)\sqrt L\le 2(1+\eta)c n^\eta=\frac14 n^\eta
+  <\frac12 n^\eta.
+\]
+Since \(n^\eta>0\), division by \(n^\eta\) proves the stated inequality.
+\end{proof}

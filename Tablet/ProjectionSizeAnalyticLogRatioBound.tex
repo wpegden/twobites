@@ -1,0 +1,23 @@
+\begin{lemma}\label{ProjectionSizeAnalyticLogRatioBound}
+Let $n, m, k$ be natural numbers, and let $\varepsilon, L$ be real numbers.
+Suppose $L = \log n$, $m \ge n / (2L^2)$, $k \le 2(1+\varepsilon)\sqrt{nL}$, $k \ge 1$, $\varepsilon > 0$, and $L \ge 1$.
+Then
+\[
+\log\left(\frac{m}{k}\right) \ge \frac{1}{2} L - \frac{5}{2}\log L - \log(4(1+\varepsilon)).
+\]
+\end{lemma}
+\begin{proof}
+By the lower bound for $m$,
+\[
+\log m \ge \log n - \log 2 - 2 \log L = L - \log 2 - 2 \log L.
+\]
+By the upper bound for $k$,
+\[
+\log k \le \log 2 + \log(1+\varepsilon) + \frac{1}{2}L + \frac{1}{2}\log L.
+\]
+Subtracting these inequalities gives
+\[
+\log\left(\frac{m}{k}\right) = \log m - \log k \ge \frac{1}{2} L - \frac{5}{2}\log L - 2 \log 2 - \log(1+\varepsilon).
+\]
+Since $2 \log 2 = \log 4$, the result follows.
+\end{proof}

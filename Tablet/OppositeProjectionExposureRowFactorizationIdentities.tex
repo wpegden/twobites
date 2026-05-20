@@ -1,0 +1,93 @@
+\begin{helper}
+Let \(n,m\) be natural numbers, let \(U_0,V_0,T\subseteq \operatorname{Fin} n\),
+let \(\rho:\operatorname{Fin}n\to \operatorname{Fin}m\), and let
+\(\eta:U_0\to \operatorname{Fin}m\).  Put
+\[
+S=\operatorname{im}(\eta),\qquad
+R_i=\{v:\rho(v)=i\}.
+\]
+Let \(X_{\mathrm{all},\eta}\) be the set of injections
+\(\phi:\operatorname{Fin}n\hookrightarrow \operatorname{Fin}m\times
+\operatorname{Fin}m\) whose first coordinate is \(\rho\) and whose second
+coordinate on \(U_0\) is \(\eta\).  Let \(X_{\mathrm{good},\eta}(T)\) be
+the subset of \(X_{\mathrm{all},\eta}\) for which every \(v\in T\) has
+second coordinate in \(S\).  For each row \(i\), let \(d_i\) be the number
+of injective maps \(f:R_i\to\operatorname{Fin}m\) satisfying
+\(f(u)=\eta(u)\) for every \(u\in U_0\cap R_i\), and let \(g_i\) be the
+number of such row maps which also send every \(v\in T\cap R_i\) into
+\(S\).  If \(|X_{\mathrm{all},\eta}|\ne0\), then
+\[
+|X_{\mathrm{all},\eta}|=\prod_i d_i,\qquad
+|X_{\mathrm{good},\eta}(T)|=\prod_i g_i,
+\]
+every \(d_i\) is nonzero, and
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+=\prod_i\frac{g_i}{d_i}.
+\]
+\end{helper}
+\begin{proof}
+We first build the factorization for \(X_{\mathrm{all},\eta}\).  Given
+\(\phi\in X_{\mathrm{all},\eta}\), define, for each row \(i\), a map
+\[
+f_i:R_i\to \operatorname{Fin}m,\qquad f_i(v)=(\phi(v))_2 .
+\]
+This map is injective on \(R_i\): if \(v,w\in R_i\) and
+\(f_i(v)=f_i(w)\), then \((\phi(v))_1=\rho(v)=i=\rho(w)=(\phi(w))_1\)
+and the second coordinates are equal, so \(\phi(v)=\phi(w)\); injectivity
+of \(\phi\) gives \(v=w\).  If \(u\in U_0\cap R_i\), the defining eta
+condition for \(X_{\mathrm{all},\eta}\) gives
+\[
+f_i(u)=(\phi(u))_2=\eta(u).
+\]
+Thus \(\phi\) determines a tuple \((f_i)_i\) counted by the factors \(d_i\).
+
+Conversely, suppose that for every row \(i\) we are given a row map
+\(f_i:R_i\to\operatorname{Fin}m\) counted by \(d_i\).  Define a global map
+\[
+\phi(v)=(\rho(v),f_{\rho(v)}(v)),
+\]
+where \(v\) is regarded as an element of the row \(R_{\rho(v)}\).  The first
+coordinate of \(\phi(v)\) is \(\rho(v)\) by construction.  If
+\(\phi(v)=\phi(w)\), then the first coordinates give \(\rho(v)=\rho(w)=i\);
+viewing \(v\) and \(w\) in the common row \(R_i\), equality of the second
+coordinates says \(f_i(v)=f_i(w)\), and rowwise injectivity gives
+\(v=w\).  Hence \(\phi\) is injective.  If \(u\in U_0\), then \(u\in
+R_{\rho(u)}\), and the eta condition on the row map \(f_{\rho(u)}\) gives
+\((\phi(u))_2=\eta(u)\).  Therefore \(\phi\in X_{\mathrm{all},\eta}\).
+The two constructions are inverse to one another, because both recover
+exactly the same second coordinate in each row.  Hence
+\[
+|X_{\mathrm{all},\eta}|=\prod_i d_i .
+\]
+
+The same bijection restricts to the good sets.  Under the map
+\(\phi\mapsto (f_i)_i\), the condition defining
+\(X_{\mathrm{good},\eta}(T)\) is
+\[
+\forall v\in T,\quad (\phi(v))_2\in S.
+\]
+For \(v\in R_i\), the second coordinate \((\phi(v))_2\) is exactly
+\(f_i(v)\).  Thus the displayed condition is equivalent, row by row, to
+\[
+\forall i,\ \forall v\in T\cap R_i,\quad f_i(v)\in S,
+\]
+which is precisely the extra condition counted by \(g_i\).  Therefore the
+restricted bijection gives
+\[
+|X_{\mathrm{good},\eta}(T)|=\prod_i g_i .
+\]
+
+Now assume \(|X_{\mathrm{all},\eta}|\ne0\).  Since
+\(|X_{\mathrm{all},\eta}|=\prod_i d_i\), the product of the real numbers
+\(d_i\) is nonzero.  If some \(d_j\) were zero, then the whole product would
+be zero, contradiction.  Thus every \(d_i\) is nonzero.  Using the two
+product formulae and the fact that all denominator factors are nonzero, we
+may divide factor by factor:
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+=\frac{\prod_i g_i}{\prod_i d_i}
+=\prod_i\frac{g_i}{d_i}.
+\]
+This is the required quotient identity.
+\end{proof}

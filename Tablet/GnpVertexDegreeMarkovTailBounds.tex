@@ -1,0 +1,39 @@
+\begin{helper}[GnpVertexDegreeMarkovTailBounds]
+Let \(m\in\mathbb N\), let \(0\le p\le1\), let
+\(r\in\operatorname{Fin}(m)\), and let \(t\ge0\).  For every real threshold
+\(A\), the \(\noderef{GnpGraphWeight}\)-mass of the upper and lower degree
+tails of \(\noderef{GraphDegreeCount}(G,r)\) is bounded by the corresponding
+exponential moments:
+\[
+\sum_G {\bf 1}_{A\le \noderef{GraphDegreeCount}(G,r)}
+  \noderef{GnpGraphWeight}(p,G)
+\le
+e^{-tA}\sum_G e^{t\noderef{GraphDegreeCount}(G,r)}
+  \noderef{GnpGraphWeight}(p,G),
+\]
+and
+\[
+\sum_G {\bf 1}_{\noderef{GraphDegreeCount}(G,r)\le A}
+  \noderef{GnpGraphWeight}(p,G)
+\le
+e^{tA}\sum_G e^{-t\noderef{GraphDegreeCount}(G,r)}
+  \noderef{GnpGraphWeight}(p,G).
+\]
+\end{helper}
+\begin{proof}
+The assumptions \(0\le p\le1\) make every factor in
+\(\noderef{GnpGraphWeight}\) nonnegative, hence every graph weight is
+nonnegative.  For the upper tail, if
+\(A\le D=\noderef{GraphDegreeCount}(G,r)\), then
+\[
+1\le e^{t(D-A)}=e^{-tA}e^{tD}
+\]
+because \(t(D-A)\ge0\).  Multiplying by the nonnegative graph weight and
+summing over \(G\) gives the first inequality; graphs outside the event
+contribute \(0\) on the left and a nonnegative term on the right.  The lower
+tail is identical: if \(D\le A\), then
+\[
+1\le e^{t(A-D)}=e^{tA}e^{-tD},
+\]
+and summing the resulting pointwise inequality gives the second bound.
+\end{proof}

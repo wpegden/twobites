@@ -1,0 +1,202 @@
+\begin{lemma}
+Assume the hierarchy \(\noderef{ParameterHierarchy}\) for
+\((\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\).  Under the two-bite
+probability law with
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\frac12\sqrt{\frac{\log n}{n}},
+\qquad
+K(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+with high probability, for every \(K(n)\)-set \(I\),
+\[
+\left|\bigcup_{v\in S_I}\binom{X_v(I)}2\right|\le \varepsilon_1 K(n)^2.
+\]
+\end{lemma}
+\begin{proof}
+Unfolding \(\noderef{WithHighProbability}\), the goal is to prove that the
+probability of the event in the statement tends to \(1\).  For each \(n\), put
+\[
+M_n=M(n),\qquad K_n=K(n),\qquad
+p_n=\noderef{TwoBiteEdgeProbability}(\beta,n),
+\]
+and let \(\mathbb P_n\) denote the two-bite probability functional
+\[
+\mathbb P_n(E)=
+\noderef{TwoBiteEventProbability}(n,M_n,p_n,E).
+\]
+This is exactly the probability law occurring in the Lean statement.  The
+hypothesis \(\beta=\frac12\) identifies
+\[
+p_n=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right)
+     =\frac12\sqrt{\frac{\log n}{n}},
+\]
+while the two rounding hypotheses identify
+\[
+M_n=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+K_n=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)
+\]
+for every \(n\).
+We will use the following elementary properties of this finite probability
+law.  By unfolding \(\noderef{TwoBiteEventProbability}\), for any event \(A\),
+\[
+\mathbb P_n(A)=
+\sum_{\omega}
+\mathbf 1_A(\omega)\,\noderef{TwoBiteSampleWeight}(\omega).
+\]
+The weights are nonnegative, because
+\(\noderef{TwoBiteSampleWeight}\) is the product of two
+\(\noderef{GnpGraphWeight}\) factors and
+\(\noderef{UniformInjectionWeight}\).  They have total mass \(1\), since the
+red and blue \(G(M_n,p_n)\) product weights each sum to \(1\) and the
+uniform-injection weights sum to \(1\) over the injection coordinate.  Hence
+\[
+\mathbb P_n(A^c)=1-\mathbb P_n(A),
+\]
+and the same indicator-sum formula gives monotonicity and subadditivity: if
+\(A\subseteq B\), then \(\mathbb P_n(A)\le\mathbb P_n(B)\), and
+\[
+\mathbb P_n(A\cup B)\le \mathbb P_n(A)+\mathbb P_n(B).
+\]
+
+Let \(\mathcal S_n\) be the event
+\[
+\mathcal S_n(\omega):=
+\noderef{TwoBiteSmallClosedPairsEvent}(k=K_n,\varepsilon,\varepsilon_1)(\omega).
+\]
+Unfolding \(\noderef{TwoBiteSmallClosedPairsEvent}\), this is
+\[
+\mathcal S_n(\omega)\quad\Longleftrightarrow\quad
+\forall I\subseteq \mathrm{Fin}(n),\ |I|=K_n\Longrightarrow
+\noderef{ClosedPairsBound}\!\left(
+\left|\noderef{TwoBiteClosedPairsInClass}
+  \bigl(\omega,I,\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I)\bigr)
+\right|,
+\varepsilon_1,K_n\right).
+\]
+Unfolding \(\noderef{ClosedPairsBound}\), the final predicate is precisely
+the displayed inequality
+\[
+\left|\bigcup_{v\in S_I}\binom{X_v(I)}2\right|
+\le \varepsilon_1 K_n^2
+\]
+for that \(I\).  Thus \(\mathcal S_n\) is exactly the small closed-pairs event
+claimed in the statement, and the desired conclusion is
+\(\mathbb P_n(\mathcal S_n)\to1\).
+
+Let
+\[
+\mathcal D_n(\omega):=\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2).
+\]
+The first conjunct of \(\noderef{ParameterHierarchy}\) gives
+\(0<\varepsilon_2\).  Applying \(\noderef{FiberAndDegreeConcentration}\) with
+this positivity proof, the same value of \(\beta\), the equality
+\(\beta=\frac12\), and the same function \(M\) satisfying
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\]
+gives the high-probability statement
+\[
+\mathbb P_n(\mathcal D_n)\to1. \tag{1}
+\]
+No change of probability space is involved: the child theorem has the same
+arguments \(n,M_n,\noderef{TwoBiteEdgeProbability}(\beta,n)\) as
+\(\mathbb P_n\).  By the complement identity just recorded, (1) is
+equivalently the statement that
+\[
+\mathbb P_n(\mathcal D_n^c)=1-\mathbb P_n(\mathcal D_n)\to0. \tag{1a}
+\]
+
+We next record the bad-event estimate needed for the high-probability
+combination.  Fix \(n>n_0\).  Apply
+\(\noderef{SmallClosedPairsBadEventProbability}\) with the same hierarchy
+\(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\),
+with the equality \(\beta=\frac12\), with this inequality \(n>n_0\), and with
+the rounded equalities
+\[
+M_n=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+K_n=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+The child theorem is stated for
+\[
+\noderef{TwoBiteEventProbability}
+ \bigl(n,M_n,\noderef{TwoBiteEdgeProbability}(\beta,n),\cdot\bigr),
+\]
+which is exactly \(\mathbb P_n\) by the definition of \(M_n\) and \(p_n\).
+The hypothesis \(\beta=\frac12\) is exactly the beta hypothesis required by
+the child theorem and identifies its edge parameter with the rounded value
+\(p_n=\noderef{TwoBiteEdgeProbability}(\frac12,n)\).
+After rewriting \(k(n)\) to \(K_n\), the child event is exactly
+\[
+\{\omega:\mathcal D_n(\omega)\text{ and }\neg\mathcal S_n(\omega)\}
+=\mathcal D_n\cap\mathcal S_n^c.
+\]
+Indeed, its first conjunct is
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)=\mathcal D_n(\omega)\),
+and its second conjunct is the negation of
+\[
+\noderef{TwoBiteSmallClosedPairsEvent}
+  (k=K_n,\varepsilon,\varepsilon_1)(\omega),
+\]
+which is precisely \(\neg\mathcal S_n(\omega)\) by the definition of
+\(\mathcal S_n\).  Therefore the child theorem gives
+\[
+\mathbb P_n(\mathcal D_n\cap\mathcal S_n^c)
+\le (n:\mathbb R)^{-1} \qquad (n>n_0). \tag{2}
+\]
+All finite-union details needed for this estimate are contained in
+\(\noderef{SmallClosedPairsBadEventProbability}\): the exact decomposition
+of \(\mathcal D_n\cap\mathcal S_n^c\) into fixed-set bad events, the empty
+case \(K_n>n\), the \(\texttt{Nat.choose}(n,K_n)\) count, the finite union
+bound using nonnegative \(\noderef{TwoBiteSampleWeight}\) terms, the
+application of \(\noderef{SmallClosedPairsFixedSetTail}\), and the final
+\(\noderef{ParameterHierarchyEventualComparisons}\) McDiarmid-union
+comparison.
+
+Now fix \(\rho>0\).  From \(\mathbb P_n(\mathcal D_n^c)\to0\), choose
+\(N_{\mathcal D}\) such that, for all \(n\ge N_{\mathcal D}\),
+\[
+\mathbb P_n(\mathcal D_n^c)<\rho/2. \tag{3}
+\]
+The reciprocal bound is negligible in the elementary sense encoded by
+\(\noderef{NegligibleProbability}\).  Explicitly, choose an integer
+\(N_{\rho}\) with \(N_{\rho}>2/\rho\) and \(N_{\rho}\ge1\).  Then, for all
+\(n\ge N_{\rho}\),
+\[
+0\le(n:\mathbb R)^{-1}\le (N_{\rho}:\mathbb R)^{-1}<\rho/2. \tag{4}
+\]
+Finally choose an integer threshold \(N\) with
+\[
+N\ge N_{\mathcal D},\qquad N\ge N_{\rho},\qquad N>n_0.
+\]
+Then every \(n\ge N\) satisfies \(n\ge N_{\mathcal D}\), \(n\ge N_{\rho}\),
+and \(n>n_0\).  For such \(n\), the elementary set inclusion
+\[
+\mathcal S_n^c\subseteq \mathcal D_n^c\cup(\mathcal D_n\cap\mathcal S_n^c)
+\]
+holds: if \(\mathcal S_n\) fails, either \(\mathcal D_n\) fails, or
+\(\mathcal D_n\) holds and \(\mathcal S_n\) fails.  Monotonicity and
+subadditivity of the finite-sum probability \(\mathbb P_n\) apply to this
+inclusion as follows:
+\[
+\mathbf 1_{\mathcal S_n^c}
+\le
+\mathbf 1_{\mathcal D_n^c}
++\mathbf 1_{\mathcal D_n\cap\mathcal S_n^c}.
+\]
+Multiplying by the nonnegative sample weights and summing gives
+\[
+\mathbb P_n(\mathcal S_n^c)
+\le \mathbb P_n(\mathcal D_n^c)
+  +\mathbb P_n(\mathcal D_n\cap\mathcal S_n^c).
+\]
+Using (3), (2), and (4), this gives
+\[
+\mathbb P_n(\mathcal S_n^c)
+< \rho/2+\rho/2=\rho.
+\]
+Thus \(\mathbb P_n(\mathcal S_n^c)\to0\).  Using the complement identity for
+the same probability law, this is equivalent to
+\(\mathbb P_n(\mathcal S_n)\to1\).  This is exactly the
+\(\noderef{WithHighProbability}\) assertion of the statement.
+\end{proof}

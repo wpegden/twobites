@@ -1,0 +1,133 @@
+\begin{helper}
+Fix a terminal coordinate set \(U\), support labels \(B,J\), branch labels
+\(\beta\), and transcript labels \(\tau=(P_\tau,A_\tau,Z_\tau)\).  Let
+\(\operatorname{blueTrace}(\beta)\) be the complete terminal blue trace of
+\(\beta\), let \(\operatorname{redSupport}(\beta,J)\) be the fixed red
+support for \(J\), let \(\mathsf{Realized}(B,J,\beta,\tau)\) be the realized
+cell predicate, and let \(\mathsf{Comp}(A;B,J,\beta,\tau)\) be compatibility
+of a complete terminal assignment \(A\).  Also fix a deterministic transcript
+scan
+\[
+\operatorname{scan}:2^U\to \mathcal P\cup\{\bot\}.
+\]
+
+Assume branch labels are functional for complete terminal blue truth tables.
+Assume every realized \((\beta,\tau)\) has the exported geometry
+\[
+\operatorname{redSupport}(\beta,J)\subseteq U,\qquad
+\operatorname{redSupport}(\beta,J)\hbox{ is red-only},
+\]
+\[
+P_\tau,A_\tau\subseteq U,\qquad
+P_\tau\cap A_\tau=\emptyset,\qquad
+B\cup\operatorname{redSupport}(\beta,J)\subseteq P_\tau,
+\]
+\[
+e\in\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in P_\tau,
+\qquad
+e\notin\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in A_\tau
+\]
+for every blue coordinate \(e\in U\), and \(Z_\tau\subseteq A_\tau\).
+Assume compatible complete assignments contain \(P_\tau\), avoid
+\(A_\tau\setminus Z_\tau\), and recover the complete blue trace of
+\(\beta\).
+
+Assume the actual fixed-\((B,J)\) scan interface.  First, residual scan
+stability holds: if \(A_{\rm res}\subseteq U\) contains
+\[
+P_\tau\setminus(B\cup\operatorname{redSupport}(\beta,J))
+\]
+and avoids \(A_\tau\setminus Z_\tau\), then
+\[
+\operatorname{scan}\bigl((A_{\rm res}\setminus Z_\tau)\cup
+  (B\cup\operatorname{redSupport}(\beta,J))\bigr)=\tau .
+\]
+Second, scan recognition holds from the full forced scan data: if a
+realized \((\beta,\tau)\) has
+\[
+P_\tau\subseteq A,\qquad A_\tau\cap A=\emptyset,
+\]
+and the complete blue trace of \(\beta\) agrees with \(A\) on all blue
+coordinates of \(U\), then \(\operatorname{scan}(A)=\tau\).  Third, the fixed residual
+first-mismatch or prefix-pruning uniqueness input holds: if one residual
+assignment lies in the residual cylinders of two realized pairs and the two
+delete-and-reinsert complete assignments are compatible with those pairs,
+then the two branches and transcripts are equal.
+
+Then the two residual outputs used by the fixed-\((B,J)\) support tree hold.
+First, under the residual span and avoidance conditions for
+\((\beta,\tau)\), put
+\[
+A^\ast=(A_{\rm res}\setminus Z_\tau)\cup
+  (B\cup\operatorname{redSupport}(\beta,J))
+\]
+Then any realized transcript \((\beta',\tau')\) whose full forced scan data
+are satisfied by \(A^\ast\),
+\[
+P_{\tau'}\subseteq A^\ast,\qquad A_{\tau'}\cap A^\ast=\emptyset,
+\]
+and whose complete blue trace agrees with \(A^\ast\), is equal to
+\(\tau\).  Second, if the same residual assignment reconstructs compatibly
+to two realized pairs \((\beta,\tau)\) and \((\beta',\tau')\), then
+\(\beta=\beta'\) and \(\tau=\tau'\).
+\end{helper}
+\begin{proof}
+The point is that transcript equality is now derived from deterministic scan
+output, not from realized geometry alone.  The geometry and forward
+compatibility assumptions are retained only to translate compatibility
+certificates back into residual-cylinder span and avoidance conditions.
+
+Fix \(A_{\rm res}\subseteq U\) in the residual cylinder of a realized
+\((\beta,\tau)\), and put
+\[
+A^\ast=(A_{\rm res}\setminus Z_\tau)\cup
+  (B\cup\operatorname{redSupport}(\beta,J)).
+\]
+By the residual scan-stability input, which is the delete-and-reinsert
+conclusion isolated in
+\(\noderef{FixedSetHistoryCellRISIResidualScanStability}\) after the exact
+read-set interface of
+\(\noderef{FixedSetHistoryCellRISIRevealOrderScanConstruction}\), the scan
+on \(A^\ast\) returns \(\tau\).
+
+Now let \((\beta',\tau')\) be another realized pair whose forced-present
+set is contained in \(A^\ast\), whose forced-absent set is disjoint from
+\(A^\ast\), and whose complete blue trace agrees with \(A^\ast\) on every
+blue coordinate of \(U\).  The full scan-recognition input applies to this
+realized pair and the same assignment \(A^\ast\), so the same deterministic
+scan also returns \(\tau'\).  A function has only one value at \(A^\ast\); hence
+\(\tau'=\tau\).  This proves the first residual output.  Notice that branch
+functionality and realized geometry alone would not give this conclusion:
+the transcript equality is forced by the deterministic scan value.
+
+For owner uniqueness, suppose the same residual assignment reconstructs
+compatibly to two realized pairs \((\beta,\tau)\) and
+\((\beta',\tau')\).  Apply the forward compatibility consequences to the
+first reconstructed complete assignment.  Since compatibility contains
+\(P_\tau\) in that reconstructed assignment and the fixed support
+\[
+B\cup\operatorname{redSupport}(\beta,J)
+\]
+is already inserted, every coordinate of
+\[
+P_\tau\setminus(B\cup\operatorname{redSupport}(\beta,J))
+\]
+must lie in the original residual assignment.  Since compatibility also
+avoids \(A_\tau\setminus Z_\tau\) in the reconstructed assignment, and
+coordinates outside \(Z_\tau\) are not deleted during reconstruction, the
+original residual assignment is disjoint from
+\(A_\tau\setminus Z_\tau\).  The same argument applied to
+\((\beta',\tau')\) gives the residual span and avoidance conditions for the
+second realized pair.
+
+The hypotheses of the fixed residual first-mismatch/prefix-pruning input are
+therefore satisfied: the same residual assignment lies in both residual
+cylinders, and the two reconstructed assignments are compatible with their
+respective realized cells.  This is exactly the uniqueness mechanism
+formalized by
+\(\noderef{FixedSetHistoryCellFixedBJResidualOverlapConsistency}\): a genuine
+owner mismatch would produce a selected-present first mismatch, and the
+prefix-pruning invariant rules out the corresponding compatibility
+certificate.  Hence the two owners are equal, so
+\(\beta=\beta'\) and \(\tau=\tau'\).
+\end{proof}

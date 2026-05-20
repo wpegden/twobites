@@ -1,0 +1,453 @@
+\begin{lemma}
+Assume the hierarchy \(\noderef{ParameterHierarchy}\) for
+\((\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\).  Under the two-bite
+probability law with
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p(n)=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\qquad
+K(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+with high probability, for every \(K(n)\)-set \(I\),
+\[
+\left|\bigcup_{v\in M_I}\binom{X_v(I)}2\right|\le \varepsilon_1 K(n)^2.
+\]
+\end{lemma}
+\begin{proof}
+For each \(n\), write
+\[
+M=M(n),\qquad K=K(n),\qquad
+p=p(n)=\frac12\sqrt{\frac{\log n}{n}},
+\]
+and put
+\[
+t_2=\noderef{TwoBiteLargeCutoff}(\varepsilon,n)=n^{1/4+\varepsilon},
+\qquad
+t_3=\noderef{TwoBiteSmallCutoff}(\varepsilon,n)=n^{2\varepsilon}.
+\]
+The hypotheses of the Lean statement identify the abstract functions and edge
+parameter with these quantities at each \(n\).  Namely,
+\[
+m(n)=M,\qquad k(n)=K,\qquad
+\noderef{TwoBiteEdgeProbability}(\beta,n)
+=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right)=p,
+\]
+because \(\beta=\frac12\).  Therefore the probability appearing in the Lean
+conclusion is exactly
+\[
+\noderef{TwoBiteEventProbability}(n,M,p)
+  \left(\omega\mapsto
+  \noderef{TwoBiteMediumClosedPairsEvent}(K,\varepsilon,\varepsilon_1,\omega)
+  \right).
+\]
+Thus proving the event below under the rounded \(M,K\) and the
+\(\beta=\frac12\) edge law proves the displayed
+\(\noderef{WithHighProbability}\) statement.
+
+Let \(\mathcal M_n\) be the event
+\(\noderef{TwoBiteMediumClosedPairsEvent}(K,\varepsilon,\varepsilon_1)\).
+Unfolding \(\noderef{TwoBiteMediumClosedPairsEvent}\),
+\(\noderef{ClosedPairsBound}\), and
+\(\noderef{TwoBiteClosedPairsInClass}\), this event says that every
+\(I\subseteq\mathrm{Fin}(n)\) with \(|I|=K\) satisfies
+\[
+\left|\bigcup_{x\in M_I}\binom{X_x(I)}2\right|
+\le \varepsilon_1K^2, \tag{1}
+\]
+where \(M_I=\noderef{TwoBiteMediumClass}(\omega,\varepsilon,I)\).
+Unfolding \(\noderef{TwoBiteMediumClass}\), each \(x\in M_I\) satisfies
+\[
+t_3<|X_x(I)|\le t_2. \tag{2}
+\]
+
+We prove that \(\Pr(\mathcal M_n^c)\to0\).  Since
+\(\noderef{WithHighProbability}\) is the assertion that these event
+probabilities tend to \(1\), it is enough to show that the complementary
+probabilities tend to \(0\).  Let \(\mathcal D_n\) be the fiber-degree event
+from \(\noderef{FiberAndDegreeEvent}\).  By
+\(\noderef{ParameterHierarchy}\), \(0<\varepsilon_2\), and
+\(\noderef{FiberAndDegreeConcentration}\), applied with the rounded law
+\(\beta=\frac12\) and
+\(M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\), the probabilities
+\(\Pr(\mathcal D_n)\) tend to \(1\).  Equivalently,
+\(\Pr(\mathcal D_n^c)\to0\).  Thus, given \(\rho>0\), there is a threshold
+\(N_{\mathcal D}\) such that
+\[
+\Pr(\mathcal D_n^c)<\rho/2
+\]
+for all \(n\ge N_{\mathcal D}\).  We shall prove
+\[
+\Pr(\mathcal M_n^c\cap\mathcal D_n)\to0. \tag{3}
+\]
+Then there is \(N_{\mathcal B}\) such that
+\(\Pr(\mathcal M_n^c\cap\mathcal D_n)<\rho/2\) for all
+\(n\ge N_{\mathcal B}\).  The set-theoretic inclusion
+\[
+\mathcal M_n^c\subseteq
+\mathcal D_n^c\cup(\mathcal M_n^c\cap\mathcal D_n)
+\]
+then gives, by finite subadditivity,
+\[
+\Pr(\mathcal M_n^c)
+\le \Pr(\mathcal D_n^c)+\Pr(\mathcal M_n^c\cap\mathcal D_n)<\rho
+\]
+for all \(n\ge\max\{N_{\mathcal D},N_{\mathcal B}\}\).  This is the required
+\(\noderef{WithHighProbability}\) reduction.
+
+Fix \(n>n_0\) and suppose that \(\mathcal M_n\) fails while
+\(\mathcal D_n\) holds.  Negating the universal quantifier in
+\(\mathcal M_n\), there is a finite set \(I\subseteq\mathrm{Fin}(n)\) with
+\(|I|=K\) for which the left side of (1) is larger than
+\(\varepsilon_1K^2\).  Set
+\[
+Y_I=\sum_{x\in M_I}|X_x(I)|.
+\]
+By (2),
+\[
+\left|\bigcup_{x\in M_I}\binom{X_x(I)}2\right|
+\le \sum_{x\in M_I}\binom{|X_x(I)|}{2}
+\le t_2\,Y_I.
+\]
+The first inequality is the finite union bound over the witnesses \(x\in M_I\).
+For the second, each summand has \(0\le |X_x(I)|\le t_2\), so
+\(\binom{|X_x(I)|}{2}\le |X_x(I)|^2/2\le t_2|X_x(I)|\); summing gives the
+displayed bound.
+Therefore
+\[
+Y_I>\frac{\varepsilon_1K^2}{t_2}.
+\]
+The \(n>n_0\) instance of
+\(\noderef{ParameterHierarchyEventualComparisons}\) contains
+\[
+t_2\,n^{1/4-\varepsilon}\le \varepsilon_1K,
+\]
+and \(t_2=n^{1/4+\varepsilon}>0\), so division by \(t_2\) gives
+\[
+Y_I>K\,n^{1/4-\varepsilon}. \tag{4}
+\]
+
+Choose an inclusion-minimal subfamily \(B\subseteq M_I\) with
+\[
+\sum_{x\in B}|X_x(I)|>K\,n^{1/4-\varepsilon}.
+\]
+Such a \(B\) exists because \(M_I\) is finite and the full sum is larger than
+the threshold by (4): starting from \(M_I\), repeatedly delete any element
+whose deletion preserves the displayed strict inequality; finiteness stops the
+process and gives an inclusion-minimal family.  The empty family has sum
+\(0\), so this minimal family is nonempty.  If \(b\in B\), inclusion-minimality
+gives
+\(\sum_{x\in B\setminus\{b\}}|X_x(I)|\le K n^{1/4-\varepsilon}\); adding back
+the single term for \(b\) and using the upper bound \(|X_b(I)|\le t_2\) gives
+\[
+K\,n^{1/4-\varepsilon}
+<Y_B:=\sum_{x\in B}|X_x(I)|
+\le K\,n^{1/4-\varepsilon}+t_2
+\le \frac32K\,n^{1/4-\varepsilon} \tag{5}
+\]
+for all sufficiently large \(n\).  The last inequality follows from the
+rounding lower bound
+\[
+K\ge (1+\varepsilon)\sqrt{n\log n}
+\]
+in \(\noderef{ParameterHierarchyEventualComparisons}\): indeed
+\[
+\frac{t_2}{K n^{1/4-\varepsilon}}
+\le
+\frac{n^{-1/2+2\varepsilon}}{(1+\varepsilon)\sqrt{\log n}},
+\]
+and the right side tends to \(0\) because
+\(\varepsilon<1/16\).  After increasing the threshold it is at most \(1/2\).
+Since every \(x\in B\) is medium and hence
+\(|X_x(I)|>t_3=n^{2\varepsilon}\), (5) gives
+\[
+|B|\le \frac32K\,n^{1/4-3\varepsilon}. \tag{6}
+\]
+
+The next step is the multiplicity point.  We do not treat \(Y_B\) itself as a
+sum of independent Bernoulli variables.  Instead we pass from the repeated
+incidences counted by \(Y_B\) to distinct base-graph edges.  Split
+\[
+B=B_R\cup B_B,\qquad B_R=B\cap V_R,\qquad B_B=B\cap V_B.
+\]
+For \(x\in B_R\) and \(u\in X_x(I)\), the definition of
+\(\noderef{TwoBiteLiftedNeighborhood}\) says that the red base edge
+\(\{x,\pi_R(u)\}\) is present in \(G_R\).  Similarly, for \(x\in B_B\) and
+\(u\in X_x(I)\), the blue base edge \(\{x,\pi_B(u)\}\) is present in \(G_B\).
+Let \(E_{I,B}\) be the number of distinct present red edges between
+\(B_R\) and \(\pi_R(I)\), plus the number of distinct present blue edges
+between \(B_B\) and \(\pi_B(I)\).
+
+On \(\mathcal D_n\), every red or blue fiber has size at most
+\((1+\varepsilon_2)\log^2 n\): this is the upper side of the
+\(\noderef{WithinRelativeError}\) fiber condition in
+\(\noderef{FiberAndDegreeEvent}\).  Since
+\(\noderef{ParameterHierarchy}\) gives
+\(0\le\varepsilon_2<\varepsilon<1/16\), each fiber has size
+\(<(17/16)\log^2 n\).
+
+Define a charge from repeated incidences to distinct base edges.  A red
+incidence \((x,u)\), with \(x\in B_R\) and \(u\in X_x(I)\), is charged to the
+unordered red edge \(\{x,\pi_R(u)\}\).  This edge is present by
+\(\noderef{TwoBiteLiftedNeighborhood}\); moreover \(x\ne\pi_R(u)\), since a
+loop is never adjacent in the simple red base graph.  Conversely, fix one
+present red base edge \(\{a,b\}\).  It can receive charges only from the center
+\(a\), through vertices \(u\in I\) with \(\pi_R(u)=b\), if \(a\in B_R\), and
+from the center \(b\), through vertices \(u\in I\) with \(\pi_R(u)=a\), if
+\(b\in B_R\).  There are no other red centers whose charged edge is
+\(\{a,b\}\).  Hence this edge receives at most
+\[
+|I\cap F_R(a)|+|I\cap F_R(b)|
+\le 2(1+\varepsilon_2)(\log n)^2
+<3(\log n)^2
+\]
+red charges.  If only one endpoint lies in \(B_R\), the corresponding single
+fiber term is the only possible contribution, so the same upper bound still
+holds.  The identical charge argument in the blue graph, using blue fibers and
+\(\pi_B\), gives the same bound for each distinct blue base edge.
+Therefore
+\[
+Y_B\le 3(\log n)^2 E_{I,B}. \tag{7}
+\]
+Combining this with the lower bound in (5) gives
+\[
+E_{I,B}>
+A:=\frac{K n^{1/4-\varepsilon}}{3(\log n)^2}. \tag{8}
+\]
+
+Now fix a candidate pair \((I,B)\) satisfying \(|I|=K\) and
+\(|B|\le\frac32K n^{1/4-3\varepsilon}\), and condition only on the injection
+coordinate.  If no injection is compatible with the sample parameters, then
+the conditional fiber is empty and the fixed-pair probability is \(0\), so
+assume an injection has been fixed.  By \(\noderef{TwoBiteSample}\), this
+fixes the fibers, the projections \(\pi_R(I)\) and \(\pi_B(I)\), and the
+red-blue split of \(B\).  The remaining randomness is exactly the pair of base
+graphs.  The factorization in \(\noderef{TwoBiteSampleWeight}\) as
+\(\noderef{UniformInjectionWeight}\) times the two
+\(\noderef{GnpGraphWeight}\) factors says that, after the injection is fixed,
+the red base-edge indicators are mutually independent Bernoulli variables with
+parameter \(p\), the blue base-edge indicators are mutually independent
+Bernoulli variables with the same parameter, and the red and blue families are
+independent of each other.  Thus the conditional law is the product law used in
+the binomial domination below, with no further conditioning on
+\(\mathcal D_n\).
+
+For this fixed injection, let \(T_R(I,B)\) be the set of unordered nonloop red
+pairs \(\{x,y\}\) with \(x\in B_R\) and \(y\in\pi_R(I)\), and let
+\(T_B(I,B)\) be the analogous blue set with \(B_B\) and \(\pi_B(I)\).  Then
+\[
+|T_R(I,B)|+|T_B(I,B)|
+\le |B_R|\,|\pi_R(I)|+|B_B|\,|\pi_B(I)|
+\le |B|K.
+\]
+The count \(E_{I,B}\) is at most the sum of the independent Bernoulli edge
+indicators over \(T_R(I,B)\cup T_B(I,B)\).  Loops have been omitted, and if two
+descriptions name the same unordered edge they contribute only one element to
+\(T_R(I,B)\) or \(T_B(I,B)\); both operations can only decrease this sum.
+Adding independent dummy Bernoulli-\(p\) variables until there are exactly
+\(|B|K\) trials gives a binomial random variable that dominates \(E_{I,B}\)
+for this injection.  Consequently \(E_{I,B}\) is stochastically dominated,
+conditionally on the injection, by a binomial variable
+\[
+Z_{I,B}\sim\mathrm{Bin}(|B|K,p),
+\]
+where
+\[
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right)
+=\frac12\sqrt{\frac{\log n}{n}}.
+\]
+Equivalently, if \(\mathcal B_{I,B}\) denotes the event
+\(\mathcal D_n\cap\{E_{I,B}>A\}\) for this fixed pair, then after conditioning
+on any injection \(\pi\) we may bound \(\Pr(\mathcal B_{I,B}\mid\pi)\) by the
+upper tail of \(Z_{I,B}\); the condition \(\mathcal D_n\) is not needed for
+this probability upper bound, because intersecting with it only removes
+samples.
+Its mean \(\mu_{I,B}\) satisfies
+\[
+\mu_{I,B}\le p|B|K
+\le \frac32pK^2 n^{1/4-3\varepsilon}
+\le 2pK^2 n^{1/4-3\varepsilon}. \tag{9}
+\]
+The rounded-scale part of
+\(\noderef{ParameterHierarchyEventualComparisons}\) gives
+\[
+K<(1+\varepsilon)\sqrt{n\log n}+1.
+\]
+After increasing the threshold, the summand \(1\) is at most
+\((1+\varepsilon)\sqrt{n\log n}\), and therefore
+\[
+K\le 2(1+\varepsilon)\sqrt{n\log n}.
+\]
+Combining this with (9) and (8), we obtain
+\[
+\frac{\mu_{I,B}}{A}
+\le 6pK(\log n)^2 n^{-2\varepsilon}
+\le 6(1+\varepsilon)(\log n)^3 n^{-2\varepsilon}. \tag{10}
+\]
+Since \(\varepsilon>0\), the right side tends to \(0\).  Increase the threshold
+so that it is at most \(1/(4e)\).  Then
+\(\mu_{I,B}\le A/(4e)\), in particular \(\mu_{I,B}\le A/2\).  Applying a finite union bound gives the upper tail. The event \(Z_{I,B}\ge A\) requires at least \(t=\lceil A\rceil\) of the \(|B|K\) independent Bernoulli-\(p\) candidate edges to be present. There are at most \(\binom{|B|K}{t}\) subsets of \(t\) candidates, and for each subset the probability that all its edges are present is \(p^t\). Hence
+\[
+\Pr(Z_{I,B}\ge A)
+\le \binom{|B|K}{t}p^t
+\le \left(\frac{e |B| K p}{t}\right)^t
+= \left(\frac{e\mu_{I,B}}{t}\right)^t
+\le \left(\frac{e\mu_{I,B}}{A}\right)^A .
+\]
+The preceding inequality \(\mu_{I,B}\le A/(4e)\) makes the base at most
+\(1/4\), so this is at most \(\exp(-A\log 4)\), and hence at most
+\(\exp(-A/4)\).  Therefore
+\[
+\Pr(E_{I,B}>A\mid\pi)
+\le \Pr(Z_{I,B}>A)
+\le \exp(-A/4). \tag{11}
+\]
+The lower rounded-scale bound
+\[
+K\ge(1+\varepsilon)\sqrt{n\log n}
+\]
+also gives
+\[
+A
+\ge \frac{1+\varepsilon}{3}\,
+  \frac{n^{3/4-\varepsilon}}{(\log n)^{3/2}}.
+\]
+Increase the threshold again so that
+\[
+\frac{1+\varepsilon}{3}\,
+  \frac{n^\varepsilon}{(\log n)^{3/2}}\ge 4.
+\]
+Then
+\[
+A=\frac{K n^{1/4-\varepsilon}}{3(\log n)^2}
+\ge 4 n^{3/4-2\varepsilon}
+\]
+for all remaining \(n\).  Hence every fixed candidate \((I,B)\), after
+averaging over the injection coordinate as well, satisfies
+\[
+\Pr(\mathcal B_{I,B})
+\le \exp(-n^{3/4-2\varepsilon}). \tag{12}
+\]
+Indeed, \(\noderef{TwoBiteEventProbability}\) decomposes as the finite
+\(\noderef{UniformInjectionWeight}\)-weighted average of the conditional
+probabilities over injections.  The estimate (11) is uniform for every fixed
+injection, and \(\mathcal D_n\) is only being intersected with the bad event,
+so dropping \(\mathcal D_n\) can only increase each conditional probability.
+
+It remains to count choices.  There are at most
+\[
+\binom{n}{K}\le n^K=\exp(K\log n)
+\]
+choices for \(I\).  By (6), put
+\[
+S=K n^{1/4-3\varepsilon},
+\qquad
+R=\frac32S;
+\]
+then the witness family \(B\) has at most \(R\) vertices.  The base vertex
+universe has \(2M\) vertices, and the rounding comparison in
+\(\noderef{ParameterHierarchyEventualComparisons}\) gives
+\[
+M\le \frac{n}{(\log n)^2}.
+\]
+After increasing the threshold so that \((\log n)^2\ge2\), this universe has
+at most \(n\) vertices.  Let \(r=\lceil R\rceil\).  Every witness family
+satisfying (6) has some cardinality \(j\le r\), and for each such \(j\) there
+are at most \(n^j\) choices.  Hence the number of possible \(B\)'s is at most
+\[
+\sum_{0\le j\le r} n^j\le (r+1)n^r.
+\]
+Increase the threshold so that \(S\ge2\).  Since \(R=\frac32S\), this gives
+\(r\le R+1=\frac32S+1\).  Also
+\[
+\frac{\log(2S+1)}{S\log n}\to0,
+\]
+because \(S\) is at least a positive constant times
+\(n^{3/4-3\varepsilon}\sqrt{\log n}\) and \(\varepsilon<1/16\).  Increase the
+threshold again so that both \(S\ge4\) and
+\[
+\log n+\log(2S+1)\le\frac12S\log n.
+\]
+This is possible because \(1/S\to0\) and
+\(\log(2S+1)/(S\log n)\to0\).  Since \(r+1\le2S+1\), we obtain
+\[
+(r+1)n^r
+\le
+\exp\!\left(\log(2S+1)+\left(\frac32S+1\right)\log n\right)
+\le \exp\!\left(2K n^{1/4-3\varepsilon}\log n\right)
+\]
+possible choices for \(B\), since \(S=K n^{1/4-3\varepsilon}\).  This bound
+counts all color choices and all subsets of the whole red-blue base vertex
+universe, so it also covers the particular split \(B=B_R\cup B_B\).
+The deterministic construction above gives the required inclusion for the
+union bound.  If \(\mathcal M_n^c\cap\mathcal D_n\) occurs, choose an
+offending \(K\)-set \(I\) and then choose \(B\subseteq M_I\) minimal with
+\(\sum_{x\in B}|X_x(I)|>K n^{1/4-\varepsilon}\).  Equations (6) and (8) show
+that this pair is among the counted candidates and satisfies
+\(E_{I,B}>A\).  Hence
+\[
+\mathcal M_n^c\cap\mathcal D_n
+\subseteq
+\bigcup_{\substack{|I|=K\\ |B|\le R}}
+\mathcal B_{I,B}.
+\]
+No disjointness is asserted or needed.  Combining this inclusion, the count of
+candidates, and the fixed-pair probability bound (12), the union bound gives
+\[
+\Pr(\mathcal M_n^c\cap\mathcal D_n)
+\le
+\exp\!\left(
+K\log n+2K n^{1/4-3\varepsilon}\log n
+-n^{3/4-2\varepsilon}
+\right). \tag{13}
+\]
+This is exactly the medium exponential comparison included in the
+\(n>n_0\) instance of
+\(\noderef{ParameterHierarchyEventualComparisons}\):
+\[
+\exp\!\left(
+K\log n+2K n^{1/4-3\varepsilon}\log n
+-n^{3/4-2\varepsilon}
+\right)\le\varepsilon_1.
+\]
+Thus all rounded parameters \(M,K,p,t_3\) and the finite hierarchy comparison
+used in the medium union bound are the ones supplied by the child hierarchy
+node.
+
+For the limit required in (3), we also record the explicit decay of the same
+left-hand side.  The rounded upper bound used above gives, for all sufficiently
+large \(n\),
+\[
+K\le 2(1+\varepsilon)\sqrt{n\log n}.
+\]
+Consequently
+\[
+\frac{K\log n}{n^{3/4-2\varepsilon}}
+\le
+2(1+\varepsilon)(\log n)^{3/2}n^{-1/4+2\varepsilon}
+\]
+and
+\[
+\frac{2K n^{1/4-3\varepsilon}\log n}{n^{3/4-2\varepsilon}}
+\le
+4(1+\varepsilon)(\log n)^{3/2}n^{-\varepsilon}.
+\]
+Both right sides tend to \(0\): the first because
+\(-1/4+2\varepsilon<0\), and the second because \(\varepsilon>0\).  Increase
+the threshold so that their sum is at most \(1/2\).  Then the two positive
+terms in the exponent of (13) contribute at most
+\(\frac12 n^{3/4-2\varepsilon}\), so that exponent is at most
+\[
+-\frac12 n^{3/4-2\varepsilon},
+\]
+and hence
+\[
+\Pr(\mathcal M_n^c\cap\mathcal D_n)
+\le \exp\!\left(-\frac12 n^{3/4-2\varepsilon}\right)\to0.
+\]
+The last convergence uses \(\varepsilon<1/16\), hence
+\(3/4-2\varepsilon>0\), so \(n^{3/4-2\varepsilon}\to\infty\).
+This proves (3).  By the initial \(\noderef{WithHighProbability}\) reduction,
+the probability of \(\mathcal M_n\) tends to \(1\).  This is exactly the
+claimed \(\noderef{WithHighProbability}\) statement under the rounded
+\(M(n)\), edge probability \(p(n)\), and scale \(K(n)\).
+\end{proof}

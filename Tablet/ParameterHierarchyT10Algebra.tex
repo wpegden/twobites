@@ -1,0 +1,56 @@
+\begin{helper}
+Let \(\eta,\varepsilon_1\in\mathbb R\) and \(n\in\mathbb N\).  Put
+\[
+L=\log n,\quad
+k_R=(1+\eta)\sqrt{nL},\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad k=(K:\mathbb R),
+\]
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\quad m=(M:\mathbb R),
+\quad
+p=\frac12\sqrt{\frac Ln},\quad
+t_1=\frac{\sqrt{nL}}{\log L}.
+\]
+Assume \(0<\eta\), \(0<\varepsilon_1\), \(0<n\), \(0<L\), \(0<\log L\),
+\(0\le k\), \(k_R\le k\),
+\[
+0\le 2pm,\qquad
+2pm\le\frac{\sqrt n}{L^{3/2}},
+\]
+and
+\[
+\frac{2\log L}{(1+\eta)L^4}\le\varepsilon_1.
+\]
+Then
+\[
+\frac{2k}{t_1}\noderef{RealChooseTwo}(2pm)\le\varepsilon_1k^2.
+\]
+\end{helper}
+\begin{proof}
+Let \(x=2pm\).  Since \(x\ge0\), the upper bound in
+\(\noderef{RealChooseTwoQuadraticBounds}\) gives
+\[
+\noderef{RealChooseTwo}(x)\le x^2.
+\]
+The mass estimate gives
+\[
+x^2\le \left(\frac{\sqrt n}{L^{3/2}}\right)^2.
+\]
+The factor \(2k/t_1\) is nonnegative, so
+\[
+\frac{2k}{t_1}\noderef{RealChooseTwo}(x)
+\le
+\frac{2k}{t_1}\left(\frac{\sqrt n}{L^{3/2}}\right)^2.
+\]
+Using \(t_1=\sqrt{nL}/\log L\), \(L^{3/2}=L\sqrt L\), and
+\(k_R=(1+\eta)\sqrt{nL}\), the right side is
+\[
+k\frac{2\log L}{(1+\eta)L^4}k_R.
+\]
+The displayed threshold bounds this by \(k\varepsilon_1 k_R\).  Since
+\(k_R\le k\), \(k\ge0\), and \(\varepsilon_1>0\),
+\[
+k\varepsilon_1 k_R\le k\varepsilon_1 k=\varepsilon_1 k^2.
+\]
+Combining the inequalities proves the claim.
+\end{proof}

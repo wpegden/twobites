@@ -1,0 +1,129 @@
+\begin{helper}[FiberAndDegreeSameColorBaseCodegreeSharpFailureNegligible]
+\label{helper:FiberAndDegreeSameColorBaseCodegreeSharpFailureNegligible}
+Let \(\beta=1/2\), let
+\[
+m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p(n)=\noderef{TwoBiteEdgeProbability}(\beta,n),
+\]
+and take probabilities with respect to
+\(\noderef{TwoBiteEventProbability}(n,m(n),p(n))\).  The probability that
+the sharp same-color base-codegree event fails is
+\(\noderef{NegligibleProbability}\).  Explicitly, the negligible event is the
+failure of
+\[
+\begin{aligned}
+&\forall r\ne s,\quad
+|\{t:\noderef{TwoBiteRedGraph}(\omega).Adj(r,t)\land
+\noderef{TwoBiteRedGraph}(\omega).Adj(s,t)\}|\le \log n,\\
+&\forall b\ne c,\quad
+|\{t:\noderef{TwoBiteBlueGraph}(\omega).Adj(b,t)\land
+\noderef{TwoBiteBlueGraph}(\omega).Adj(c,t)\}|\le \log n .
+\end{aligned}
+\]
+\end{helper}
+
+\begin{proof}
+Write \(M=m(n)\), \(p=p(n)\), and \(L=\log n\).  It is enough to discard
+finitely many \(n\).  From \(\noderef{TwoBiteNaturalReducedVertexCount}\),
+\(\noderef{TwoBiteReducedVertexCount}\), and \(\noderef{TwoBiteStretch}\), we
+have \(M=\lfloor n/L^2\rfloor\) for all large \(n\), and hence \(M\le n\).
+By \(\noderef{OppositeProjectionEdgeProbBounds}\), also \(0\le p\le1\)
+eventually.  We also use \(\noderef{TwoBiteNaturalTotalMassOneEventually}\):
+eventually
+\[
+n\le M^2
+\]
+and the full \(\noderef{TwoBiteEventProbability}\) mass of the two-bite
+sample space is \(1\).  The inequality \(n\le M^2\) is the support condition
+needed below for the injection coordinate.
+
+Fix distinct red vertices \(r,s\), and let \(E_{r,s}\) be the event that their
+red base common-neighbor count is larger than \(L\).  A sample
+\(\omega\in\noderef{TwoBiteSample}(n,M,p)\) is a triple
+\((G_R,G_B,\pi)\).  By \(\noderef{TwoBiteEventProbability}\) and
+\(\noderef{TwoBiteSampleWeight}\),
+\[
+\Pr(E_{r,s})
+=
+\sum_{G_R,G_B,\pi}
+\mathbf 1_{E_{r,s}}(G_R)\,
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,M).
+\tag{1}
+\]
+The indicator depends only on \(G_R\).  Because \(n\le M^2\), injections
+\(\operatorname{Fin}(n)\hookrightarrow\operatorname{Fin}(M)\times
+\operatorname{Fin}(M)\) exist, so \(\noderef{UniformInjectionWeight}\) is the
+reciprocal of the number of such injections.  Hence
+\[
+\sum_\pi \noderef{UniformInjectionWeight}(n,M)=1.
+\tag{2}
+\]
+Also
+\[
+\sum_{G_B}\noderef{GnpGraphWeight}(p,G_B)=1
+\tag{3}
+\]
+by \(\noderef{GnpGraphWeightSumOne}\).  Applying (2) and (3) to (1) gives the
+red marginal formula
+\[
+\Pr(E_{r,s})
+=
+\sum_{G_R:E_{r,s}(G_R)}
+\noderef{GnpGraphWeight}(p,G_R).
+\tag{4}
+\]
+Thus the fixed red pair has exactly the usual \(G(M,p)\) product law.  The
+same finite-sum calculation, with the two base graph coordinates interchanged,
+gives the identical formula for a fixed blue pair.
+
+Under the \(G(M,p)\) product law, the common-neighbor count of a fixed pair is
+stochastically dominated by a binomial variable with \(M\) trials and success
+probability \(p^2\): for any proposed common-neighbor set \(S\) of size \(T\),
+requiring all vertices of \(S\) to be common neighbors requires the two
+independent edge events from each \(t\in S\), and therefore has weight at most
+\((p^2)^T\).  Let \(T=\lceil L\rceil\).  If the count is \(>L\), then it is at
+least \(T\), so the union bound over \(T\)-subsets gives
+\[
+\Pr(E_{r,s})
+\le \binom MT(p^2)^T.
+\tag{5}
+\]
+Since \(\beta=1/2\), \(\noderef{TwoBiteEdgeProbability}\) gives
+\[
+p^2=\frac14\,\frac{L}{n}.
+\]
+With \(M\le n/L^2\), the binomial mean \(\mu=Mp^2\) satisfies
+\[
+\mu\le \frac{1}{4L}.
+\tag{6}
+\]
+Using \(\noderef{OppositeProjectionChooseExponentialBound}\),
+\[
+\binom MT(p^2)^T
+\le \left(\frac{eMp^2}{T}\right)^T
+= \left(\frac{e\mu}{T}\right)^T.
+\tag{7}
+\]
+Because \(T\ge L\), (6) implies
+\[
+\left(\frac{e\mu}{T}\right)^T
+\le
+\left(\frac{e}{4L^2}\right)^L
+\le \exp\!\left(-\frac12 L\log L\right)
+\tag{8}
+\]
+for all sufficiently large \(n\).
+
+There are fewer than \(M^2\le n^2=\exp(2L)\) ordered red pairs and the same
+number of ordered blue pairs.  Applying the union bound over all same-color
+pairs and using (8) gives the bound
+\[
+2\exp(2L)\exp\!\left(-\frac12 L\log L\right).
+\]
+This tends to \(0\), because \(L\log L\) dominates \(L\).  Therefore the
+probability that the sharp same-color base-codegree event fails tends to
+\(0\), which is exactly the asserted \(\noderef{NegligibleProbability}\).
+\end{proof}

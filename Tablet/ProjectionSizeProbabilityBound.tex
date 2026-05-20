@@ -1,0 +1,149 @@
+\begin{lemma}
+For every fixed \(\delta>0\) and \(\varepsilon>0\), there is a threshold
+\(n_0\) such that the following holds for every \(n\ge n_0\).  Let
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n)
+=\left\lfloor\frac{n}{\log^2 n}\right\rfloor,
+\qquad
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)
+  =\left\lceil(1+\varepsilon)\sqrt{n\log n}\right\rceil .
+\]
+For a fixed set \(I\subseteq V(G)\) with \(|I|=k\), and integers
+\(\ell_R,\ell_B\) with \(\ell_R\ell_B\ge k\), put
+\[
+x_R=\frac{\ell_R}{k},\qquad x_B=\frac{\ell_B}{k}.
+\]
+Under the two-bite law, the probability of the event
+\[
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B)
+\]
+is at most
+\[
+\exp\left(\left(\delta-\frac{2-x_R-x_B}{2}\right)k\log n\right)
+\]
+for all sufficiently large \(n\).
+\end{lemma}
+\begin{proof}
+Fix \(\delta>0\) and \(\varepsilon>0\).  We choose \(n_0\) large enough for all
+large-\(n\) comparisons below.  In particular, for every \(n\ge n_0\) the real
+quantities
+\[
+M_{\mathbb R}(n)=\noderef{TwoBiteReducedVertexCount}(n)=\frac{n}{\log^2 n},
+\qquad
+K_{\mathbb R}(n)=\noderef{TwoBiteIndependenceScale}(1+\varepsilon,n)
+  =(1+\varepsilon)\sqrt{n\log n}
+\]
+are positive, and \(\noderef{NaturalParameterApproximation}\) gives
+\[
+m\le M_{\mathbb R}(n)<m+1,\qquad
+K_{\mathbb R}(n)\le k<K_{\mathbb R}(n)+1.
+\]
+Increasing \(n_0\) further, we may use the consequences
+\[
+m\ge \frac12\,\frac{n}{\log^2 n},\qquad
+k\le 2(1+\varepsilon)\sqrt{n\log n},\qquad
+1\le k\le n\le m^2.
+\tag{2}
+\]
+The first two inequalities follow from \(M_{\mathbb R}(n)<m+1\) and
+\(k<K_{\mathbb R}(n)+1\) after requiring
+\(M_{\mathbb R}(n)\ge2\) and \(K_{\mathbb R}(n)\ge1\).  The inequalities
+\(1\le k\le n\le m^2\) then follow by increasing \(n_0\) so that
+\[
+2(1+\varepsilon)\sqrt{n\log n}\le n
+\quad\text{and}\quad
+n\le\left(\frac{n}{2\log^2 n}\right)^2.
+\]
+The last inequality ensures that injections
+\(\noderef{TwoBiteEmbedding}:V(G)\hookrightarrow V_R\times V_B\) exist and that
+the \(k\)-point image of \(I\) can be compared with all \(k\)-subsets of
+\(V_R\times V_B\).
+
+We first reduce \(\noderef{TwoBiteEventProbability}\) to a counting problem for
+uniform injections.  A sample
+\(\omega\in\noderef{TwoBiteSample}(n,m,p)\) consists of a red graph \(G_R\), a
+blue graph \(G_B\), and an injection \(\pi\).  By
+\(\noderef{TwoBiteSampleWeight}\), its weight is
+\[
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,m).
+\]
+The event \(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B)\) depends
+only on the injection coordinate, because
+\(\noderef{TwoBiteRedProjection}\) and \(\noderef{TwoBiteBlueProjection}\) are
+the two coordinate projections of \(\pi=\noderef{TwoBiteEmbedding}(\omega)\).
+For a fixed injection \(\pi\), summing \(\noderef{GnpGraphWeight}\) over all red
+graphs gives \(1\): each unordered edge contributes the two alternatives
+\(p\) and \(1-p\), whose sum is \(1\), and the finite product over edges
+therefore sums to \(1\).  The same argument applies to the blue graph.  Since
+\(n\le m^2\), \(\noderef{UniformInjectionWeight}(n,m)\) is the reciprocal of
+the number \(N_{\mathrm{inj}}\) of injections \(V(G)\hookrightarrow
+V_R\times V_B\).  Thus
+\[
+\noderef{TwoBiteEventProbability}(n,m,p)(\mathcal E)
+=\frac{\#\{\pi:\pi\text{ is an injection and }\mathcal E(\pi)\}}
+       {N_{\mathrm{inj}}},
+\]
+where \(\mathcal E\) is the projection-size event for \(I\).  This also proves
+that the left side is at most \(1\).
+
+For the fixed \(k\)-set \(I\), the image set \(\pi(I)\) is uniformly
+distributed over all \(k\)-subsets of \(V_R\times V_B\).  Indeed, if
+\(S\subseteq V_R\times V_B\) has \(|S|=k\), then the number of injections
+\(\pi\) with \(\pi(I)=S\) is
+\[
+k!\,(m^2-k)(m^2-k-1)\cdots(m^2-n+1),
+\]
+where the falling product counts the completion on \(V(G)\setminus I\).  This
+number is independent of \(S\).  Consequently all \(\binom{m^2}{k}\)
+\(k\)-subsets are equally likely as \(\pi(I)\).
+
+We now count image sets with the requested projection sizes.  If
+\(\ell_R>m\) or \(\ell_B>m\), then no red or blue projection set of that size
+exists, so the event is empty.  If \(\ell_R>k\) or \(\ell_B>k\), then the event
+is also empty, because a \(k\)-element image set has at most \(k\) red
+coordinates and at most \(k\) blue coordinates.  These empty cases satisfy the
+desired inequality trivially.  We may therefore assume
+\[
+1\le \ell_R,\ell_B\le m,\qquad
+\ell_R,\ell_B\le k.
+\]
+The positivity follows from \(1\le k\) and the hypothesis \(\ell_R\ell_B\ge k\).
+
+Choose first the red projection set \(R\subseteq V_R\) and the blue projection
+set \(B\subseteq V_B\), with
+\[
+|R|=\ell_R,\qquad |B|=\ell_B.
+\]
+There are \(\binom m{\ell_R}\binom m{\ell_B}\) choices.  Once \(R\) and \(B\)
+are fixed, every image set with these exact projections is a \(k\)-subset of
+\(R\times B\).  Replacing "exactly \(R,B\)" by the weaker condition
+"\(S\subseteq R\times B\)" overcounts, and gives at most
+\(\binom{\ell_R\ell_B}{k}\) image sets for this pair \(R,B\).  Since
+\(\ell_R\ell_B\ge k\), this binomial coefficient is defined in the nonempty
+range.  Hence
+\[
+\Pr(\mathcal E)
+\le
+\binom m{\ell_R}\binom m{\ell_B}
+\frac{\binom{\ell_R\ell_B}{k}}{\binom{m^2}{k}}.
+\tag{3}
+\]
+If \(\Pr(\mathcal E)=0\), then the desired inequality is immediate because the
+right-hand side is a positive exponential.  Thus, in the remaining argument we
+may assume \(\Pr(\mathcal E)>0\).
+
+We split into two cases based on the defect \(s=(2-x_R-x_B)k\).  If \(s\le2\delta k\), then
+\[
+\left(\delta-\frac{2-x_R-x_B}{2}\right)k\log n
+=\left(\delta k-\frac{s}{2}\right)\log n\ge0
+\]
+for \(n\ge n_0\).  The exponential upper bound is then at least \(1\), while
+the reduction to uniform injections already showed \(\Pr(\mathcal E)\le1\).
+This proves the claim in the boundary regime.
+
+Assume now that \(s>2\delta k\).  The required bound then follows from
+\(\noderef{ProjectionSizeAnalyticBinomialBound}\), which bounds the binomial quotient in (3)
+by the same exponential when the defect \(s=(2-x_R-x_B)k\) is strictly greater than \(2\delta k\).
+\end{proof}

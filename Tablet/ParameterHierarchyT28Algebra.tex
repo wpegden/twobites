@@ -1,0 +1,43 @@
+\begin{helper}
+Let \(L=\log n\) and \(A=n^{3/4-2\eta}\).  Assume \(n>0\), \(L\ge0\),
+\[
+k<2(1+\eta)\sqrt n\sqrt L,
+\]
+\[
+\frac{2(1+\eta)\sqrt L\,L}{n^{1/4-2\eta}}\le\frac14,
+\qquad
+\frac{4(1+\eta)\sqrt L\,L}{n^\eta}\le\frac14,
+\]
+and
+\[
+\exp\!\left(-\frac12 A\right)\le\varepsilon_1.
+\]
+Then
+\[
+\exp\!\left(kL+2k n^{1/4-3\eta}L-n^{3/4-2\eta}\right)\le\varepsilon_1.
+\]
+\end{helper}
+\begin{proof}
+The first threshold and the bound on \(k\) give
+\[
+kL\le 2(1+\eta)\sqrt n\sqrt L\,L
+ =\frac{2(1+\eta)\sqrt L\,L}{n^{1/4-2\eta}}\,n^{3/4-2\eta}
+\le \frac14 A.
+\]
+For the second positive term, again using the bound on \(k\),
+\[
+2k n^{1/4-3\eta}L
+\le 4(1+\eta)\sqrt n\sqrt L\,n^{1/4-3\eta}L
+=\frac{4(1+\eta)\sqrt L\,L}{n^\eta}\,n^{3/4-2\eta}
+\le \frac14 A.
+\]
+Therefore the exponent is at most
+\[
+\frac14A+\frac14A-A=-\frac12A.
+\]
+Since the exponential function is increasing,
+\[
+\exp\!\left(kL+2k n^{1/4-3\eta}L-A\right)
+\le \exp\!\left(-\frac12 A\right)\le \varepsilon_1.
+\]
+\end{proof}

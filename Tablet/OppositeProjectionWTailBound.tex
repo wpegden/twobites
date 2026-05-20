@@ -1,0 +1,26 @@
+\begin{lemma}
+Let $V_0$ be a fixed set of original vertices and $S$ a fixed set of blue coordinates. Let $W$ be the number of vertices in $V_0$ whose assigned blue coordinate is in $S$. Conditional on the red base graph and red row map, the probability that $W \ge t$ is at most $\binom{|V_0|}{t} (|S|/M)^t$.
+\end{lemma}
+\begin{proof}
+If \(t>|V_0|\), then the event \(W\ge t\) is empty, and the asserted bound is
+immediate.  Assume \(t\le |V_0|\).  Whenever \(W\ge t\), the set
+\[
+\{v\in V_0:\pi_B(v)\in S\}
+\]
+has at least \(t\) elements, so it contains some \(t\)-element subset
+\(T\subseteq V_0\).  Therefore
+\[
+\{W\ge t\}\subseteq
+\bigcup_{\substack{T\subseteq V_0\\ |T|=t}}
+\{\forall v\in T,\ \pi_B(v)\in S\}.
+\]
+There are exactly \(\binom{|V_0|}{t}\) possible sets \(T\).  For each fixed
+\(T\), \(\noderef{OppositeProjectionRowInjectionLaw}\) bounds the conditional
+probability of the event \(\forall v\in T,\pi_B(v)\in S\) by
+\((|S|/M)^t\), including the zero-conditioning-mass case.  The finite union
+bound over all such \(T\) gives
+\[
+\Pr(W\ge t\mid G_R,\rho)
+\le \binom{|V_0|}{t}\left(\frac{|S|}{M}\right)^t.
+\]
+\end{proof}

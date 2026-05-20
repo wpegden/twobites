@@ -1,0 +1,180 @@
+\begin{helper}[FiberAndDegreeSameColorLiftedIntersectionNegligible]
+\label{helper:FiberAndDegreeSameColorLiftedIntersectionNegligible}
+Let \(\beta=1/2\), let
+\[
+m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p(n)=\noderef{TwoBiteEdgeProbability}(\beta,n),
+\]
+and take probabilities with respect to
+\[
+\noderef{TwoBiteEventProbability}(n,m(n),p(n)).
+\]
+The following event has \(\noderef{NegligibleProbability}\): there is a
+distinct red pair or a distinct blue pair whose lifted-neighborhood
+intersection is larger than \(100(\log n)^3\), and simultaneously every
+same-color base codegree is at most \(100\log n\).  Equivalently, the
+negligible event is
+\[
+\begin{aligned}
+&\Bigl[
+\exists r\ne s,
+\left|
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(s))
+\right|>100(\log n)^3\\
+&\quad\text{or}\quad
+\exists b\ne c,
+\left|
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(b))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(c))
+\right|>100(\log n)^3
+\Bigr]\\
+&\quad\cap
+\Bigl[
+\forall r\ne s,
+|\{t:\noderef{TwoBiteRedGraph}(\omega).Adj(r,t)\land
+\noderef{TwoBiteRedGraph}(\omega).Adj(s,t)\}|\le100\log n,\\
+&\qquad\quad
+\forall b\ne c,
+|\{t:\noderef{TwoBiteBlueGraph}(\omega).Adj(b,t)\land
+\noderef{TwoBiteBlueGraph}(\omega).Adj(c,t)\}|\le100\log n
+\Bigr].
+\end{aligned}
+\]
+\end{helper}
+
+\begin{proof}
+Write
+\[
+M=m(n),\qquad p=p(n),\qquad L=\log n.
+\]
+Let \(E_n\) be the event in the statement.  Let \(B_n\) be the sharper
+same-color base-codegree event
+\[
+\begin{aligned}
+B_n=\{&
+\forall r\ne s,
+|\{t:\noderef{TwoBiteRedGraph}(\omega).Adj(r,t)\land
+\noderef{TwoBiteRedGraph}(\omega).Adj(s,t)\}|\le L,\\
+&\forall b\ne c,
+|\{t:\noderef{TwoBiteBlueGraph}(\omega).Adj(b,t)\land
+\noderef{TwoBiteBlueGraph}(\omega).Adj(c,t)\}|\le L\}.
+\end{aligned}
+\]
+Pointwise,
+\[
+E_n\subseteq (E_n\cap B_n)\cup B_n^c.
+\tag{1}
+\]
+Thus it suffices to prove that both probabilities on the right tend to
+\(0\).
+
+First prove \(\Pr(B_n^c)\to0\).  Discard finitely many \(n\) so that
+\[
+L\ge1,\qquad M=\left\lfloor \frac n{L^2}\right\rfloor,\qquad
+M\le n,\qquad 0\le p\le1.
+\tag{2}
+\]
+The formula for \(M\) follows from \(\noderef{TwoBiteNaturalReducedVertexCount}\),
+\(\noderef{TwoBiteReducedVertexCount}\), and \(\noderef{TwoBiteStretch}\);
+the probability bounds on \(p\) are eventual by
+\(\noderef{OppositeProjectionEdgeProbBounds}\).  Fix distinct red vertices
+\(r,s\).  By \(\noderef{TwoBiteSample}\), an outcome is a red graph, a blue
+graph, and an injection.  For any event depending only on the red graph, the
+finite probability sum in \(\noderef{TwoBiteEventProbability}\), with the
+factorization of \(\noderef{TwoBiteSampleWeight}\), separates into a red
+\(\noderef{GnpGraphWeight}\) sum, a blue graph sum, and an injection sum.
+The blue graph sum is \(1\) by \(\noderef{GnpGraphWeightSumOne}\), and the
+injection sum is \(1\) by the definition of \(\noderef{UniformInjectionWeight}\)
+once \(n\le M^2\), which holds eventually by
+\(\noderef{TwoBiteNaturalTotalMassOneEventually}\).  Hence the red marginal
+is the \(G(M,p)\) product law.  The same argument gives the blue marginal.
+
+Under this product law, the red common-neighbor count of \(r,s\) is a binomial
+variable with at most \(M\) trials and success probability \(p^2\).  Its mean
+satisfies
+\[
+\mu\le Mp^2
+\le \frac n{L^2}\cdot \frac14\frac Ln
+=\frac1{4L}.
+\tag{3}
+\]
+Let \(T=\lceil L\rceil\).  If the common-neighbor count is \(>L\), then it is
+at least \(T\).  A direct union bound over \(T\)-subsets of possible common
+neighbors gives
+\[
+\Pr(Y\ge T)\le \binom MT(p^2)^T
+\le \left(\frac{e\mu}{T}\right)^T.
+\tag{4}
+\]
+Using \(T\ge L\) and (3), for large \(n\),
+\[
+\Pr(Y>L)\le
+\left(\frac{e}{4L^2}\right)^L
+\le \exp\!\left(-\frac12L\log L\right).
+\tag{5}
+\]
+There are fewer than \(M^2\le n^2=\exp(2L)\) ordered red pairs and the same
+number of ordered blue pairs.  The union bound, (5), and the domination of
+\(L\log L\) over \(L\) prove \(\Pr(B_n^c)\to0\).
+
+It remains to bound \(E_n\cap B_n\).  Fix base graphs satisfying \(B_n\).
+For a distinct red pair \(r,s\), membership in both lifted red neighborhoods
+means exactly that the injected product cell has red coordinate in
+\[
+N_{\noderef{TwoBiteRedGraph}(\omega)}(r)\cap
+N_{\noderef{TwoBiteRedGraph}(\omega)}(s),
+\]
+by the definitions of \(\noderef{TwoBiteLiftedNeighborhood}\),
+\(\noderef{TwoBiteRedProjection}\), and \(\noderef{TwoBiteEmbedding}\).
+Thus the marked product cells are
+\[
+(N_{G_R}(r)\cap N_{G_R}(s))\times\operatorname{Fin}(M),
+\]
+and \(B_n\) gives at most \(LM\) marked cells.
+
+The rounded-size definition gives, after discarding finitely many more \(n\),
+\[
+n\le M^2,\qquad n\le 2L^2M.
+\tag{6}
+\]
+The first inequality is again supplied by
+\(\noderef{TwoBiteNaturalTotalMassOneEventually}\); the second is the
+standard floor consequence of
+\(M=\lfloor n/L^2\rfloor\) for large \(n\).  Therefore all hypotheses of
+\(\noderef{FiberAndDegreeSameColorLiftedIntersectionFixedPairInjectionTail}\)
+hold for this fixed red pair.  The conditional probability, over the
+injection coordinate, that this pair has lifted intersection larger than
+\(100L^3\) is at most \(\exp(-2L^3)\).
+
+The blue case is identical.  Conditioning on the blue base graph, the marked
+cells for a distinct blue pair \(b,c\) are
+\[
+\operatorname{Fin}(M)\times (N_{G_B}(b)\cap N_{G_B}(c)),
+\]
+using \(\noderef{TwoBiteBlueProjection}\), and \(B_n\) again gives at most
+\(LM\) marked cells.  Hence the same fixed-pair tail bound applies.
+
+There are fewer than \(M^2\) ordered red pairs and fewer than \(M^2\) ordered
+blue pairs, so the conditional probability of \(E_n\cap B_n\), given any
+base graphs satisfying \(B_n\), is at most
+\[
+2M^2\exp(-2L^3).
+\tag{7}
+\]
+The sample weights are nonnegative for all sufficiently large \(n\) by
+\(\noderef{TwoBiteSampleWeightNonnegative}\) and
+\(\noderef{OppositeProjectionEdgeProbBounds}\), so the same finite-sum union
+bound applies after summing over base graphs.  Thus the unconditional
+probability of \(E_n\cap B_n\) is bounded by the right side of (7).
+By \(\noderef{OppositeProjectionAsymptoticBound}\) with \(c=2\),
+\[
+M(n)^2\exp(-2(\log n)^3)\to0.
+\]
+Combining this with \(\Pr(B_n^c)\to0\) and the decomposition (1) proves that
+the probability of \(E_n\) tends to \(0\), which is exactly the asserted
+\(\noderef{NegligibleProbability}\).
+\end{proof}

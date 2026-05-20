@@ -1,0 +1,33 @@
+\begin{helper}
+Let \(C(x)=\binom{x}{2}_{\mathbb R}=x(x-1)/2\).  Suppose
+\[
+0\le\varepsilon\le1,\qquad 98\le D,\qquad 0\le b,\qquad 0\le u,\qquad
+b+u=D.
+\]
+Then
+\[
+C((1+\varepsilon)b)+C((1+\varepsilon)u)
+\le
+(1+10\varepsilon)\bigl(C(b)+C(u)\bigr).
+\]
+\end{helper}
+\begin{proof}
+The identity
+\[
+2\Bigl((1+10\varepsilon)(C(b)+C(u))
+-C((1+\varepsilon)b)-C((1+\varepsilon)u)\Bigr)
+=
+\varepsilon\Bigl((8-\varepsilon)(b^2+u^2)-9D\Bigr)
+\]
+follows by expanding \(C(x)=x(x-1)/2\) and using \(b+u=D\).  Since
+\((b-u)^2\ge0\), the relation \(b+u=D\) gives
+\[
+D^2\le2(b^2+u^2).
+\]
+With \(D\ge98\) and \(\varepsilon\le1\), this implies
+\[
+(8-\varepsilon)(b^2+u^2)-9D\ge0.
+\]
+Multiplication by \(\varepsilon\ge0\) shows that the cleared denominator
+difference is nonnegative, proving the claim.
+\end{proof}

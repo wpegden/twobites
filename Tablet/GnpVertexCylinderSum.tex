@@ -1,0 +1,31 @@
+\begin{helper}[GnpVertexCylinderSum]
+Let \(m\) be a natural number, let \(p\in\mathbb R\), let
+\(S\subseteq \operatorname{Fin}(m)\) be finite, and let
+\(r\in\operatorname{Fin}(m)\) with \(r\notin S\).  Under the
+\(\noderef{GnpGraphWeight}\) product graph weight, the cylinder event that
+all edges from \(r\) to vertices in \(S\) are present has mass
+\[
+\sum_G
+\begin{cases}
+\noderef{GnpGraphWeight}(p,G),
+&\text{if }\forall t\in S,\;G.Adj(r,t),\\
+0,&\text{otherwise}
+\end{cases}
+=p^{|S|}.
+\]
+\end{helper}
+\begin{proof}
+Use the edge-coordinate representation from \(\noderef{GnpGraphWeight}\):
+each unordered edge is represented by the ordered pair \((a,b)\) with
+\(a<b\), and a graph is equivalently a Boolean assignment to these
+coordinates.  The event in the statement requires exactly the coordinates
+\(\{r,t\}\) for \(t\in S\) to be present.  Since \(r\notin S\), these are
+\(|S|\) distinct non-loop coordinates.
+
+For each required coordinate, summing over the Boolean value with the
+constraint that the edge is present contributes \(p\).  For every other edge
+coordinate, the two choices contribute \(p+(1-p)=1\); this is the finite
+product-sum collapse encoded by \(\noderef{ProductWeightSumOne}\).  Thus the
+full graph sum factors as \(p^{|S|}\) times a product of \(1\)'s over all
+unconstrained coordinates, which is \(p^{|S|}\).
+\end{proof}

@@ -1,0 +1,14 @@
+\begin{helper}
+For any finite set of ordered pairs of base vertices, normalizing each ordered
+pair to the increasing coordinate can identify at most two ordered pairs with
+one normalized coordinate.  Consequently, the number of ordered pairs is at
+most twice the number of normalized coordinates.
+\end{helper}
+\begin{proof}
+Let \(N(x,y)\) be \((x,y)\) if \(x<y\), and \((y,x)\) otherwise.  Fix a
+normalized coordinate \(q\).  If \(N(e)=q\), then either \(e=q\), in the
+increasing case, or \(e\) is the reversal of \(q\), in the other case.  Thus
+every fiber of the normalization map has cardinality at most two.  Applying
+the finite fiber-cardinality bound \(\noderef{ProjectionFiberCardBound}\) gives
+the desired inequality.
+\end{proof}

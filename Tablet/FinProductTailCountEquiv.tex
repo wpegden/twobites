@@ -1,0 +1,21 @@
+\begin{helper}[FinProductTailCountEquiv]
+\label{helper:FinProductTailCountEquiv}
+Let \(K\subseteq \operatorname{Fin}(m)\times\operatorname{Fin}(m)\), let
+\(T\in\mathbb R\), and use the standard equivalence
+\(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\simeq
+\operatorname{Fin}(m^2)\).  The number of \(n\)-element subsets
+\(S\subseteq\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) with
+\(|S\cap K|>T\) is equal to the indicator sum over \(n\)-element subsets of
+\(\operatorname{Fin}(m^2)\) for the transported marked set.
+\end{helper}
+\begin{proof}
+The standard equivalence is a bijection on the ambient finite type.  Sending a
+subset \(S\) to its image under this equivalence is therefore a bijection
+between \(n\)-element subsets of
+\(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) and \(n\)-element subsets
+of \(\operatorname{Fin}(m^2)\).  It also sends \(S\cap K\) bijectively onto
+the intersection of the transported subset with the transported marked set,
+so the intersection cardinality is preserved.  Rewriting the cardinality of a
+filtered family as the sum of its \(0/1\) indicator over all \(n\)-element
+subsets gives the claimed equality.
+\end{proof}

@@ -1,0 +1,31 @@
+\begin{helper}[Hypergeometric counting upper Chernoff bound]
+Let \(N,n,m\) be natural numbers with \(n\le N\) and \(m\le N\), and let
+\(M\subseteq \{0,\ldots,N-1\}\) have cardinality \(m\).  For every
+\(\delta>0\), put \(q=m/N\) and \(\mu=nq\).  Then the number of \(n\)-subsets
+\(S\) for which \(|S\cap M|>(1+\delta)\mu\), divided by \(\binom{N}{n}\), is at
+most
+\[
+  \exp\!\left(-\bigl((1+\delta)\log(1+\delta)-\delta\bigr)\mu\right).
+\]
+\end{helper}
+\begin{proof}
+Let \(L=\log(1+\delta)>0\).  On the event
+\(|S\cap M|>(1+\delta)\mu\), monotonicity of the exponential gives
+\(\exp(L(1+\delta)\mu)\le \exp(L|S\cap M|)\).  Summing this inequality over
+the exceptional \(n\)-subsets, enlarging the sum to all \(n\)-subsets, and
+dividing by \(\binom{N}{n}\exp(L(1+\delta)\mu)\) gives
+\[
+  \frac{\#\{S: |S\cap M|>(1+\delta)\mu\}}{\binom{N}{n}}
+  \le
+  \exp(-L(1+\delta)\mu)\,
+  \frac{1}{\binom{N}{n}}\sum_{|S|=n}\exp(L|S\cap M|).
+\]
+By \(\noderef{HypergeometricMgfComparison}\), the average on the right is at
+most \(\exp(\mu(e^L-1))\).  Since \(e^L=1+\delta\), the exponent is
+\[
+  \mu\delta-(1+\delta)\mu\log(1+\delta)
+  =
+  -\bigl((1+\delta)\log(1+\delta)-\delta\bigr)\mu,
+\]
+which is the required bound.
+\end{proof}

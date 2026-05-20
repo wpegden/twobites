@@ -1,0 +1,48 @@
+\begin{lemma}
+Fix a finite set \(C\) of tagged red-or-blue endpoint-pair coordinates, that
+is, elements of
+\[
+\operatorname{Sum}(\mathrm{Fin}(m)\times\mathrm{Fin}(m),
+  \mathrm{Fin}(m)\times\mathrm{Fin}(m)).
+\]
+No increasing, nonloop, normalized, or terminal-universe condition is imposed
+on the elements of \(C\).  Let \(t\) be an integer.  Suppose \(|C|\le N\),
+\(0\le p\le1\), and suppose that every \(t\)-element set \(A\subseteq C\)
+satisfies
+\[
+\noderef{TwoBiteEventProbability}
+\left(\{\omega:\text{every coordinate in }A\text{ is present in }\omega\}\right)
+\le p^t .
+\]
+Then
+\[
+\noderef{TwoBiteEventProbability}
+\left(\{\omega:\text{at least }t\text{ coordinates of }C
+\text{ are present in }\omega\}\right)
+\le \binom Nt p^t .
+\]
+\end{lemma}
+\begin{proof}
+For a sample \(\omega\), let \(P(\omega)\subseteq C\) be the subset of
+coordinates that are present in \(\omega\), using
+\(\noderef{TwoBiteEdgeCoordinateValue}\).  If \(|P(\omega)|\ge t\), then
+finite subset selection gives a \(t\)-element subset \(A\subseteq P(\omega)\).
+This \(A\) is also a \(t\)-element subset of \(C\), and every coordinate in
+\(A\) is present in \(\omega\).  Hence the event
+\[
+\{|P(\omega)|\ge t\}
+\]
+is contained in the union, over all \(A\in\binom{C}{t}\), of the fixed-subset
+events that all coordinates of \(A\) are present.
+
+By \(\noderef{TwoBiteEventProbabilityUnionBound}\), using the nonnegative
+sample weights supplied by \(0\le p\le1\), the probability of this union is at
+most the sum of the probabilities of those fixed-subset events.  Each summand
+is at most \(p^t\) by hypothesis, so the sum is at most
+\[
+|\binom{C}{t}|\,p^t=\binom{|C|}{t}p^t.
+\]
+Since \(|C|\le N\), monotonicity of binomial coefficients gives
+\(\binom{|C|}{t}\le\binom Nt\).  Finally \(p^t\ge0\), so multiplying by
+\(p^t\) preserves the inequality and yields the claimed bound.
+\end{proof}

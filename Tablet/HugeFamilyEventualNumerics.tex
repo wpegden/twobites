@@ -1,0 +1,42 @@
+\begin{helper}
+Assume
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\), and
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Let
+\[
+t_1=\noderef{TwoBiteHugeCutoff}(n),\qquad C=100(\log n)^3.
+\]
+Then \(t_1>0\), \(C\ge0\), and
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}C\le \frac12 k.
+\]
+\end{helper}
+\begin{proof}
+Apply \(\noderef{ParameterHierarchyEventualComparisons}\) at the present
+\(n\).  One of its conjuncts is exactly
+\[
+\binom{2K/t_1+1}{2}_{\mathbb R}100(\log n)^3\le\frac12K,
+\]
+where \(K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)\).
+The hypothesis \(k=K\) rewrites this as the displayed inequality with
+\(C=100(\log n)^3\).
+
+It remains to record the signs needed by the counting argument.  The same
+eventual-comparisons package gives
+\[
+1\le 2pm,\qquad 0\le\varepsilon_2,\qquad
+2pm\le(\varepsilon_2/100)t_1.
+\]
+Since \(\varepsilon_2/100\ge0\), the inequalities
+\(1\le 2pm\le(\varepsilon_2/100)t_1\) force \(t_1>0\); otherwise the right
+side would be nonpositive.  They also force
+\[
+p=\frac12\sqrt{\frac{\log n}{n}}>0,
+\]
+because \(m>0\) is another conjunct of the same package.  Since \(n>0\), the
+positivity of this square root gives \(\log n>0\).  Therefore
+\((\log n)^3\ge0\), and multiplying by \(100>0\) gives \(C\ge0\).
+\end{proof}

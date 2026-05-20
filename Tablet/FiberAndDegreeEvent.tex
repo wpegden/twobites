@@ -1,0 +1,46 @@
+\begin{definition}
+Let \(C=100\).  For \(x\in V_R\cup V_B\), let \(N(x)\) denote the neighborhood
+of \(x\) in its own base graph, and define the lifted neighborhood
+\[
+N_x=\bigcup_{y\in N(x)}F(y)\subseteq V(G).
+\]
+If \(x=r_i\in V_R\), also define
+\[
+N_x^+=\bigcup_{\substack{j>i\\ r_j\in N(r_i)}}F(r_j),
+\]
+and if \(x=b_i\in V_B\), define \(N_x^+\) analogously using the order on
+\(V_B\).  The event \(\mathcal D\) is the event that all of the following hold
+for every \(x\in V_R\cup V_B\) and every distinct \(x,y\in V_R\cup V_B\):
+\begin{enumerate}
+\item fiber sizes are concentrated:
+\[
+\bigl||F(x)|-\log^2 n\bigr|\le \varepsilon_2\log^2 n;
+\]
+\item base degrees are concentrated:
+\[
+\bigl||N(x)|-pm\bigr|\le \varepsilon_2pm;
+\]
+\item same-color base codegrees are small:
+\[
+|N(x)\cap N(y)|\le C\log n
+\]
+whenever \(x,y\in V_R\) or \(x,y\in V_B\);
+\item lifted neighborhood sizes are concentrated:
+\[
+\bigl||N_x|-pn\bigr|\le \varepsilon_2pn;
+\]
+\item lifted neighborhood intersections are small:
+\[
+|N_x\cap N_y|\le C\log^3 n;
+\]
+\item projected lifted codegrees are small on the opposite color:
+\[
+|\pi_B(N_x)\cap\pi_B(N_y)|\le 2C\log^3 n
+\]
+whenever \(x,y\in V_R\), and
+\[
+|\pi_R(N_x)\cap\pi_R(N_y)|\le 2C\log^3 n
+\]
+whenever \(x,y\in V_B\).
+\end{enumerate}
+\end{definition}

@@ -1,0 +1,17 @@
+\begin{helper}[Common Union Cardinal Difference Bound]
+Let \(U,A,B\) be finite sets. Then
+\[
+\bigl||U\cup A|-|U\cup B|\bigr|\le \max\{|A|,|B|\}.
+\]
+\end{helper}
+\begin{proof}
+Write \(U\cup A\) as the disjoint union \(U\sqcup(A\setminus U)\), and similarly
+\(U\cup B=U\sqcup(B\setminus U)\). Hence the common \(|U|\) terms cancel:
+\[
+\bigl||U\cup A|-|U\cup B|\bigr|
+=\bigl||A\setminus U|-|B\setminus U|\bigr|.
+\]
+For nonnegative integers \(a,b\), \(|a-b|\le\max\{a,b\}\). Applying this to
+\(|A\setminus U|\) and \(|B\setminus U|\), and then using
+\(|A\setminus U|\le |A|\) and \(|B\setminus U|\le |B|\), gives the claim.
+\end{proof}

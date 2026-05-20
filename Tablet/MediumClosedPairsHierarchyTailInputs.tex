@@ -1,0 +1,62 @@
+\begin{lemma}
+Assume \(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\).
+Then, for all sufficiently large \(n\), the following holds.  Let
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and
+\[
+A=\frac{K\,n^{1/4-\varepsilon}}{6(\log n)^2}.
+\]
+For every fixed split \(B_R,B_B\) satisfying
+\[
+|B_R|+|B_B|
+\le \frac32 K n^{1/4-3\varepsilon},
+\]
+we have \(A>0\), \(p\ge0\),
+\[
+p(|B_R|+|B_B|)K\le\frac{A}{4e},
+\]
+and
+\[
+n^{3/4-2\varepsilon}\le \frac A4.
+\]
+\end{lemma}
+\begin{proof}
+The hierarchy gives \(0<\varepsilon<1/16\) and hence \(0<\varepsilon<1\).
+Use the eventual base-threshold package
+\(\noderef{ParameterHierarchyBaseThreshold}\) and the medium exponential
+threshold package \(\noderef{ParameterHierarchyT28Threshold}\), and enlarge
+the threshold so that \(n>n_0\) and both packages apply.
+
+For such \(n\), \(\noderef{ParameterHierarchyLogPositivity}\) gives
+\(\log n>0\), and of course \(n>0\).  The base-threshold package gives
+\[
+(1+\varepsilon)\sqrt{n\log n}\le K
+\quad\text{and}\quad
+K<2(1+\varepsilon)\sqrt{n\log n}.
+\]
+Since \(p=\frac12\sqrt{\log n/n}\), the upper bound on \(K\) gives
+\[
+pK\le
+\frac12\sqrt{\frac{\log n}{n}}\,
+2(1+\varepsilon)\sqrt{n\log n}
+=(1+\varepsilon)\log n.
+\]
+
+The strengthened absorption helper
+\(\noderef{MediumClosedPairsCompressedTailAbsorptions}\), applied with this
+positive \(\varepsilon\), is an eventual statement.  Intersecting that
+eventual statement with the current base and \(T28\) thresholds, we are
+working only with \(n\) for which it gives
+\[
+36e(1+\varepsilon)(\log n)^3\le n^{2\varepsilon}
+\quad\text{and}\quad
+24(\log n)^2\le(1+\varepsilon)\sqrt{\log n}\,n^\varepsilon.
+\]
+The hypotheses just proved are exactly the positivity, mean, and lower
+threshold hypotheses required by
+\(\noderef{MediumClosedPairsNaturalTailHypotheses}\), which supplies the four
+claimed conclusions.
+\end{proof}

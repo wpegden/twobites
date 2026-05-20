@@ -1,0 +1,132 @@
+\begin{helper}
+Fix a history cell with recorded coordinate set \(R_h\), terminal coordinate
+set \(U_h\), and two completions \(\omega,\omega^\ast\) having the same
+injection.  Assume that both samples have the same pre-terminal recorded set:
+\[
+e\in R_h
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega^\ast,\varepsilon,I),
+\]
+and that the terminal set is the full unrecorded terminal universe:
+\[
+e\in U_h
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)\hbox{ and }e\notin R_h.
+\]
+Assume also that \(\omega\) and \(\omega^\ast\) agree on every coordinate of
+\(R_h\).
+
+If they agree on all blue coordinates in \(U_h\), then for every blue base
+vertex \(b\) the sets
+\[
+\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b))
+\quad\text{and}\quad
+\noderef{TwoBiteX}(\omega^\ast,I,\operatorname{blue}(b))
+\]
+are equal.  Consequently the large, medium, and small classifications of
+\(\operatorname{blue}(b)\) agree in the two samples, and for every base pair
+\(q\),
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b)))\bigr)
+\]
+if and only if
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^{\omega^\ast}
+(\noderef{TwoBiteX}(\omega^\ast,I,\operatorname{blue}(b)))\bigr).
+\]
+The color-swapped statement also holds: agreement on all red coordinates in
+\(U_h\) transfers the red sets
+\(\noderef{TwoBiteX}(-,I,\operatorname{red}(r))\), their large/medium/small
+classifications, and the corresponding blue projected-pair predicates.
+\end{helper}
+\begin{proof}
+We prove the blue-neighborhood statement; the red statement is identical with
+the color tags interchanged.  Fix a blue base vertex \(b\) and a final vertex
+\(v\in I\).  Membership of \(v\) in
+\(\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b))\) is, by unfolding
+\(\noderef{TwoBiteX}\) and \(\noderef{TwoBiteLiftedNeighborhood}\), the
+assertion that the blue base edge between \(b\) and
+\(\pi_B^\omega(v)\) is present, except in the loop case where the simple blue
+base graph has no loop.  The common-injection hypothesis gives
+\[
+\pi_B^\omega(v)=\pi_B^{\omega^\ast}(v).
+\tag{1}
+\]
+Thus the same base endpoint is tested in both samples.
+
+If this endpoint is \(b\), the queried adjacency is a loop in both blue base
+graphs and is false in both samples.  Hence the membership decision agrees.
+Assume now that the endpoint is distinct from \(b\).  Put the two endpoints
+in increasing order and call the resulting tagged coordinate \(c\).  Then
+\[
+c=\operatorname{blue}(a_1,a_2),\qquad a_1<a_2,
+\]
+so by the definition of \(\noderef{TwoBiteTerminalCoordinateUniverse}\) we
+have \(c\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)\).  There are two
+cases.
+
+First, if \(c\in R_h\), then the recorded-agreement hypothesis gives
+\[
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,c)
+\Longleftrightarrow
+\noderef{TwoBiteEdgeCoordinateValue}(\omega^\ast,c).
+\tag{2}
+\]
+Since \(c\) is the blue coordinate representing the unordered pair
+\(\{b,\pi_B(v)\}\), (2) is exactly equality of the blue adjacency truth value
+used in the two lifted-neighborhood tests.
+
+Second, if \(c\notin R_h\), then the full-terminal-universe identity gives
+\[
+c\in U_h.
+\tag{3}
+\]
+The assumed agreement on blue terminal coordinates applies to (3), and again
+gives the equivalence of the blue edge value in the two samples.  These two
+cases cover every non-loop blue coordinate because every such coordinate lies
+in the terminal coordinate universe and \(U_h\) is precisely the complement
+of \(R_h\) inside that universe.
+
+We have proved that every \(v\in I\) is a blue neighbor of \(b\) in
+\(\omega\) if and only if it is a blue neighbor of \(b\) in
+\(\omega^\ast\).  Since
+\(\noderef{TwoBiteX}\) is the filter of \(I\) by this lifted-neighborhood
+predicate, the two finite sets \(X_b(I)\) are equal.  Their cardinalities are
+therefore equal.  Unfolding
+\(\noderef{TwoBiteLargeClass}\), \(\noderef{TwoBiteMediumClass}\), and
+\(\noderef{TwoBiteSmallClass}\), each of the three predicates is a numerical
+condition only on \(|X_b(I)|\) and the fixed cutoffs.  Hence the three
+classifications agree between \(\omega\) and \(\omega^\ast\).
+
+It remains to transfer the projected-pair predicate.  The common injection
+also gives
+\[
+\pi_R^\omega(v)=\pi_R^{\omega^\ast}(v)
+\qquad(v\in I).
+\tag{4}
+\]
+Together with the equality of \(X_b(I)\), equation (4) gives equality of the
+red projected images
+\[
+\pi_R^\omega\bigl(\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b))\bigr)
+=
+\pi_R^{\omega^\ast}
+\bigl(\noderef{TwoBiteX}(\omega^\ast,I,\operatorname{blue}(b))\bigr).
+\]
+Applying the same finite-set function
+\(\noderef{TwoBiteBasePairs}\) to the two equal projected images gives the
+displayed equivalence for every base pair \(q\).
+
+For the red statement, replace blue by red throughout.  A vertex
+\(v\in I\) lies in
+\(\noderef{TwoBiteX}(-,I,\operatorname{red}(r))\) according to the red edge
+coordinate between \(r\) and \(\pi_R(v)\).  That coordinate is either in the
+recorded set \(R_h\), where recorded agreement applies, or in the terminal
+set \(U_h\), where the assumed red terminal agreement applies.  The same
+cardinality and projection-image argument transfers the red
+large/medium/small classifications and the blue projected-pair predicates.
+\end{proof}

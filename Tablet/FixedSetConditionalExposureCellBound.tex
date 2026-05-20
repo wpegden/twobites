@@ -1,0 +1,282 @@
+\begin{lemma}
+Let \(I\subseteq[n]\) satisfy
+\[
+|I|=k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+and assume \(0\le\varepsilon_1\le1\),
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\), and
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+Suppose that every sample \(\omega\) satisfying both
+\[
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega)
+\]
+and
+\[
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)
+\]
+also satisfies
+\[
+\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)
+  -10\varepsilon_1k^2
+\le
+\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|.
+\tag{1}
+\]
+Then
+\[
+\noderef{TwoBiteConditionalProbability}\!\left(n,m,p;\,
+I\hbox{ is independent in }\noderef{TwoBiteFinalGraph}(\omega)_0
+\text{ and }
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega)
+\;\middle|\;
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)
+\right)
+\le
+\exp\!\left(
+-p f(\ell_R,\ell_B)
++8\sqrt{\varepsilon_1}\,pk^2
++10\varepsilon_1pk^2
++4\log k\right),
+\]
+where \(f=\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)\).
+\end{lemma}
+\begin{proof}
+Let \(S=\mathcal S_{I,\ell_R,\ell_B}\).  If \(\Pr(S)=0\), the definition of
+\(\noderef{TwoBiteConditionalProbability}\) makes the conditional probability
+equal to \(0\), so the asserted upper bound is immediate for the nonnegative
+bounds used here.  Assume \(\Pr(S)>0\).
+
+The hierarchy hypotheses and the identity
+\(p=\noderef{TwoBiteEdgeProbability}(\frac12,n)
+=\frac12\sqrt{\log n/n}\) put \(p\) in the strict Bernoulli range
+\(0<p<1\): the eventual range has \(\log n>0\), so the displayed formula
+gives \(p>0\), while
+\(\noderef{ParameterHierarchyEventualComparisons}\) gives
+\(p\le1/2<1\).
+\(\noderef{FixedSetExposureCellProductLaw}\), applied to this projection-size
+cell \(S\), supplies a finite partition of \(S\) into exposure histories
+\(C_h\).  On each \(C_h\) there is a fixed terminal candidate set \(U_h\) and
+a fixed order in which the coordinates of \(U_h\) are exposed.  It also
+supplies the recorded set \(R_h\) with
+\[
+e\in R_h
+\Longleftrightarrow
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)
+\qquad(\omega\in C_h),
+\tag{H1}
+\]
+and the full terminal-universe identity
+\[
+e\in U_h
+\Longleftrightarrow
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)\hbox{ and }e\notin R_h.
+\tag{H2}
+\]
+The coordinates of \(U_h\) have product Bernoulli-\(p\) law after
+conditioning on \(C_h\).  The staged-open set is not fixed on the cell; for
+each
+\(\omega\in C_h\) it is an adaptive subset
+\[
+T(\omega)=\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)
+        \subseteq U_h.
+\]
+The prefix-safety part of the helper says that, when a coordinate of \(U_h\)
+is reached in the terminal order, whether it currently belongs to
+\(T(\omega)\) is already determined from the history and earlier terminal
+values.  Its own edge value is still a fresh Bernoulli-\(p\) factor.  The
+helper also says that a bound proved uniformly for every history on the event
+\[
+\mathcal B_I\cap\mathcal R
+\]
+averages to the identical bound conditioned only on \(S\).  It is therefore
+enough to fix one compatible history \(h\) and prove the displayed
+exponential bound for
+\(\Pr(\mathcal B_I\cap\mathcal R\mid C_h)\).
+
+Let \(\mathcal B_I\) be the event that \(I\) is independent in
+\(\noderef{TwoBiteFinalGraph}\).  If
+\(\Pr(\mathcal B_I\cap\mathcal R\mid C_h)=0\), there is nothing to prove.
+Otherwise some sample in \(C_h\) satisfies \(\mathcal B_I\cap\mathcal R\).
+For any such sample \(\omega\), (1) applies because the history lies inside
+\(S\), and gives the samplewise lower bound
+\[
+|T_R(\omega)|+|T_B(\omega)|=|T(\omega)|
+\ge f(\ell_R,\ell_B)-10\varepsilon_1k^2. \tag{2}
+\]
+Here \(T_R(\omega)\) and \(T_B(\omega)\) are the red and blue parts of the
+adaptive staged-open set \(T(\omega)\).
+
+If \(\mathcal B_I\cap\mathcal R\) occurs, then every present base edge among
+the pairs of \(T_R(\omega)\cup T_B(\omega)\) must be deleted by an
+opposite-color witness.  A present red staged-open coordinate cannot survive
+into the final graph, or two vertices of \(I\) would be adjacent.  The
+same-color deletion alternative in which this coordinate is the latest
+monochromatic edge is excluded by
+\(\noderef{TwoBiteProjectionPairSameColorClosed}\), and the already-revealed
+alternative is excluded by
+\(\noderef{TwoBiteProjectionPairTouched}\).  Hence a present red coordinate
+must have a blue witness; the color-swapped statement holds for present blue
+coordinates.
+
+Let \(P_R(\omega)\subseteq T_R(\omega)\) and
+\(P_B(\omega)\subseteq T_B(\omega)\) be the present red and blue base edges
+among the staged-open pairs, and write
+\[
+u_R=|P_R(\omega)|,\qquad u_B=|P_B(\omega)|.
+\]
+There are at most \(k^2\) possible values for \(u_R\) and at most \(k^2\)
+possible values for \(u_B\), because every staged-open coordinate comes from
+projected pairs of a \(k\)-element set.  The final summation over the two
+cardinalities therefore contributes at most \(k^4\).
+
+The exceptional choices must be fixed before the same-color Bernoulli
+variables they constrain are exposed.  This is supplied by
+\(\noderef{FixedSetAdaptiveExceptionalCandidates}\).  When \(u_R\ge u_B\),
+we reveal the blue terminal candidates first in the fixed history order.  Fix
+one possible blue realization and encode it by a completed sample
+\(\omega^\ast\in C_h\); only the injection, the recorded table, and the blue
+terminal values of \(\omega^\ast\) are used.  We instantiate
+\(\noderef{FixedSetAdaptiveExceptionalCandidates}\) with the history cell
+\(C_h\), the recorded set \(R_h\), and the terminal set \(U_h\).  The
+stronger hypotheses it requires are exactly (H1), (H2), and the
+staged-open containment \(T(\omega)\subseteq U_h\), all supplied by
+\(\noderef{FixedSetExposureCellProductLaw}\).  The helper defines a red
+candidate set
+\[
+E_R^\ast\subseteq U_h
+\]
+from this information alone: a red coordinate belongs to \(E_R^\ast\) exactly
+when it has a large, medium, or small blue opposite-color witness in the
+first-color realization.  In particular \(E_R^\ast\) is fixed before any red
+terminal Bernoulli value is exposed.  For every regular completion with this
+same blue realization,
+\[
+|E_R^\ast|\le 3\varepsilon_1k^2, \tag{3}
+\]
+and if \(\mathcal B_I\) occurs, every present red staged-open coordinate of
+that completion lies in \(E_R^\ast\).  The containment is not an after-the-fact
+choice of an exceptional set: it follows by applying
+\(\noderef{FixedSetExceptionalWitnessClassification}\) to the completed
+regular sample and then transferring the resulting blue-witness predicate
+back to the already fixed blue realization through the common injection,
+recorded table, and blue terminal values.  The transfer is justified by
+\(\noderef{FixedSetOppositeColorTerminalCoverage}\), which is part of the
+adaptive helper's support: every blue coordinate needed to evaluate the
+opposite-color neighborhoods is either recorded in \(R_h\) or lies in the
+full terminal set \(U_h\).  The blue present set in this order is only
+constrained to be a subset of the projected blue pairs, of which there are at
+most \(k^2\).  When \(u_B\ge u_R\), reveal the red terminal candidates first
+and use the symmetric fixed set \(E_B^\ast\) for the later blue coordinates.
+
+Fix \(u_R,u_B\) with \(u_R\ge u_B\).  The product law on the fixed terminal
+set \(U_h\), used sequentially along the prefix-safe order, bounds the
+probability inside \(C_h\) that \(\mathcal B_I\cap\mathcal R\) occurs with
+these cardinalities by
+\[
+\binom{3\varepsilon_1k^2}{u_R}p^{u_R}
+\binom{k^2}{u_B}p^{u_B}
+(1-p)^{f(\ell_R,\ell_B)-10\varepsilon_1k^2-u_R-u_B}. \tag{4}
+\]
+Indeed, first choose the \(u_B\) present blue coordinates from at most \(k^2\)
+projected blue pairs and require those blue Bernoulli values to be present.
+After this first-color realization is fixed, (3) gives the fixed red
+candidate set \(E_R^\ast\) of size at most \(3\varepsilon_1k^2\).  Choose the
+\(u_R\) present red coordinates from \(E_R^\ast\) and require those red
+Bernoulli values to be present.  Prefix safety from
+\(\noderef{FixedSetExposureCellProductLaw}\) justifies this sequential use of
+the product law: staged-openness of the coordinate currently being scanned is
+decided before its own Bernoulli value is read.  Finally require every other
+staged-open coordinate in the realized adaptive set \(T(\omega)\) to be
+absent.  The exponent of \(1-p\) is at least the lower bound in (2) minus the
+two present counts.  Coordinates in \(U_h\setminus T(\omega)\) and the
+additional condition \(\mathcal R\) can only remove branches from this count,
+so they do not increase the upper bound.
+
+Factor the absence probability in (4):
+\[
+\binom{3\varepsilon_1k^2}{u_R}
+\left(\frac{p}{1-p}\right)^{u_R}
+\binom{k^2}{u_B}
+\left(\frac{p}{1-p}\right)^{u_B}
+(1-p)^{f(\ell_R,\ell_B)-10\varepsilon_1k^2}. \tag{5}
+\]
+Set
+\[
+a=f(\ell_R,\ell_B)-10\varepsilon_1k^2.
+\]
+The eventual-comparisons package, together with
+\[
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+gives \(0\le p\le1/2\), hence \(p/(1-p)\le2p\).  We now split according to
+the sign of \(a\).  If \(a<0\), then the desired bound for the fixed
+\((u_R,u_B)\) is immediate: every conditional probability is at most \(1\),
+while
+\[
+8\sqrt{\varepsilon_1}\,pk^2-pa\ge0
+\]
+because \(p\ge0\), \(\varepsilon_1\ge0\), and \(a<0\).  Hence
+\(\exp(8\sqrt{\varepsilon_1}\,pk^2-pa)\ge1\).
+
+It remains to treat the case \(a\ge0\).  Since \(0\le p\le1/2\), the base
+\(1-p\) lies in \((0,1]\).  The standard inequality
+\((1-p)^a\le\exp(-pa)\) is applicable precisely because \(a\ge0\), and gives
+\[
+(1-p)^{f(\ell_R,\ell_B)-10\varepsilon_1k^2}
+\le
+\exp\!\left(-p\bigl(f(\ell_R,\ell_B)-10\varepsilon_1k^2\bigr)\right).
+\tag{6}
+\]
+Using the standard binomial estimate
+\(\binom Ax\le(eA/x)^x\), with value \(1\) when \(x=0\), the two binomial
+factors in (5) are at most
+\[
+\left(\frac{6e\varepsilon_1pk^2}{u_R}\right)^{u_R},
+\qquad
+\left(\frac{2epk^2}{u_B}\right)^{u_B}.
+\tag{7}
+\]
+Since \(0\le\varepsilon_1\le1\) and \(u_B\le u_R\), replacing the first
+\(\varepsilon_1\) by \(\sqrt{\varepsilon_1}\) and inserting
+\(\sqrt{\varepsilon_1}\) into the second factor only increases the product.
+The continuous maximum of \((A/x)^x\) is attained at \(x=A/e\), so (7) is
+bounded by
+\[
+\exp(8\sqrt{\varepsilon_1}\,pk^2). \tag{8}
+\]
+In the nonnegative case \(a\ge0\), combining (5), (6), and (8) gives
+\[
+\Pr(\mathcal B_I\cap\mathcal R\cap\{|P_R|=u_R,|P_B|=u_B\}\mid C_h)
+\le
+\exp\!\left(
+8\sqrt{\varepsilon_1}\,pk^2
+-p\bigl(f(\ell_R,\ell_B)-10\varepsilon_1k^2\bigr)
+\right). \tag{9}
+\]
+The negative case was handled above by the trivial probability bound, so
+(9) holds for every sign of \(a\).
+The case \(u_B\ge u_R\) is identical after swapping the colors, so (9) holds
+for every ordered pair \((u_R,u_B)\).
+
+Summing over the at most \(k^4\) ordered pairs gives, uniformly in \(h\),
+\[
+\Pr(\mathcal B_I\cap\mathcal R\mid C_h)
+\le
+k^4
+\exp\!\left(
+8\sqrt{\varepsilon_1}\,pk^2
+-p\bigl(f(\ell_R,\ell_B)-10\varepsilon_1k^2\bigr)
+\right).
+\]
+Since the large-\(n\) hierarchy gives \(k>0\), \(k^4=\exp(4\log k)\).  The
+history-uniform averaging clause of
+\(\noderef{FixedSetExposureCellProductLaw}\) transfers this same bound from
+the histories \(C_h\) to the projection-size cell \(S\).  This is exactly the
+asserted conditional exposure-cell bound.
+\end{proof}

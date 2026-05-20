@@ -1,0 +1,187 @@
+\begin{lemma}
+Assume the following main-independence hypothesis: for every real
+\(\varepsilon>0\), all sufficiently large \(n\) admit a simple graph \(G\) on
+\(\mathrm{Fin}(n)\) with \(G.\mathrm{CliqueFree}(3)\) and
+\[
+\noderef{IndependenceNumberLess}
+\left(G,(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right).
+\]
+Then, for every real \(\eta>0\), there is an integer \(k_0\) such that for
+every integer \(k\ge k_0\) there is an integer \(N\) satisfying
+\[
+\noderef{RamseyWitness}(N,k)
+\qquad\text{and}\qquad
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le (N:\mathbb R).
+\]
+\end{lemma}
+\begin{proof}
+Fix \(\eta>0\).  We prove the displayed eventual statement by cases.
+
+First suppose \(\eta\ge1/2\).  Choose \(k_0=2\).  Let \(k\ge k_0\).  We take
+\(N=0\), and let \(G\) be the unique simple graph on \(\mathrm{Fin}(0)\).  This
+graph is triangle-free: a triangle would require three vertices of
+\(\mathrm{Fin}(0)\), and there are none.
+
+We now check the independent-set part of
+\(\noderef{RamseyWitness}(0,k)\) directly from the definition of
+\(\noderef{RamseyWitness}\).  Let \(I\) be any finite subset of
+\(\mathrm{Fin}(0)\).  Since \(\mathrm{Fin}(0)\) is empty, \(I=\varnothing\) and
+\(|I|=0\).  Since \(k\ge2\), no such \(I\) has cardinality \(k\).  Hence there
+is no independent set of cardinality \(k\) in \(G\), regardless of the
+independence predicate.  Together with triangle-freeness, the graph \(G\)
+witnesses \(\noderef{RamseyWitness}(0,k)\).
+
+It remains in this case to verify the scale inequality.  Since \(k\ge2\), we
+have \(\log k>0\).  By the definition of \(\noderef{RamseyScale}\),
+\[
+\noderef{RamseyScale}(k)=\frac{k^2}{\log k}\ge0.
+\]
+The hypothesis \(\eta\ge1/2\) gives \(1/2-\eta\le0\).  Multiplying the
+nonnegative number \(\noderef{RamseyScale}(k)\) by this nonpositive factor gives
+\[
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le0=(N:\mathbb R).
+\]
+Thus the required conclusion holds when \(\eta\ge1/2\).
+
+Now assume \(0<\eta<1/2\).  Put
+\[
+c=\frac12-\frac{\eta}{2}.
+\]
+Then
+\[
+\frac12-\eta<c<\frac12,
+\qquad
+\delta:=c-\left(\frac12-\eta\right)=\frac{\eta}{2}>0.
+\]
+Because \(2c<1\), choose \(\varepsilon>0\) so small that
+\[
+2c(1+\varepsilon)^2<1. \tag{1}
+\]
+Apply the assumed main-independence hypothesis to this \(\varepsilon\).  We
+obtain an integer \(n_0\) such that every \(n\ge n_0\) admits a triangle-free
+graph \(G\) on \(\mathrm{Fin}(n)\) satisfying
+\[
+\noderef{IndependenceNumberLess}\!\left(
+G,\,(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right). \tag{2}
+\]
+
+We now choose one eventual threshold for \(k\).  Since \(\log k\to\infty\) and
+\[
+\frac{k^2}{\log k}\to\infty,
+\]
+there is an integer \(k_0\) such that for every \(k\ge k_0\):
+\[
+k\ge3,\qquad \log k>0,\qquad \log k>c,
+\]
+\[
+c\,\frac{k^2}{\log k}\ge n_0+1,\qquad
+c\,\frac{k^2}{\log k}\ge4,\qquad
+\delta\,\frac{k^2}{\log k}\ge1. \tag{3}
+\]
+The existence of this single \(k_0\) follows by taking the maximum of finitely
+many thresholds: the first three conditions are eventual positivity of
+\(\log k\), and the last three use the divergence of \(k^2/\log k\).
+
+Fix \(k\ge k_0\), and abbreviate
+\[
+X=c\,\frac{k^2}{\log k}.
+\]
+The conditions in (3) imply \(X\ge0\).  Define the integer
+\[
+N=N(k)=\lfloor X\rfloor. \tag{4}
+\]
+For a nonnegative real number \(X\), the floor inequalities give
+\[
+N\le X=c\,\frac{k^2}{\log k}, \tag{5}
+\]
+\[
+N\ge X-1. \tag{6}
+\]
+The last inequality in (3) says
+\[
+1\le \delta\,\frac{k^2}{\log k}.
+\]
+Subtracting this bound for \(1\) from \(X=c\,k^2/\log k\), we get
+\[
+X-1\ge
+c\,\frac{k^2}{\log k}-\delta\,\frac{k^2}{\log k}
+= (c-\delta)\frac{k^2}{\log k}
+=\left(\frac12-\eta\right)\frac{k^2}{\log k}. \tag{7}
+\]
+Combining (6) and (7),
+\[
+N\ge
+\left(\frac12-\eta\right)\frac{k^2}{\log k}. \tag{8}
+\]
+Similarly, the two middle inequalities in (3) give
+\[
+N\ge X-1\ge n_0
+\qquad\text{and}\qquad
+N\ge X-1\ge3. \tag{9}
+\]
+By \(\noderef{RamseyScale}\), (8) is exactly
+\[
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le (N:\mathbb R).
+\tag{10}
+\]
+
+It remains to check that the graph supplied by (2) for this value of \(N\) has
+no independent set of cardinality \(k\).  Because \(N\ge3\), we have \(N>0\)
+and \(\log N>0\).  From (5) and \(\log k>c>0\), we have
+\[
+N\le c\,\frac{k^2}{\log k}<k^2. \tag{11}
+\]
+Thus \(0<N\le k^2\).  The logarithm is increasing on positive real numbers, so
+\[
+\log N\le \log(k^2)=2\log k. \tag{12}
+\]
+Both \(N\) and \(\log N\) are nonnegative.  Multiplying the two upper bounds
+(5) and (12), and using \(\log k>0\), gives
+\[
+N\log N
+\le
+\left(c\,\frac{k^2}{\log k}\right)(2\log k)
+=2c\,k^2. \tag{13}
+\]
+Since \(1+\varepsilon>0\), multiplication by \((1+\varepsilon)^2\) preserves
+the inequality:
+\[
+(1+\varepsilon)^2N\log N
+\le 2c(1+\varepsilon)^2k^2
+<k^2, \tag{14}
+\]
+where the final strict inequality is (1).  The left side of (14) is
+nonnegative, and \(k>0\).  By monotonicity of square root on nonnegative reals,
+and by
+\[
+\sqrt{(1+\varepsilon)^2N\log N}
+=(1+\varepsilon)\sqrt{N\log N},
+\]
+we obtain
+\[
+(1+\varepsilon)\sqrt{N\log N}<k. \tag{15}
+\]
+
+Now apply (2) at \(n=N\), which is allowed by \(N\ge n_0\) from (9).  We get a
+triangle-free graph \(G\) on \(\mathrm{Fin}(N)\) such that
+\[
+\noderef{IndependenceNumberLess}\!\left(
+G,\,(1+\varepsilon)\sqrt{N\log N}\right)
+\]
+holds.  Unpacking \(\noderef{IndependenceNumberLess}\), every independent
+finite set \(I\subseteq \mathrm{Fin}(N)\) satisfies
+\[
+(|I|:\mathbb R)<(1+\varepsilon)\sqrt{N\log N}. \tag{16}
+\]
+If there were an independent set \(I\) of cardinality \(k\), then (16) and
+(15) would give
+\[
+(k:\mathbb R)=(|I|:\mathbb R)
+<(1+\varepsilon)\sqrt{N\log N}<k,
+\]
+which is impossible.  Therefore \(G\) has no independent set of cardinality
+\(k\).  Together with the triangle-free property from (2), this is precisely a
+witness for \(\noderef{RamseyWitness}(N,k)\).  The required scale lower bound
+is (10).  Since the same threshold \(k_0\) works for every \(k\ge k_0\), the
+desired eventual statement follows.
+\end{proof}

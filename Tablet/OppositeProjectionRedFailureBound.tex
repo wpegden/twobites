@@ -1,0 +1,129 @@
+\begin{lemma}
+Under the hypotheses of the opposite-projection collision bound, the probability that the size bound holds but the red estimate fails is $o(1)$. Hence the conditional red estimate holds with high probability.
+\end{lemma}
+\begin{proof}
+Write \(M=\noderef{TwoBiteNaturalReducedVertexCount}(n)\),
+\(p=\noderef{TwoBiteEdgeProbability}(1/2,n)\), and \(L=\log n\).  Fix a
+red ordered pair \(r\ne s\).  Put
+\[
+U=N_r,\qquad V=N_s,\qquad U_0=U\setminus V,\qquad V_0=V\setminus U.
+\]
+Condition on the red base graph and the red row map \(\rho=\pi_R\).  The
+conditioning cells form a finite partition, and
+\(\noderef{OppositeProjectionConditioning}\) allows us to prove a uniform
+bound on each nonzero cell; cells of zero mass contribute nothing because
+\(\noderef{TwoBiteConditionalProbability}\) is defined to be \(0\) there.
+
+On the size event,
+\[
+|U_0|\le |U|\le 2pn,\qquad |V_0|\le |V|\le 2pn.
+\]
+After the red row map is fixed, the remaining blue coordinates are uniform
+row injections.  This is exactly the row law in
+\(\noderef{OppositeProjectionRowInjectionLaw}\): if \(T\subseteq V_0\) is
+fixed and \(S\subseteq V_B\), then the conditional probability that every
+vertex of \(T\) lands in \(S\) is at most \((|S|/M)^{|T|}\), with the
+zero-mass case already included.
+
+Now expose all blue coordinates of \(U_0\).  Let \(\eta\) denote a possible
+full exposure of these coordinates, and write
+\[
+S(\eta)=\pi_B(U_0),\qquad |S(\eta)|\le |U_0|.
+\]
+The rows used by \(U_0\) and \(V_0\) are disjoint: \(U_0\) lies over red
+rows adjacent to \(r\) but not \(s\), while \(V_0\) lies over red rows
+adjacent to \(s\) but not \(r\).  The sets are also disjoint by definition of
+the set differences.  Thus the hypotheses of
+\(\noderef{OppositeProjectionExposureTailBound}\) hold for every exposure
+cell \(\eta\).
+
+For a fixed exposure \(\eta\), define
+\[
+W_\eta=|\{v\in V_0:\pi_B(v)\in S(\eta)\}|.
+\]
+The exposure-tail helper first handles the zero-mass exposure cells using the
+zero convention in \(\noderef{TwoBiteConditionalProbability}\).  In every
+nonzero cell it expands the finite sample weights, cancels the row factors
+fixed by the \(U_0\)-exposure, and uses the unchanged row-injection law on
+the rows meeting \(V_0\).  Consequently, for every \(t\),
+\[
+\Pr(W_\eta\ge t\mid G_R,\rho,\eta)
+\le \binom{|V_0|}{t}\left(\frac{|S(\eta)|}{M}\right)^t
+\le \binom{|V_0|}{t}\left(\frac{|U_0|}{M}\right)^t .
+\]
+Average this inequality over all possible exposures \(\eta\).  The exposure
+events form a finite partition of the already conditioned cell; each has
+nonnegative mass, and zero-mass exposure events contribute \(0\).  Since the
+right hand side is uniform in \(\eta\), the same bound holds before exposure:
+\[
+\Pr(W\ge t\mid G_R,\rho)
+\le \binom{|V_0|}{t}\left(\frac{|U_0|}{M}\right)^t
+\le \left(\frac{e|U_0||V_0|}{Mt}\right)^t.
+\]
+The last inequality is the standard estimate
+\(\binom bt\le(eb/t)^t\), and the event is empty when \(t>|V_0|\).
+
+The intersection-containment node
+\(\noderef{OppositeProjectionIntersectionContainment}\) gives
+\[
+|\pi_B(U)\cap\pi_B(V)|
+\le |U\cap V|+W.
+\]
+Indeed, the only projected intersection points not already coming from
+\(U\cap V\) are witnessed by a vertex of \(V_0\) whose blue coordinate lies in
+\(\pi_B(U_0)\), and these witnesses are counted by \(W\).
+
+Now estimate the parameter in the tail bound.  Since
+\[
+p=\noderef{TwoBiteEdgeProbability}(1/2,n)
+=\frac12\sqrt{\frac{L}{n}},
+\]
+and \(L\ge0\) for all sufficiently large \(n\), we have
+\[
+p^2n=\frac14\frac{L}{n}\,n=\frac{L}{4}.
+\]
+Also
+\[
+M=\left\lfloor\frac{n}{L^2}\right\rfloor .
+\]
+Because \(n/L^2\to\infty\), for all sufficiently large \(n\) we have
+\(n/L^2\ge2\), and then
+\[
+M=\left\lfloor\frac{n}{L^2}\right\rfloor
+\ge \frac12\frac{n}{L^2}.
+\]
+Indeed, for \(x\ge2\), \(\lfloor x\rfloor\ge x-1\ge x/2\).  Combining this
+with the size bounds gives, for all sufficiently large \(n\),
+\[
+\frac{|U_0||V_0|}{M}
+\le \frac{(2pn)^2}{M}
+=\frac{4p^2n^2}{M}
+\le \frac{Ln}{M}
+\le 2L^3.
+\]
+Take \(t=\lceil100L^3\rceil\).  Then \(t\ge100L^3\), so
+\[
+\frac{e|U_0||V_0|}{Mt}
+\le \frac{2eL^3}{100L^3}
+=\frac e{50}.
+\]
+Since \(e/50<1\), the tail estimate gives
+\[
+\left(\frac{e|U_0||V_0|}{Mt}\right)^t
+\le \left(\frac e{50}\right)^t
+\le \left(\frac e{50}\right)^{100L^3}
+=\exp(-cL^3),
+\]
+where \(c=100\log(50/e)>0\).  If \(t>|V_0|\), the tail event is empty, so the
+same upper bound holds trivially.  Thus a fixed red pair fails with
+probability at most \(\exp(-cL^3)\), uniformly over the conditioning data.
+
+There are at most \(M^2\le n^2=\exp(2L)\) ordered red pairs for all large
+\(n\).  The union bound gives
+\[
+M^2\exp(-cL^3)\to0
+\]
+by \(\noderef{OppositeProjectionAsymptoticBound}\).  Therefore, with high
+probability, no red pair violates the desired projected intersection estimate
+while the size bound holds.
+\end{proof}

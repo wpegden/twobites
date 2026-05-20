@@ -1,0 +1,30 @@
+\begin{helper}[Second-coordinate same-color injection tail]
+The first-coordinate same-color fixed-pair injection tail also holds for
+marked sets in the second coordinate.  More explicitly, under the same
+support, logarithmic, ratio, and base-codegree hypotheses as in
+\(\noderef{FiberAndDegreeSameColorLiftedIntersectionFixedPairInjectionTail}\),
+the number of injections whose image has more than
+\(100(\log n)^3\) points in
+\[
+\operatorname{Fin}(m)\times
+\{t:G_B.Adj(b,t)\land G_B.Adj(c,t)\}
+\]
+is at most
+\[
+\exp(-2(\log n)^3)\,
+|\operatorname{Inj}(\operatorname{Fin}(n),
+\operatorname{Fin}(m)\times\operatorname{Fin}(m))|.
+\]
+\end{helper}
+\begin{proof}
+Apply the coordinate-swap bijection \((x,y)\mapsto(y,x)\) to every injected
+cell.  This sends injections hitting the second-coordinate marked set above
+to injections hitting the first-coordinate marked set
+\[
+\{t:G_B.Adj(b,t)\land G_B.Adj(c,t)\}\times \operatorname{Fin}(m)
+\]
+with exactly the same number of marked image points, and it is an involution
+on the finite set of injections.  The count is therefore equal to the
+first-coordinate count bounded by
+\(\noderef{FiberAndDegreeSameColorLiftedIntersectionFixedPairInjectionTail}\).
+\end{proof}

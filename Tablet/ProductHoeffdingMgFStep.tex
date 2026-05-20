@@ -1,0 +1,28 @@
+\begin{helper}
+Let \(\Omega\) be finite and let \(q:\Omega\to\mathbb R\) be nonnegative with
+\(\sum_x q(x)=1\).  Let \(X:\Omega\to\mathbb R\) satisfy
+\(a\le X(x)\le b\) for every \(x\), and suppose
+\(\sum_x q(x)X(x)=0\).  Then for every \(\lambda\ge0\),
+\[
+\sum_x q(x)e^{\lambda X(x)}
+\le
+\exp\!\left(\frac{\lambda^2(b-a)^2}{8}\right).
+\]
+\end{helper}
+\begin{proof}
+The weights \(q\) define a probability mass function on the finite set
+\(\Omega\), because they are nonnegative and sum to \(1\).  With respect to
+this probability measure, the expectation of \(X\) is \(0\) and \(X\) is
+almost surely contained in the interval \([a,b]\).
+
+Hoeffding's lemma for a mean-zero random variable supported in an interval of
+length \(b-a\) gives that \(X\) has subgaussian moment-generating function
+parameter \((b-a)^2/4\).  Equivalently, for every real \(\lambda\),
+\[
+\mathbb E e^{\lambda X}
+\le
+\exp\!\left(\frac{\lambda^2(b-a)^2}{8}\right).
+\]
+Writing the finite expectation out as the weighted sum over \(\Omega\) gives
+exactly the displayed inequality.
+\end{proof}

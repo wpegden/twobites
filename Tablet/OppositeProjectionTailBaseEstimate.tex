@@ -1,0 +1,25 @@
+\begin{lemma}
+Let \(L,N,M,T,V,q\) be real numbers with \(L>0\) and \(N>0\).  Suppose
+\[
+  \frac{N}{2L^2}\le M,\qquad 100L^3\le T,\qquad Vq\le LN .
+\]
+Then
+\[
+  \frac{eVq}{TM}\le \frac e{50}.
+\]
+\end{lemma}
+\begin{proof}
+The lower bounds on \(M\) and \(T\) give
+\[
+  TM\ge 100L^3\cdot \frac{N}{2L^2}=50LN .
+\]
+Since \(L,N>0\), the denominator \(50LN\) is positive.  Also
+\[
+  eVq\le eLN .
+\]
+Dividing the numerator by the larger denominator \(TM\) can only decrease
+the quotient, so
+\[
+  \frac{eVq}{TM}\le \frac{eLN}{50LN}=\frac e{50}.
+\]
+\end{proof}

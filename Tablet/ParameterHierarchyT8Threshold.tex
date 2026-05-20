@@ -1,0 +1,38 @@
+\begin{helper}
+For every \(\eta>0\), there is \(n_0\) such that for every \(n>n_0\), if
+\(L=\log n\), then
+\[
+\frac{200(5(1+\eta))^2(\log L)^2L^3}
+{(1+\eta)\sqrt{nL}}\le1.
+\]
+\end{helper}
+\begin{proof}
+Put \(\kappa=1+\eta\) and choose
+\[
+c=\frac1{10000\kappa}.
+\]
+Since \(\eta>0\), we have \(\kappa\ge1\), and this choice gives
+\[
+200(5\kappa)^2c^5\le\kappa. \tag{1}
+\]
+Because \(\log n=o(n^{1/10})\), after increasing \(n_0\) we may assume
+\[
+L=\log n\le c n^{1/10}
+\]
+for every \(n>n_0\).  We also require \(n\ge1\) and \(L\ge1\).  Then
+\(\log L\le L\), so
+\[
+(\log L)^2L^3\le L^5\le c^5\sqrt n.
+\]
+Multiplying by \(200(5\kappa)^2\) and using (1) gives
+\[
+200(5\kappa)^2(\log L)^2L^3\le \kappa\sqrt n.
+\]
+Since \(L\ge1\), \(\sqrt n\le\sqrt{nL}\), and hence
+\[
+200(5\kappa)^2(\log L)^2L^3
+\le \kappa\sqrt{nL}.
+\]
+The denominator \(\kappa\sqrt{nL}\) is positive, so dividing by it proves the
+claimed threshold.
+\end{proof}

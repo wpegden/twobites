@@ -1,0 +1,39 @@
+\begin{helper}
+Let \(L=\log n\), \(t_2=n^{1/4+\eta}\), and \(q=n^{1/4}\).  Assume
+\(n>0\), \(L\ge0\),
+\[
+k<2(1+\eta)\sqrt{nL},\qquad
+\binom{q}{2}_{\mathbb R}\le q^2,
+\]
+and
+\[
+\frac{100L^3}{n^\eta}\le\frac12,\qquad
+\frac{2(1+\eta)\sqrt L}{n^\eta}<\frac12.
+\]
+Then
+\[
+k<q\,t_2-\binom{q}{2}_{\mathbb R}\,100L^3.
+\]
+\end{helper}
+\begin{proof}
+Since \(q\,t_2=n^{1/4}n^{1/4+\eta}=n^{1/2+\eta}\), the second threshold gives
+\[
+2(1+\eta)\sqrt{nL}
+  =\frac{2(1+\eta)\sqrt L}{n^\eta}\,q\,t_2
+  <\frac12 q\,t_2.
+\]
+Thus \(k<\frac12 q\,t_2\).  The first threshold gives
+\(100L^3\le\frac12 n^\eta\).  Combining this with
+\(\binom{q}{2}_{\mathbb R}\le q^2\) gives
+\[
+\binom{q}{2}_{\mathbb R}100L^3
+  \le q^2\frac12 n^\eta
+  =\frac12 q\,t_2.
+\]
+Adding the strict bound for \(k\) and the non-strict loss bound yields
+\[
+k+\binom{q}{2}_{\mathbb R}100L^3<q\,t_2,
+\]
+which is equivalent to the claimed inequality after subtracting the loss
+term.
+\end{proof}

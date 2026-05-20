@@ -1,0 +1,24 @@
+\begin{helper}
+Let \(N\) be a natural number, and let \(b, u \in \mathbb{R}^{\operatorname{Fin}(N)}\).
+Suppose \(b\) is nonincreasing. Let \(r\) be an index such that \(r+1 < N\) and \(u_r < u_{r+1}\). Let \(u'\) be the vector obtained from \(u\) by swapping the entries at \(r\) and \(r+1\). Then
+\[
+\sum_{k} |u'_k - b_k| \le \sum_{k} |u_k - b_k|.
+\]
+\end{helper}
+\begin{proof}
+Because \(b\) is nonincreasing, \(b_r \ge b_{r+1}\). We have \(u_r < u_{r+1}\).
+Apply the two-coordinate rearrangement inequality with \(a = u_r\), \(d = u_{r+1}\), \(\alpha = b_r\), and \(\beta = b_{r+1}\).
+Since \(a \le d\) and \(\beta \le \alpha\), we obtain
+\[
+|u_{r+1} - b_r| + |u_r - b_{r+1}| \le |u_r - b_r| + |u_{r+1} - b_{r+1}|.
+\]
+The vectors \(u\) and \(u'\) agree at all indices except \(r\) and \(r+1\). Thus
+\[
+\sum_{k} |u'_k - b_k| - \sum_{k} |u_k - b_k| = |u'_r - b_r| + |u'_{r+1} - b_{r+1}| - (|u_r - b_r| + |u_{r+1} - b_{r+1}|).
+\]
+Since \(u'_r = u_{r+1}\) and \(u'_{r+1} = u_r\), this difference is exactly
+\[
+|u_{r+1} - b_r| + |u_r - b_{r+1}| - |u_r - b_r| - |u_{r+1} - b_{r+1}| \le 0.
+\]
+Therefore, \(\sum_k |u'_k - b_k| \le \sum_k |u_k - b_k|\).
+\end{proof}

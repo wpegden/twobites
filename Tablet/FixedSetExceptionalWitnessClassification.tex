@@ -1,0 +1,259 @@
+\begin{helper}
+Let \(I\subseteq[n]\) have \(|I|=k\), with
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+and assume \(0\le\varepsilon_1\),
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\),
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\frac12\sqrt{\frac{\log n}{n}},
+\]
+and
+\(\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega)\).  Put
+\[
+T=\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I).
+\]
+For a tagged coordinate \(e\), let \(e\) be present mean that in the red case
+the corresponding edge is present in \(\noderef{TwoBiteRedGraph}(\omega)\),
+and in the blue case it is present in
+\(\noderef{TwoBiteBlueGraph}(\omega)\).
+
+Define a red-exceptional predicate as follows.  A coordinate
+\(\operatorname{red}(q)\) is red-exceptional exactly when there is a blue base
+vertex \(b\) which is large, medium, or small for \(I\), and
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b)))\bigr);
+\]
+blue-tagged coordinates are not red-exceptional.  Define the
+blue-exceptional predicate symmetrically: a coordinate
+\(\operatorname{blue}(q)\) is blue-exceptional exactly when there is a red base
+vertex \(r\) which is large, medium, or small for \(I\), and
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_B^\omega(\noderef{TwoBiteX}(\omega,I,\operatorname{red}(r)))\bigr);
+\]
+red-tagged coordinates are not blue-exceptional.
+
+Then there exist finite sets \(E_R,E_B\) of tagged projected coordinates such
+that
+\[
+e\in E_R\quad\Longleftrightarrow\quad e\in T
+\text{ and }e\text{ is red-exceptional},
+\]
+\[
+e\in E_B\quad\Longleftrightarrow\quad e\in T
+\text{ and }e\text{ is blue-exceptional}.
+\]
+If \(I\) is independent in the shadow graph of
+\(\noderef{TwoBiteFinalGraph}(\omega)\), then every present
+staged-open coordinate \(e\in T\) is red-exceptional or blue-exceptional.
+Moreover
+\[
+\noderef{ClosedPairsBound}(|E_R|,3\varepsilon_1,k)
+\qquad\text{and}\qquad
+\noderef{ClosedPairsBound}(|E_B|,3\varepsilon_1,k).
+\]
+\end{helper}
+\begin{proof}
+Define
+\[
+E_R=\{e\in T:e\hbox{ is red-exceptional}\},
+\qquad
+E_B=\{e\in T:e\hbox{ is blue-exceptional}\}.
+\]
+These are finite filters of the finite set \(T\), so they are legitimate
+finite sets.  Their defining membership equivalences are exactly the first two
+conjuncts in the statement.
+
+We next prove the classification of present staged-open coordinates.  We give
+the red case in detail; the blue case is obtained by interchanging the two
+colors.  Let \(e=\operatorname{red}(q)\in T\), suppose that the red base edge
+\(q\) is present, and assume that \(I\) is independent in the final graph.
+Unfolding \(\noderef{TwoBiteStagedOpenPairs}\) gives
+\[
+e\in\noderef{TwoBiteProjectionPairSet}(\omega,I),\qquad
+\neg\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e),\qquad
+\neg\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,e).
+\tag{1}
+\]
+The projected-pair membership supplies final vertices \(u,v\in I\) whose red
+projections form the increasing base pair \(q\), in the sense of
+\(\noderef{TwoBiteBasePairs}\).  Since \(q\) is present, the overlay contains
+the red edge \(uv\).  Independence of \(I\) in
+\(\noderef{TwoBiteFinalGraph}(\omega)\) says that this edge does not remain in
+the final graph.  Therefore, by the deletion rules in
+\(\noderef{TwoBiteFinalGraph}\), the present red edge \(uv\) is selected by
+one of the red deletion alternatives.
+
+First consider a same-color red deletion.  If \(q\) is the latest red
+coordinate of the deleting red triangle, then the third vertex of the
+triangle is a red base vertex \(r\) with
+\[
+u,v\in\noderef{TwoBiteXPlus}(\omega,I,\operatorname{red}(r)).
+\]
+Equivalently,
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteXPlus}
+(\omega,I,\operatorname{red}(r)))\bigr),
+\]
+which is precisely
+\(\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e)\), contrary to
+(1).  If the deleting red triangle has a red coordinate later than \(q\), the
+deletion rule removes that later coordinate, not \(q\), so it cannot explain
+the absence of the present edge \(uv\).  If the deletion has already forced
+one endpoint of \(q\) to be staged-revealed before the current coordinate is
+tested, then the touched boundary clause of
+\(\noderef{FixedSetClosedPredicateBoundary}\) gives
+\(\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,e)\), again
+contrary to (1).  Thus no same-color or already-touched deletion alternative
+can be responsible for this present staged-open red coordinate.
+
+The remaining possible deletion of a red edge is a mixed triangle with a blue
+witness.  Let \(b\) be the blue base vertex supplied by that mixed triangle.
+Both \(u\) and \(v\) are blue-neighbors of \(b\), hence
+\[
+u,v\in\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b)).
+\]
+Projecting these two vertices to the red copy gives
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}
+(\omega,I,\operatorname{blue}(b)))\bigr). \tag{2}
+\]
+The set \(\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b))\) is a subset
+of \(I\), so its cardinality lies between \(0\) and \(|I|=k\).  Comparing this
+cardinality with the small, medium, large, and huge cutoffs gives exactly one
+of the four alternatives
+\[
+b\in S_I,\qquad b\in M_I,\qquad b\in L_I,\qquad b\in H_I.
+\tag{3}
+\]
+If \(b\in H_I\), then (2) is a huge opposite-color witness for the red
+coordinate.  The regularity event supplies the fiber-degree event, and the
+statement already carries the eventual-comparisons hypothesis, \(n>n_0\), and
+the rounded \(m,p\) identities and the scale identity
+\(|I|=k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)\).
+Therefore
+\(\noderef{FixedSetHugeOppositeWitnessTouched}\) applies to this witness.  It
+says that \(\operatorname{red}(q)=e\) is pre-terminal recorded, and hence is
+not in
+\(\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)=T\).  This
+contradicts the standing assumption \(e\in T\).  Hence \(b\) is not huge.
+From (3), \(b\) is large, medium, or small, and (2) is exactly the
+red-exceptional witness required in the statement.  Therefore \(e\) is
+red-exceptional.
+
+The blue case repeats the same argument with the two colors reversed.  A
+present staged-open coordinate \(e=\operatorname{blue}(q)\) cannot be deleted
+by a latest same-color blue triangle, because that would be
+\(\noderef{TwoBiteProjectionPairSameColorClosed}\), and it cannot be deleted
+through a previously revealed endpoint, because that would be
+\(\noderef{TwoBiteProjectionPairTouched}\).  Thus it has a mixed red witness
+\(r\) with
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_B^\omega(\noderef{TwoBiteX}
+(\omega,I,\operatorname{red}(r)))\bigr).
+\]
+The cutoff partition puts \(r\) in small, medium, large, or huge; the huge
+case is excluded by the blue half of
+\(\noderef{FixedSetHugeOppositeWitnessTouched}\).  With the same
+regularity-derived fiber-degree event and the same hierarchy, rounded
+parameter, and scale hypotheses, that helper says that a blue coordinate with
+such a relevant huge red witness is pre-terminal recorded and therefore is
+not in
+\(\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)=T\).  Hence \(r\)
+is large, medium, or small, and the coordinate is blue-exceptional.  This
+proves that every present staged-open coordinate needed by final independence
+belongs to \(E_R\cup E_B\), with the tag deciding which exceptional predicate
+can hold.
+
+It remains to count the two exceptional sets.  We count \(E_R\); the blue
+count is symmetric.  For each \(e=\operatorname{red}(q)\in E_R\), choose one
+blue witness \(b(e)\) and one class label
+\[
+\mathcal A(e)\in\{L_I,M_I,S_I\}
+\]
+certifying that \(b(e)\) is large, medium, or small and that
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}
+(\omega,I,\operatorname{blue}(b(e))))\bigr). \tag{4}
+\]
+If several witnesses or labels exist, choose one by finite choice.  Let
+\(E_R^L,E_R^M,E_R^S\) be the three subfamilies selected by this label.  These
+subfamilies are disjoint and cover \(E_R\).
+
+Fix one class \(\mathcal A\in\{L_I,M_I,S_I\}\) and one
+\(e=\operatorname{red}(q)\in E_R^\mathcal A\).  From (4) choose final vertices
+\(u,v\in\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b(e)))\) whose red
+projected base pair is \(q\).  Since the chosen witness \(b(e)\) lies in
+\(\mathcal A\), the unordered final pair \(\{u,v\}\) belongs to
+\[
+\noderef{TwoBiteClosedPairsInClass}(\omega,I,\mathcal A).
+\tag{5}
+\]
+The map \(e\mapsto\{u,v\}\) has multiplicity at most one.  Indeed, once a
+final unordered pair \(\{u,v\}\) is fixed, the red projected coordinate
+generated by that pair is uniquely the increasing representative
+\(\{\pi_R^\omega(u),\pi_R^\omega(v)\}\) selected by
+\(\noderef{TwoBiteBasePairs}\).  Therefore two red tagged coordinates mapped
+to the same final pair must be the same tagged coordinate.  Hence
+\[
+|E_R^\mathcal A|
+\le
+|\noderef{TwoBiteClosedPairsInClass}(\omega,I,\mathcal A)|.
+\tag{6}
+\]
+
+Apply (6) to the three classes.  For \(\mathcal A=L_I\),
+\(\noderef{LargeClosedPairsBound}\), with the present eventual-comparisons
+hypothesis, \(n>n_0\), the scale identity
+\[
+|I|=k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+and the fiber-degree conjunct of
+\(\noderef{TwoBiteRegularityEvent}\), gives
+\[
+\noderef{ClosedPairsBound}
+\bigl(|\noderef{TwoBiteClosedPairsInClass}(\omega,I,L_I)|,\varepsilon_1,k\bigr).
+\tag{7}
+\]
+The medium and small conjuncts of
+\(\noderef{TwoBiteRegularityEvent}\), namely
+\(\noderef{TwoBiteMediumClosedPairsEvent}\) and
+\(\noderef{TwoBiteSmallClosedPairsEvent}\), give the analogous bounds for
+\(M_I\) and \(S_I\):
+\[
+\noderef{ClosedPairsBound}
+\bigl(|\noderef{TwoBiteClosedPairsInClass}(\omega,I,M_I)|,\varepsilon_1,k\bigr),
+\qquad
+\noderef{ClosedPairsBound}
+\bigl(|\noderef{TwoBiteClosedPairsInClass}(\omega,I,S_I)|,\varepsilon_1,k\bigr).
+\tag{8}
+\]
+Unfolding \(\noderef{ClosedPairsBound}\), (7) and (8) say that each of the
+three right-hand sides in (6) is at most \(\varepsilon_1k^2\).  Since
+\(E_R\) is the disjoint union of \(E_R^L,E_R^M,E_R^S\),
+\[
+|E_R|
+\le \varepsilon_1k^2+\varepsilon_1k^2+\varepsilon_1k^2
+=3\varepsilon_1k^2.
+\]
+This is exactly
+\(\noderef{ClosedPairsBound}(|E_R|,3\varepsilon_1,k)\).  Repeating the same
+construction with red and blue interchanged maps \(E_B\) into closed pairs in
+the large, medium, and small red-witness classes, with the same multiplicity
+one property from \(\noderef{TwoBiteBasePairs}\).  The same three regularity
+and large-class bounds give
+\[
+|E_B|\le3\varepsilon_1k^2,
+\]
+which is the asserted
+\(\noderef{ClosedPairsBound}(|E_B|,3\varepsilon_1,k)\).
+\end{proof}

@@ -1,0 +1,148 @@
+\begin{helper}[FiberAndDegreeMixedLiftedIntersectionConcentration]
+\label{helper:FiberAndDegreeMixedLiftedIntersectionConcentration}
+Let $p$ be the edge probability and let $m$ be the reduced vertex count.
+With high probability, the two-bite sample has the property that for every red base vertex $r$ and every blue base vertex $b$, the intersection of their lifted neighborhoods has size at most $100 \log^3 n$.
+\end{helper}
+
+\begin{proof}
+Write \(L=\log n\), \(M=m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\), and
+\[
+p=\noderef{TwoBiteEdgeProbability}(1/2,n)=\frac12\sqrt{\frac Ln}.
+\]
+By \(\noderef{TwoBiteNaturalReducedVertexCount}\), together with
+\(\noderef{TwoBiteReducedVertexCount}\) and \(\noderef{TwoBiteStretch}\), for
+all sufficiently large \(n\),
+\[
+M=\left\lfloor\frac n{L^2}\right\rfloor,\qquad
+\frac12\frac n{L^2}\le M\le\frac n{L^2},\qquad n\le M^2.
+\tag{1}
+\]
+The eventual support and total-mass facts for this rounded size are supplied
+by \(\noderef{TwoBiteNaturalTotalMassOneEventually}\), and the probability
+bounds \(0\le p\le1\) are supplied eventually by
+\(\noderef{OppositeProjectionEdgeProbBounds}\).  Discarding finitely many
+values of \(n\) does not affect the \(\noderef{WithHighProbability}\)
+conclusion.
+
+Let \(\mathcal D_n\) be the event that every red base degree and every blue
+base degree is at most \(2pM\).  This event holds with high probability by
+\(\noderef{FiberAndDegreeBaseDegreeConcentration}\), applied with tolerance
+\(1\): the conclusion of that node says that all red and blue base degrees
+are within relative error \(1\) of \(pM\), and hence each is at most
+\((1+1)pM=2pM\).  It remains to prove that, conditional on
+\(\mathcal D_n\), the probability that some mixed lifted intersection
+exceeds \(100L^3\) tends to \(0\).
+
+We now spell out the conditional distribution of the injection.  By
+\(\noderef{TwoBiteSample}\), an outcome is a triple
+\[
+\omega=(G_R,G_B,\phi),
+\]
+where \(G_R=\noderef{TwoBiteRedGraph}(\omega)\) and
+\(G_B=\noderef{TwoBiteBlueGraph}(\omega)\) are the two base graphs on
+\(\operatorname{Fin}(M)\), and \(\phi\) is an injection of the \(n\) final
+vertices into the \(M^2\) cells
+\(\operatorname{Fin}(M)\times\operatorname{Fin}(M)\).  By
+\(\noderef{TwoBiteEventProbability}\), probabilities are finite sums of
+\(\noderef{TwoBiteSampleWeight}\) over the relevant triples.  The summands
+are nonnegative by \(\noderef{TwoBiteSampleWeightNonnegative}\).  The weight
+factorization in \(\noderef{TwoBiteSampleWeight}\) has the form
+\[
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,M).
+\tag{2}
+\]
+When one marginalizes an unused base graph, the corresponding graph-weight
+sum is \(1\) by \(\noderef{GnpGraphWeightSumOne}\).  When both base graphs
+are fixed, the two graph-weight factors in (2) are constants in the
+conditional numerator and denominator, so they cancel.  By (1) and
+\(\noderef{TwoBiteNaturalTotalMassOneEventually}\), the injection support is
+nonempty; hence \(\noderef{UniformInjectionWeight}(n,M)\) is the reciprocal
+of the number of injections and its total mass over injections is \(1\).
+Therefore, conditional on the two fixed base graphs, \(\phi\) is a uniform
+ordered sample of \(n\) distinct cells from the \(M^2\) product cells.
+
+Fix base graphs satisfying \(\mathcal D_n\), and fix a red vertex
+\(r\in\operatorname{Fin}(M)\) and a blue vertex \(b\in\operatorname{Fin}(M)\).
+Let
+\[
+d_R(r)=|N_{G_R}(r)|,\qquad d_B(b)=|N_{G_B}(b)|.
+\]
+On \(\mathcal D_n\), both \(d_R(r)\) and \(d_B(b)\) are at most \(2pM\).
+By the definitions of \(\noderef{TwoBiteLiftedNeighborhood}\),
+\(\noderef{TwoBiteRedProjection}\), \(\noderef{TwoBiteBlueProjection}\), and
+\(\noderef{TwoBiteEmbedding}\), a final vertex lies in the mixed intersection
+\[
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(b))
+\]
+exactly when its injected product cell lies in the marked rectangle
+\[
+K_{r,b}=N_{G_R}(r)\times N_{G_B}(b).
+\]
+Thus
+\[
+|K_{r,b}|=d_R(r)d_B(b)\le (2pM)(2pM)=4p^2M^2.
+\tag{3}
+\]
+
+Let \(Y_{r,b}\) be the size of this mixed lifted intersection.  Conditional
+on \(G_R,G_B\), the previous paragraph identifies \(Y_{r,b}\) as a
+hypergeometric, without-replacement count from population \(M^2\), marked
+set \(K_{r,b}\), and sample size \(n\).  Its conditional mean is
+\[
+\mu_{r,b}=n\frac{|K_{r,b}|}{M^2}\le 4p^2n=L.
+\tag{4}
+\]
+This is precisely the without-replacement model controlled by
+\(\noderef{HypergeometricMgfComparison}\); for the present large upper tail,
+we use the following direct counting consequence.  Put
+\[
+T=\lceil 100L^3\rceil.
+\]
+If \(Y_{r,b}\ge T\), then some \(T\)-element subset of \(K_{r,b}\) is
+contained in the image of the uniform injection.  For a fixed \(T\)-subset
+of \(K_{r,b}\), the probability that all its cells appear in the image is
+\[
+\frac{(n)_T}{(M^2)_T}\le\left(\frac n{M^2}\right)^T.
+\]
+Taking a union bound over the \(\binom{|K_{r,b}|}{T}\) possible subsets and
+using \(\binom{K}{T}\le(eK/T)^T\), we obtain
+\[
+\Pr(Y_{r,b}\ge T\mid G_R,G_B)
+\le
+\binom{|K_{r,b}|}{T}\left(\frac n{M^2}\right)^T
+\le
+\left(\frac{e\mu_{r,b}}{T}\right)^T.
+\tag{5}
+\]
+By (4) and \(T\ge100L^3\),
+\[
+\left(\frac{e\mu_{r,b}}{T}\right)^T
+\le
+\left(\frac{e}{100L^2}\right)^T
+\le \exp(-cL^3\log L)
+\tag{6}
+\]
+for some absolute constant \(c>0\) and all sufficiently large \(n\).  Since
+the event \(Y_{r,b}>100L^3\) implies \(Y_{r,b}\ge T\), (5)--(6) bound the
+failure probability for this fixed mixed pair.
+
+There are \(M^2\) choices of the mixed pair \((r,b)\), and by (1) we have
+\(M^2\le n^2=\exp(2L)\).  On \(\mathcal D_n\), the union bound therefore
+gives
+\[
+\Pr\!\left(\exists r,b:\,
+Y_{r,b}>100L^3 \,\middle|\, G_R,G_B\right)
+\le
+\exp(2L)\exp(-cL^3\log L)=o(1).
+\tag{7}
+\]
+Finally \(\Pr(\mathcal D_n)\to1\), so the unconditional failure probability
+is at most the \(o(1)\) failure probability of \(\mathcal D_n\) plus the
+\(o(1)\) bound in (7).  Hence, with high probability, every mixed red-blue
+lifted-neighborhood intersection has size at most \(100(\log n)^3\), as
+claimed.
+\end{proof}

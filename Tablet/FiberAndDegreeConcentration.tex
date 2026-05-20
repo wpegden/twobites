@@ -1,0 +1,378 @@
+\begin{lemma}
+Let \(\mathcal D\) be the fiber, degree, codegree, and projected-codegree event
+from \(\noderef{FiberAndDegreeEvent}\), with \(C=100\). For every fixed
+\(\varepsilon_2>0\), under the two-bite law with the integer base size
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)
+=\left\lfloor n/\log^2 n\right\rfloor ,
+\]
+the probability of \(\mathcal D\) tends to \(1\).
+\end{lemma}
+\begin{proof}
+Fix \(\varepsilon_2>0\), set \(\beta=1/2\), and write
+\[
+L=\log n,\qquad
+M=M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right)
+  =\frac12\sqrt{\frac Ln}.
+\]
+When proving any \(\varepsilon_2\)-relative concentration clause below, we
+actually prove the same clause with the smaller tolerance
+\[
+\eta=\min\{\varepsilon_2/10,1/2\}.
+\]
+Since \(0<\eta\le\varepsilon_2\), this implies the stated
+\(\varepsilon_2\)-clause.  The extra bound \(\eta\le1/2\) will also give the
+deterministic upper estimate \(|N_x|\le2pn\) for every lifted neighborhood
+once the lifted-size concentration has been established.
+
+We prove that the probability of the complement of
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\) tends to \(0\).  This
+is equivalent to the displayed \(\noderef{WithHighProbability}\) conclusion,
+because \(\noderef{WithHighProbability}\) is convergence of the event
+probability to \(1\), and \(\noderef{TwoBiteEventProbability}\) is the
+finite-sum probability under the two-bite sample weight.
+
+All estimates below are for sufficiently large \(n\); changing finitely many
+initial \(n\)'s does not affect a limit along \(n\to\infty\).  Since
+\[
+M=\left\lfloor \frac n{L^2}\right\rfloor ,
+\]
+we may assume
+\[
+\frac12\,\frac n{L^2}\le M\le \frac n{L^2},\qquad
+\left|\frac nM-L^2\right|\le \frac{\eta}{10}L^2,
+\tag{1}
+\]
+and also
+\[
+pM\sim \frac12\frac{\sqrt n}{L^{3/2}},\qquad
+pn=\frac12\sqrt{nL},\qquad
+p^2n=\frac L4.
+\tag{2}
+\]
+In particular \(L\to\infty\), \(pM\to\infty\), and \(pn\to\infty\).
+
+To avoid citing standard tail estimates, we prove the needed exponential bounds from first principles. If \(Y\) is a sum of \(m\) independent Bernoulli-\(q\) variables, its moment generating function is \(\mathbb E[e^{\lambda Y}] = (1-q+q e^\lambda)^m \le \exp(mq(e^\lambda-1))\) for any \(\lambda \in \mathbb R\). By Markov's inequality, for any \(t > 0\) and \(\lambda > 0\),
+\[
+\Pr(Y \ge \mu + t) = \Pr(e^{\lambda Y} \ge e^{\lambda(\mu+t)}) \le \exp(-\lambda(\mu+t) + \mu(e^\lambda-1)).
+\]
+For relative error \(\eta \in (0, 1/2]\), taking \(t = \eta\mu\) and \(\lambda = \log(1+\eta) > 0\) gives \(\Pr(Y \ge (1+\eta)\mu) \le \exp(-\mu h(\eta))\), where \(h(\eta) = (1+\eta)\log(1+\eta) - \eta > 0\). For the lower tail, taking \(\lambda = -\log(1-\eta) > 0\) gives \(\Pr(Y \le (1-\eta)\mu) \le \exp(-\mu h(-\eta))\). Let \(c_\eta = \min(h(\eta), h(-\eta)) > 0\). This gives the two-sided relative error bound
+\[
+\Pr(|Y-\mu| > \eta\mu) \le 2\exp(-c_\eta \mu). \tag{3}
+\]
+Now suppose \(Y\) counts a sample of size \(s\) without replacement from a
+population of size \(N\) with \(m\) marked elements.  Put
+\[
+q=\frac{m}{N},\qquad \mu=sq.
+\]
+The node \(\noderef{HypergeometricMgfComparison}\) applies directly to this
+hypergeometric variable: for every real \(\lambda\),
+\[
+\mathbb E e^{\lambda Y}
+\le (1-q+qe^\lambda)^s
+\le \exp(\mu(e^\lambda-1)).
+\tag{3a}
+\]
+Consequently the same Chernoff calculation above is valid without
+replacement.  For the upper tail, if \(0<\delta\le1/2\) and
+\(\lambda=\log(1+\delta)>0\), Markov's inequality and (3a) give
+\[
+\Pr(Y\ge(1+\delta)\mu)
+\le
+\exp\!\left(-\lambda(1+\delta)\mu+\mu(e^\lambda-1)\right)
+=\exp(-\mu h(\delta)).
+\]
+For the lower tail take \(\lambda=-\log(1-\delta)>0\) and apply (3a) with
+\(-\lambda\):
+\[
+\Pr(Y\le(1-\delta)\mu)
+\le e^{\lambda(1-\delta)\mu}\mathbb E e^{-\lambda Y}
+\le
+\exp\!\left(\lambda(1-\delta)\mu+\mu(e^{-\lambda}-1)\right)
+=\exp(-\mu h(-\delta)).
+\]
+Thus for hypergeometric \(Y\) as well,
+\[
+\Pr(|Y-\mu|>\delta\mu)
+\le 2\exp(-c_\delta\mu),
+\qquad
+c_\delta=\min\{h(\delta),h(-\delta)\}>0 .
+\tag{3H}
+\]
+
+For large upper tails, we use an explicit finite counting argument instead of MGFs. If \(Y\) counts successes among \(m\) independent candidate edges, the event \(Y \ge t\) requires at least \(t\) edges to be present. There are \(\binom{m}{t}\) subsets of size \(t\), and each has probability \(q^t\) of being completely present. The union bound gives
+\[
+\Pr(Y \ge t) \le \binom{m}{t} q^t \le \left(\frac{emq}{t}\right)^t = \left(\frac{e\mu}{t}\right)^t . \tag{4}
+\]
+The hypergeometric form of (4) also holds, as the uniform injection law makes the probability of drawing any specific set of \(t\) marked elements exactly \(\binom{N-t}{n-t} / \binom{N}{n} \le (n/N)^t\), leading to the same bound \(\binom{m}{t}(n/N)^t \le (e\mu/t)^t\).
+
+First consider the red and blue fiber clauses.  For a fixed red base vertex
+\(r\), the random variable
+\[
+X_r=|\noderef{RedFiber}(\omega,r)|
+\]
+is the number of injected final vertices whose red coordinate is \(r\).
+The population has \(M^2\) cells and the row over \(r\) has \(M\) cells, so
+\[
+\mathbb E X_r=n\frac{M}{M^2}=\frac nM.
+\]
+By (1), this mean differs from \(L^2\) by at most
+\((\eta/10)L^2\).  Apply the hypergeometric estimate (3H), obtained above
+from \(\noderef{HypergeometricMgfComparison}\), with \(\delta=\eta/3\).
+If \(X_r\) is within \(\delta\mu_r\) of its mean
+\(\mu_r=n/M\), then
+\[
+|X_r-L^2|\le |X_r-\mu_r|+|\mu_r-L^2|
+\le \frac{\eta}{3}\mu_r+\frac{\eta}{10}L^2.
+\]
+For large \(n\), (1) gives \(\mu_r\le(1+\eta/10)L^2\), so the right side is
+at most
+\[
+\left(\frac{1+\eta/10}{3}+\frac1{10}\right)\eta L^2
+\le \eta L^2.
+\]
+Thus failure of the required \(\eta\)-relative bound implies the
+\(\delta\)-tail event in (3H).  Since \(\mu_r\asymp L^2\), (3H) gives
+\[
+\Pr\bigl(\neg\noderef{WithinRelativeError}
+(\eta,L^2,X_r)\bigr)\le \exp(-cL^2).
+\]
+There are \(M\) red vertices and \(M\) blue vertices.  The same calculation
+for
+\[
+X_b=|\noderef{BlueFiber}(\omega,b)|
+\]
+and the union bound give total fiber-failure probability at most
+\[
+2M\exp(-cL^2)=o(1).
+\tag{5}
+\]
+Since \(\eta\le\varepsilon_2\), this proves the two fiber-size conjuncts of
+\(\noderef{FiberAndDegreeEvent}\) with high probability.
+
+Next consider base degrees.  For a fixed red vertex \(r\),
+\[
+D_r=\noderef{GraphDegreeCount}(\noderef{TwoBiteRedGraph}(\omega),r)
+\]
+has distribution \(\mathrm{Bin}(M-1,p)\), because loops are absent and the
+other \(M-1\) red edge indicators are independent Bernoulli-\(p\) variables.
+Its mean is \((M-1)p=pM-p\), which differs from the target \(pM\) by a
+\(1/M=o(1)\) relative factor.  Hence (3), applied with tolerance \(\eta\),
+gives
+\[
+\Pr\bigl(\neg\noderef{WithinRelativeError}(\eta,pM,D_r)\bigr)
+\le \exp(-c pM).
+\]
+The blue degree variable has the same distribution.  Since
+\(pM\gg \log M\) by (2), the union bound over \(2M\) red and blue vertices
+gives
+\[
+2M\exp(-c pM)=o(1).
+\tag{6}
+\]
+Thus the two base-degree conjuncts hold with high probability, again because
+\(\eta\le\varepsilon_2\).
+
+For same-color base codegrees, fix distinct red vertices \(r\ne s\) and put
+\[
+Y_{r,s}=\left|\{t:(r,t)\in E(G_R),\ (s,t)\in E(G_R)\}\right|.
+\]
+For each \(t\notin\{r,s\}\), the two required red edges are independent, so
+\[
+Y_{r,s}\sim \mathrm{Bin}(M-2,p^2),\qquad
+\mu_{r,s}\le Mp^2\le \frac1{4L}.
+\]
+The event asks for \(Y_{r,s}\le C L\) with \(C=100\).  By (4),
+\[
+\Pr(Y_{r,s}>CL)
+\le \left(\frac{e/(4L)}{CL}\right)^{CL}
+\le \exp(-50L\log L)
+\]
+for large \(n\).  There are fewer than \(M^2\le n^2\) red pairs and the same
+number of blue pairs.  Since \(n^2=\exp(2L)\), the union bound gives
+\[
+2M^2\exp(-50L\log L)=o(1).
+\tag{7}
+\]
+This proves the red and blue base-codegree conjuncts.
+
+Now fix a base vertex \(x\in V_R\cup V_B\), and prove the lifted-neighborhood
+size conjunct.  Treat \(x=r\in V_R\); the blue case is identical.  Conditional
+on the red base graph, let \(d_r\) be the red base degree of \(r\).  The set
+of product cells whose red coordinate lies in \(N_{G_R}(r)\) has size
+\(d_rM\).  Therefore
+\[
+|\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{red}(r))|
+\]
+is hypergeometric with population size \(M^2\), marked set size \(d_rM\), and
+\(n\) draws, hence conditional mean \(nd_r/M\).  Conditional on the base
+graph, this is exactly the without-replacement situation covered by the
+hypergeometric estimate (3H), with \(N=M^2\), sample size \(n\), and marked
+set size \(d_rM\).  Applying (3H) conditionally with tolerance \(\eta/3\)
+gives
+\[
+\Pr\left(
+\neg\noderef{WithinRelativeError}
+\left(\eta/3,\frac{nd_r}{M},
+|\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{red}(r))|
+\right)
+\ \middle|\ G_R\right)
+\le \exp(-c pn)
+\]
+whenever the degree event holds (with the same tolerance \(\eta/3\)).  On the degree event, we have \(\noderef{WithinRelativeError}(\eta/3, pM, d_r)\). The conditional mean \(\mu = nd_r/M\) therefore satisfies \(|\mu - pn| \le (\eta/3) pn\). When the conditional lifted-neighborhood size \(N_r\) is within relative error \(\eta/3\) of \(\mu\), we have
+\[
+|N_r - pn| \le |N_r - \mu| + |\mu - pn| \le \frac{\eta}{3} \mu + \frac{\eta}{3} pn \le \frac{\eta}{3} \left(pn + \frac{\eta}{3}pn\right) + \frac{\eta}{3} pn = \frac{\eta}{3} pn \left(2 + \frac{\eta}{3}\right).
+\]
+Since \(\eta \le 1/2\), we have \(2 + \eta/3 \le 3\), so \(|N_r - pn| \le \eta pn\). This explicitly transfers the relative error from the conditional mean to the required \(\noderef{WithinRelativeError}(\eta, pn, |N_r|)\) target. The same estimate holds for blue vertices.
+Using the already established \(o(1)\) degree-failure probability and then
+union-bounding the conditional tail over \(2M\) vertices gives
+\[
+o(1)+2M\exp(-c pn)=o(1),
+\tag{8}
+\]
+because \(pn\gg\log M\).  Since \(\eta\le\varepsilon_2\), this proves the
+lifted-neighborhood size conjunct in \(\noderef{FiberAndDegreeEvent}\). It also gives the explicit bound
+\[
+|N_x| \le pn + \eta pn = (1+\eta)pn \le 2pn
+\qquad\hbox{for every }x\in V_R\cup V_B,
+\tag{8a}
+\]
+needed by \(\noderef{OppositeProjectionCollisionBound}\).
+
+We next bound lifted-neighborhood intersections.  For two distinct red
+vertices \(r\ne s\), let
+\[
+H_{r,s}=
+|\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{red}(r))
+ \cap
+ \noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{red}(s))|.
+\]
+Conditional on the red base graph, if \(a_{r,s}=|N_{G_R}(r)\cap N_{G_R}(s)|\),
+then \(H_{r,s}\) is hypergeometric with marked set size \(a_{r,s}M\) and mean
+\(n a_{r,s}/M\).  The proof of (7), with threshold \(L\) instead of
+\(CL\), also gives
+\[
+\Pr(\exists r\ne s,\ a_{r,s}>L)=o(1)
+\tag{9}
+\]
+because the tail to \(L\) is still \(\exp(-\Omega(L\log L))\) and there are
+only \(O(M^2)\) pairs.  On the event \(a_{r,s}\le L\), the conditional mean
+of \(H_{r,s}\) is at most
+\[
+\frac{nL}{M}\le 2L^3
+\]
+by (1).  With target \(CL=100\) replaced by \(C L^3=100L^3\), the upper-tail
+bound (4) gives
+\[
+\Pr(H_{r,s}>C L^3\mid G_R,\ a_{r,s}\le L)
+\le \left(\frac{2eL^3}{100L^3}\right)^{100L^3}
+\le \exp(-cL^3).
+\]
+Union-bounding over \(O(M^2)\) red pairs and adding the \(o(1)\) probability
+in (9) gives the red lifted-intersection bound.  The blue-blue case is the
+same.
+
+For a mixed pair \(r\in V_R\), \(b\in V_B\), condition on the two base graphs.
+Let \(d_r=|N_{G_R}(r)|\) and \(d_b=|N_{G_B}(b)|\).  The product cells whose
+red coordinate lies in \(N_{G_R}(r)\) and whose blue coordinate lies in
+\(N_{G_B}(b)\) form a set of size \(d_rd_b\).  On the degree event,
+\[
+d_r,d_b\le 2pM,
+\]
+so the conditional mean of
+\[
+|\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{red}(r))
+ \cap
+ \noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{blue}(b))|
+\]
+is at most
+\[
+n\frac{(2pM)^2}{M^2}=4p^2n=L.
+\]
+The upper-tail bound (4) to the threshold \(C L^3=100L^3\) gives
+\(\exp(-\Omega(L^3\log L))\) for each mixed pair.  There are \(M^2\) mixed
+pairs, so this contribution is \(o(1)\).  Together with the same-color
+argument, we have proved all lifted-neighborhood intersection conjuncts:
+red-red, blue-blue, and mixed red-blue.
+
+It remains to prove the two opposite-projection codegree conjuncts, and this
+is the only place where the constant \(2C\) is needed.  Consider distinct red
+vertices \(r\ne s\).  Put
+\[
+U=\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{red}(r)),
+\qquad
+V=\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{red}(s)).
+\]
+The quantity in the Lean definition is
+\[
+|\pi_B(U)\cap\pi_B(V)|.
+\]
+Split this intersection into the part coming from \(U\cap V\) and the
+remaining collision part.  The first part has size at most \(|U\cap V|\),
+which has already been bounded by \(C L^3\) with high probability.  The
+second part is exactly the conditional collision problem isolated in
+\(\noderef{OppositeProjectionCollisionBound}\).  The hypothesis of that child
+is supplied by the strengthened lifted-size bound (8a): because the relative
+error used there was at most \(1/2\), every lifted neighborhood
+satisfies
+\[
+|N_x|\le (1+\eta)pn\le 2pn.
+\tag{10}
+\]
+The child proves from \(\noderef{UniformInjectionWeight}\),
+\(\noderef{TwoBiteEmbedding}\), and the product form of
+\(\noderef{TwoBiteSampleWeight}\) that, except with probability \(o(1)\),
+all distinct red pairs simultaneously satisfy
+\[
+|\pi_B(N_r)\cap\pi_B(N_s)|
+\le |N_r\cap N_s|+C L^3,
+\tag{11}
+\]
+and all distinct blue pairs satisfy the color-swapped red-projection
+analogue.  Its proof conditions on the same-color base graph and on the
+same-color coordinates of the injection, counts the remaining row-wise
+uniform injection completions, and union-bounds the resulting
+\(\exp(-cL^3)\) collision tail over \(O(M^2)\) same-color pairs.
+
+Combining the already proved \(|U\cap V|\le C L^3\) with (11) gives
+\[
+|\pi_B(U)\cap\pi_B(V)|
+\le C L^3+C L^3=2C L^3.
+\]
+This is exactly the red opposite-projection conjunct of
+\(\noderef{FiberAndDegreeEvent}\).  The blue opposite-projection conjunct is
+identical with the colors swapped, using red projections of two blue lifted
+neighborhoods.
+
+Let \(\mathcal G_n\) be the intersection of all good events established in
+(5), (6), (7), (8), the strengthened size bound (8a), the
+lifted-intersection paragraph, and the conditional collision event supplied by
+\(\noderef{OppositeProjectionCollisionBound}\), including their blue-color
+copies.  The union bound over this finite list gives
+\[
+\Pr(\mathcal G_n^c)=o(1).
+\tag{13}
+\]
+On \(\mathcal G_n\), every clause in the definition of
+\(\noderef{FiberAndDegreeEvent}\) holds: the two fiber-size clauses come from
+(5), the two degree clauses from (6), the two base-codegree clauses from (7),
+the lifted-neighborhood-size clause from (8), the three lifted-intersection
+clauses from the red-red, blue-blue, and mixed estimates, and the two
+opposite-projection clauses from the final paragraph.  The constants match
+the definition: \(C=100\) is the threshold used for the same-color
+base-codegree and all lifted-intersection bounds, and \(2C\) is obtained by
+adding a \(C L^3\) overlap contribution to a \(C L^3\) opposite-projection
+collision contribution.
+
+Thus
+\[
+\Pr\bigl(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\bigr)
+\ge 1-\Pr(\mathcal G_n^c)\longrightarrow 1.
+\]
+Unfolding the probability as
+\(\noderef{TwoBiteEventProbability}(n,M,p)\) and substituting the hypotheses
+\(M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\) and
+\(\beta=1/2\) gives exactly the Lean statement.  This proves the required
+\(\noderef{WithHighProbability}\) claim.
+\end{proof}

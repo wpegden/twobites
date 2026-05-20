@@ -1,0 +1,31 @@
+\begin{lemma}
+The exact final colored graph \(G(\omega)\) defined in
+\(\noderef{TwoBiteFinalGraph}\) contains no red triangle, no blue triangle, and
+no mixed triangle with two edges of one color and one edge of the other.  Hence
+the simple graph obtained by forgetting colors and merging double edges is
+triangle-free.
+\end{lemma}
+\begin{proof}
+Write \(G(\omega)=(G_R,G_B,G_0)\), where \(G_R\) is the final red graph,
+\(G_B\) is the final blue graph, and \(G_0\) is the simple shadow graph.  The
+first assertion, that \(G_R\) has no red triangle, is exactly
+\(\noderef{TwoBiteFinalGraphNoRedTriangle}\).  The second assertion, that
+\(G_B\) has no blue triangle, is exactly
+\(\noderef{TwoBiteFinalGraphNoBlueTriangle}\).
+
+The third assertion is exactly
+\(\noderef{TwoBiteFinalGraphNoRedRedBlueTriangle}\): no final triangle has two
+red edges incident to a common center and the opposite edge blue.  The fourth
+assertion is exactly \(\noderef{TwoBiteFinalGraphNoBlueBlueRedTriangle}\): no
+final triangle has two blue edges incident to a common center and the opposite
+edge red.
+
+Finally, \(\noderef{TwoBiteFinalGraphShadowTriangleFree}\) applies these four
+colored exclusions to the shadow graph.  Every shadow edge is witnessed by a
+surviving colored edge, so a shadow triangle would choose three surviving
+colored edges on the same three vertices.  The chosen colors are either all
+red, all blue, two red and one blue, or two blue and one red, and those four
+possibilities are precisely the four exclusions above.  Thus \(G_0\) has no
+triangle on three distinct vertices.  Combining the five conclusions gives the
+claimed conjunction.
+\end{proof}

@@ -1,0 +1,46 @@
+\begin{helper}
+For every \(\varepsilon_2\in\mathbb R\) and \(n\in\mathbb N\), define
+\[
+L=\log((n:\mathbb R)),\quad
+m=(\noderef{TwoBiteNaturalReducedVertexCount}(n):\mathbb R),\quad
+p=\frac12\sqrt{\frac{L}{(n:\mathbb R)}},\quad
+t_1=\frac{\sqrt{(n:\mathbb R)L}}{\log L}.
+\]
+Assume
+\[
+0<(n:\mathbb R),\qquad 0<L,\qquad 0<\log L,
+\]
+and
+\[
+2pm\le\frac{\sqrt{(n:\mathbb R)}}{L^{3/2}},
+\qquad
+\frac{\log L}{L^2}\le\frac{\varepsilon_2}{100}.
+\]
+Then
+\[
+2pm\le\left(\frac{\varepsilon_2}{100}\right)t_1.
+\]
+\end{helper}
+\begin{proof}
+The positivity assumptions make \(t_1>0\).  Since \(0<(n:\mathbb R)\) and
+\(0<L\),
+\[
+\sqrt{(n:\mathbb R)L}=\sqrt{(n:\mathbb R)}\,\sqrt L
+\quad\text{and}\quad
+L^{3/2}=L\sqrt L.
+\]
+Therefore
+\[
+\frac{\sqrt{(n:\mathbb R)}}{L^{3/2}}
+=\frac{\sqrt{(n:\mathbb R)L}}{L^2}
+=\frac{\sqrt{(n:\mathbb R)L}}{\log L}\frac{\log L}{L^2}
+=t_1\frac{\log L}{L^2}.
+\]
+Using the mass estimate and then multiplying the threshold inequality by the
+positive factor \(t_1\) gives
+\[
+2pm\le t_1\frac{\log L}{L^2}
+\le t_1\frac{\varepsilon_2}{100}
+=\left(\frac{\varepsilon_2}{100}\right)t_1.
+\]
+\end{proof}

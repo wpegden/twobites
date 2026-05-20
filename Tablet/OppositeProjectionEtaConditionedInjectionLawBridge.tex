@@ -1,0 +1,30 @@
+\begin{helper}
+Fix \(U_0\subseteq\operatorname{Fin} n\), a red graph \(G_R\), a row map
+\(\rho:\operatorname{Fin} n\to\operatorname{Fin} m\), an exposed blue map
+\(\eta:U_0\to\operatorname{Fin} m\), and a predicate \(P\) on injections
+\(\phi:\operatorname{Fin} n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m\).  Let \(X_\eta\) be the set of
+injections satisfying \((\phi(v))_1=\rho(v)\) for every \(v\) and
+\((\phi(u))_2=\eta(u)\) for every \(u\in U_0\), and let
+\(X_P=\{\phi\in X_\eta:P(\phi)\}\).  The two-bite event probability of samples
+with red graph \(G_R\), first-coordinate map \(\rho\), exposed coordinates
+\(\eta\), and injection satisfying \(P\), equals
+\[
+  \operatorname{GnpGraphWeight}_p(G_R)\,
+  \operatorname{UniformInjectionWeight}_{n,m}\, |X_P|.
+\]
+\end{helper}
+\begin{proof}
+Unfold \(\noderef{TwoBiteEventProbability}\) and the sample weight
+\(\noderef{TwoBiteSampleWeight}\).  The finite sum is over triples
+\((G'_R,G_B,\phi)\).  The event forces \(G'_R=G_R\), forces the
+first-coordinate and exposed-coordinate conditions on \(\phi\), and then
+retains exactly the injections in \(X_P\).  For each retained injection the
+factor \(\operatorname{UniformInjectionWeight}_{n,m}\) is constant, and the
+red graph contributes the fixed factor \(\operatorname{GnpGraphWeight}_p(G_R)\).
+The remaining sum over the blue graph is \(1\) by
+\(\noderef{GnpGraphWeightSumOne}\).  Hence the total mass is the common
+factor times the number of retained injections, namely
+\(\operatorname{GnpGraphWeight}_p(G_R)
+\operatorname{UniformInjectionWeight}_{n,m}|X_P|\).
+\end{proof}

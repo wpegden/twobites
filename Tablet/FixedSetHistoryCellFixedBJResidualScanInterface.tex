@@ -1,0 +1,82 @@
+\begin{helper}
+Fix one support-label pair \(B,J\) in a history cell, and write \(U\) for
+the terminal coordinate set with nodup reveal order \(o\).  Let
+\(\mathcal P\) be the transcript family.  For each realized
+branch/transcript pair \((\beta,\tau)\), write
+\[
+P_\tau,\qquad A_\tau,\qquad Z_\tau,\qquad F_{\beta,\tau}
+\]
+for the forced-present set, forced-absent set, selected absent set, and the
+fixed present support.  Assume the realized geometry
+\[
+F_{\beta,\tau}\subseteq P_\tau,\qquad
+P_\tau,A_\tau\subseteq U,\qquad
+P_\tau\cap A_\tau=\emptyset,\qquad
+Z_\tau\subseteq A_\tau ,
+\]
+the forward compatibility consequences, and functional disjointness for
+complete assignments compatible with two realized cells.
+
+Assume in addition the two fixed-\((B,J)\) residual compatibility inputs
+supplied by the branch/transcript scan construction.  First, every residual
+assignment in the cylinder
+\[
+P_\tau\setminus F_{\beta,\tau}\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset
+\]
+reconstructs to a compatible complete assignment
+\[
+(A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau}.
+\]
+Second, the same residual assignment cannot reconstruct compatibly to two
+different realized pairs.  Then there are two option-valued functions: a
+residual scan on residual assignments and a reconstructed complete-assignment
+scan.  The reconstructed scan output is equivalent to complete compatibility,
+the residual scan output is equivalent to compatibility after deleting
+selected absences and reinserting fixed support, the two scans agree on each
+residual cylinder, the reconstructed scan returns the cylinder owner there,
+and the residual scan is functional on a fixed residual assignment.
+\end{helper}
+\begin{proof}
+The point of the statement is that scan data are constructed only after the
+missing compatibility inputs are present.  The residual-completeness and
+single-owner inputs are the fixed-\((B,J)\) consequences of the
+blue-first/red-second reveal-order construction isolated in
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\), with the
+reconstruction stability coming from
+\(\noderef{FixedSetHistoryCellRISIResidualScanStability}\) and the
+first-mismatch uniqueness from
+\(\noderef{FixedSetHistoryCellFixedBJResidualOverlapConsistency}\).
+
+Define the reconstructed complete-assignment scan as follows.  On a complete
+terminal assignment \(A\), if there is a realized pair
+\((\beta,\tau)\) such that \(A\) is compatible with \((\beta,\tau)\), choose
+one such pair and output it; otherwise output \(\bot\).  Complete-assignment
+functional disjointness makes this choice unique, so whenever compatibility
+with a realized \((\beta,\tau)\) holds, the reconstructed scan outputs
+\((\beta,\tau)\), and every reconstructed-scan output gives the corresponding
+compatibility certificate.
+
+Define the residual scan similarly, but using reconstructed compatibility:
+on \(A_{\rm res}\), choose the unique realized pair \((\beta,\tau)\) for
+which
+\[
+(A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau}
+\]
+is compatible with \((\beta,\tau)\), if such a pair exists.  The residual
+single-owner input says that this choice is unique.  Thus residual-scan
+output implies compatibility of the reconstructed complete assignment, and
+reconstructed compatibility implies the corresponding residual-scan output.
+
+Now suppose \(A_{\rm res}\) lies in the residual cylinder of a realized
+\((\beta,\tau)\).  The residual-completeness input gives compatibility of
+\((A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau}\) with
+\((\beta,\tau)\).  By the two definitions just made, both the residual scan
+on \(A_{\rm res}\) and the reconstructed scan on that reconstructed complete
+assignment output \((\beta,\tau)\).  Hence the scans agree on the cylinder,
+and the reconstructed scan returns the cylinder owner.  Finally, if the
+residual scan has two outputs on the same residual assignment, they are both
+the value of the same option-valued function, so the branch labels and
+transcripts are equal.  These are exactly the advertised fixed scan-interface
+clauses.
+\end{proof}

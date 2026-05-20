@@ -1,0 +1,25 @@
+\begin{lemma}
+For all natural numbers \(N\) and \(t\),
+\[
+  \binom Nt \le \left(\frac{eN}{t}\right)^t,
+\]
+with the usual convention that the case \(t=0\) gives \(1\le 1\).
+\end{lemma}
+\begin{proof}
+The case \(t=0\) is immediate.  For \(t>0\), the standard binomial estimate gives
+\[
+  \binom Nt \le \frac{N^t}{t!}.
+\]
+Stirling's lower bound gives
+\[
+  \left(\frac{t}{e}\right)^t\le t!.
+\]
+Since \(N^t\ge 0\), dividing by the larger denominator \(t!\) only decreases the quotient, so
+\[
+  \frac{N^t}{t!}\le
+  \frac{N^t}{(t/e)^t}
+  =
+  \left(\frac{eN}{t}\right)^t.
+\]
+Combining the two inequalities proves the claim.
+\end{proof}

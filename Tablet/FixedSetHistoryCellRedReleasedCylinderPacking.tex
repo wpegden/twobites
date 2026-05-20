@@ -1,0 +1,73 @@
+\begin{helper}
+Let \(U\) be a finite terminal coordinate set.  Let \(\mathcal P\) be a
+finite set of transcript labels, and let
+\(\operatorname{Realized}(\beta,\tau)\) be a predicate on branch labels and
+transcripts.  For every realized pair with \(\tau\in\mathcal P\), let
+\(\mathcal R_{\beta,\tau}\) be a finite set of released terminal
+assignments, and let \(\rho_{\beta,\tau}\) be its released cylinder mass.
+Let \(m(A)\) be a nonnegative assignment mass on complete terminal
+assignments \(A\subseteq U\), with
+\[
+\sum_{A\subseteq U}m(A)\le 1 .
+\]
+Assume:
+\[
+\mathcal R_{\beta,\tau}\subseteq \{A:A\subseteq U\}
+\]
+for every realized \((\beta,\tau)\) with \(\tau\in\mathcal P\);
+\[
+\rho_{\beta,\tau}=\sum_{A\in\mathcal R_{\beta,\tau}}m(A)
+\]
+for every such realized pair; and distinct realized pairs have disjoint
+released assignment sets, in the following pointwise form: if
+\((\beta,\tau)\ne(\beta',\tau')\), both pairs are realized, both transcripts
+belong to \(\mathcal P\), and \(A\in\mathcal R_{\beta,\tau}\), then
+\[
+A\notin\mathcal R_{\beta',\tau'} .
+\]
+Then the released cylinders form a subprobability:
+\[
+\sum_{\beta}
+  \sum_{\tau\in\mathcal P:\operatorname{Realized}(\beta,\tau)}
+    \rho_{\beta,\tau}
+\le 1 .
+\]
+\end{helper}
+\begin{proof}
+Let
+\[
+\mathcal C
+  =\{(\beta,\tau):\tau\in\mathcal P,\,
+      \operatorname{Realized}(\beta,\tau)\}.
+\]
+The displayed double sum over \(\beta\) and realized transcripts is exactly
+the finite sum of \(\rho_{\beta,\tau}\) over \(\mathcal C\).  By the exact
+released-mass hypothesis, this is
+\[
+\sum_{(\beta,\tau)\in\mathcal C}
+  \sum_{A\in\mathcal R_{\beta,\tau}}m(A).
+\]
+
+The pointwise disjointness hypothesis says that the family
+\(\{\mathcal R_{\beta,\tau}\}_{(\beta,\tau)\in\mathcal C}\) is pairwise
+disjoint.  Therefore finite additivity over a disjoint finite union gives
+\[
+\sum_{(\beta,\tau)\in\mathcal C}
+  \sum_{A\in\mathcal R_{\beta,\tau}}m(A)
+=
+\sum_{A\in\bigcup_{(\beta,\tau)\in\mathcal C}
+  \mathcal R_{\beta,\tau}}m(A).
+\]
+Every released assignment lies in the complete assignment space
+\(\{A:A\subseteq U\}\).  Since all masses \(m(A)\) on complete terminal
+assignments are nonnegative,
+\[
+\sum_{A\in\bigcup_{(\beta,\tau)\in\mathcal C}
+  \mathcal R_{\beta,\tau}}m(A)
+\le
+\sum_{A\subseteq U}m(A)
+\le 1 .
+\]
+Combining these equalities and inequalities proves the claimed
+subprobability bound.
+\end{proof}

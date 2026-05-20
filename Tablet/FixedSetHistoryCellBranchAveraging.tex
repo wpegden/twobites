@@ -1,0 +1,67 @@
+\begin{helper}
+Let \(C\) be a fixed history cell, let \(F\subseteq C\) be one fixed-count
+event, and let \(E\) be the target event.  Suppose \(0\le p\le1\) and
+\(B\ge0\).  Let \(\{H_b\}_{b\in\mathcal H}\) be a finite family of
+first-color branch events such that each \(H_b\) is contained in \(C\), the
+events \(H_b\) are pairwise disjoint, and every sample in \(C\cap F\) lies in
+one of the branches \(H_b\).  If, for every branch \(b\),
+\[
+\Pr(E\cap F\cap H_b)\le B\,\Pr(H_b),
+\]
+where probabilities are the finite sample weights from
+\(\noderef{TwoBiteEventProbability}\), then
+\[
+\noderef{TwoBiteConditionalProbability}(E\cap F\mid C)\le B.
+\]
+\end{helper}
+\begin{proof}
+Write \(w(\omega)=\noderef{TwoBiteSampleWeight}(\omega)\).  The assumptions
+\(0\le p\le1\) make every red-edge factor, blue-edge factor, and injection
+factor in \(w(\omega)\) nonnegative, so every event probability is a finite
+sum of nonnegative terms.  In particular probability is monotone under
+event inclusion.
+
+If \(\Pr(C)=0\), then the definition of
+\(\noderef{TwoBiteConditionalProbability}\) gives
+\(\Pr(E\cap F\mid C)=0\), and the desired inequality follows from \(B\ge0\).
+Assume from now on that \(\Pr(C)>0\).
+
+Because each \(H_b\subseteq C\), the branch events are disjoint, and every
+point of \(C\cap F\) lies in some \(H_b\), the events
+\[
+E\cap F\cap H_b\qquad (b\in\mathcal H)
+\]
+are pairwise disjoint and their union contains \(E\cap F\cap C\).  Hence
+finite additivity and monotonicity give
+\[
+\Pr(E\cap F\cap C)
+\le
+\sum_{b\in\mathcal H}\Pr(E\cap F\cap H_b).
+\]
+Apply the branchwise hypothesis to each summand:
+\[
+\sum_{b\in\mathcal H}\Pr(E\cap F\cap H_b)
+\le
+B\sum_{b\in\mathcal H}\Pr(H_b).
+\]
+Since the \(H_b\) are disjoint subsets of \(C\), their union is a subset of
+\(C\), so another use of finite additivity and monotonicity gives
+\[
+\sum_{b\in\mathcal H}\Pr(H_b)
+=\Pr\!\left(\bigcup_b H_b\right)
+\le \Pr(C).
+\]
+Multiplying by the nonnegative number \(B\) preserves the inequality, and
+therefore
+\[
+\Pr(E\cap F\cap C)\le B\,\Pr(C).
+\]
+Dividing by the positive denominator \(\Pr(C)\) gives
+\[
+\Pr(E\cap F\mid C)
+=\frac{\Pr(E\cap F\cap C)}{\Pr(C)}
+\le B.
+\]
+Thus summing over first-color branches costs no factor \(|\mathcal H|\); the
+branch probabilities themselves are the averaging weights.
+\end{proof}

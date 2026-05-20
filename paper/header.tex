@@ -1,0 +1,48 @@
+% Paper-defined macros for the viewer's KaTeX renderer.
+%
+% The viewer fetches this file at init (via /api/paper-header.tex) and
+% feeds the \newcommand / \renewcommand bodies to KaTeX as macros.
+% Mirrors the paper preamble at paper/reference.tex (lines ~21-75)
+% with the following adjustments:
+%   - drop the \todo-using author markup macros (\Flo, \Paul, \Dylan,
+%     \Zion); KaTeX has no \todo and they aren't in formalization tex
+%   - drop \JN, \SS — author-color markup, harmless to omit
+%   - add \PP → \mathbb{P}; the paper uses \P / \Pr but agents
+%     occasionally emit \PP by analogy. Make it work rather than fail.
+%
+% Format: one \newcommand or \renewcommand per line, body on the same
+% line. The viewer parses with a simple regex; nested braces inside a
+% body are fine but don't put two commands on one line.
+
+\newcommand{\p}{\mathbb{P}}
+\newcommand{\e}{\mathbb{E}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\G}{\mathcal{G}}
+\renewcommand{\t}{\text}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\Pr}{\mathbb{P}}
+\renewcommand{\l}{\left}
+\renewcommand{\r}{\right}
+\newcommand{\ex}{\mathrm{ex}}
+\newcommand{\exr}{\mathrm{ex^*}}
+\newcommand{\deltar}{\delta^*}
+\newcommand{\Ex}{\mathbb{E}}
+\newcommand{\Exr}{\mathrm{Ex^*}}
+\newcommand{\dist}{\mathrm{dist}}
+\newcommand{\Hh}{\hat{H}}
+\newcommand{\sm}{\setminus}
+\newcommand{\sub}{\subseteq}
+\newcommand{\del}{\delta}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+% Added for the viewer (not in paper preamble): models occasionally
+% emit \PP by analogy with the paper's \P / \Pr.
+\newcommand{\PP}{\mathbb{P}}

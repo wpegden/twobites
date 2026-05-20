@@ -1,0 +1,255 @@
+\begin{helper}[Fixed-Set External Product Model Ingredients]
+Fix \(n\in\mathbb N\), a finite set \(I\subseteq\mathrm{Fin}(n)\), parameters
+\(\varepsilon,\varepsilon_1,\varepsilon_2\in\mathbb R\), and \(n_0\in\mathbb N\).
+Assume
+\[
+\noderef{ParameterHierarchyEventualComparisons}
+  (\varepsilon,\varepsilon_1,\varepsilon_2,n_0),\qquad n_0<n,
+\]
+and
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Put
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p_0=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+\[
+L=\log n,\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+C=\noderef{RealChooseTwo}(K),
+\]
+where \(K\) is viewed as a real number in the formula for \(C\).  Set
+\[
+r_{\mathrm{prod}}=2M,\qquad
+c_{\mathrm{prod}}=\frac12 n^{4\varepsilon},\qquad
+t=\frac{C}{\sqrt L}.
+\]
+For \(\omega\in\noderef{TwoBiteSample}(n,M,p_0)\), form
+\[
+P_R=\{\noderef{TwoBiteRedProjection}(\omega,u):u\in I\},\qquad
+P_B=\{\noderef{TwoBiteBlueProjection}(\omega,u):u\in I\},
+\]
+let \(P_I\) be the union of \(P_R\) in the red copy and \(P_B\) in the blue
+copy, and set
+\[
+S_I^{\mathrm{ext}}
+=\{x:\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I,x)\}\setminus P_I.
+\]
+Define
+\[
+E_{\mathrm{ext}}(\omega)
+=
+\bigcup_{x\in S_I^{\mathrm{ext}}}
+  \noderef{TwoBiteFinalPairs}(\noderef{TwoBiteX}(\omega,I,x)),
+\]
+and let \(Z_I(\omega)\) be the number of pairs \(e=(u,v)\) in
+\(E_{\mathrm{ext}}(\omega)\) satisfying
+\[
+\noderef{TwoBiteRedProjection}(\omega,u)
+  \ne\noderef{TwoBiteRedProjection}(\omega,v),\qquad
+\noderef{TwoBiteBlueProjection}(\omega,u)
+  \ne\noderef{TwoBiteBlueProjection}(\omega,v).
+\]
+Let
+\[
+\mu(\omega)=\frac{C}{2L}.
+\]
+For every fixed embedding
+\[
+\pi:\mathrm{Fin}(n)\hookrightarrow\mathrm{Fin}(M)\times\mathrm{Fin}(M),
+\]
+there are a finite type \(\alpha\), a probability mass \(q:\alpha\to\mathbb R\),
+and a product variable
+\[
+Z_{\mathrm{prod}}:(\mathrm{Fin}(r_{\mathrm{prod}})\to\alpha)\to\mathbb R
+\]
+such that
+\[
+q(a)\ge0,\qquad \sum_{a\in\alpha}q(a)=1,
+\]
+\[
+0<c_{\mathrm{prod}},\qquad 0\le t,
+\]
+\[
+\left|Z_{\mathrm{prod}}(v)-Z_{\mathrm{prod}}(v')\right|
+\le c_{\mathrm{prod}}
+\]
+whenever \(v\) and \(v'\) differ in at most one product coordinate,
+\[
+\mathbb E_q Z_{\mathrm{prod}}\le \frac{C}{2L},
+\]
+and
+\[
+\begin{aligned}
+&\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi
+   \text{ and } Z_I(\omega)\ge \mu(\omega)+t\}\bigr)\\
+&\qquad\le
+\Pr_q\!\left(Z_{\mathrm{prod}}\ge \mathbb E_q Z_{\mathrm{prod}}+t\right)
+\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\}\bigr).
+\end{aligned}
+\]
+Here
+\[
+\mathbb E_q Z_{\mathrm{prod}}
+=
+\sum_v\left(\prod_iq(v_i)\right)Z_{\mathrm{prod}}(v),
+\]
+and the displayed product-tail probability is the corresponding finite sum of
+\(\prod_i q(v_i)\) over the product outcomes satisfying the displayed tail
+inequality.
+\end{helper}
+\begin{proof}
+Fix \(\pi\).  On the embedding cell
+\[
+\mathcal C_\pi=\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\},
+\]
+the red and blue projections of every \(u\in I\) are fixed: they are
+\(\pi(u)_1\) and \(\pi(u)_2\).  Thus the sets \(P_R\) and \(P_B\), and hence
+the embedded set \(P_I\), are fixed on the cell.  If
+\(\noderef{TwoBiteEventProbability}(\mathcal C_\pi)=0\), the final probability
+inequality is immediate because the event on the left is a subevent of
+\(\mathcal C_\pi\).  Assume from now on that the cell has positive mass.
+
+Unfolding \(\noderef{TwoBiteEventProbability}\), the weight of a sample is
+\[
+\noderef{GnpGraphWeight}(p_0,G_R)\,
+\noderef{GnpGraphWeight}(p_0,G_B)\,
+\noderef{UniformInjectionWeight}(n,M).
+\]
+After conditioning on \(\mathcal C_\pi\), the injection factor is constant and
+cancels.  Therefore the conditional law of the two base graphs is the product
+of the red and blue \(G(M,p_0)\) graph laws.  Any edge coordinate not incident
+to \(P_R\) in the red graph or to \(P_B\) in the blue graph can be summed out;
+for such an unused coordinate the two possible values contribute
+\((1-p_0)+p_0=1\).
+
+Let
+\[
+\alpha=\mathcal P(\mathrm{Fin}(M))\times\mathcal P(\mathrm{Fin}(M)).
+\]
+For \(a=(A_R,A_B)\in\alpha\), define \(q(a)\) to be
+\[
+\noderef{FixedSetProductModelMassFn}(p_0,P_R,P_B)(a).
+\]
+Equivalently,
+\[
+q(a)=p_0^{|A_R|}(1-p_0)^{|P_R|-|A_R|}
+     \cdot p_0^{|A_B|}(1-p_0)^{|P_B|-|A_B|}
+\]
+when \(A_R\subseteq P_R\) and \(A_B\subseteq P_B\), and \(q(a)=0\)
+otherwise.  The hierarchy gives \(0\le p_0\le1\), so
+\(\noderef{FixedSetProductModelMass}\) applies and yields
+\[
+q(a)\ge0\quad\text{for all }a,\qquad \sum_aq(a)=1.
+\]
+
+Use \(2M\) product coordinates.  The first \(M\) coordinates are indexed by
+red base vertices and use only the first component \(A_R\); the last \(M\)
+coordinates are indexed by blue base vertices and use only the second
+component \(A_B\).  Coordinates whose chosen \(A_R\) or \(A_B\) is not
+contained in \(P_R\) or \(P_B\) have \(q\)-mass zero.  If a coordinate
+corresponds to a vertex already in \(P_R\) or \(P_B\), the eventual
+\(Z_I\)-calculation ignores it because \(P_I\) is removed.  The unused
+component of each \(\alpha\)-coordinate factors through the mass-one
+calculation in \(\noderef{FixedSetProductModelMass}\), so this product model
+has exactly the same marginal law as the conditional law of the external
+adjacency vectors that determine \(Z_I\).
+
+Define \(Z_{\mathrm{prod}}\) by reconstructing \(Z_I\) from these external
+adjacency vectors and the fixed embedding \(\pi\).  A red coordinate with
+first component \(A_R\) contributes the fiber
+\[
+\{u\in I:\pi(u)_1\in A_R\},
+\]
+and a blue coordinate with second component \(A_B\) contributes
+\[
+\{u\in I:\pi(u)_2\in A_B\}.
+\]
+The small-class test, the final-pair set, and the distinct-projection filter
+are then exactly the same deterministic operations used in the definition of
+\(Z_I\).  Therefore the product distribution of \(Z_{\mathrm{prod}}\) is the
+conditional distribution of \(Z_I\) on \(\mathcal C_\pi\).
+
+We next compare the product expectation with \(C/(2L)\).  Fix a rank-oriented
+pair \((u,w)\) from a two-element subset of \(I\) whose red and blue
+projections are both distinct.
+For a red external base vertex \(x\) to make this pair contribute, the red
+edges from \(x\) to \(\pi(u)_1\) and \(\pi(w)_1\) must both be present.  These
+are distinct non-loop coordinates under the fixed embedding, so their joint
+probability is \(p_0^2\).  Requiring \(x\) to be in the small class can only
+decrease the probability.  There are at most \(M\) red choices for \(x\), so
+the red contribution probability is at most \(Mp_0^2\).  The same argument in
+the blue graph gives another \(Mp_0^2\).  Hence the contribution probability
+of the pair is at most \(2Mp_0^2\).
+
+The parameter comparison in
+\(\noderef{ParameterHierarchyEventualComparisons}\) gives
+\[
+M\le \frac{n}{L^2}
+\]
+in the present range, while \(p_0=\frac12\sqrt{L/n}\).  Consequently
+\[
+2Mp_0^2\le 2\cdot\frac{n}{L^2}\cdot\frac{L}{4n}
+=\frac1{2L}.
+\]
+Since \(|I|=K\), there are at most
+\(C=\noderef{RealChooseTwo}(K)\) unordered pairs in \(I\).  Linearity of
+expectation gives
+\[
+\mathbb E_q Z_{\mathrm{prod}}\le \frac{C}{2L}.
+\]
+
+The side conditions also follow from the same range information.  The
+inequality \(n_0<n\) gives \(n>0\), and
+\(\noderef{FixedSetProductModelConstants}\) gives
+\[
+c_{\mathrm{prod}}=\frac12 n^{4\varepsilon}>0,
+\]
+and \(t=C/\sqrt L\ge0\).
+
+For the bounded-difference estimate, change one product coordinate and keep
+all others fixed.  Only the external base vertex represented by that coordinate
+can change its contribution to \(Z_{\mathrm{prod}}\).  If the vertex is not in
+the small class, it contributes nothing.  If it is in the small class, the
+definition of \(\noderef{TwoBiteSmallClass}\) bounds the associated fiber size
+by
+\[
+\noderef{TwoBiteSmallCutoff}(\varepsilon,n)=n^{2\varepsilon}.
+\]
+The cardinality estimate \(\noderef{FinalPairsCardLeHalfSq}\) then bounds the
+number of rank-oriented final pairs supported by that one coordinate by
+\[
+\frac12\left(n^{2\varepsilon}\right)^2=\frac12n^{4\varepsilon}
+=c_{\mathrm{prod}}.
+\]
+The distinct-projection filter can only remove pairs, and dummy or embedded
+coordinates change nothing.  Therefore changing one coordinate changes
+\(Z_{\mathrm{prod}}\) by at most \(c_{\mathrm{prod}}\).
+
+Finally, since the product distribution of \(Z_{\mathrm{prod}}\) is the
+conditional distribution of \(Z_I\) on \(\mathcal C_\pi\) and
+\(\mathbb E_qZ_{\mathrm{prod}}\le \mu=C/(2L)\), the conditional event
+\[
+Z_I\ge \mu+t
+\]
+is contained in the product-tail event
+\[
+Z_{\mathrm{prod}}\ge \mathbb E_qZ_{\mathrm{prod}}+t.
+\]
+Multiplying this conditional inequality by the total mass of
+\(\mathcal C_\pi\) gives
+\[
+\noderef{TwoBiteEventProbability}
+  (\mathcal C_\pi\cap\{Z_I\ge\mu+t\})
+\le
+\Pr_q(Z_{\mathrm{prod}}\ge\mathbb E_qZ_{\mathrm{prod}}+t)\,
+\noderef{TwoBiteEventProbability}(\mathcal C_\pi).
+\]
+The zero-mass case was handled at the start, so all claimed product-model
+ingredients hold for the fixed embedding \(\pi\).
+\end{proof}

@@ -1,0 +1,146 @@
+\begin{lemma}
+Fix \(n,m,k\in\mathbb N\), \(p\in\mathbb R\), a finite set
+\(I\subseteq\mathrm{Fin}(n)\), parameters
+\(\varepsilon,\varepsilon_1,\varepsilon_2\in\mathbb R\), and \(n_0\in\mathbb N\).
+Assume
+\[
+\noderef{ParameterHierarchyEventualComparisons}
+  (\varepsilon,\varepsilon_1,\varepsilon_2,n_0),
+\qquad n_0<n,
+\]
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad |I|=k.
+\]
+Put
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p_0=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+\[
+L=\log n,\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+C=\noderef{RealChooseTwo}(K).
+\]
+Here \(K\) is viewed as a real number in the formula for \(C\).  For a
+two-bite sample \(\omega\in\noderef{TwoBiteSample}(n,M,p_0)\), define
+\[
+P_R=\{\noderef{TwoBiteRedProjection}(\omega,u):u\in I\},\qquad
+P_B=\{\noderef{TwoBiteBlueProjection}(\omega,u):u\in I\},
+\]
+and let \(P_I\) be the union of \(P_R\) in the red copy and \(P_B\) in the
+blue copy of the base-vertex set.  Define
+\[
+S_I^{\mathrm{ext}}
+=\{x:\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I,x)\}\setminus P_I,
+\]
+and
+\[
+E_{\mathrm{ext}}(\omega)
+=\bigcup_{x\in S_I^{\mathrm{ext}}}
+  \noderef{TwoBiteFinalPairs}(\noderef{TwoBiteX}(\omega,I,x)).
+\]
+Let \(Z_I(\omega)\) be the number of pairs \(e=(u,v)\) in
+\(E_{\mathrm{ext}}(\omega)\) satisfying
+\[
+\noderef{TwoBiteRedProjection}(\omega,u)
+  \ne\noderef{TwoBiteRedProjection}(\omega,v),\qquad
+\noderef{TwoBiteBlueProjection}(\omega,u)
+  \ne\noderef{TwoBiteBlueProjection}(\omega,v).
+\]
+With \(\mu=C/(2L)\) and \(t=C/\sqrt L\),
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\{\omega:Z_I(\omega)\ge \mu+t\}\bigr)
+\le
+\exp\!\left(
+-\frac{C^2}{L\,M\,n^{8\varepsilon}}
+\right).
+\]
+\end{lemma}
+\begin{proof}
+Fix the data in the statement and abbreviate \(M,p_0,L,K,C\) as above.  From
+\(|I|=k\) and \(k=K\), we have \(|I|=K\).  The hierarchy assumptions also give
+the range facts needed below: \(0\le p_0\le 1/2\), \(M\le n/L^2\), \(L>0\),
+and \(n>0\).
+
+Partition the event by the embedding
+\(\pi=\noderef{TwoBiteEmbedding}(\omega)\).  For a fixed embedding \(\pi\),
+apply \(\noderef{FixedSetProductModelIngredients}\) with this \(I\),
+\(\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), and \(\pi\).  It gives a
+finite product space \(\alpha^{2M}\), a probability mass \(q\), and a product
+variable \(Z_{\mathrm{prod}}\) such that
+\[
+q\ge0,\qquad \sum_{\alpha}q=1,
+\]
+\[
+c=\frac12 n^{4\varepsilon}>0,\qquad t=\frac{C}{\sqrt L}\ge0,
+\]
+the one-coordinate change of \(Z_{\mathrm{prod}}\) is at most \(c\), and
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi
+   \text{ and } Z_I(\omega)\ge C/(2L)+t\}\bigr)
+\]
+is at most
+\[
+\Pr_q\!\left(
+Z_{\mathrm{prod}}\ge\mathbb E_qZ_{\mathrm{prod}}+t
+\right)
+\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\}\bigr).
+\]
+The expectation comparison
+\(\mathbb E_qZ_{\mathrm{prod}}\le C/(2L)\) is part of that helper.  It is what
+allows the fixed threshold \(C/(2L)+t\) in the present event to be controlled
+by the upper tail around the product expectation.
+
+Apply \(\noderef{BoundedDifferencesProduct}\) to this product model, with
+\[
+r=2M,\qquad c=\frac12 n^{4\varepsilon},\qquad t=\frac{C}{\sqrt L}.
+\]
+The hypotheses just listed are exactly its mass, positivity, and
+bounded-difference assumptions, so
+\[
+\Pr_q\!\left(
+Z_{\mathrm{prod}}\ge\mathbb E_qZ_{\mathrm{prod}}+t
+\right)
+\le
+\exp\!\left(-\frac{2t^2}{r c^2}\right).
+\]
+The exponent conversion
+\(\noderef{FixedSetTailExponentInequality}\), for the same \(r,c,t\), gives
+\[
+-\frac{2t^2}{r c^2}
+\le
+-\frac{C^2}{L\,M\,n^{8\varepsilon}}.
+\]
+Since the exponential function is increasing, the preceding two displays give,
+for every embedding \(\pi\),
+\[
+\begin{aligned}
+&\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi
+   \text{ and } Z_I(\omega)\ge C/(2L)+C/\sqrt L\}\bigr)\\
+&\qquad\le
+\exp\!\left(-\frac{C^2}{L\,M\,n^{8\varepsilon}}\right)
+\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\}\bigr).
+\end{aligned}
+\]
+
+Finally apply \(\noderef{TwoBiteEventProbabilitySumOverEmbeddings}\).  The
+embedding cells partition the finite sample space, and the bound on each cell
+has the same nonnegative factor
+\[
+\exp\!\left(-\frac{C^2}{L\,M\,n^{8\varepsilon}}\right).
+\]
+Summing the cell estimates therefore bounds the unconditional probability of
+\(Z_I\ge C/(2L)+C/\sqrt L\) by that factor, which is precisely the claimed
+inequality.
+\end{proof}

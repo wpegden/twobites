@@ -1,0 +1,33 @@
+\begin{helper}
+For every natural number \(k\) and real numbers \(p,\varepsilon_1,f\),
+\[
+k^4\exp\!\left(
+8\sqrt{\varepsilon_1}\,p k^2
+-p(f-10\varepsilon_1 k^2)\right)
+\le
+\exp\!\left(
+-pf+8\sqrt{\varepsilon_1}\,p k^2
++10\varepsilon_1 p k^2+4\log k\right).
+\]
+\end{helper}
+\begin{proof}
+If \(k=0\), the left-hand side is \(0\), while the right-hand side is a
+positive exponential, so the inequality is immediate.  Otherwise \(k>0\).
+Then \(k=\exp(\log k)\), hence \(k^4=\exp(4\log k)\).  Multiplying the two
+exponentials on the left and using \(\exp(x)\exp(y)=\exp(x+y)\), the left-hand
+side becomes
+\[
+\exp\!\left(
+4\log k+8\sqrt{\varepsilon_1}\,p k^2
+-p(f-10\varepsilon_1k^2)\right).
+\]
+Expanding the final product in the exponent gives exactly
+\[
+\exp\!\left(
+-pf+8\sqrt{\varepsilon_1}\,p k^2
++10\varepsilon_1 p k^2+4\log k\right),
+\]
+which is the right-hand side.  Thus the desired inequality follows by equality
+in the positive-\(k\) case and by positivity of the exponential in the zero
+case.
+\end{proof}

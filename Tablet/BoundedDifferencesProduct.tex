@@ -1,0 +1,65 @@
+\begin{helper}
+Let \(Y_0,\ldots,Y_{r-1}\) be independent random variables taking values in a
+finite set \(\Omega\), each with law \(q\).  Let \(Z\) be a real-valued function
+of the product outcome \((Y_0,\ldots,Y_{r-1})\).  Suppose that changing one
+coordinate while keeping all other coordinates fixed changes \(Z\) by at most
+\(c\), with \(c>0\).  If \(\mu=\mathbb E Z\), then for every \(t\ge0\),
+\[
+\Pr(Z\ge \mu+t)\le
+\exp\!\left(-\frac{2t^2}{r c^2}\right).
+\]
+Equivalently, when the product weight of an outcome
+\(\omega=(\omega_0,\ldots,\omega_{r-1})\) is
+\[
+w(\omega)=\prod_{i=0}^{r-1}q(\omega_i),
+\]
+the total weight of all \(\omega\) with \(Z(\omega)\ge\mu+t\) is at most the
+right-hand side.
+\end{helper}
+\begin{proof}
+Order the coordinates and expose them one at a time.  For \(0\le i\le r\), let
+\[
+M_i=\mathbb E(Z\mid Y_0,\ldots,Y_{i-1})
+\]
+be the Doob martingale.  Thus \(M_0=\mu\) and \(M_r=Z\).  Fix a history of the
+first \(i\) exposed coordinates and compare two possible values of \(Y_i\).
+After averaging over the later independent coordinates, the two conditional
+expectations differ by at most \(c\), because the two full product outcomes can
+be coupled to agree in every coordinate except \(i\), and the hypothesis bounds
+the resulting change in \(Z\) by \(c\).  Hence
+\(\Delta_i=M_{i+1}-M_i\) has conditional mean \(0\) and, conditionally on the
+past, is supported in an interval of length at most \(c\).
+
+The needed one-step exponential estimate is Hoeffding's lemma.  In this
+setting it follows directly from convexity of \(x\mapsto e^{\lambda x}\):
+if a mean-zero variable \(X\) is supported in \([a,a+c]\), then the graph of
+\(e^{\lambda x}\) on that interval lies below the chord joining the endpoints,
+so \(\mathbb E e^{\lambda X}\) is at most the corresponding two-point endpoint
+average with the same mean; maximizing that endpoint expression gives
+\(\exp(\lambda^2c^2/8)\).  Applying this conditionally to each
+\(\Delta_i\), for every \(\lambda>0\),
+\[
+\mathbb E\!\left(e^{\lambda\Delta_i}\mid Y_0,\ldots,Y_{i-1}\right)
+\le \exp(\lambda^2c^2/8).
+\]
+Multiplying these conditional estimates along the martingale tower gives
+\[
+\mathbb E\exp(\lambda(Z-\mu))
+=\mathbb E\exp\!\left(\lambda\sum_{i=0}^{r-1}\Delta_i\right)
+\le \exp(r\lambda^2c^2/8).
+\]
+By Markov's inequality,
+\[
+\Pr(Z-\mu\ge t)
+\le \exp(-\lambda t+r\lambda^2c^2/8).
+\]
+For \(t=0\) the desired bound is immediate.  For \(t>0\), choose
+\(\lambda=4t/(r c^2)\), which minimizes the displayed quadratic exponent and
+gives
+\[
+\Pr(Z-\mu\ge t)\le
+\exp\!\left(-\frac{2t^2}{r c^2}\right).
+\]
+The finite-sum formulation with the weight \(w\) is exactly this product
+probability written out by outcomes.
+\end{proof}

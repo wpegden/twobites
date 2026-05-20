@@ -1,0 +1,23 @@
+\begin{definition}
+For a two-bite sample \(\omega\) and a base vertex \(x\), the finite set
+\(\noderef{TwoBiteLiftedPositiveNeighborhood}(\omega,x)\subseteq[n]\) is
+defined by the following two cases.  If \(x=\operatorname{red}(r)\), then a
+vertex \(v\in[n]\) belongs to the set exactly when
+\[
+r<\pi_R^\omega(v)
+\quad\text{and}\quad
+\noderef{TwoBiteRedGraph}(\omega)\text{ contains the red base edge }
+\{r,\pi_R^\omega(v)\}.
+\]
+If \(x=\operatorname{blue}(b)\), then \(v\) belongs exactly when
+\[
+b<\pi_B^\omega(v)
+\quad\text{and}\quad
+\noderef{TwoBiteBlueGraph}(\omega)\text{ contains the blue base edge }
+\{b,\pi_B^\omega(v)\}.
+\]
+Equivalently, this is the union of the fibers over same-color neighbors of
+\(x\) with strictly larger base index.  These are the one-sided neighborhoods
+used by the paper when a monochromatic triangle is charged to its
+lexicographically latest same-color edge.
+\end{definition}

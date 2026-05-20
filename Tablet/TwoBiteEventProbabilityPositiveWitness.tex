@@ -1,0 +1,13 @@
+\begin{helper}
+If a two-bite event has strictly positive
+\(\noderef{TwoBiteEventProbability}\), then some sample in that event has
+strictly positive \(\noderef{TwoBiteSampleWeight}\).
+\end{helper}
+\begin{proof}
+By definition, \(\noderef{TwoBiteEventProbability}\) is the finite sum of
+\(\noderef{TwoBiteSampleWeight}(\omega)\) over the samples \(\omega\) that
+belong to the event.  If every sample in the event had nonpositive weight, then
+the finite sum would be nonpositive.  This contradicts strict positivity of the
+event probability.  Hence at least one sample in the event has strictly
+positive weight.
+\end{proof}

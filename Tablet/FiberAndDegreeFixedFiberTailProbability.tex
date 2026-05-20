@@ -1,0 +1,28 @@
+\begin{helper}[Fixed-fiber tail probability]
+Fix \(n,m,p\), a red row or blue column indexed by \(x\in [m]\), and
+\(\delta\in(0,1/2]\).  If \(n\le m^2\) and \(m>0\), then with
+\(\mu=n/m\) the two-bite probability that this fixed fiber has size larger
+than \((1+\delta)\mu\) is at most
+\[
+  \exp\!\left(-\bigl((1+\delta)\log(1+\delta)-\delta\bigr)\mu\right),
+\]
+and the two-bite probability that it has size smaller than
+\((1-\delta)\mu\) is at most
+\[
+  \exp\!\left(-\bigl(\delta+(1-\delta)\log(1-\delta)\bigr)\mu\right).
+\]
+\end{helper}
+\begin{proof}
+For the chosen row or column let \(K\subseteq [m]\times[m]\) be the
+corresponding marked set.  It has cardinality \(m\).  The node
+\(\noderef{FiberAndDegreeFiberSizeInjectionMarginal}\) reduces the two-bite
+probability of any fixed-fiber count event to the uniform injection marginal.
+For each injection, the number of domain vertices in the fixed fiber is equal
+to the size of the sampled image intersected with \(K\), because the injection
+is one-to-one.  Thus the upper and lower count events are exactly the image
+tail events for \(K\).  Applying
+\(\noderef{FiberAndDegreeFiberSizeImageHypergeometricUpperTailChernoff}\) and
+\(\noderef{FiberAndDegreeFiberSizeImageHypergeometricLowerTail}\), then
+dividing by the total number of injections through
+\(\noderef{UniformInjectionWeight}\), gives the two displayed bounds.
+\end{proof}

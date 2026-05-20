@@ -1,0 +1,37 @@
+\begin{helper}[BernoulliMgfTailEnvelope]
+Let \(m\in\mathbb N\), \(0\le p\le1\), and \(\epsilon,t\in\mathbb R\).  Then
+the two-tail moment expression
+\[
+m\left[
+\exp(-t(1+\epsilon)pm)(1-p+p\exp t)^{m-1}
++
+\exp(t(1-\epsilon)pm)(1-p+p\exp(-t))^{m-1}
+\right]
+\]
+is at most
+\[
+m\left[
+\exp\!\left(-t(1+\epsilon)pm+(m-1)p(\exp t-1)\right)
++
+\exp\!\left(t(1-\epsilon)pm+(m-1)p(\exp(-t)-1)\right)
+\right].
+\]
+\end{helper}
+\begin{proof}
+For any real \(u\), the factor \(1-p+p\exp u\) is nonnegative because it is
+\((1-p)+p\exp u\) with \(0\le p\le1\).  Also
+\[
+1-p+p\exp u = 1+p(\exp u-1)\le \exp(p(\exp u-1))
+\]
+by the elementary inequality \(1+x\le\exp x\).  Raising both sides to the
+\((m-1)\)-st power gives
+\[
+(1-p+p\exp u)^{m-1}
+\le
+\exp\!\left((m-1)p(\exp u-1)\right).
+\]
+Apply this estimate with \(u=t\) to the upper-tail factor and with \(u=-t\)
+to the lower-tail factor.  Multiplying by the positive exponential prefactors,
+using \(\exp a\,\exp b=\exp(a+b)\), adding the two inequalities, and finally
+multiplying by the nonnegative number \(m\) gives the result.
+\end{proof}

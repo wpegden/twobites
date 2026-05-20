@@ -1,0 +1,262 @@
+\begin{lemma}
+Assume the eventual comparisons
+\(\noderef{ParameterHierarchyEventualComparisons}\), let
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+and suppose \(n>n_0\).  Conditioned on \(\mathcal D\), for every set \(I\)
+with \(|I|=K\), the union of pairs
+\[
+\bigcup_{v\in L_I}\binom{X_v(I)}2
+\]
+has size at most \(\varepsilon_1 K^2\).
+\end{lemma}
+\begin{proof}
+Fix \(I\) with \(|I|=K\).  Let
+\[
+\mathcal L=\{v:\noderef{TwoBiteLargeClass}(\omega,\varepsilon,I,v)\}
+\]
+be the large class, and for \(v\in\mathcal L\) write
+\[
+X_v=X_v(I)=\noderef{TwoBiteX}(\omega,I,v).
+\]
+The equality \(|I|=K\) is an equality of natural numbers with
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Whenever \(K\) occurs in a real inequality below, it denotes the real cast
+\((K:\mathbb R)=(|I|:\mathbb R)\), which is the scale in the Lean conclusion
+\(\noderef{ClosedPairsBound}(\cdots,\varepsilon_1,(|I|:\mathbb R))\).
+Unfolding \(\noderef{TwoBiteX}\) gives \(X_v=I\cap N_v\), so
+\[
+X_v\subseteq I. \tag{1}
+\]
+Unfolding \(\noderef{TwoBiteLargeClass}\), and using
+\(\noderef{TwoBiteLargeCutoff}\) and \(\noderef{TwoBiteHugeCutoff}\), gives
+\[
+t_2:=n^{1/4+\varepsilon}<|X_v|
+\le
+t_1:=\frac{\sqrt{n\log n}}{\log\log n}. \tag{2}
+\]
+
+Unfolding \(\noderef{TwoBiteClosedPairsInClass}\), the set whose cardinality
+appears in the Lean statement is
+\[
+\bigcup_{v\in\mathcal L}\binom{X_v}{2}.
+\]
+Thus, after unfolding \(\noderef{ClosedPairsBound}\), it is enough to prove
+\[
+\left|\bigcup_{v\in\mathcal L}\binom{X_v}{2}\right|
+\le \varepsilon_1K^2. \tag{3}
+\]
+
+We next bound the total size of the sets \(X_v\).  The class \(\mathcal L\) is
+a subfamily of
+\(\noderef{TwoBiteLargeHugeVertices}(\omega,\varepsilon,I)\), since
+large membership is the left disjunct in the definition of
+\(\noderef{TwoBiteLargeHugeVertices}\).  Applying
+\(\noderef{LargeHugeVertexCountBound}\) with the present
+\(\noderef{FiberAndDegreeEvent}\), eventual comparisons, \(n>n_0\), and
+\(|I|=K\), we get
+\[
+\ell:=|\mathcal L|<n^{1/4}. \tag{4}
+\]
+Explicitly, the child lemma bounds the real cardinality of
+\(\noderef{TwoBiteLargeHugeVertices}(\omega,\varepsilon,I)\).  Since
+\(\mathcal L\subseteq\noderef{TwoBiteLargeHugeVertices}(\omega,\varepsilon,I)\),
+we first have
+\[
+(\ell:\mathbb R)\le
+|\noderef{TwoBiteLargeHugeVertices}(\omega,\varepsilon,I)|,
+\]
+and then the displayed strict bound follows by transitivity.
+
+For distinct \(u,v\in\mathcal L\), (1) gives
+\[
+X_u\cap X_v\subseteq N_u\cap N_v.
+\]
+We now apply \(\noderef{FiberAndDegreeEvent}\) to the right side of this
+containment.  Set
+\[
+C_n:=100(\log n)^3.
+\]
+There are three cases.  If \(u=r_i\in V_R\) and \(v=r_j\in V_R\), then
+distinctness of \(u\) and \(v\) gives \(i\ne j\), and the red-red lifted
+intersection clause of \(\noderef{FiberAndDegreeEvent}\) gives
+\[
+|N_{r_i}\cap N_{r_j}|\le C_n.
+\]
+If \(u=b_i\in V_B\) and \(v=b_j\in V_B\), then \(i\ne j\), and the blue-blue
+lifted intersection clause gives
+\[
+|N_{b_i}\cap N_{b_j}|\le C_n.
+\]
+Finally, if one of \(u,v\) is red and the other is blue, say
+\(u=r_i\in V_R\) and \(v=b_j\in V_B\), then the mixed lifted intersection
+clause gives
+\[
+|N_{r_i}\cap N_{b_j}|\le C_n;
+\]
+the reversed color order is the same statement with \(u\) and \(v\) swapped.
+Combining the appropriate color-case bound with the containment above, and
+casting cardinalities to real numbers, gives
+\[
+|X_u\cap X_v|\le C_n \tag{5}
+\]
+for every distinct \(u,v\in\mathcal L\).
+
+Set
+\[
+S=\sum_{v\in\mathcal L}(|X_v|:\mathbb R),
+\qquad
+E=\sum_{\{u,v\}\in\binom{\mathcal L}{2}}
+  (|X_u\cap X_v|:\mathbb R).
+\]
+Here \(\binom{\mathcal L}{2}\) denotes the unordered two-element subsets of
+\(\mathcal L\); the summand is independent of the order in which the two
+vertices are named because \(X_u\cap X_v=X_v\cap X_u\).
+Enumerate \(\mathcal L=\{v_1,\ldots,v_\ell\}\) and write
+\(Y_i=X_{v_i}\).  For this finite family,
+\[
+\left|\bigcup_{i=1}^{\ell}Y_i\right|
+\ge
+\sum_{i=1}^{\ell}|Y_i|
+-
+\sum_{1\le i<j\le \ell}|Y_i\cap Y_j|. \tag{6}
+\]
+Indeed, (6) follows by induction on the number of sets.  The step from
+\(b\) sets to \(b+1\) sets uses
+\[
+|U\cup Y_{b+1}|=|U|+|Y_{b+1}|-|U\cap Y_{b+1}|,
+\qquad U=\bigcup_{i=1}^{b}Y_i,
+\]
+and
+\[
+U\cap Y_{b+1}\subseteq
+\bigcup_{i=1}^{b}(Y_i\cap Y_{b+1}),
+\]
+so
+\[
+|U\cap Y_{b+1}|
+\le
+\sum_{i=1}^{b}|Y_i\cap Y_{b+1}|.
+\]
+After casting all cardinalities in (6) to \(\mathbb R\), the first sum is
+\(S\).  The second sum is \(E\), because the chosen enumeration gives a
+bijection between index pairs \(1\le i<j\le\ell\) and unordered two-element
+subsets \(\{v_i,v_j\}\) of \(\mathcal L\).  Thus
+\[
+\left(\left|\bigcup_{v\in\mathcal L}X_v\right|:\mathbb R\right)\ge S-E.
+\]
+The union is a subset of \(I\) by (1), hence
+\[
+K=(|I|:\mathbb R)\ge
+\left(\left|\bigcup_{v\in\mathcal L}X_v\right|:\mathbb R\right)
+\ge S-E. \tag{7}
+\]
+We now prove the stronger overlap estimate \(E\le S/2\), rather than bounding
+\(E\) separately by \(K\).  Let \(\ell_{\mathbb N}=|\mathcal L|\) and let
+\(\ell=(\ell_{\mathbb N}:\mathbb R)\).  The unordered pairs in
+\(\binom{\mathcal L}{2}\) are counted by \(\ell_{\mathbb N}\choose 2\).  After
+casting to \(\mathbb R\), \(\noderef{RealChooseTwo}\) gives
+\[
+(\ell_{\mathbb N}\choose 2:\mathbb R)
+=\binom{\ell}{2}_{\mathbb R}
+=\frac12\,\ell(\ell-1).
+\]
+Using the pairwise bound (5) term by term in the nonnegative finite sum
+defining \(E\), we therefore have
+\[
+E\le \binom{\ell}{2}_{\mathbb R}C_n
+=\frac12\,\ell(\ell-1)C_n.
+\]
+Because of (4), \(\ell<n^{1/4}\), hence
+\[
+\ell-1<n^{1/4}+\frac12.
+\]
+Also \(n_0<n\) implies \(1\le n\), so \(\log n\ge0\), and therefore
+\[
+C_n=100(\log n)^3\ge0.
+\]
+The eventual-comparisons package contains
+the monotonicity-size comparison
+\[
+100\left(n^{1/4}+\frac12\right)(\log n)^3
+\le \noderef{TwoBiteLargeCutoff}(\varepsilon,n)=t_2.
+\]
+Thus
+\[
+(\ell-1)C_n
+\le \left(n^{1/4}+\frac12\right)100(\log n)^3
+\le t_2. \tag{8}
+\]
+Since each \(v\in\mathcal L\) satisfies \(t_2<|X_v|\) by (2), (8) gives the
+pointwise inequality
+\[
+(\ell-1)C_n<|X_v|
+\qquad\text{for every }v\in\mathcal L.
+\]
+Summing this pointwise inequality over the finite set \(\mathcal L\) and using
+the previous bound on \(E\), we get
+\[
+2E\le \ell(\ell-1)C_n
+=\sum_{v\in\mathcal L}(\ell-1)C_n
+\le \sum_{v\in\mathcal L}|X_v|=S.
+\]
+The middle equality is just the real cast of the natural identity saying that
+there are \(\ell_{\mathbb N}\) terms in the constant sum over \(\mathcal L\).
+Therefore
+\[
+E\le \frac12S. \tag{9}
+\]
+Combining (7) and (9) yields
+\[
+K\ge S-E\ge S-\frac12S=\frac12S,
+\]
+and hence
+\[
+S\le 2K. \tag{10}
+\]
+
+Now bound the closed pairs.  Since
+\(\noderef{TwoBiteClosedPairsInClass}\) is the finite union, over
+\(v\in\mathcal L\), of the pair sets \(\binom{X_v}{2}\),
+\[
+\left|\bigcup_{v\in\mathcal L}\binom{X_v}{2}\right|
+\le
+\sum_{v\in\mathcal L}\binom{|X_v|}{2}_{\mathbb R}.
+\]
+This is only the finite union bound.  No disjointness of the pair sets is
+assumed: if the same unordered base pair lies in \(\binom{X_u}{2}\) and
+\(\binom{X_v}{2}\), it is counted once on the left and once in each relevant
+summand on the right.  For each fixed \(v\), the real cardinality of
+\(\binom{X_v}{2}\) is \(\binom{|X_v|}{2}_{\mathbb R}\), by
+\(\noderef{RealChooseTwo}\), so summing these individual cardinalities bounds
+the real cardinality of the union.
+For each \(v\), the upper half of (2) gives
+\[
+\binom{|X_v|}{2}_{\mathbb R}
+\le \frac12\,t_1|X_v|.
+\]
+This is a real-valued calculation: if \(x=|X_v|\), then
+\[
+\binom{x}{2}_{\mathbb R}=\frac{x(x-1)}2\le\frac{x^2}{2}
+\le\frac{t_1x}{2},
+\]
+because \(x\ge0\) and \(x\le t_1\) by (2).  Therefore, using (10),
+\[
+\left|\bigcup_{v\in\mathcal L}\binom{X_v}{2}\right|
+\le
+\frac12t_1S
+\le t_1K. \tag{11}
+\]
+Finally, \(\noderef{ParameterHierarchyEventualComparisons}\), applied to this
+\(n>n_0\), contains the explicit rounded inequality
+\[
+t_1K\le\varepsilon_1K^2.
+\]
+Combining this with (11) proves (3), which is precisely
+\(\noderef{ClosedPairsBound}\) for the cardinality of
+\(\noderef{TwoBiteClosedPairsInClass}(\omega,I,
+\noderef{TwoBiteLargeClass}(\omega,\varepsilon,I))\) at scale \(K=|I|\).
+\end{proof}

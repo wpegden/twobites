@@ -1,0 +1,139 @@
+\begin{helper}
+Fix \(\varepsilon,\eta,\varepsilon_1,\varepsilon_2,\beta\in\mathbb R\) and
+\(n_0\in\mathbb N\).  Assume
+\[
+0<\varepsilon,\qquad 0<\eta,\qquad \eta<\varepsilon,\qquad
+\beta=\frac12,
+\]
+and \(\noderef{ParameterHierarchy}(\eta,\varepsilon_1,\varepsilon_2,n_0)\).
+Suppose the \(\eta\)-scale regularity event
+\[
+\noderef{TwoBiteRegularityEvent}
+\bigl(k=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),
+\eta,\varepsilon_1,\varepsilon_2,\omega\bigr)
+\]
+holds with high probability under the two-bite law with parameters
+\[
+n,\quad \noderef{TwoBiteNaturalReducedVertexCount}(n),\quad
+\noderef{TwoBiteEdgeProbability}(\beta,n).
+\]
+Suppose also that for every \(\delta>0\) there is \(N\ge n_0\) such that for
+all \(n>N\), all \(m,p\) with
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and all \(I\subseteq\mathrm{Fin}(n)\) with
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),
+\]
+one has
+\[
+\noderef{TwoBiteEventProbability}\!\left(n,m,p,\,
+\{\,\omega:
+I\text{ is independent in }\noderef{TwoBiteFinalGraph}(\omega)_0
+\text{ and }
+\noderef{TwoBiteRegularityEvent}
+(k=|I|,\eta,\varepsilon_1,\varepsilon_2,\omega)\,\}\right)
+\le
+\delta\binom n{|I|}^{-1}.
+\]
+Then the final graph has independence number less than
+\[
+(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}
+\]
+with high probability under the two-bite law with edge parameter \(\beta\).
+\end{helper}
+\begin{proof}
+Write
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),\quad
+p_\beta(n)=\noderef{TwoBiteEdgeProbability}(\beta,n),\quad
+K(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),
+\]
+and let
+\[
+\mathbb P_n(E)=
+\noderef{TwoBiteEventProbability}(n,M(n),p_\beta(n),E).
+\]
+Because \(\beta=1/2\), this is the same law as the fixed-set estimate's law
+with \(p=\noderef{TwoBiteEdgeProbability}(1/2,n)\).
+
+Let \(R_n\) be the \(\eta\)-scale regularity event appearing in the statement.
+By hypothesis, \(\mathbb P_n(R_n)\to1\).  Equivalently, for every
+\(\rho>0\) there is a threshold \(N_R\) such that, for all \(n\ge N_R\),
+\[
+\mathbb P_n(R_n^c)<\rho/2. \tag{1}
+\]
+
+Apply \(\noderef{NaturalIndependenceScaleFitsTarget}\) to \(0<\eta<\varepsilon\).
+There is \(N_{\mathrm{fit}}\) such that, for all \(n\ge N_{\mathrm{fit}}\),
+\[
+(K(n):\mathbb R)<
+\noderef{TwoBiteIndependenceScale}(1+\varepsilon,n)
+=(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}. \tag{2}
+\]
+Using \(\noderef{NaturalParameterApproximation}\) and increasing the threshold
+if necessary, we may also assume
+\[
+0<K(n)\le n. \tag{3}
+\]
+Indeed, the natural scale is an integer ceiling of the real scale, and the
+real scale grows while remaining \(o(n)\), so eventually it is positive and
+strictly below \(n\).
+
+Fix \(\rho>0\), set \(\delta=\rho/2\), and apply the fixed-set estimate with
+this \(\delta\).  It gives a threshold \(N_F\) such that, for every
+\(n>N_F\) and every \(K(n)\)-element set \(I\subseteq\mathrm{Fin}(n)\),
+\[
+\mathbb P_n\bigl(I\text{ is independent in }\noderef{TwoBiteFinalGraph}_0
+\text{ and }R_n\bigr)
+\le
+\delta\binom n{K(n)}^{-1}. \tag{4}
+\]
+Here the regularity event in the fixed-set estimate is
+\(\noderef{TwoBiteRegularityEvent}(k=|I|,\eta,\varepsilon_1,\varepsilon_2)\),
+which is \(R_n\) because \(|I|=K(n)\).
+
+Let \(B_n\) be the bad event that the desired independence-number conclusion
+fails.  Unfolding \(\noderef{IndependenceNumberLess}\), on \(B_n\) there is a
+finite independent set \(J\subseteq\mathrm{Fin}(n)\) with
+\[
+(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}
+\le (|J|:\mathbb R). \tag{5}
+\]
+For \(n\ge N_{\mathrm{fit}}\), (2) and (5) imply \(K(n)\le |J|\).  Together
+with \(0<K(n)\) from (3), choose a \(K(n)\)-element subset \(I\subseteq J\).
+Independence is inherited by subsets, so \(I\) is independent in the same
+final graph.  Thus
+\[
+B_n\cap R_n
+\subseteq
+\bigcup_{\substack{I\subseteq\mathrm{Fin}(n)\\ |I|=K(n)}}
+\{I\text{ is independent in }\noderef{TwoBiteFinalGraph}_0\}\cap R_n.
+\tag{6}
+\]
+
+For \(0\le K(n)\le n\), the number of \(K(n)\)-element subsets of
+\(\mathrm{Fin}(n)\) is \(\binom n{K(n)}\).  Applying the finite union bound to
+(6), and then applying (4) to each indexed set, gives
+\[
+\mathbb P_n(B_n\cap R_n)
+\le
+\binom n{K(n)}\,
+\delta\binom n{K(n)}^{-1}
+=\delta. \tag{7}
+\]
+The final equality uses positivity of \(\binom n{K(n)}\), which follows from
+(3).
+
+Finally \(B_n\subseteq R_n^c\cup(B_n\cap R_n)\).  Combining this inclusion
+with the union bound, (1), and (7), we get
+\[
+\mathbb P_n(B_n)<\rho/2+\delta=\rho
+\]
+for all sufficiently large \(n\).  Since \(\rho>0\) was arbitrary, the
+probability of the bad event tends to \(0\), equivalently the probability of
+the desired \(\noderef{IndependenceNumberLess}\) event tends to \(1\).  This
+is the asserted \(\noderef{WithHighProbability}\) conclusion.
+\end{proof}

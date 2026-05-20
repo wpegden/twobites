@@ -1,0 +1,39 @@
+\begin{helper}
+In a fixed history cell, assume each complete blue terminal branch supplies a
+red exceptional set \(E_R(\beta)\) satisfying the closed-pair bound
+\(|E_R(\beta)|\le 3\varepsilon_1 k^2\) and covering every red present
+staged-open coordinate of any regular independent completion of that branch.
+Then there is one natural number \(N_R\), independent of the branch, such that
+\[
+N_R\le 3\varepsilon_1 k^2,
+\]
+and every nonempty blue branch admits a red exceptional set of cardinality at
+most \(N_R\) with the same red coverage property.
+\end{helper}
+\begin{proof}
+The sample space is finite, because a two-bite sample is a pair of finite
+graphs together with a finite injection.  Hence the set of history branches is
+finite, and so is the subfamily of branches that actually occur in the
+fixed-count argument.
+
+For each branch in this finite family, choose one red exceptional set supplied
+by the branch hypothesis.  The branch hypothesis gives two facts for that
+chosen set: it is contained in the terminal coordinate set, and its
+cardinality satisfies
+\[
+|E_R(\beta)|\le 3\varepsilon_1 k^2
+\]
+by the definition of \(\noderef{ClosedPairsBound}\).  It also gives the
+coverage statement: any regular completion which agrees with the branch on
+the embedding, on recorded coordinates, and on all blue terminal coordinates
+has all red present staged-open coordinates inside \(E_R(\beta)\).
+
+Let \(N_R\) be the maximum of the finitely many cardinalities
+\(|E_R(\beta)|\), and take \(N_R=0\) if there are no relevant branches.  Since
+each member of the finite set being maximized is at most
+\(3\varepsilon_1 k^2\), the maximum is also at most
+\(3\varepsilon_1 k^2\).  For a given branch, its chosen exceptional set has
+cardinality at most this maximum and retains the terminal-containment and
+red-coverage properties from the original branch hypothesis.  This is the
+desired global red witness.
+\end{proof}

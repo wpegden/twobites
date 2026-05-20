@@ -1,0 +1,130 @@
+\begin{helper}
+Fix \(\varepsilon_2>0\).  Let \(\beta=1/2\), let
+\(m:\mathbb N\to\mathbb N\) satisfy
+\[
+m(n)=M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)
+\]
+for every \(n\), and put
+\[
+p(n)=\noderef{TwoBiteEdgeProbability}(\beta,n).
+\]
+Under the two-bite law
+\(\noderef{TwoBiteEventProbability}(n,m(n),p(n))\), the event
+\[
+\begin{aligned}
+&\forall r\in \operatorname{Fin}(m(n)),\quad
+\noderef{WithinRelativeError}\!\left(
+  \varepsilon_2,\ p(n)m(n),\
+  \noderef{GraphDegreeCount}(\noderef{TwoBiteRedGraph}(\omega),r)
+\right),\\
+&\forall b\in \operatorname{Fin}(m(n)),\quad
+\noderef{WithinRelativeError}\!\left(
+  \varepsilon_2,\ p(n)m(n),\
+  \noderef{GraphDegreeCount}(\noderef{TwoBiteBlueGraph}(\omega),b)
+\right)
+\end{aligned}
+\]
+holds with high probability in the sense of \(\noderef{WithHighProbability}\).
+\end{helper}
+\begin{proof}
+Write \(L=\log n\), \(M=M(n)=m(n)\), and
+\[
+p=p(n)=\beta\sqrt{\frac{L}{n}}=\frac12\sqrt{\frac{L}{n}}.
+\]
+By \(\noderef{TwoBiteNaturalReducedVertexCount}\), together with
+\(\noderef{TwoBiteReducedVertexCount}\) and \(\noderef{TwoBiteStretch}\), for
+all sufficiently large \(n\),
+\[
+M=\left\lfloor\frac{n}{L^2}\right\rfloor,\qquad
+\frac12\frac{n}{L^2}\le M\le \frac{n}{L^2}.
+\tag{1}
+\]
+Hence \(M\to\infty\), and
+\[
+pM \ge \frac14\,\frac{\sqrt n}{L^{3/2}}\longrightarrow\infty,
+\qquad
+\log M=O(L).
+\tag{2}
+\]
+In particular \(pM/\log M\to\infty\).
+
+The two-bite sample weight factors as the red graph weight, the blue graph
+weight, and the uniform injection weight by \(\noderef{TwoBiteSampleWeight}\).
+The red and blue graph weights are the independent \(G(M,p)\) product
+weights encoded by \(\noderef{GnpGraphWeight}\), and their total masses are
+\(1\) by \(\noderef{GnpGraphWeightSumOne}\).  Thus, after summing over the
+irrelevant blue graph and injection coordinates, the marginal law of
+\(\noderef{TwoBiteRedGraph}(\omega)\) is exactly the product Bernoulli-\(p\)
+law on unordered red pairs.  The same argument gives the identical marginal
+law for \(\noderef{TwoBiteBlueGraph}(\omega)\).  The eventual normalization
+and nonempty injection support for this rounded value of \(M\) are supplied
+by \(\noderef{TwoBiteNaturalTotalMassOneEventually}\); changing finitely many
+initial \(n\)'s does not affect \(\noderef{WithHighProbability}\).
+
+Fix a red vertex \(r\in\operatorname{Fin}(M)\).  Since simple graphs have no
+loops, the degree
+\[
+D_r=\noderef{GraphDegreeCount}(\noderef{TwoBiteRedGraph}(\omega),r)
+\]
+is a sum of the \(M-1\) independent Bernoulli-\(p\) edge indicators joining
+\(r\) to the other red vertices.  Its mean is
+\[
+\mu=(M-1)p=pM-p.
+\tag{3}
+\]
+For a binomial sum \(Y\) with mean \(\mu\), the elementary Chernoff
+calculation gives, for every fixed \(0<\delta\le 1/2\),
+\[
+\Pr(|Y-\mu|>\delta\mu)\le 2e^{-c_\delta\mu}
+\tag{4}
+\]
+with \(c_\delta>0\).  Indeed,
+\(\mathbb E e^{\lambda Y}=(1-p+pe^\lambda)^{M-1}
+\le \exp(\mu(e^\lambda-1))\).  Markov's inequality with
+\(\lambda=\log(1+\delta)\) gives the upper tail
+\(\exp(-\mu((1+\delta)\log(1+\delta)-\delta))\), and the same argument with
+\(-\lambda\), \(\lambda=-\log(1-\delta)\), gives the lower tail
+\(\exp(-\mu((1-\delta)\log(1-\delta)+\delta))\).  Taking the smaller of the
+two positive exponents proves (4).
+
+Let \(\delta=\min\{\varepsilon_2/4,1/2\}\).  Since \(M\to\infty\), we have
+\(p\le(\varepsilon_2/4)pM\) for all sufficiently large \(n\).  If
+\(|D_r-\mu|\le\delta\mu\), then using \(\mu\le pM\) and (3),
+\[
+|D_r-pM|
+\le |D_r-\mu|+|\mu-pM|
+\le \delta\mu+p
+\le \frac{\varepsilon_2}{4}pM+\frac{\varepsilon_2}{4}pM
+\le \varepsilon_2 pM.
+\]
+Thus failure of
+\(\noderef{WithinRelativeError}(\varepsilon_2,pM,D_r)\) implies the
+Chernoff tail in (4).  By (2) and (3), for all large \(n\) the mean \(\mu\)
+is at least \((1/2)pM\), so
+\[
+\Pr\!\left(
+\neg\noderef{WithinRelativeError}(\varepsilon_2,pM,D_r)
+\right)
+\le 2\exp(-c pM)
+\tag{5}
+\]
+for a constant \(c=c(\varepsilon_2)>0\).
+
+The same estimate holds for each blue vertex \(b\), with
+\[
+D_b=\noderef{GraphDegreeCount}(\noderef{TwoBiteBlueGraph}(\omega),b).
+\]
+There are \(M\) red vertices and \(M\) blue vertices.  A union bound and
+(5) give total failure probability at most
+\[
+4M\exp(-c pM).
+\tag{6}
+\]
+By (2), \(pM/\log M\to\infty\), so the logarithm of the right side is
+\[
+\log 4+\log M-cpM\longrightarrow -\infty.
+\]
+Consequently (6) tends to \(0\).  Equivalently, the probability of the
+simultaneous red and blue base-degree concentration event tends to \(1\),
+which is exactly the displayed \(\noderef{WithHighProbability}\) statement.
+\end{proof}

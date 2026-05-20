@@ -1,0 +1,6 @@
+\begin{helper}
+The number of \(k\)-subsets \(S \subseteq V_R \times V_B\) with red projection size exactly \(\ell_R\) and blue projection size exactly \(\ell_B\) is bounded by \(\binom{m}{\ell_R}\binom{m}{\ell_B}\binom{\ell_R\ell_B}{k}\).
+\end{helper}
+\begin{proof}
+First choose the red projection set \(R\subseteq V_R\) and the blue projection set \(B\subseteq V_B\) of sizes \(\ell_R\) and \(\ell_B\) respectively. There are \(\binom{m}{\ell_R}\binom{m}{\ell_B}\) such pairs. Once \(R\) and \(B\) are fixed, every such \(k\)-subset \(S\) is contained in \(R\times B\), which gives at most \(\binom{\ell_R\ell_B}{k}\) choices for \(S\).
+\end{proof}

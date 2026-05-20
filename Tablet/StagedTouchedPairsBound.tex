@@ -1,0 +1,146 @@
+\begin{lemma}
+Let \(I\subseteq[n]\), put \(K=|I|\), and assume
+\(\varepsilon_1\ge0\),
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\),
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+and \(\noderef{FiberAndDegreeEvent}\).  Then the staged revelation touches at
+most
+\[
+\varepsilon_1K^2
+\]
+projected pairs:
+\[
+|\noderef{TwoBiteTouchedProjectedPairs}(\omega,\varepsilon,I)|
+\le \varepsilon_1K^2.
+\]
+\end{lemma}
+\begin{proof}
+Let
+\[
+P_I=\noderef{TwoBiteProjectionPairSet}(\omega,I),\qquad
+T_I=\noderef{TwoBiteTouchedProjectedPairs}(\omega,\varepsilon,I).
+\]
+By the definition of \(\noderef{TwoBiteTouchedProjectedPairs}\), \(T_I\) is the
+subcollection of \(P_I\) consisting of pairs satisfying
+\(\noderef{TwoBiteProjectionPairTouched}\).  Unfold a member \(e\in P_I\).  If
+\(e\) is red-tagged, then \(e=\{r,s\}\) with
+\(r,s\in\pi_R(I)\); if \(e\) is blue-tagged, then
+\(e=\{b,c\}\) with \(b,c\in\pi_B(I)\).  Thus every endpoint of a projected pair
+in \(P_I\) satisfies \(\noderef{TwoBiteProjectionContains}(\omega,I,-)\).
+
+Now unfold \(\noderef{TwoBiteProjectionPairTouched}\).  A touched red pair has
+at least one red endpoint \(r\) for which
+\(\noderef{TwoBiteStageRevealedVertex}(\omega,\varepsilon,I,\mathrm{inl}\,r)\)
+holds, and similarly for blue pairs.  But
+\(\noderef{TwoBiteStageRevealedVertex}\) is the disjunction
+\[
+\neg\noderef{TwoBiteProjectionContains}
+\quad\text{or}\quad
+\noderef{TwoBiteStageF1}
+\quad\text{or}\quad
+\noderef{TwoBiteStageF2}.
+\]
+The first alternative is impossible for an endpoint of a pair in \(P_I\), as
+observed above.  Consequently every touched projected pair has at least one
+endpoint in
+\[
+F_1\cup F_2,
+\]
+where \(F_1\) and \(F_2\) are the sets from
+\(\noderef{TwoBiteStageF1}\) and \(\noderef{TwoBiteStageF2}\).
+
+We first bound \(F_1\).  If \(x\in F_1\), then
+\(\noderef{TwoBiteStageF1}\) gives both
+\(\noderef{TwoBiteProjectionContains}(\omega,I,x)\) and
+\[
+|\,\noderef{TwoBiteBaseFiber}(\omega,x)\cap I\,|>\log n.
+\]
+The red fibers over \(\pi_R(I)\) are pairwise disjoint and partition \(I\) by
+red projection; the blue fibers over \(\pi_B(I)\) are pairwise disjoint and
+partition \(I\) by blue projection.  Therefore the total fiber mass over all red
+projected vertices plus all blue projected vertices is exactly
+\[
+|I|+|I|=2K.
+\]
+Since every element of \(F_1\) is one of those projected vertices and contributes
+more than \(\log n\) to this total mass,
+\[
+|F_1|\log n <2K,
+\qquad\text{so}\qquad
+|F_1|\le \frac{2K}{\log n}.
+\]
+
+Next consider \(F_2\).  If \(x\in F_2\), then
+\(\noderef{TwoBiteStageF2}\) gives
+\(\noderef{TwoBiteProjectionContains}(\omega,I,x)\) and says that the set of
+same-color base neighbors \(y\) satisfying \(y\in F_1\) has cardinality more
+than \(t_2/\log n\), where
+\[
+t_2=\noderef{TwoBiteLargeCutoff}(\varepsilon,n)=n^{1/4+\varepsilon}.
+\]
+Indeed, \(\noderef{TwoBiteBaseAdj}\) is false across colors, so these neighbors
+have the same color as \(x\).  For each such neighbor \(y\in F_1\), the
+\(\noderef{TwoBiteStageF1}\) condition gives
+\[
+|\,\noderef{TwoBiteBaseFiber}(\omega,y)\cap I\,|>\log n.
+\]
+As \(y\) varies over same-color base vertices, these fibers are disjoint.  They
+all lie in \(\noderef{TwoBiteX}(\omega,I,x)\): if \(x\) and \(y\) are red, then
+every vertex in the red fiber over \(y\) has red projection \(y\), and the
+base-edge \(x\sim y\) puts it in the lifted red neighborhood of \(x\); the blue
+case is identical.  Therefore
+\[
+|X_x(I)|> \frac{t_2}{\log n}\cdot \log n=t_2.
+\]
+Since \(X_x(I)\subseteq I\), either
+\(|X_x(I)|\le\noderef{TwoBiteHugeCutoff}(n)\) or
+\(\noderef{TwoBiteHugeCutoff}(n)<|X_x(I)|\).  In the first case the preceding
+strict lower bound \(t_2<|X_x(I)|\) puts \(x\) in
+\(\noderef{TwoBiteLargeClass}(\omega,\varepsilon,I)\); in the second case the
+upper bound \(X_x(I)\subseteq I\) puts \(x\) in
+\(\noderef{TwoBiteHugeClass}(\omega,I)\).  Thus
+\[
+x\in L_I\cup H_I=\noderef{TwoBiteLargeHugeVertices}(\omega,\varepsilon,I).
+\]
+Hence
+\[
+|F_2|\le |\noderef{TwoBiteLargeHugeVertices}(\omega,\varepsilon,I)|.
+\]
+The child lemma \(\noderef{LargeHugeVertexCountBound}\) has exactly the same
+rounded scale hypothesis \(K=\noderef{TwoBiteNaturalIndependenceScale}
+(1+\varepsilon,n)\), the same \(n>n_0\), the same eventual-comparisons package,
+and the same \(\noderef{FiberAndDegreeEvent}\).  Applying it gives
+\[
+|F_2|<n^{1/4}.
+\]
+
+A single projected base vertex can be an endpoint of at most \(K\) pairs in
+\(P_I\).  If the endpoint is red, its possible partners are contained in
+\(\pi_R(I)\), whose cardinality is at most \(|I|=K\); if it is blue, its possible
+partners are contained in \(\pi_B(I)\), again of cardinality at most \(K\).
+Charge each touched pair to one of its endpoints in \(F_1\cup F_2\).  This may
+double-count pairs, but it gives the upper bound
+\[
+|\noderef{TwoBiteTouchedProjectedPairs}(\omega,\varepsilon,I)|
+\le K(|F_1|+|F_2|)
+\le K\left(\frac{2K}{\log n}+n^{1/4}\right).
+\]
+Finally, the \(n>n_0\) instance of
+\(\noderef{ParameterHierarchyEventualComparisons}\) is stated with
+\[
+k=(\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n):\mathbb R)=K.
+\]
+One of its conjuncts is precisely
+\[
+K\left(\frac{2K}{\log n}+n^{1/4}\right)\le\varepsilon_1K^2.
+\]
+Combining this numerical inequality with the preceding display proves
+\[
+|\noderef{TwoBiteTouchedProjectedPairs}(\omega,\varepsilon,I)|
+\le \varepsilon_1K^2,
+\]
+which is the asserted bound.
+\end{proof}

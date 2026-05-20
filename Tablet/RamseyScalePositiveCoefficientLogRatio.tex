@@ -1,0 +1,48 @@
+\begin{helper}
+For every fixed real number \(c>0\),
+\[
+\frac{\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)}{\log k}\to 2
+\]
+as \(k\to\infty\).
+\end{helper}
+\begin{proof}
+Fix \(c>0\).  For all sufficiently large \(k\), we have \(k>1\), hence
+\(\log k>0\), and therefore \(\noderef{RamseyScale}(k)=k^2/\log k>0\).  Since
+\(c>0\), all logarithms below are then taken of positive quantities.
+
+Using the definition of \(\noderef{RamseyScale}\), the logarithm laws for
+positive arguments give, eventually in \(k\),
+\[
+\begin{aligned}
+\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)
+&=\log c+\log\left(\frac{k^2}{\log k}\right)\\
+&=\log c+\log(k^2)-\log(\log k)\\
+&=\log c+2\log k-\log\log k.
+\end{aligned}
+\]
+Dividing by \(\log k>0\), we obtain the eventual identity
+\[
+\frac{\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)}{\log k}
+=2+\frac{\log c}{\log k}-\frac{\log\log k}{\log k}.
+\]
+The first error term tends to \(0\), because \(\log c\) is a fixed real number
+and \(\log k\to\infty\).
+
+For the second error term, put \(t=\log k\).  Since \(k\to\infty\), we have
+\(t\to\infty\).  Once \(t\ge1\), the elementary estimate
+\(\log t\le\sqrt t\) holds.  Hence eventually
+\[
+0\le\frac{\log\log k}{\log k}
+=\frac{\log t}{t}
+\le\frac{\sqrt t}{t}
+=\frac1{\sqrt t}.
+\]
+The right hand side tends to \(0\) because \(t\to\infty\), so by squeezing
+\[
+\frac{\log\log k}{\log k}\to0.
+\]
+Both error terms in the eventual identity tend to \(0\), and therefore
+\[
+\frac{\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)}{\log k}\to2 .
+\]
+\end{proof}

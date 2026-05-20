@@ -1,0 +1,27 @@
+\begin{helper}
+Fix \(U_0,V_0\subseteq\operatorname{Fin}n\), \(t\), a blue graph \(G_B\), a
+map \(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), and an exposure
+\(\eta:U_0\to\operatorname{Fin}m\).  The conditional probability appearing in
+\(\noderef{OppositeProjectionBlueExposureTailBound}\), where the blue graph
+and second injection coordinate are conditioned and the first coordinate is
+tested, is equal to the corresponding red-coordinate conditional probability
+obtained by swapping the two graph coordinates and the two coordinates of
+every injection value.
+\end{helper}
+\begin{proof}
+Define an involution on two-bite samples by sending
+\((G_R,G_B,\phi)\) to \((G_B,G_R,\phi^\sigma)\), where
+\(\phi^\sigma(v)=((\phi(v))_2,(\phi(v))_1)\).  This map is a bijection of the
+finite sample space.  Under it, the blue conditioning event becomes the red
+conditioning event with \(G_R=G_B\), the second-coordinate tail event becomes
+the first-coordinate tail event, and conversely.
+
+The sample weight is invariant under this involution, because
+\(\noderef{TwoBiteSampleWeight}\) is the product of the two graph weights and
+the uniform injection weight, and multiplication is commutative.  Therefore
+\(\noderef{TwoBiteEventProbability}\) is preserved for each event after
+precomposition with the involution.  Applying this to the conditioning event
+and to the intersection of the tail event with the conditioning event, and
+then unfolding \(\noderef{TwoBiteConditionalProbability}\), gives equality of
+the two conditional probabilities.
+\end{proof}

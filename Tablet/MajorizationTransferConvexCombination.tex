@@ -1,0 +1,24 @@
+\begin{helper}
+Let \(N\) be a natural number, and let \(b, x \in \mathbb R^{\operatorname{Fin}(N)}\). Suppose \(i < j\) are indices such that \(b_i \ge b_j\), \(x_i > b_i\), and \(x_j < b_j\). Let \(\delta > 0\) be a real number such that \(\delta \le x_i - b_i\) and \(\delta \le b_j - x_j\). Let \(y\) be the vector obtained from \(x\) by moving \(\delta\) units from coordinate \(i\) to coordinate \(j\): \(y_i = x_i - \delta\), \(y_j = x_j + \delta\), and \(y_k = x_k\) for \(k \neq i, j\). Then there exists \(\theta \in [0, 1]\) such that for all \(k\), \(y_k = (1 - \theta) x_k + \theta x_{\tau(k)}\), where \(\tau\) is the transposition swapping \(i\) and \(j\).
+\end{helper}
+\begin{proof}
+Because \(b_i \ge b_j\), \(x_i > b_i\), and \(x_j < b_j\), we have \(x_i > x_j\). Define
+\[
+\theta = \frac{\delta}{x_i - x_j}.
+\]
+The denominator \(x_i - x_j = (x_i - b_i) + (b_i - b_j) + (b_j - x_j)\) is positive since all three terms are nonnegative and the first and third are positive. The bounds \(\delta \le x_i - b_i\) and \(\delta \le b_j - x_j\) imply that \(0 < \delta \le x_i - x_j\), so \(0 \le \theta \le 1\).
+
+For \(k = i\), we have
+\[
+(1 - \theta) x_i + \theta x_j = x_i - \theta(x_i - x_j) = x_i - \delta = y_i.
+\]
+For \(k = j\), we have
+\[
+(1 - \theta) x_j + \theta x_i = x_j + \theta(x_i - x_j) = x_j + \delta = y_j.
+\]
+For \(k \neq i, j\), we have \(\tau(k) = k\), so
+\[
+(1 - \theta) x_k + \theta x_{\tau(k)} = x_k = y_k.
+\]
+Thus, \(y\) is a convex combination of \(x\) and its permutation by \(\tau\).
+\end{proof}

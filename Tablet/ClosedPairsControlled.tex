@@ -1,0 +1,140 @@
+\begin{lemma}
+Let \(I\) be a \(k\)-set and assume the degree event
+\(\noderef{FiberAndDegreeEvent}\), the medium closed-pairs event, and the small
+closed-pairs event.  Suppose also that the large contribution
+\[
+|\noderef{TwoBiteClosedPairsInClass}(I,L_I)|
+\]
+is \(\varepsilon_1\)-small in the sense of
+\(\noderef{ClosedPairsBound}\), and that the sum of the same-color huge
+projected contributions
+\[
+\sum_{x\in H_I\cap V_R}\binom{|\pi_R(X_x(I))|}{2}_{\mathbb R}
++
+\sum_{x\in H_I\cap V_B}\binom{|\pi_B(X_x(I))|}{2}_{\mathbb R}
+\]
+is also \(\varepsilon_1\)-small.  Then the total contribution from
+\[
+L_I,\qquad M_I,\qquad S_I,\qquad
+\text{and the same-color projections of }H_I
+\]
+is at most \(4\varepsilon_1k^2\), equivalently it satisfies
+\(\noderef{ClosedPairsBound}\) with parameter \(4\varepsilon_1\) and scale
+\(k\).
+\end{lemma}
+\begin{proof}
+Fix the data appearing in the statement:
+\(\omega\), \(I\), \(\varepsilon,\varepsilon_1,\varepsilon_2\), and the
+integer \(k\) with \(|I|=k\).  Define the four real quantities, in exactly the
+order in which they occur in the Lean conclusion, by
+\[
+A_L=|\noderef{TwoBiteClosedPairsInClass}(I,L_I)|,\quad
+A_M=|\noderef{TwoBiteClosedPairsInClass}(I,M_I)|,\quad
+A_S=|\noderef{TwoBiteClosedPairsInClass}(I,S_I)|
+\]
+and
+\[
+\begin{aligned}
+H_R(x)&\Longleftrightarrow
+  \noderef{TwoBiteHugeClass}(\omega,I,x)\text{ and }x\in V_R,\\
+H_B(x)&\Longleftrightarrow
+  \noderef{TwoBiteHugeClass}(\omega,I,x)\text{ and }x\in V_B,
+\end{aligned}
+\]
+so that \(H_R\) and \(H_B\) are the natural-language versions of the
+let-bound predicates
+\[
+\begin{aligned}
+\mathsf{hugeRed}(x)&:=
+  \noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists r,\ x=\operatorname{red}(r),\\
+\mathsf{hugeBlue}(x)&:=
+  \noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists b,\ x=\operatorname{blue}(b)
+\end{aligned}
+\]
+in the Lean statement.  Put
+\[
+A_H^{=}
+=
+\noderef{TwoBiteProjectedPairSum}(\omega,I,\mathsf{hugeRed},\pi_R)
++
+\noderef{TwoBiteProjectedPairSum}(\omega,I,\mathsf{hugeBlue},\pi_B).
+\]
+This is exactly the final parenthesized let-bound term in the Lean
+conclusion: the first summand ranges over huge red base vertices and uses
+the red projection \(\pi_R\), and the second ranges over huge blue base
+vertices and uses the blue projection \(\pi_B\).
+
+Unfolding \(\noderef{ClosedPairsBound}\), the large-class hypothesis is
+precisely
+\[
+A_L\le \varepsilon_1 k^2. \tag{1}
+\]
+Next unfold the medium event
+\(\noderef{TwoBiteMediumClosedPairsEvent}(k,\varepsilon,\varepsilon_1,\omega)\).
+It says that for every \(k\)-set \(J\),
+\[
+\noderef{ClosedPairsBound}
+\left(|\noderef{TwoBiteClosedPairsInClass}(J,M_J)|,\varepsilon_1,k\right)
+\]
+holds.  Applying it to the present set \(I\) and using the hypothesis
+\(|I|=k\) gives
+\[
+\noderef{ClosedPairsBound}(A_M,\varepsilon_1,k),
+\]
+which, after unfolding \(\noderef{ClosedPairsBound}\), is
+\[
+A_M\le \varepsilon_1 k^2. \tag{2}
+\]
+The small event is used in the same way.  Unfolding
+\(\noderef{TwoBiteSmallClosedPairsEvent}(k,\varepsilon,\varepsilon_1,\omega)\)
+and applying it to \(I\) with \(|I|=k\) gives
+\[
+\noderef{ClosedPairsBound}(A_S,\varepsilon_1,k),
+\]
+hence
+\[
+A_S\le \varepsilon_1 k^2. \tag{3}
+\]
+Finally, the same-color huge hypothesis in the statement is already exactly
+\[
+\noderef{ClosedPairsBound}(A_H^{=},\varepsilon_1,k),
+\]
+with the same let-bound \(\mathsf{hugeRed}\) and \(\mathsf{hugeBlue}\)
+predicates and the same two projected-pair sums as the conclusion.  Unfolding
+\(\noderef{ClosedPairsBound}\) gives
+\[
+A_H^{=}\le \varepsilon_1 k^2. \tag{4}
+\]
+
+The real expression in the conclusion is exactly the four-term sum
+\[
+A_L+A_M+A_S+A_H^{=},
+\]
+with the terms ordered as large, medium, small, and then the parenthesized
+huge same-color projected contribution.  Applying monotonicity of addition to
+(1), (2), (3), and (4) in that order gives the line-by-line chain
+\[
+\begin{aligned}
+A_L+A_M+A_S+A_H^{=}
+&\le
+(\varepsilon_1k^2)+(\varepsilon_1k^2)+A_S+A_H^{=}\\
+&\le
+(\varepsilon_1k^2)+(\varepsilon_1k^2)+(\varepsilon_1k^2)+A_H^{=}\\
+&\le
+(\varepsilon_1k^2)+(\varepsilon_1k^2)+(\varepsilon_1k^2)
+  +(\varepsilon_1k^2)\\
+&=4\varepsilon_1k^2.
+\end{aligned}
+\]
+Thus
+\[
+A_L+A_M+A_S+A_H^{=}
+\le 4\varepsilon_1k^2.
+\]
+Since \((4\varepsilon_1)k^2=4\varepsilon_1k^2\) by associativity of real
+multiplication, this is precisely
+\(\noderef{ClosedPairsBound}\) for the displayed Lean sum with parameter
+\(4\varepsilon_1\) and scale \(k\).
+\end{proof}

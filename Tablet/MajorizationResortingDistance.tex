@@ -1,0 +1,128 @@
+\begin{helper}
+Let \(N\) be a natural number, and let
+\(b,y,y^\downarrow\in\mathbb R^{\operatorname{Fin}(N)}\).  Suppose that
+\(b\) is nonincreasing, that \(y^\downarrow\) is nonincreasing, and that
+\(y^\downarrow\) is a permutation of \(y\).  Then sorting \(y\) into the
+nonincreasing order \(y^\downarrow\) does not increase its distance from
+\(b\):
+\[
+\sum_k |y^\downarrow_k-b_k|\le \sum_k |y_k-b_k|.
+\]
+\end{helper}
+\begin{proof}
+Write
+\[
+D(u)=\sum_k |u_k-b_k|.
+\]
+We first prove the two-coordinate inequality used at every adjacent swap.
+Let \(a\le d\) and let \(\beta\le\alpha\).  Define
+\[
+\phi(t)=|d-t|-|a-t|.
+\]
+The function \(\phi\) is nonincreasing.  Indeed, if \(t\le a\), then
+\[
+\phi(t)=(d-t)-(a-t)=d-a.
+\]
+If \(a\le t\le d\), then
+\[
+\phi(t)=(d-t)-(t-a)=d+a-2t,
+\]
+which is nonincreasing in \(t\).  If \(d\le t\), then
+\[
+\phi(t)=(t-d)-(t-a)=a-d.
+\]
+The three formulas agree at the interval endpoints, and the middle formula
+decreases from \(d-a\) to \(a-d\); hence the whole function is
+nonincreasing.  Since \(\beta\le\alpha\), we get
+\(\phi(\alpha)\le\phi(\beta)\), namely
+\[
+|d-\alpha|-|a-\alpha|
+\le
+|d-\beta|-|a-\beta|.
+\]
+Rearranging gives
+\[
+|d-\alpha|+|a-\beta|\le |a-\alpha|+|d-\beta|.
+\]
+
+Now suppose a vector \(u\) has an adjacent inversion at positions \(r,r+1\):
+\[
+u_r=a<d=u_{r+1}.
+\]
+Because \(b\) is nonincreasing, \(b_r\ge b_{r+1}\).  Apply the preceding
+inequality with \(\alpha=b_r\) and \(\beta=b_{r+1}\).  If \(u'\) is obtained
+from \(u\) by swapping the two adjacent entries \(a,d\), then all terms in
+\(D(u')\) and \(D(u)\) are identical except at \(r,r+1\), and the
+two-coordinate inequality gives
+\[
+D(u')\le D(u).
+\]
+Thus moving a larger adjacent entry leftward never increases the distance to
+the sorted vector \(b\).
+
+Starting from \(u^{(0)}=y\), repeatedly swap an adjacent inversion whenever
+one exists.  Each step is a transposition of two coordinates, so after any
+finite number of steps the current vector is a permutation of \(y\).  The
+process terminates because the inversion count
+\[
+I(u)=|\{(r,s): r<s\text{ and }u_r<u_s\}|
+\]
+strictly decreases at each adjacent-inversion swap.  To see this, suppose
+the swap is at \(p,p+1\), with \(a=u_p<d=u_{p+1}\).  The pair
+\((p,p+1)\) contributes \(1\) to \(I(u)\) before the swap and \(0\) after.
+For an index \(k<p\), the two possible inversion contributions involving
+\(k,p,p+1\) are, before the swap,
+\[
+\mathbf 1_{u_k<a}+\mathbf 1_{u_k<d},
+\]
+and, after the swap,
+\[
+\mathbf 1_{u_k<d}+\mathbf 1_{u_k<a},
+\]
+the same sum.  For an index \(k>p+1\), the corresponding contributions are
+\[
+\mathbf 1_{a<u_k}+\mathbf 1_{d<u_k}
+\]
+before the swap and
+\[
+\mathbf 1_{d<u_k}+\mathbf 1_{a<u_k}
+\]
+after the swap, again the same sum.  Pairs not involving \(p\) or \(p+1\)
+are unchanged.  Hence \(I\) decreases by exactly \(1\).  Since \(I(u)\) is a
+nonnegative integer, only finitely many swaps can occur.
+
+Let \(u^*\) be the terminal vector.  It has no adjacent inversion, so it is
+nonincreasing: if every adjacent pair satisfies \(u^*_r\ge u^*_{r+1}\), then
+for \(r<s\) the chain
+\[
+u^*_r\ge u^*_{r+1}\ge\cdots\ge u^*_s
+\]
+gives \(u^*_r\ge u^*_s\).  From the previous paragraphs, \(u^*\) is a
+permutation of \(y\), and
+\[
+D(u^*)\le D(y).
+\]
+
+It remains to compare this terminal sorted permutation with the specified
+sorted permutation \(y^\downarrow\).  Both \(u^*\) and \(y^\downarrow\) are
+nonincreasing permutations of \(y\), so they have the same multiset of
+entries.  We claim they agree coordinate by coordinate.  If not, let \(r\)
+be the first position where they differ.  If
+\(u^*_r<y^\downarrow_r\), put \(t=y^\downarrow_r\).  Since
+\(y^\downarrow\) is nonincreasing, at least the first \(r+1\) entries of
+\(y^\downarrow\) are \(\ge t\).  Since \(u^*\) is nonincreasing and
+\(u^*_r<t\), at most the first \(r\) entries of \(u^*\) are \(\ge t\).  This
+contradicts equality of multisets.  The case \(u^*_r>y^\downarrow_r\) is
+the same argument with \(u^*\) and \(y^\downarrow\) interchanged.  Therefore
+\(u^*=y^\downarrow\).
+
+Consequently,
+\[
+\sum_k |y^\downarrow_k-b_k|
+=D(y^\downarrow)
+=D(u^*)
+\le D(y)
+=\sum_k |y_k-b_k|,
+\]
+which is the desired inequality.
+\end{proof}

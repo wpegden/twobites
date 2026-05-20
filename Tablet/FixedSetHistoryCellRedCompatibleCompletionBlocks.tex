@@ -1,0 +1,158 @@
+\begin{helper}
+Fix a history cell \(H\), a finite terminal coordinate set \(U\), one blue
+support \(B\), and one red label \(J\).  Assume \(0\le p\le1/2\), and assume
+the complete terminal product law over \(H\): for every \(A\subseteq U\),
+the conditional mass of the complete assignment with present set \(A\) is
+\[
+p^{|A|}(1-p)^{|U|-|A|}.
+\]
+Let \(\mathcal T\) be the finite branch-label type and let \(\mathcal P\) be
+the finite transcript family.  For a branch label \(\beta\), let
+\(\operatorname{blueTrace}(\beta)\subseteq U\) be its complete terminal blue
+truth table, and let \(R_{\beta,J}\) be the red support decoded from \(J\)
+after the branch is fixed.  Let
+\(\mathsf{Realized}(\beta,\tau)\) mean that the pair is a nonempty fixed
+\((B,J)\) cell, where \(\tau=(P_\tau,A_\tau,Z_\tau)\).  Let
+\(\mathsf{Comp}(A,\beta,\tau)\) be compatibility between a complete terminal
+assignment \(A\subseteq U\) and a realized cell.
+
+Assume \(B\) is a blue \(u_B\)-subset of \(U\).  For every realized pair
+\((\beta,\tau)\), assume
+\[
+|R_{\beta,J}|=u_R,\qquad R_{\beta,J}\subseteq U,
+\]
+that \(R_{\beta,J}\) is red-only, and that
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad Z_\tau\subseteq A_\tau,\qquad
+\max(0,a-u_R-u_B)\le |Z_\tau|.
+\]
+Assume also that, on blue terminal coordinates,
+\[
+e\in\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in P_\tau,
+\qquad
+e\notin\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in A_\tau .
+\]
+Assume branch labels are functional from the complete terminal blue trace:
+two labels with the same truth table on all blue coordinates of \(U\) are
+equal.  Thus
+\(\noderef{FixedSetHistoryCellRedSupportDeterminedByBlueTrace}\) makes the
+fixed-\(J\) red support a function of that blue trace, rather than an
+independent red-coordinate choice.
+
+Assume the forward compatibility condition: if
+\(\mathsf{Comp}(A,\beta,\tau)\), then all coordinates of \(P_\tau\) are in
+\(A\), all coordinates of \(A_\tau\) are outside \(A\), and the blue part of
+\(A\) is exactly \(\operatorname{blueTrace}(\beta)\).  Assume conversely
+that every complete assignment \(A\subseteq U\) satisfying those three
+cylinder conditions is compatible with the realized cell.  Assume the
+functional scan/disjointness condition: if the same complete assignment is
+compatible with two realized pairs, then the two branch labels and the two
+transcripts are equal.
+
+Let \(w_{\beta,\tau}\) be cell weights, nonnegative on formal pairs with
+\(\tau\in\mathcal P\), zero on non-realized pairs, and satisfying
+\[
+w_{\beta,\tau}\le p^{|P_\tau|}(1-p)^{|A_\tau|}
+\qquad(\tau\in\mathcal P).
+\]
+In addition, assume the actual residual product-tree normalization for these
+fixed \(B,J\) cells.  Namely, there is a finite residual leaf set
+\(\Lambda\), a leaf assignment
+\[
+\iota(\beta,\tau)\in\Lambda,
+\]
+and a leaf mass \(\nu:\Lambda\to\mathbb R\) such that
+\[
+0\le\nu(\lambda)\quad(\lambda\in\Lambda),\qquad
+\sum_{\lambda\in\Lambda}\nu(\lambda)\le1,
+\]
+the leaf assignment is injective on realized cells, and for every realized
+\((\beta,\tau)\),
+\[
+p^{|P_\tau|}(1-p)^{|A_\tau|}
+\le
+p^{u_R}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)}\,
+\nu(\iota(\beta,\tau)).
+\]
+Here the last displayed inequality is the termwise residual domination: all
+mandatory red and blue present factors, and the common selected-absence
+factor, have already been exposed before the residual leaf mass is read.
+
+Then there are nonnegative compatible completion block masses
+\(\mu_{\beta,\tau}\), indexed by realized \((B,J)\) cells, such that
+\[
+\sum_{\beta\in\mathcal T}
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    \mu_{\beta,\tau}\le1
+\]
+and, for every realized pair \((\beta,\tau)\),
+\[
+w_{\beta,\tau}\le
+p^{u_R}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)}\mu_{\beta,\tau}.
+\]
+\end{helper}
+\begin{proof}
+Let
+\[
+L=\max(0,a-u_R-u_B),\qquad
+M=p^{u_R}p^{u_B}(1-p)^L .
+\]
+The complete terminal product law, the compatibility clauses, and the
+functional scan condition describe the terminal cylinders represented by the
+realized cells.  The additional residual-tree hypotheses state the
+normalization that is not a consequence of ordinary disjointness after
+dividing by \(M\): realized cells are assigned injectively to residual leaves
+whose total mass is at most \(1\), and each full cell cylinder is dominated
+by \(M\) times its assigned leaf mass.
+
+Apply \(\noderef{FixedSetHistoryCellRedResidualTreeNormalization}\) to the
+fixed \(B,J\) residual tree.  Its hypotheses are exactly the blue-support
+data, the realized-cell geometry, the nonnegative normalized leaf masses, and
+the injectivity of the leaf assignment on realized cells.  We obtain a
+cell-indexed residual mass function \(r_{\beta,\tau}\) satisfying
+\[
+\sum_{\beta\in\mathcal T}
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    r_{\beta,\tau}\le1,
+\]
+\[
+0\le r_{\beta,\tau}
+\]
+on realized cells, and
+\[
+r_{\beta,\tau}=\nu(\iota(\beta,\tau))
+\]
+on realized cells.
+
+Define
+\[
+\mu_{\beta,\tau}=r_{\beta,\tau}.
+\]
+The displayed subprobability bound for \(r\) is the required bound for
+\(\mu\), and the nonnegativity of \(r\) gives the required nonnegativity of
+\(\mu\).
+
+It remains only to check the termwise domination.  For a realized pair
+\((\beta,\tau)\), the cylinder estimate for the cell weight gives
+\[
+w_{\beta,\tau}\le p^{|P_\tau|}(1-p)^{|A_\tau|}.
+\]
+The residual-tree termwise domination gives
+\[
+p^{|P_\tau|}(1-p)^{|A_\tau|}
+\le
+M\,\nu(\iota(\beta,\tau)).
+\]
+Since \(r_{\beta,\tau}=\nu(\iota(\beta,\tau))\) on realized cells and
+\(\mu=r\), this becomes
+\[
+w_{\beta,\tau}\le M\,\mu_{\beta,\tau}.
+\]
+Substituting the definition of \(M\) is exactly the displayed bound in the
+statement.
+\end{proof}

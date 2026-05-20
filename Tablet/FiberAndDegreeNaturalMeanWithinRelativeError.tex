@@ -1,0 +1,46 @@
+\begin{helper}[Natural fiber mean scale]
+For every \(\varepsilon>0\), if
+\(m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\), then eventually
+\[
+  \noderef{WithinRelativeError}\!\left(
+    \varepsilon,\;(\log n)^2,\;\frac{n}{m(n)}
+  \right).
+\]
+Equivalently, the fixed-fiber hypergeometric mean \(n/m(n)\) is eventually
+within relative error \(\varepsilon\) of \((\log n)^2\).
+\end{helper}
+\begin{proof}
+Write \(L=\log n\), \(M=m(n)\), and
+\(x=n/L^2\).  By \(\noderef{TwoBiteNaturalReducedVertexCount}\),
+\(\noderef{TwoBiteReducedVertexCount}\), and \(\noderef{TwoBiteStretch}\),
+we have \(M=\lfloor x\rfloor\).  Thus, for all sufficiently large \(n\) with
+\(L>0\),
+\[
+  M\le x<M+1 .
+\]
+The existing scale lower bound
+\(\noderef{TwoBiteNaturalReducedVertexRatioEventually}\) gives eventually
+\[
+  n\le 2L^2M .
+\]
+Since \(L^2=o(n)\), for the fixed \(\varepsilon>0\) we also eventually have
+\[
+  (2/\varepsilon)L^2\le n .
+\]
+Combining the last two inequalities and dividing by \(2L^2>0\) gives
+\[
+  1/\varepsilon\le M .
+\]
+In particular \(M>0\) and \(1/M\le\varepsilon\).
+
+Now \(M\le x\) implies \(n/M\ge L^2\), while \(x<M+1\) gives
+\[
+  \frac{n}{M}-L^2
+  =
+  L^2\frac{x-M}{M}
+  \le L^2\frac{1}{M}
+  \le \varepsilon L^2 .
+\]
+The difference is nonnegative, so this is exactly the asserted
+\(\noderef{WithinRelativeError}\) bound.
+\end{proof}

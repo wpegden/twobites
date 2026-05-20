@@ -1,0 +1,139 @@
+\begin{lemma}
+Assume \(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\).
+For every \(\eta>0\) and \(\delta>0\), there is \(N\ge n_0\) such that, for
+all \(n>N\), with
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+we have
+\[
+1\le K\le n,
+\qquad
+\log\binom nK\le \left(\frac12+\eta\right)K\log n,
+\]
+and
+\[
+2\log(K+1)+\log(\delta^{-1})\le \eta K\log n.
+\]
+\end{lemma}
+\begin{proof}
+From \(\noderef{ParameterHierarchyEventualComparisons}\), for every
+\(n>n_0\),
+\[
+(1+\varepsilon)\sqrt{n\log n}\le K
+<(1+\varepsilon)\sqrt{n\log n}+1.
+\]
+The hierarchy also gives \(0<\varepsilon<1\).  Put
+\[
+S=\sqrt{n\log n},\qquad
+C_\delta=2\log 4+\max\{0,\log(\delta^{-1})\}.
+\]
+Choose \(N\ge n_0\) so that for every \(n>N\) the following finite list of
+inequalities holds:
+\[
+\log n\ge 1,\qquad S\ge1,\qquad 9\log n\le n, \tag{1}
+\]
+\[
+\log n\ge \eta^{-1},\qquad \log n\ge C_\delta,\qquad
+3\le \eta\sqrt{n\log n}. \tag{2}
+\]
+Equivalently, it is enough for \(N\) to force the concrete requirements
+\[
+n>e,\qquad \frac{n}{\log n}\ge9,\qquad
+\log n\ge\eta^{-1},\qquad \log n\ge C_\delta,\qquad
+n\log n\ge 9\eta^{-2}
+\]
+for all \(n>N\).  These requirements imply (1) and (2) term by term.
+These are the only large-\(n\) margins used below.  With \(S\ge1\) and
+\(\varepsilon<1\), the rounded comparison gives
+\[
+K\ge (1+\varepsilon)S\ge S\ge1. \tag{3}
+\]
+It also gives
+\[
+K<(1+\varepsilon)S+1<2S+1\le3S\le n, \tag{4}
+\]
+where the last inequality is exactly \(9\log n\le n\) after squaring the
+nonnegative quantities \(3S\) and \(n\).  Since \(K\) and \(n\) are natural
+numbers, (3) and (4) give \(1\le K\le n\).
+
+We next prove the binomial logarithm bound.  For \(1\le K\le n\),
+\[
+\binom nK
+=\frac{n(n-1)\cdots(n-K+1)}{K!}
+\le \frac{n^K}{K!}. \tag{5}
+\]
+The exponential-series estimate
+\[
+e^K=\sum_{j=0}^{\infty}\frac{K^j}{j!}
+\ge \frac{K^K}{K!}
+\]
+implies
+\[
+K!\ge \left(\frac K e\right)^K. \tag{6}
+\]
+Combining (5) and (6) gives
+\[
+\binom nK\le \left(\frac{en}{K}\right)^K. \tag{7}
+\]
+Because \(1\le K\le n\), the quantity \(en/K\) is at least \(e>0\), so applying
+\(\log\) to (7) gives
+\[
+\log\binom nK
+\le K\log\frac{en}{K}
+=K(1+\log n-\log K). \tag{8}
+\]
+From \(K\ge S=\sqrt{n\log n}\) and \(\log n>0\),
+\[
+\log K\ge \log S
+=\frac12\log n+\frac12\log\log n. \tag{9}
+\]
+Substituting (9) into (8) gives
+\[
+\log\binom nK
+\le K\left(1+\frac12\log n-\frac12\log\log n\right). \tag{10}
+\]
+The first inequality in (2) gives \(1\le\eta\log n\), and
+\(\log n\ge1\) gives \(\log\log n\ge0\).  Hence
+\[
+1+\frac12\log n-\frac12\log\log n
+\le \left(\frac12+\eta\right)\log n. \tag{11}
+\]
+Multiplying (11) by the nonnegative integer \(K\) and using (10) proves
+\[
+\log\binom nK\le\left(\frac12+\eta\right)K\log n.
+\]
+
+It remains to prove the finite cell-count and \(\delta\)-margin.  From (4) and
+\(S\ge1\),
+\[
+K+1<2S+2\le4S. \tag{12}
+\]
+Therefore
+\[
+\begin{aligned}
+2\log(K+1)+\log(\delta^{-1})
+&\le 2\log(4S)+\max\{0,\log(\delta^{-1})\}\\
+&=C_\delta+\log n+\log\log n.
+\end{aligned} \tag{13}
+\]
+Since \(\log n\ge1\), the elementary inequality \(\log y\le y\) for
+\(y\ge1\), applied to \(y=\log n\), gives \(\log\log n\le\log n\).  Together
+with \(\log n\ge C_\delta\), this gives
+\[
+C_\delta+\log n+\log\log n\le 3\log n. \tag{14}
+\]
+The final condition in (2) gives
+\[
+3\log n\le \eta\sqrt{n\log n}\,\log n
+=\eta S\log n. \tag{15}
+\]
+Finally, \(K\ge S\) from (3) and \(\eta>0\), \(\log n\ge0\), imply
+\[
+\eta S\log n\le \eta K\log n. \tag{16}
+\]
+Combining (13), (14), (15), and (16) gives
+\[
+2\log(K+1)+\log(\delta^{-1})\le \eta K\log n.
+\]
+\end{proof}

@@ -1,0 +1,130 @@
+\begin{lemma}
+For a fixed set \(I\) with
+\[
+|I|=k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+assume
+\(0\le\varepsilon_1\le1\),
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\), and the rounded
+sample-parameter identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+Then the conditional probability
+\(\noderef{TwoBiteConditionalProbability}(n,m,p;-|-)\) with numerator
+\[
+I\text{ independent in }\noderef{TwoBiteFinalGraph}(\omega)_0
+\quad\text{and}\quad
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega)
+\]
+and denominator
+\[
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)
+\]
+is at most
+\[
+\exp\left(-p\left(f(\ell_R,\ell_B)-\varepsilon^3k^2\right)\right).
+\]
+Here
+\[
+f(\ell_R,\ell_B)=
+\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n).
+\]
+\end{lemma}
+\begin{proof}
+Let
+\[
+S(\omega)=
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)
+\]
+be the projection-size event in the denominator, and let
+\[
+R(\omega)=
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,\omega)
+\]
+be the regularity event carried in the numerator.  Thus the probability to be
+bounded is
+\(\Pr(\mathcal B_I\cap R\mid S)\), where \(\mathcal B_I\) is final-graph
+independence of \(I\).
+
+We first verify the pointwise hypothesis required by
+\(\noderef{FixedSetExposureExceptionalChoices}\).  Fix an arbitrary sample
+\(\omega\), and assume
+\[
+H_{\mathcal R}:R(\omega),\qquad H_{\mathcal S}:S(\omega).
+\tag{1}
+\]
+Apply \(\noderef{FixedSetOpenPairsAfterConditioning}\) to this same
+\(\omega\) and this same set \(I\), with the same integers
+\(n,m,k,\ell_R,\ell_B\), the same real parameters
+\(p,\varepsilon,\varepsilon_1,\varepsilon_2\), and the same \(n_0\).
+The hypotheses passed to it are exactly
+\[
+0\le\varepsilon_1,\quad
+\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0),\quad
+n>n_0,
+\]
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\quad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),\quad
+|I|=k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+together with \(H_{\mathcal R}\) and \(H_{\mathcal S}\) from (1).  Therefore
+this arbitrary sample in \(R\cap S\) satisfies
+\[
+\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)
+-10\varepsilon_1k^2
+\le
+\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|.
+\tag{2}
+\]
+Because \(\omega\), \(H_{\mathcal R}\), and \(H_{\mathcal S}\) were arbitrary,
+(2) is precisely the pointwise implication
+\[
+\forall\omega,\;
+R(\omega)\to S(\omega)\to
+\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)
+-10\varepsilon_1k^2
+\le
+\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|.
+\tag{3}
+\]
+
+Now apply \(\noderef{FixedSetExposureExceptionalChoices}\) with the same
+fixed set \(I\), the same integers \(n,m,k,\ell_R,\ell_B\), the same real
+parameters \(p,\varepsilon,\varepsilon_1,\varepsilon_2\), and the same
+\(n_0\).  Its scalar and hierarchy hypotheses are exactly the present
+hypotheses:
+\[
+0\le\varepsilon_1,\quad \varepsilon_1\le1,\quad
+\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0),\quad n>n_0,
+\]
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+\[
+|I|=k,\qquad
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Its remaining hypothesis is exactly the pointwise implication (3).  The
+conditional probability in its conclusion has denominator \(S\) and numerator
+event \(\mathcal B_I\cap R\), exactly as here.  The child theorem therefore
+gives directly
+\[
+\Pr(I\text{ is independent in }\noderef{TwoBiteFinalGraph}
+     \text{ and }R\mid S)
+\le
+\exp\left(-p\left(
+\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)
+-\varepsilon^3k^2\right)\right),
+\]
+which is exactly the asserted bound.  No further exponent estimate or
+probability counting is introduced at this aggregation step.
+\end{proof}

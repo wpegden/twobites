@@ -1,0 +1,87 @@
+\begin{lemma}
+Under the two-bite law, condition on the red base graph $G_R$ and the red row map $\rho$. For any fixed set $T$ of original vertices and any fixed target set $S$ of blue coordinates, the conditional probability that all vertices in $T$ are assigned blue coordinates in $S$ is bounded by $(|S|/M)^{|T|}$, where $M$ is the base size.
+\end{lemma}
+\begin{proof}
+Write a two-bite sample as \(\omega=(G'_R,G_B,\phi)\), where
+\(\phi:\operatorname{Fin} n\hookrightarrow \operatorname{Fin} m\times
+\operatorname{Fin} m\).  Let
+\[
+C=\{\omega:G'_R=G_R\text{ and }(\phi(v))_1=\rho(v)\text{ for every }v\}
+\]
+be the conditioning cell, and let
+\[
+E=\{\omega:(\phi(v))_2\in S\text{ for every }v\in T\}
+\]
+be the event whose conditional probability is being bounded.  By
+\(\noderef{TwoBiteConditionalProbability}\), if
+\(\Pr(C)=0\), then \(\Pr(E\mid C)\) is defined to be \(0\).  The right hand
+side \((|S|/M)^{|T|}\) is nonnegative: if \(M>0\), then \(|S|/M\ge 0\), and
+if \(M=0\), then \(S\subseteq\operatorname{Fin}0\), so \(|S|=0\) and the
+real quotient is \(0\).  Thus the desired inequality holds in the zero-mass
+case.
+
+Assume from now on that \(\Pr(C)\ne 0\).  Let
+\[
+X_{\rm all}
+=\{\phi:\operatorname{Fin} n\hookrightarrow
+\operatorname{Fin} m\times\operatorname{Fin} m:
+(\phi(v))_1=\rho(v)\text{ for all }v\},
+\]
+and let
+\[
+X_{\rm good}
+=\{\phi\in X_{\rm all}:(\phi(v))_2\in S\text{ for every }v\in T\}.
+\]
+Set \(a=|X_{\rm all}|\) and \(g=|X_{\rm good}|\).  Also set
+\[
+w_R=\operatorname{GnpGraphWeight}_p(G_R),\qquad
+u=\operatorname{UniformInjectionWeight}(n,m),\qquad
+B=\sum_{H}\operatorname{GnpGraphWeight}_p(H),
+\]
+where \(H\) ranges over all blue base graphs on \(\operatorname{Fin} m\).
+The definitions \(\noderef{TwoBiteEventProbability}\) and
+\(\noderef{TwoBiteSampleWeight}\) give the conditioning mass as
+\[
+\Pr(C)
+=\sum_{H}\sum_{\phi\in X_{\rm all}}w_R\,
+  \operatorname{GnpGraphWeight}_p(H)\,u
+=w_R\,B\,u\,a.
+\]
+Likewise,
+\[
+\Pr(E\cap C)
+=\sum_{H}\sum_{\phi\in X_{\rm good}}w_R\,
+  \operatorname{GnpGraphWeight}_p(H)\,u
+=w_R\,B\,u\,g.
+\]
+These equalities are just finite rearrangements of the sample sum: the red
+graph is fixed to be \(G_R\), the blue graph \(H\) is unconstrained, and the
+injection variable is exactly the set \(X_{\rm all}\), or \(X_{\rm good}\)
+after imposing \(E\).  The factors \(w_R\), \(u\), and
+\(\operatorname{GnpGraphWeight}_p(H)\) do not depend on the injection
+\(\phi\), so they factor as shown.
+
+The assumption \(\Pr(C)\ne0\) rules out every zero case that would make the
+conditioning ill-defined.  In particular \(w_R\,B\,u\ne0\) and
+\(a\ne0\).  Hence the fixed red graph has nonzero weight in the relevant
+cell, the blue-graph total factor is nonzero, the global injection weight is
+nonzero, and there is at least one admissible injection with first coordinate
+\(\rho\).  Therefore the common factor \(w_R\,B\,u\) cancels in the
+conditional probability:
+\[
+\Pr(E\mid C)
+=\frac{\Pr(E\cap C)}{\Pr(C)}
+=\frac{w_R\,B\,u\,g}{w_R\,B\,u\,a}
+=\frac{g}{a}.
+\]
+If the red row map \(\rho\) has an impossible fiber, for example more than
+\(M\) vertices assigned to one red row, then \(X_{\rm all}\) is empty and
+\(a=0\); this is one of the zero-mass cases already disposed of above.
+
+It remains only to bound the finite fraction \(g/a\).  This is exactly the
+content of \(\noderef{OppositeProjectionRowInjectionCounting}\): for the
+nonempty admissible-injection set \(X_{\rm all}\), the fraction of injections
+whose vertices in \(T\) have blue coordinate in \(S\) is at most
+\((|S|/M)^{|T|}\).  Combining this counting inequality with the identity
+\(\Pr(E\mid C)=g/a\) proves the stated conditional bound.
+\end{proof}

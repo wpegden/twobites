@@ -1,0 +1,225 @@
+\begin{helper}
+Fix two samples \(\omega,\omega'\), a set \(I\subseteq[n]\), a tagged
+projected pair \(e\), and a finite support set \(S\) of tagged red and blue
+base-edge coordinates.  Suppose that \(\omega\) and \(\omega'\) have the
+same injection and agree on the truth value of
+\(\noderef{TwoBiteEdgeCoordinateValue}\) for every coordinate in \(S\).
+
+Assume also that \(S\) contains the two one-sided witness coordinates needed
+for any possible \(C^+(I)\) same-color witness for \(e\).  In the red case
+\(e=\operatorname{red}(a,b)\), this means that for every red base vertex
+\(r\) with \(r<a\) and \(r<b\), both tagged coordinates
+\(\operatorname{red}(r,a)\) and \(\operatorname{red}(r,b)\) lie in \(S\).
+In the blue case \(e=\operatorname{blue}(a,b)\), the identical condition
+holds with blue coordinates.
+
+Then
+\[
+\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e)
+\quad\Longleftrightarrow\quad
+\noderef{TwoBiteProjectionPairSameColorClosed}(\omega',I,e).
+\]
+Thus \(C^+(I)\) same-color closedness of the current projected pair is a
+cylinder event over the injection and the earlier one-sided witness
+coordinates; it does not use the current pair's own edge value or any later
+terminal coordinate.
+\end{helper}
+\begin{proof}
+We argue by cases on the tag of \(e\).
+
+First suppose \(e=\operatorname{red}(q)\), and write \(q=(a,b)\).  The common
+injection hypothesis says that
+\(\omega.2.2(v)=\omega'.2.2(v)\) for every final vertex \(v\).  By
+\(\noderef{TwoBiteRedProjection}\), the red projection is the first coordinate
+of this injection.  Hence
+\[
+\pi_R^\omega(v)=\pi_R^{\omega'}(v)
+\tag{1}
+\]
+for every \(v\).  In particular, for each endpoint \(x\in\{a,b\}\), the fiber
+\[
+\{v\in I:\pi_R^\omega(v)=x\}
+\]
+is exactly the same set as
+\[
+\{v\in I:\pi_R^{\omega'}(v)=x\}.
+\]
+Thus the endpoint fibers of \(I\) over \(a\) and \(b\), and the increasing
+base-pair convention encoded by \(\noderef{TwoBiteBasePairs}\), are fixed
+before any red base-edge values are considered.
+
+Unfold
+\(\noderef{TwoBiteProjectionPairSameColorClosed}\).  In the red case it says
+that there is a red base vertex \(r\) such that
+\[
+q\in
+\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(
+\noderef{TwoBiteXPlus}(\omega,I,\operatorname{red}(r)))\bigr).
+\tag{2}
+\]
+Unfolding \(\noderef{TwoBiteBasePairs}\), statement (2) means exactly that
+the two endpoints \(a\) and \(b\), in their fixed increasing order, both occur
+as red projections of vertices of
+\(\noderef{TwoBiteXPlus}(\omega,I,\operatorname{red}(r))\).  Because of
+(1), the same final vertices project to \(a\) and \(b\) in \(\omega'\); the
+only remaining question is whether those vertices still lie in \(X_r^+(I)\).
+
+We prove the forward implication for this fixed red tag.  Suppose \(r\)
+witnesses (2) for \(\omega\).  Choose endpoint vertices
+\(u_a,u_b\in I\) supplied by the unfolded
+\(\noderef{TwoBiteBasePairs}\) membership, with
+\[
+\pi_R^\omega(u_a)=a,\qquad \pi_R^\omega(u_b)=b,
+\]
+and
+\[
+u_a,u_b\in
+\noderef{TwoBiteXPlus}(\omega,I,\operatorname{red}(r)).
+\]
+Unfold \(\noderef{TwoBiteXPlus}\) and then
+\(\noderef{TwoBiteLiftedPositiveNeighborhood}\) for these two actual witness
+vertices.  From \(u_a\in X_r^+(I)\) and \(\pi_R^\omega(u_a)=a\) we get
+\[
+r<a
+\quad\text{and}\quad
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,\operatorname{red}(r,a)).
+\tag{3}
+\]
+From \(u_b\in X_r^+(I)\) and \(\pi_R^\omega(u_b)=b\) we get
+\[
+r<b
+\quad\text{and}\quad
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,\operatorname{red}(r,b)).
+\tag{4}
+\]
+Only now do we apply the support hypothesis.  The two inequalities \(r<a\)
+and \(r<b\) are exactly its hypotheses in the red case, so it gives
+\[
+\operatorname{red}(r,a)\in S
+\qquad\text{and}\qquad
+\operatorname{red}(r,b)\in S.
+\tag{5}
+\]
+By edge-value agreement on \(S\), (3) and (4) transfer to
+\[
+\noderef{TwoBiteEdgeCoordinateValue}(\omega',\operatorname{red}(r,a))
+\qquad\text{and}\qquad
+\noderef{TwoBiteEdgeCoordinateValue}(\omega',\operatorname{red}(r,b)).
+\]
+The common injection gives
+\(\pi_R^{\omega'}(u_a)=a\) and \(\pi_R^{\omega'}(u_b)=b\), and the
+inequalities \(r<a\), \(r<b\) are numerical facts independent of the sample.
+Unfolding
+\(\noderef{TwoBiteLiftedPositiveNeighborhood}\) and
+\(\noderef{TwoBiteXPlus}\) again, \(u_a\) and \(u_b\) therefore lie in
+\(\noderef{TwoBiteXPlus}(\omega',I,\operatorname{red}(r))\).  Hence the same
+\(r\), with the same two endpoint vertices, witnesses
+\[
+q\in
+\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^{\omega'}(
+\noderef{TwoBiteXPlus}(\omega',I,\operatorname{red}(r)))\bigr).
+\]
+
+The reverse implication is not a formal symmetry shortcut; it uses the same
+support step in the opposite direction.  Suppose \(r\) witnesses the red
+same-color-closed predicate for \(\omega'\).  Choose endpoint vertices
+\(u_a,u_b\in I\) with the corresponding red projections:
+\[
+\pi_R^{\omega'}(u_a)=a,\qquad \pi_R^{\omega'}(u_b)=b,
+\]
+and \(u_a,u_b\in
+\noderef{TwoBiteXPlus}(\omega',I,\operatorname{red}(r))\).  Unfolding the
+two \(X^+\)-memberships now in \(\omega'\) gives both inequalities
+\[
+r<a,\qquad r<b,
+\]
+and the two edge values
+\[
+\noderef{TwoBiteEdgeCoordinateValue}(\omega',\operatorname{red}(r,a)),
+\qquad
+\noderef{TwoBiteEdgeCoordinateValue}(\omega',\operatorname{red}(r,b)).
+\]
+Those same two inequalities allow the support hypothesis to give
+\(\operatorname{red}(r,a)\in S\) and
+\(\operatorname{red}(r,b)\in S\), and edge-value agreement on those two
+supported coordinates transfers the two edge values back from \(\omega'\) to
+\(\omega\).  The common injection transfers the endpoint projections back to
+\(\pi_R^\omega(u_a)=a\) and \(\pi_R^\omega(u_b)=b\).  Thus the same
+\(r,u_a,u_b\) witness the red same-color-closed predicate for \(\omega\).
+This proves the red case of the desired equivalence.  Notice that neither
+direction uses the current coordinate \(\operatorname{red}(a,b)\), nor any
+later coordinate; the only edge values used are the two supported one-sided
+witness coordinates.
+
+The blue case is the same argument with second coordinates throughout.  If
+\(e=\operatorname{blue}(q)\), write \(q=(a,b)\).  The common injection fixes
+\(\pi_B^\omega(v)=\pi_B^{\omega'}(v)\) for every \(v\), by
+\(\noderef{TwoBiteBlueProjection}\), and hence fixes the endpoint fibers of
+\(I\) over \(a\) and \(b\).  A blue same-color witness is a blue base vertex
+\(s\) such that \(q\) lies in the
+\(\noderef{TwoBiteBasePairs}\) of the blue projection of
+\(\noderef{TwoBiteXPlus}(\omega,I,\operatorname{blue}(s))\).  In the forward
+direction, choose endpoint vertices \(v_a,v_b\in I\) supplied by this
+membership for \(\omega\), with
+\[
+\pi_B^\omega(v_a)=a,\qquad \pi_B^\omega(v_b)=b,
+\]
+and \(v_a,v_b\in
+\noderef{TwoBiteXPlus}(\omega,I,\operatorname{blue}(s))\).  Unfolding their
+membership in
+\(\noderef{TwoBiteXPlus}(\omega,I,\operatorname{blue}(s))\) gives both
+inequalities \(s<a\) and \(s<b\), together with the two blue edge-coordinate
+values
+\[
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,\operatorname{blue}(s,a)),
+\qquad
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,\operatorname{blue}(s,b)).
+\]
+With both inequalities known, the blue support hypothesis gives
+\[
+\operatorname{blue}(s,a)\in S
+\qquad\text{and}\qquad
+\operatorname{blue}(s,b)\in S.
+\]
+Edge-value agreement transfers the two displayed edge values to
+\(\omega'\), and the common injection gives
+\(\pi_B^{\omega'}(v_a)=a\) and \(\pi_B^{\omega'}(v_b)=b\).  Therefore
+\(v_a,v_b\in
+\noderef{TwoBiteXPlus}(\omega',I,\operatorname{blue}(s))\), and the same
+blue base vertex \(s\) and endpoint vertices witness the blue
+same-color-closed predicate for \(\omega'\).
+
+For the reverse implication, start instead from a blue witness \(s\) for
+\(\omega'\).  Choose endpoint vertices \(v_a,v_b\in I\) with
+\[
+\pi_B^{\omega'}(v_a)=a,\qquad \pi_B^{\omega'}(v_b)=b,
+\]
+and \(v_a,v_b\in
+\noderef{TwoBiteXPlus}(\omega',I,\operatorname{blue}(s))\).  Unfolding these
+two memberships first gives the same two inequalities \(s<a\), \(s<b\), and
+the two edge values
+\[
+\noderef{TwoBiteEdgeCoordinateValue}(\omega',\operatorname{blue}(s,a)),
+\qquad
+\noderef{TwoBiteEdgeCoordinateValue}(\omega',\operatorname{blue}(s,b)).
+\]
+Those inequalities are what permit the support hypothesis to place
+\(\operatorname{blue}(s,a)\) and \(\operatorname{blue}(s,b)\) in \(S\).  The
+agreement on \(S\) transfers the two edge values back to \(\omega\), while
+the common injection gives \(\pi_B^\omega(v_a)=a\) and
+\(\pi_B^\omega(v_b)=b\).  Thus \(v_a,v_b\in
+\noderef{TwoBiteXPlus}(\omega,I,\operatorname{blue}(s))\), and the same
+\(s\) is a blue witness for \(\omega\).  This proves the blue case, again
+using only the two one-sided witness coordinates and not the current
+coordinate \(\operatorname{blue}(a,b)\).
+
+Combining the red and blue cases gives
+\[
+\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e)
+\quad\Longleftrightarrow\quad
+\noderef{TwoBiteProjectionPairSameColorClosed}(\omega',I,e),
+\]
+as required.
+\end{proof}

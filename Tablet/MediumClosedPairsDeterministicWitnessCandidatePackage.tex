@@ -1,0 +1,82 @@
+\begin{helper}
+Fix \(n,m,k,S\), a real number \(E\), an edge parameter \(p\), and parameters
+\(\varepsilon,\varepsilon_1,\varepsilon_2\).  Assume a deterministic witness
+cover hypothesis: every sample satisfying the bad-on-regular event admits a
+\(k\)-set \(I\) and a witness family \(B\) with the medium-class, mass,
+cutoff, and normalized-coordinate lower-bound properties displayed below in
+the proof.  Also assume that \(0<n\), that
+every witness family \(B\) satisfying
+\[
+|B|\noderef{TwoBiteSmallCutoff}(\varepsilon,n)
+\le
+k n^{1/4-\varepsilon}+\noderef{TwoBiteLargeCutoff}(\varepsilon,n)
+\]
+has \(|B|\le S\), that the base-vertex universe has cardinality at most
+\(n^2\), and that the count exponent \(E\) satisfies
+\[
+k\log n+2S\log n\le E.
+\]
+Then there is a finite candidate family indexed by a \(k\)-set
+\(I\subseteq\mathrm{Fin}(n)\) together with an \(S\)-tuple of two-bite base
+vertices.  Every sample in the bad-on-regular event is covered by one of these
+candidates.  Moreover the number of candidate indices is at most
+\[
+\exp(E).
+\]
+\end{helper}
+\begin{proof}
+Let the index set consist of pairs \((I,f)\), where \(I\) is a finite subset
+of \(\mathrm{Fin}(n)\) with \(|I|=k\), and
+\[
+f:\mathrm{Fin}(S)\to \noderef{TwoBiteBaseVertex}(m)
+\]
+is an \(S\)-tuple of base vertices.  The candidate associated to \((I,f)\)
+is the event that there is a deterministic witness family \(B\) contained in
+the image of \(f\), with the same medium-class, mass, cutoff, and normalized
+coordinate lower-bound properties produced by
+\(\noderef{MediumClosedPairsFailureDeterministicWitness}\).
+
+For the cover, take a sample \(\omega\) in the bad-on-regular event.  The
+assumed deterministic witness cover gives a witness \(I\) with \(|I|=k\), the
+corresponding failed closed-pairs bound, and a nonempty witness family \(B\)
+such that
+\[
+B\subseteq \noderef{TwoBiteMediumClass}(\omega,\varepsilon,I),
+\]
+\[
+k n^{1/4-\varepsilon}
+<
+\sum_{x\in B}|\noderef{TwoBiteX}(\omega,I,x)|
+\le
+k n^{1/4-\varepsilon}+\noderef{TwoBiteLargeCutoff}(\varepsilon,n),
+\]
+\[
+|B|\noderef{TwoBiteSmallCutoff}(\varepsilon,n)
+\le
+k n^{1/4-\varepsilon}+\noderef{TwoBiteLargeCutoff}(\varepsilon,n),
+\]
+and the normalized red/blue coordinate count is larger than
+\[
+\frac{k n^{1/4-\varepsilon}}{6(\log n)^2}.
+\]
+The size-conversion hypothesis gives \(|B|\le S\).  Since \(B\) is finite and
+has at most \(S\) elements, choose an injection from \(B\) into
+\(\mathrm{Fin}(S)\) and extend it to an \(S\)-tuple \(f\) whose image contains
+\(B\).  Then \((I,f)\) is one of the candidate indices, and by construction
+its candidate event holds for \(\omega\).
+
+For the count, the number of choices for \(I\) is \(\binom nk\), which is at
+most \(e^{k\log n}\) by \(\noderef{ParameterHierarchyT4ChooseExpBound}\).
+The number of \(S\)-tuples of base vertices is
+\(|\noderef{TwoBiteBaseVertex}(m)|^S\).  Since the base universe has size at
+most \(n^2\), this is at most
+\[
+(n^2)^S=e^{2S\log n}.
+\]
+Multiplying these two estimates gives at most
+\[
+e^{k\log n}e^{2S\log n}=e^{k\log n+2S\log n}.
+\]
+Finally, the assumed inequality \(k\log n+2S\log n\le E\) and monotonicity of
+the exponential give the claimed candidate-count bound.
+\end{proof}

@@ -1,0 +1,59 @@
+\begin{helper}
+Fix a two-bite embedding cell \(\pi\), red and blue center sets
+\(B_R,B_B\), and red and blue projection sets \(P_R,P_B\).  Let
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),\qquad
+p=\noderef{TwoBiteEdgeProbability}(1/2,n),
+\]
+and
+\[
+A=\frac{K n^{1/4-\varepsilon}}{6(\log n)^2},\qquad t=\lceil A\rceil.
+\]
+Form the normalized coordinate set from the red pairs
+\(B_R\times P_R\) and blue pairs \(B_B\times P_B\), after discarding diagonal
+pairs.  Suppose a candidate event \(C(\omega)\), inside the embedding cell
+\(\noderef{TwoBiteEmbedding}(\omega)=\pi\), implies that at least \(t\) of
+these normalized coordinates are present.  If the natural fixed-pair tail
+inputs hold,
+\[
+0<A,\quad |P_R|\le K,\quad |P_B|\le K,
+\]
+\[
+p\,((|B_R|+|B_B|)K)\le A/(4e),
+\qquad
+n^{3/4-2\varepsilon}\le A/4,
+\]
+then
+\[
+\noderef{TwoBiteEventProbability}
+  (n,m,p,\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi
+     \text{ and } C(\omega)\})
+\le
+e^{-n^{3/4-2\varepsilon}}\,
+\noderef{TwoBiteEventProbability}
+  (n,m,p,\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\}).
+\]
+\end{helper}
+\begin{proof}
+Let \(D\) be the event that the embedding is \(\pi\), and let \(M\) be the
+event that at least \(t=\lceil A\rceil\) of the normalized red/blue coordinate
+set are present.  By the assumed implication, \(D\cap C\subseteq D\cap M\).
+Since sample weights are nonnegative for \(0\le p\le1\), monotonicity of the
+finite probability sum gives
+\[
+\mathbb P(D\cap C)\le \mathbb P(D\cap M).
+\]
+The embedding-cell coordinate union bound
+\(\noderef{MediumClosedPairsEmbeddingCellCoordinateUnionBridge}\) gives
+\[
+\mathbb P(D\cap M)
+\le
+\binom{|B_R||P_R|+|B_B||P_B|}{t}p^t\,\mathbb P(D).
+\]
+The hypotheses listed above are exactly the inputs required by
+\(\noderef{MediumClosedPairsNaturalFixedPairTail}\), so the binomial factor is
+at most \(e^{-n^{3/4-2\varepsilon}}\).  Multiplying by the nonnegative cell
+probability \(\mathbb P(D)\), supplied by
+\(\noderef{TwoBiteEventProbabilityNonnegative}\), and chaining the two
+inequalities proves the desired cell-tail estimate.
+\end{proof}

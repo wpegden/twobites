@@ -1,0 +1,11 @@
+\begin{lemma}
+For an event \(\mathcal E\) depending only on the injection coordinate \(\pi\in V(G)\hookrightarrow V_R\times V_B\), the two-bite event probability satisfies
+\[
+\noderef{TwoBiteEventProbability}(n,m,p)(\mathcal E) = \#\{\pi:\mathcal E(\pi)\} \cdot \noderef{UniformInjectionWeight}(n,m).
+\]
+\end{lemma}
+\begin{proof}
+By \(\noderef{TwoBiteSampleWeight}\), the sample weight is \(\noderef{GnpGraphWeight}(p,G_R)\,\noderef{GnpGraphWeight}(p,G_B)\,\noderef{UniformInjectionWeight}(n,m)\).
+Summing \(\noderef{GnpGraphWeight}(p,G)\) over all graphs \(G\) gives \(1\) by \(\noderef{GnpGraphWeightSumOne}\).
+Since the event depends only on \(\pi\), the sum factors, leaving the count of satisfying injections multiplied by \(\noderef{UniformInjectionWeight}(n,m)\).
+\end{proof}

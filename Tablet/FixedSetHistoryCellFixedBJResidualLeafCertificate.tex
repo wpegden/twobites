@@ -1,0 +1,85 @@
+\begin{helper}
+Fix one support-label pair \(B,J\), after the fixed-\((B,J)\)
+blue-first/red-second residual scan has already supplied released residual
+blocks.  Let \(U\) be the finite terminal coordinate set, let
+\(\mathcal P\) be the finite transcript family, and let
+\(\mathsf{Realized}(\beta,\tau)\) be the realized branch/transcript
+predicate.  For a transcript \(\tau\), write \(P_\tau,A_\tau,Z_\tau\) for
+its forced-present, forced-absent, and selected-absence coordinate sets.
+
+Assume there is a nonnegative residual assignment mass \(\mu(A)\) on
+terminal assignments \(A\subseteq U\), with total mass at most \(1\):
+\[
+\sum_{A\subseteq U}\mu(A)\le 1.
+\]
+For each realized \((\beta,\tau)\) with \(\tau\in\mathcal P\), assume a
+released residual block
+\[
+\mathcal R_{\beta,\tau}\subseteq \{A:A\subseteq U\}
+\]
+and a block mass
+\[
+\rho_{\beta,\tau}
+  =\sum_{A\in\mathcal R_{\beta,\tau}}\mu(A).
+\]
+Assume distinct realized pairs have disjoint released blocks.  Finally,
+assume the fixed-\((B,J)\) residual cylinder domination already proved by
+the released-block support:
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \rho_{\beta,\tau}
+\]
+for every realized allowed pair.
+
+Then there is a finite residual leaf set \(\Lambda_{B,J}\), a residual leaf
+map \(\iota(\beta,\tau)\in\Lambda_{B,J}\), and nonnegative leaf masses
+\(\nu:\Lambda_{B,J}\to\mathbb R\) such that
+\[
+\sum_{\lambda\in\Lambda_{B,J}}\nu(\lambda)\le1,
+\]
+the leaf map is injective on realized allowed pairs, and every realized
+allowed pair satisfies
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \nu(\iota(\beta,\tau)).
+\]
+\end{helper}
+\begin{proof}
+Apply the released-cylinder packing bound
+\(\noderef{FixedSetHistoryCellRedReleasedCylinderPacking}\) to the complete
+residual assignment space \(2^U\), the mass \(\mu\), and the released
+blocks \(\mathcal R_{\beta,\tau}\).  The hypotheses match exactly: \(\mu\)
+is nonnegative on \(2^U\), its total mass is at most \(1\), every realized
+block is a subset of \(2^U\), \(\rho_{\beta,\tau}\) is the \(\mu\)-sum over
+that block, and distinct realized blocks are disjoint.  Therefore
+\[
+\sum_\beta
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    \rho_{\beta,\tau}
+\le 1 .
+\]
+
+Take the residual leaf set to be the finite product of branch labels and
+transcript labels.  Define
+\[
+\iota(\beta,\tau)=(\beta,\tau).
+\]
+Give the leaf \((\beta,\tau)\) mass \(\rho_{\beta,\tau}\) when
+\(\tau\in\mathcal P\) and \((\beta,\tau)\) is realized, and give it mass
+\(0\) otherwise.  Nonnegativity follows from the block-mass identity and the
+nonnegativity of \(\mu\) on each released assignment.  The total leaf mass is
+the displayed packed sum over realized allowed pairs, hence is at most
+\(1\).
+
+If two realized allowed pairs have the same leaf, then the ordered pairs
+\((\beta,\tau)\) are equal, so both the branch labels and transcripts are
+equal.  Finally, for a realized allowed pair, the mass of its leaf is
+\(\rho_{\beta,\tau}\), and the assumed residual cylinder domination is
+exactly
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \nu(\iota(\beta,\tau)).
+\]
+This constructs the fixed-\((B,J)\) residual leaf certificate from the
+released-block data, rather than from realized-cell geometry alone.
+\end{proof}

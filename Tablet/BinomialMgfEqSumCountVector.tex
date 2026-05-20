@@ -1,0 +1,62 @@
+\begin{helper}
+Let \(N,n,m\) be natural numbers with \(0<N\), \(n\le N\), and
+\(m\le N\), and let \(M\subseteq \operatorname{Fin}(N)\) have cardinality
+\(m\).  Put \(q=m/N\).  Let \(v_i=1\) if \(i\in M\), and \(v_i=0\)
+otherwise.  For \(X\in \operatorname{Fin}(N)^n\), let
+\[
+c_i(X)=|\{j\in \operatorname{Fin}(n):X_j=i\}|.
+\]
+Then for every \(L\in\mathbb R\),
+\[
+(1-q+q e^L)^n
+=\frac{1}{N^n}\sum_{X\in \operatorname{Fin}(N)^n}
+  \frac{1}{N!}\sum_{\pi\in S_N}
+  \exp\!\left(L\sum_{i=1}^N c_i(X)v_{\pi(i)}\right).
+\]
+\end{helper}
+\begin{proof}
+Because \(0<N\), the finite set \(U=\operatorname{Fin}(N)\) has
+cardinality \(N\).  For a fixed permutation \(\pi\in S_N\) and a fixed
+sequence \(X=(X_1,\ldots,X_n)\in U^n\), the definition of the count vector
+gives the exact identity
+\[
+\sum_{i=1}^N c_i(X)v_{\pi(i)}
+ =\sum_{j=1}^n v_{\pi(X_j)}.
+\]
+Indeed, each occurrence of a value \(i\) among the coordinates of \(X\)
+contributes one copy of \(v_{\pi(i)}\) to the right hand side, and the
+number of such occurrences is precisely \(c_i(X)\).
+
+Therefore, for fixed \(\pi\),
+\[
+\frac{1}{N^n}\sum_{X\in U^n}
+  \exp\!\left(L\sum_i c_i(X)v_{\pi(i)}\right)
+=
+\frac{1}{N^n}\sum_{X\in U^n}
+  \prod_{j=1}^n \exp\!\left(L\,v_{\pi(X_j)}\right).
+\]
+The sum over \(U^n\) factors into the product of \(n\) identical one-coordinate
+sums:
+\[
+\frac{1}{N^n}\sum_{X\in U^n}\prod_{j=1}^n
+\exp\!\left(L\,v_{\pi(X_j)}\right)
+=
+\left(\frac1N\sum_{a\in U}\exp(L\,v_{\pi(a)})\right)^n .
+\]
+Since \(\pi\) is a bijection of \(U\),
+\(\sum_{a\in U}\exp(L\,v_{\pi(a)})=\sum_{a\in U}\exp(L\,v_a)\).
+Exactly \(m\) of the \(v_a\)'s are equal to \(1\), because
+\(|M|=m\), and the remaining \(N-m\) are equal to \(0\).  Hence
+\[
+\frac1N\sum_{a\in U}\exp(L\,v_a)
+=\frac{N-m}{N}\exp(0)+\frac{m}{N}\exp(L)
+=1-q+q e^L .
+\]
+Thus the inner average over \(X\), for every fixed \(\pi\), is
+\((1-q+q e^L)^n\).
+
+The outer average over permutations has total weight
+\((N!)^{-1}\cdot |S_N|=(N!)^{-1}N!=1\).  Averaging the same value
+\((1-q+q e^L)^n\) over all \(\pi\in S_N\) therefore leaves it unchanged.
+This is exactly the displayed identity.
+\end{proof}

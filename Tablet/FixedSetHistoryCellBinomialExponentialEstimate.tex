@@ -1,0 +1,186 @@
+\begin{helper}
+Let \(k,u_R,u_B,N_R,N_B\) be natural numbers and let \(p,\varepsilon_1,a\) be
+real numbers.  Assume
+\[
+0\le\varepsilon_1\le1,\qquad 0\le p\le\frac12,\qquad
+u_B\le u_R,
+\]
+and
+\[
+N_R\le 3\varepsilon_1k^2,\qquad N_B\le k^2.
+\]
+Then
+\[
+\binom{N_R}{u_R}p^{u_R}
+\binom{N_B}{u_B}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)}
+\le
+\exp\!\left(8\sqrt{\varepsilon_1}\,pk^2-pa\right).
+\]
+\end{helper}
+\begin{proof}
+First handle \(p=0\).  If \(u_R+u_B>0\), one of the factors \(p^{u_R}\) or
+\(p^{u_B}\) is zero, so the left-hand side is \(0\).  If
+\(u_R+u_B=0\), then \(u_R=u_B=0\), both binomial coefficients are \(1\), and
+the absence factor is at most \(1\): when \(a\ge0\) it is
+\((1-0)^a=1\), and when \(a<0\) the displayed exponent is \(0\).  The
+right-hand side is \(\exp(0)=1\).  Thus the estimate holds when \(p=0\).
+Assume from now on that \(p>0\), and only now set
+\[
+q=2p.
+\]
+Then \(0<q\le1\).
+
+Next split the edge case \(\varepsilon_1=0\) before taking any logarithm
+involving \(3e\varepsilon_1\).  The inequality
+\(N_R\le3\varepsilon_1k^2=0\) forces \(N_R=0\).  If \(u_R>0\), then
+\(\binom{N_R}{u_R}=0\), so the left-hand side is \(0\).  If \(u_R=0\), then
+\(u_B=0\) because \(u_B\le u_R\), and the support part is \(1\).  The desired
+inequality reduces to
+\[
+(1-p)^{\max(0,a)}\le \exp(-pa).
+\]
+If \(a\ge0\), this follows from \(1-p\le\exp(-p)\).  If \(a<0\), the left
+side is \(1\), while \(\exp(-pa)\ge1\) because \(p>0\).  Hence the theorem is
+proved when \(\varepsilon_1=0\).  We may therefore assume
+\[
+0<\varepsilon_1\le1. \tag{1}
+\]
+
+We prove the two-support estimate with \(q=2p\).  Put \(K=k^2\).  If
+\(K=0\), then \(N_R=N_B=0\).  The support product is \(0\) unless
+\(u_R=u_B=0\), and the case \(u_R=u_B=0\) is handled by the same absence
+argument used above.  Thus assume \(K>0\).
+
+If \(u_R=0\), then \(u_B=0\), and the support estimate below is simply
+\[
+1\le \exp(8\sqrt{\varepsilon_1}pK),
+\]
+which follows from \(p\ge0\) and \(\varepsilon_1\ge0\).  Now suppose
+\(u_R>0\).  Define
+\[
+s=\frac{u_R}{qK},\qquad t=\frac{u_B}{qK}.
+\]
+Then \(s>0\), \(0\le t\le s\), and the convention is that
+\(t\log(e/t)=0\) when \(t=0\).  Using
+\(\binom Nx\le(eN/x)^x\) for \(x>0\), the hypotheses
+\[
+N_R\le3\varepsilon_1K,\qquad N_B\le K,
+\]
+and the same estimate for the \(u_B\)-term when \(u_B>0\), we get
+\[
+\binom{N_R}{u_R}q^{u_R}
+\binom{N_B}{u_B}q^{u_B}
+\le
+\exp\!\left(qK\left[
+s\log\!\left(\frac{3e\varepsilon_1}{s}\right)
++t\log\!\left(\frac e t\right)\right]\right). \tag{2}
+\]
+No logarithm at \(t=0\) is used; the \(u_B=0\) binomial factor is \(1\), which
+is represented by the zero value of \(t\log(e/t)\).
+
+We now prove the elementary calculus bound used in (2).  Let
+\(0<\delta\le1\), \(s>0\), and \(0\le t\le s\).  Write \(r=t/s\).  Then
+\[
+s\log\!\left(\frac{3e\delta}{s}\right)
++t\log\!\left(\frac e t\right)
+=
+s\left[
+\log\!\left(\frac{3e\delta}{s}\right)
++r\log\!\left(\frac e{rs}\right)\right],        \tag{3}
+\]
+again with the limiting value \(r\log(e/(rs))=0\) at \(r=0\).  For fixed
+\(s\), the derivative in \(r\) of the bracketed expression is
+\(\log(1/(rs))\).  Hence, on \(0\le r\le1\), the maximum occurs at
+\(r=1\) if \(s\le1\), and at \(r=1/s\) if \(s\ge1\).
+
+If \(s\le1\), (3) is at most
+\[
+s\log\!\left(\frac{3e^2\delta}{s^2}\right).
+\]
+The derivative of this function of \(s\) is
+\(\log(3\delta/s^2)\), so its maximum on \(0<s\le1\) is no larger than the
+unrestricted maximum at \(s=\sqrt{3\delta}\), namely
+\[
+2\sqrt{3\delta}\le4\sqrt\delta. \tag{4}
+\]
+If \(s\ge1\), (3) is at most
+\[
+s\log\!\left(\frac{3e\delta}{s}\right)+1. \tag{5}
+\]
+When \(\delta\le1/3\), the derivative of (5) is
+\(\log(3\delta/s)\le0\) for \(s\ge1\), so the maximum is attained at
+\(s=1\) and equals \(1+\log(3e\delta)\).  The function
+\[
+4\sqrt\delta-1-\log(3e\delta)
+\]
+is nonnegative on \(0<\delta\le1/3\) (its minimum in this interval occurs at
+\(\delta=1/4\), where it is \(1-\log(3e/4)>0\), or at an endpoint).  Thus
+(5) is at most \(4\sqrt\delta\) in this case.  When
+\(\delta\ge1/3\), the maximum of (5) on \(s\ge1\) occurs at \(s=3\delta\) and
+has value \(1+3\delta\).  For \(1/3\le\delta\le1\),
+\[
+1+3\delta\le4\sqrt\delta
+\]
+because \(3x^2-4x+1=(3x-1)(x-1)\le0\) for
+\(x=\sqrt\delta\in[1/\sqrt3,1]\).  Combining this with (4) proves
+\[
+s\log\!\left(\frac{3e\delta}{s}\right)
++t\log\!\left(\frac e t\right)
+\le4\sqrt\delta. \tag{6}
+\]
+Applying (6) with \(\delta=\varepsilon_1\) in (2), and using \(q=2p\), gives
+\[
+\binom{N_R}{u_R}q^{u_R}
+\binom{N_B}{u_B}q^{u_B}
+\le
+\exp(4qK\sqrt{\varepsilon_1})
+=
+\exp(8\sqrt{\varepsilon_1}\,p k^2). \tag{7}
+\]
+
+It remains to replace the \(q\)-support factors by the original \(p\)-support
+factors and the absence term.  Let
+\[
+U=u_R+u_B,\qquad c=a-u_R-u_B.
+\]
+If \(c\ge0\), then the absence factor is \((1-p)^c\).  Since
+\(1-p\le\exp(-p)\),
+\[
+(1-p)^c\le\exp(-pc).
+\]
+Also \(p\le1/2\) implies \(\exp(p)\le2\), so
+\[
+p^U\exp(pU)\le(2p)^U=q^U.
+\]
+Multiplying the last two displays gives
+\[
+p^U(1-p)^c\le q^U\exp(-pa). \tag{8}
+\]
+
+If \(c<0\), the absence exponent in the statement is \(0\).  We claim
+\[
+p^U\le q^U\exp(-pa). \tag{9}
+\]
+If \(a\le0\), then \(\exp(-pa)\ge1\) and (9) follows from \(p\le q\).  If
+\(0<a<U\), then \(p\le1/2<\log2\), so
+\[
+2^{-U}\le\exp(-pU)<\exp(-pa).
+\]
+Since \(p^U=q^U2^{-U}\), (9) follows.
+
+In both cases, the product of the original support powers and the displayed
+absence factor is bounded by \(q^{u_R+u_B}\exp(-pa)\).  Multiplying this with
+the binomial part and using (7) yields
+\[
+\binom{N_R}{u_R}p^{u_R}
+\binom{N_B}{u_B}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)}
+\le
+\exp(8\sqrt{\varepsilon_1}pk^2)\exp(-pa).
+\]
+Adding the exponents gives the required
+\[
+\exp\!\left(8\sqrt{\varepsilon_1}pk^2-pa\right).
+\]
+\end{proof}

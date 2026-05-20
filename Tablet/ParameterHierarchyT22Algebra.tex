@@ -1,0 +1,32 @@
+\begin{helper}
+Let \(L=\log n\), \(p=\frac12\sqrt{L/n}\), \(t_2=n^{1/4+\eta}\), and let
+\(m\) be the reduced vertex count.  Assume \(0\le\epsilon_2\le1\), \(n>0\),
+\(L>0\), \(\log L>0\), \(p,m\ge0\),
+\[
+2pm\le \frac{\sqrt n}{L^{3/2}},\qquad
+\frac{2(\log L)\sqrt L}{n^{1/4-\eta}}<\frac12,\qquad
+\frac{\log L}{L}<\frac12.
+\]
+Then
+\[
+(1+\epsilon_2)L^2\frac{t_2}{L}
+  +L(1+\epsilon_2)pm
+< \frac{\sqrt{nL}}{\log L}.
+\]
+\end{helper}
+\begin{proof}
+Since \(\epsilon_2\le1\), the first summand is at most
+\[
+2L^2\frac{t_2}{L}=2Lt_2.
+\]
+The mass bound gives \(2pm\le \sqrt n/L^{3/2}\).  Also
+\((1+\epsilon_2)/2\le1\), so the second summand is at most
+\[
+L(2pm)\le L\frac{\sqrt n}{L^{3/2}}=\frac{\sqrt n}{\sqrt L}.
+\]
+The first threshold implies \(2Lt_2<\frac12\sqrt n\sqrt L/\log L\), because
+\(t_2n^{1/4-\eta}=\sqrt n\).  The second threshold implies
+\(\sqrt n/\sqrt L<\frac12\sqrt n\sqrt L/\log L\).  Adding these two strict
+bounds shows that the two original summands are less than
+\(\sqrt n\sqrt L/\log L=\sqrt{nL}/\log L\).
+\end{proof}

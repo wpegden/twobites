@@ -1,0 +1,16 @@
+\begin{helper}
+For every \(m\in\mathbb N\) and \(p\in\mathbb R\), the
+\(\noderef{GnpGraphWeight}\) weights on all simple graphs on \(\mathrm{Fin}(m)\)
+have total mass \(1\):
+\[
+\sum_G \noderef{GnpGraphWeight}(p,G)=1.
+\]
+\end{helper}
+\begin{proof}
+Identify a simple graph on \(\mathrm{Fin}(m)\) with the Boolean choices on the
+finite set of ordered pairs \((i,j)\) with \(i<j\).  Under this identification,
+\(\noderef{GnpGraphWeight}(p,G)\) is the product over these pairs of \(p\) when
+the corresponding edge is present and \(1-p\) when it is absent.  Summing over
+all graphs is therefore the product, over all possible edge positions, of the
+two-term sum \(p+(1-p)\).  Each factor is \(1\), so the total product is \(1\).
+\end{proof}

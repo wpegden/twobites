@@ -1,0 +1,37 @@
+\begin{helper}[Product Model Monotonicity]
+Fix \(M\in\mathbb N\), \(p_0\in[0,1]\), and sets \(P_R, P_B\subseteq\mathrm{Fin}(M)\).
+Let \(q=\noderef{FixedSetProductModelMassFn}(p_0, P_R, P_B)\).
+For any two families of assignments \(\mathcal S\subseteq\mathcal T\), we have the finite-sum monotonicity:
+\[
+\sum_{v\in\mathcal S}\left(\prod_i q(v_i)\right) \le \sum_{v\in\mathcal T}\left(\prod_i q(v_i)\right).
+\]
+\end{helper}
+\begin{proof}
+By \(\noderef{FixedSetProductModelMass}\), applied with the hypotheses
+\(0\le p_0\le1\), the mass function \(q\) is pointwise nonnegative:
+\[
+q(a)\ge0\qquad\text{for every one-coordinate value }a.
+\]
+Therefore, for every product assignment \(v\),
+\[
+W(v):=\prod_{i\in\mathrm{Fin}(2M)}q(v_i)\ge0,
+\]
+because a finite product of nonnegative factors is nonnegative.
+
+Since \(\mathcal S\subseteq\mathcal T\), decompose the finite set
+\(\mathcal T\) as the disjoint union of \(\mathcal S\) and
+\(\mathcal T\setminus\mathcal S\).  Finite additivity of sums gives
+\[
+\sum_{v\in\mathcal T}W(v)
+=
+\sum_{v\in\mathcal S}W(v)
++
+\sum_{v\in\mathcal T\setminus\mathcal S}W(v).
+\]
+Every term in the last sum is nonnegative, so the last sum is nonnegative.
+Hence
+\[
+\sum_{v\in\mathcal S}W(v)\le \sum_{v\in\mathcal T}W(v),
+\]
+which is the claimed monotonicity.
+\end{proof}

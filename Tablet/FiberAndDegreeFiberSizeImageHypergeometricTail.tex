@@ -1,0 +1,27 @@
+\begin{lemma}
+Let \(K\subseteq \operatorname{Fin}(m)\times \operatorname{Fin}(m)\) have
+cardinality \(m\), and suppose \(n\le m^2\).  For every threshold \(T>0\),
+the number of injections \(\pi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) for which the sampled image
+\(\pi(\operatorname{Fin}(n))\) meets \(K\) in more than \(T\) points is at most
+\[
+\left(\frac{e(n/m)}{T}\right)^T
+\cdot
+\#\{\pi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(m)\times\operatorname{Fin}(m)\}.
+\]
+\end{lemma}
+\begin{proof}
+Apply \(\noderef{UniformInjectionImage}\) to the full domain
+\(\operatorname{Fin}(n)\) and to the predicate that an \(n\)-element image set
+meets \(K\) in more than \(T\) points.  This identifies the injection count,
+up to the common size of each image fiber, with the corresponding count of
+\(n\)-subsets of \(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\).
+Transport those subsets across the standard equivalence with
+\(\operatorname{Fin}(m^2)\), using \(\noderef{FinProductTailCountEquiv}\).
+The image of \(K\) has cardinality \(m\), so the resulting subset count is a
+hypergeometric upper tail with population \(m^2\), sample size \(n\), marked
+set size \(m\), and mean \(n/m\).  The desired bound is exactly
+\(\noderef{HypergeometricCountingTailBound}\), and multiplying back by the
+number of injections gives the displayed estimate.
+\end{proof}

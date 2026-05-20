@@ -1,0 +1,637 @@
+\begin{lemma}
+Under the hypotheses of \(\noderef{HugeFamilySizeBound}\), assume also
+\(\varepsilon_1\ge0\), and suppose the sample parameters are the rounded
+hierarchy parameters
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+Let
+\[
+H_R=H_I\cap V_R,\qquad H_B=H_I\cap V_B,
+\]
+and define the opposite-color masses and projection deficits by
+\[
+T_R=\sum_{x\in H_R}|\pi_B(X_x(I))|,\qquad
+D_R=k-|\pi_R(I)|,
+\]
+\[
+T_B=\sum_{x\in H_B}|\pi_R(X_x(I))|,\qquad
+D_B=k-|\pi_B(I)|.
+\]
+Then every red opposite block satisfies
+\[
+|\pi_B(X_x(I))|\le(1+\varepsilon_2)pn\qquad (x\in H_R),
+\]
+and every blue opposite block satisfies
+\[
+|\pi_R(X_x(I))|\le(1+\varepsilon_2)pn\qquad (x\in H_B).
+\]
+Moreover the masses are controlled at the correct projection deficits:
+\[
+T_R\le(1+\varepsilon_2)D_R,\qquad
+T_B\le(1+\varepsilon_2)D_B,
+\]
+and the corresponding one-block and two-block numerical comparisons hold:
+\[
+\binom{T_R}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)\binom{D_R}{2}_{\mathbb R},
+\]
+if \(T_R\le(1+\varepsilon_2)pn\), then
+\[
+\binom{T_R}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)\left(
+\binom{pn}{2}_{\mathbb R}
++\binom{D_R-pn}{2}_{\mathbb R}\right),
+\]
+and if \((1+\varepsilon_2)pn\le T_R\), then
+\[
+\binom{(1+\varepsilon_2)pn}{2}_{\mathbb R}
++\binom{T_R-(1+\varepsilon_2)pn}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)\left(
+\binom{pn}{2}_{\mathbb R}
++\binom{D_R-pn}{2}_{\mathbb R}\right),
+\]
+and the same conditional estimates with \(R\) and \(B\) interchanged.
+\end{lemma}
+\begin{proof}
+First match the notation with the Lean statement.  The red and blue huge
+predicates are
+\[
+\mathsf{hugeRed}(x)\iff
+\noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists r,\ x=\operatorname{inl}(r),
+\]
+and
+\[
+\mathsf{hugeBlue}(x)\iff
+\noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists b,\ x=\operatorname{inr}(b).
+\]
+Thus
+\[
+H_R=\operatorname{univ}.\operatorname{filter}(\mathsf{hugeRed}),
+\qquad
+H_B=\operatorname{univ}.\operatorname{filter}(\mathsf{hugeBlue})
+\]
+are exactly the finite filters in the Lean term.  The Lean quantities called
+`redMass', `blueMass', `redDeficit', `blueDeficit', and `blockScale' are,
+respectively,
+\[
+T_R,\qquad T_B,\qquad D_R,\qquad D_B,\qquad b=pn.
+\]
+All cardinalities in these expressions are then cast to \(\mathbb R\).
+
+We prove the red estimates first.  Put
+\[
+H=H_R,\qquad h=|H|,\qquad
+A_x=\pi_B(X_x(I)),\qquad
+U=\bigcup_{x\in H}A_x,\qquad
+W=\bigcup_{x\in H}X_x(I),
+\]
+and write
+\[
+s=\sum_{x\in H}|X_x(I)|,\qquad T=\sum_{x\in H}|A_x|,
+\qquad D=D_R.
+\]
+If \(H=\emptyset\), then \(T=0\) and the displayed mass inequality is
+immediate from \(|\pi_R(I)|\le |I|=k\) and \(0\le\varepsilon_2\).  Indeed
+\[
+D=k-|\pi_R(I)|\ge0,\qquad (1+\varepsilon_2)D\ge0,
+\]
+so \(T=0\le(1+\varepsilon_2)D\).  The pointwise red block bound is vacuous,
+because no element satisfies \(\mathsf{hugeRed}\).
+
+It remains, in this empty red case, to check the three displayed
+\(\noderef{RealChooseTwo}\) comparisons.  Put \(b=pn\).  The rounded
+parameter and hierarchy hypotheses give \(b\ge1\): indeed the hierarchy gives
+\(1\le2pm\), the rounded-parameter comparison gives
+\(0<m\le n/(\log n)^2\), and \(n>n_0\) is in the eventual range where
+\((\log n)^2\ge2\), so
+\[
+b=pn=\frac{n}{2m}(2pm)\ge\frac{(\log n)^2}{2}\ge1.
+\]
+The deficit \(D=k-|\pi_R(I)|\) is a nonnegative integer.  Hence
+\(\binom{0}{2}_{\mathbb R}=0\le(1+\varepsilon_1)\binom D2_{\mathbb R}\),
+because \(\varepsilon_1\ge0\) and \(\binom D2_{\mathbb R}\ge0\) for an
+integer \(D\ge0\).
+
+For the small-mass two-block implication, the antecedent gives no additional
+difficulty because the left side is again \(\binom02_{\mathbb R}=0\).  Since
+\(\varepsilon_1\ge0\), it therefore suffices to prove
+\[
+\binom b2_{\mathbb R}+\binom{D-b}{2}_{\mathbb R}\ge0. \tag{E_R}
+\]
+If \(D=0\), then the left side of \((E_R)\) is
+\[
+\frac{b(b-1)}2+\frac{(-b)(-b-1)}2=b^2\ge0.
+\]
+If \(D=1\), it is
+\[
+\frac{b(b-1)}2+\frac{(1-b)(-b)}2=b(b-1)\ge0
+\]
+by \(b\ge1\).  If \(D\ge2\), then completing the square gives
+\[
+\binom b2_{\mathbb R}+\binom{D-b}{2}_{\mathbb R}
+=\left(b-\frac D2\right)^2+\frac{D(D-2)}4\ge0.
+\]
+Thus the small-mass implication is proved in all integer cases for \(D\).
+
+For the large-mass implication, assume its antecedent
+\((1+\varepsilon_2)b\le T=0\).  Since \(0\le\varepsilon_2\) and \(b\ge1\),
+we have \((1+\varepsilon_2)b\ge1\), a contradiction.  Hence the large-mass
+implication is vacuous in the empty red case.
+Thus assume \(H\ne\emptyset\).
+
+First record the relative numerical comparisons supplied by
+\(\noderef{ParameterHierarchyEventualComparisons}\) at the present \(n>n_0\).
+The hypotheses \(m=\noderef{TwoBiteNaturalReducedVertexCount}(n)\) and
+\(p=\noderef{TwoBiteEdgeProbability}(\frac12,n)\) identify the sample's
+parameters with the rounded \(m\) and \(p\) that occur in that package, so the
+following inequalities involve the same \(p,m\) as \(\omega\).
+With
+\[
+t_1=\noderef{TwoBiteHugeCutoff}(n),\qquad L=\log n,
+\qquad \delta=\varepsilon_2/100,
+\]
+the hierarchy gives \(0\le\delta\le1/100\) and the finite comparisons
+\[
+2pm\le\delta t_1, \tag{1}
+\]
+\[
+\left(2k/t_1+1\right)100L^3\le\delta t_1, \tag{2}
+\]
+\[
+\left(2k/t_1+1\right)200L^3\le\delta t_1, \tag{3}
+\]
+and
+\[
+\left(2k/t_1+1\right)400L^5\le\delta t_1. \tag{4}
+\]
+These are the explicit finite replacements for the paper's \(o(k)\) terms in
+the huge-opposite projection argument.
+
+The pointwise largest-block bound is direct.  If \(x\in H\), then
+\[
+A_x\subseteq \pi_B(N_x),
+\]
+because \(X_x(I)\subseteq N_x\) by \(\noderef{TwoBiteX}\).  The image
+\(\pi_B(N_x)\) has cardinality at most \(|N_x|\), since a finite image cannot
+have more elements than its domain, so
+\[
+|A_x|\le |\pi_B(N_x)|\le |N_x|.
+\]
+The lifted-neighborhood size clause of \(\noderef{FiberAndDegreeEvent}\) gives
+\[
+\bigl||N_x|-pn\bigr|\le\varepsilon_2pn,
+\]
+hence the upper side of the absolute-value inequality gives
+\[
+|N_x|\le pn+\varepsilon_2pn=(1+\varepsilon_2)pn.
+\]
+Therefore \(|A_x|\le(1+\varepsilon_2)pn\), which is the first red pointwise
+conjunct of the Lean statement.
+
+We next compare \(W\) with the red projection deficit.  By
+\(\noderef{HugeFamilySizeBound}\), instantiated with the same
+\(\omega,I,k,n,\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), the same
+\(\noderef{ParameterHierarchyEventualComparisons}\), the same \(n_0<n\), the
+same equality \(k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)\),
+the same \(|I|=k\), and the same
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\), the full huge filter
+has size at most \(2k/t_1\).  Since \(H\subseteq H_I\), this gives
+\[
+h\le 2k/t_1. \tag{5}
+\]
+Since every \(x\in H\) is huge, \(|X_x(I)|>t_1\), so
+\[
+s\ge h t_1. \tag{6}
+\]
+The lifted-codegree clause of \(\noderef{FiberAndDegreeEvent}\) gives
+\[
+|X_x(I)\cap X_y(I)|\le100L^3
+\qquad(x\ne y,\ x,y\in H).
+\]
+We use the finite union lower bound
+\[
+|W|\ge
+\sum_{x\in H}|X_x(I)|
+  -\sum_{\{x,y\}\subset H}|X_x(I)\cap X_y(I)|,
+\]
+which is inclusion-exclusion truncated after pairwise intersections; no
+disjointness of the \(X_x(I)\) is assumed.
+Adding the sets one at a time, the loss at the step inserting \(X_x(I)\) is at
+most the sum of \(|X_x(I)\cap X_y(I)|\) over the previously inserted
+\(y\)'s.  There are at most \(h-1\le h\le2k/t_1\) such previous sets, and it
+is harmless to bound this by \(2k/t_1+1\).  Therefore the total overlap lost in
+forming \(W\) is at most
+\[
+\sum_{x\in H}\bigl(2k/t_1+1\bigr)100L^3
+\le h\,\delta t_1
+\le \delta s,
+\]
+where the middle inequality is exactly (2), and the last inequality is (6).
+Therefore
+\[
+|W|\ge(1-\delta)s. \tag{7}
+\]
+
+Let \(R_W=\pi_R(W)\).  For \(x\in H\), write \(x=\operatorname{inl}(r)\).
+If \(u\in\pi_R(X_x(I))\), then \(u=\pi_R(z)\) for some
+\(z\in X_x(I)\).  Since \(X_x(I)\subseteq N_x\) by \(\noderef{TwoBiteX}\),
+the base vertex \(u\) is red-adjacent to \(r\).  Thus
+\(\pi_R(X_x(I))\) is contained in the red base-neighborhood of \(r\).
+The base-degree clause of \(\noderef{FiberAndDegreeEvent}\), together with
+\(0\le\varepsilon_2\le1\), bounds that neighborhood by
+\((1+\varepsilon_2)pm\le2pm\).  Hence
+\[
+|\pi_R(X_x(I))|\le2pm. \tag{8a}
+\]
+Using (1) and (6),
+\[
+|R_W|\le\sum_{x\in H}|\pi_R(X_x(I))|
+\le h\,2pm
+\le \delta h t_1
+\le \delta s. \tag{8}
+\]
+The first inequality is the finite union bound for
+\(R_W=\bigcup_{x\in H}\pi_R(X_x(I))\); no disjointness is used here either.
+Since \(W\subseteq I\),
+\[
+|\pi_R(I)|\le |\pi_R(W)|+|I\setminus W|
+  = |R_W|+k-|W|.
+\]
+Rearranging and using (7)--(8),
+\[
+D=k-|\pi_R(I)|\ge |W|-|R_W|
+\ge (1-2\delta)s. \tag{9}
+\]
+Since also \(|W|\le s\), (9) gives \(|W|\le D/(1-2\delta)\).  We also record
+a lower bound that will justify the later use of monotonicity for
+\(\binom{x}{2}_{\mathbb R}\).
+The hierarchy comparison \(1\le2pm\), together with (1), gives
+\[
+1\le \delta t_1.
+\]
+Since \(0\le\varepsilon_2\le1\), we have \(0\le\delta\le1/100\); if
+\(\delta=0\), the inequalities \(1\le2pm\le\delta t_1\) are inconsistent and
+there is nothing to prove.  Otherwise \(t_1\ge1/\delta\), and because
+\(H\ne\emptyset\), (6) and (9) give
+\[
+D\ge (1-2\delta)s>(1-2\delta)t_1
+\ge (1-2\delta)/\delta\ge 98.
+\]
+Thus, in the non-vacuous case, \(D\ge2\).
+
+It remains to compare the opposite projected mass \(T\) with \(W\).  The blue
+fiber-size clause of \(\noderef{FiberAndDegreeEvent}\), with
+\(0\le\varepsilon_2\le1\), says that every blue fiber has size at most
+\(2L^2\): the clause says the fiber size is within relative error
+\(\varepsilon_2\) of \(L^2\), hence is at most
+\((1+\varepsilon_2)L^2\le2L^2\).  Since \(X_x(I)\) is covered by the blue
+fibers indexed by \(A_x\),
+\[
+|X_x(I)|\le 2L^2|A_x|.
+\]
+Thus \(|A_x|\ge |X_x(I)|/(2L^2)\), and by (6)
+\[
+T=\sum_{x\in H}|A_x|\ge \frac{s}{2L^2}\ge \frac{h t_1}{2L^2}. \tag{10}
+\]
+The projected lifted-codegree clause of \(\noderef{FiberAndDegreeEvent}\)
+gives
+\[
+|A_x\cap A_y|\le200L^3
+\qquad(x\ne y,\ x,y\in H).
+\]
+Inclusion-exclusion for the projected sets gives
+\[
+|U|\ge T-\sum_{\{x,y\}\subset H}|A_x\cap A_y|.
+\]
+As above, each set \(A_x\) meets the previously inserted projected sets in at
+most \((2k/t_1+1)200L^3\) points, so the overlap term is at most
+\[
+h(2k/t_1+1)200L^3
+\]
+Rewrite this upper bound as
+\[
+\frac{h}{2L^2}\,(2k/t_1+1)400L^5,
+\]
+and using the hierarchy comparison (4), this is at most
+\[
+\delta\frac{h t_1}{2L^2}.
+\]
+The lower bound (10) says \(T\ge h t_1/(2L^2)\), so the overlap term is at
+most \(\delta T\).  Hence
+\[
+|U|\ge(1-\delta)T.
+\]
+The set \(U\) is the blue projection of \(W\), so \(|U|\le |W|\).  Combining
+this with (9), and using \(1-\delta>0\) and \(1-2\delta>0\), gives
+\[
+T\le\frac{|U|}{1-\delta}
+\le\frac{|W|}{1-\delta}
+\le\frac{D}{(1-\delta)(1-2\delta)}
+\le(1+\varepsilon_2)D. \tag{11}
+\]
+The last inequality uses \(\delta=\varepsilon_2/100\) and
+\(0\le\varepsilon_2\le1\); explicitly,
+\[
+\frac{1}{(1-\delta)(1-2\delta)}\le1+\varepsilon_2
+\]
+for \(0\le\delta=\varepsilon_2/100\le1/100\).
+
+We now invoke \(\noderef{HugeOppositeProjectionMassNumerics}\) for the real
+binomial comparisons.  Set
+\[
+b=pn,\qquad M=(1+\varepsilon_2)b.
+\]
+The side conditions in that helper have all been established here.  The
+eventual-comparisons package gives
+\[
+0\le\varepsilon_2,\qquad \varepsilon_2\le1,\qquad
+3\varepsilon_2\le\varepsilon_1/10,
+\]
+and \(\varepsilon_1\ge0\) is one of the hypotheses of the present lemma.  The
+definition of \(p=\noderef{TwoBiteEdgeProbability}(\frac12,n)\) gives
+\(b=pn\ge0\).  The deficit
+\[
+D=k-|\pi_R(I)|
+\]
+is a nonnegative integer, because the finite image \(\pi_R(I)\) has
+cardinality at most \(|I|=k\), so \(D\) is the cast of the natural difference
+\(k-|\pi_R(I)|\).  The mass
+\[
+T=\sum_{x\in H_R}|\pi_B(X_x(I))|
+\]
+is also a nonnegative integer, being a finite sum of cardinalities.  In the
+nonempty case above, (9) and the subsequent lower-bound argument give
+\(D\ge98\), and (11) gives
+\[
+0\le T\le(1+\varepsilon_2)D.
+\]
+This numerical helper is invoked only in the present nonempty case; the
+empty red case was discharged directly above precisely because the helper's
+large-deficit hypothesis need not hold when \(H_R=\emptyset\).  Therefore
+\(\noderef{HugeOppositeProjectionMassNumerics}\), applied with
+\((D,b,T)=(D_R,pn,T_R)\), gives exactly the three red numerical claims:
+\[
+\binom{T_R}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)\binom{D_R}{2}_{\mathbb R},
+\]
+\[
+T_R\le(1+\varepsilon_2)pn\Longrightarrow
+\binom{T_R}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)\left(
+\binom{pn}{2}_{\mathbb R}+\binom{D_R-pn}{2}_{\mathbb R}\right),
+\]
+and
+\[
+(1+\varepsilon_2)pn\le T_R\Longrightarrow
+\binom{(1+\varepsilon_2)pn}{2}_{\mathbb R}
++\binom{T_R-(1+\varepsilon_2)pn}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)\left(
+\binom{pn}{2}_{\mathbb R}+\binom{D_R-pn}{2}_{\mathbb R}\right).
+\]
+The helper is where the \(0/1\) regimes for
+\(\binom{x}{2}_{\mathbb R}\) are handled: monotonicity is used only on
+\([1,\infty)\), and the exceptional interval \(0<D_R-pn<1\) is controlled
+using the fact that both \(D_R\) and \(T_R\) are integer-valued.
+
+We now prove the blue estimates with the projection choices written out.  Put
+\[
+H'=H_B,\qquad h'=|H'|,\qquad
+B_x=\pi_R(X_x(I)),\qquad
+U'=\bigcup_{x\in H'}B_x,\qquad
+W'=\bigcup_{x\in H'}X_x(I),
+\]
+and write
+\[
+s'=\sum_{x\in H'}|X_x(I)|,\qquad
+T'=T_B=\sum_{x\in H'}|B_x|,\qquad
+D'=D_B=k-|\pi_B(I)|.
+\]
+
+If \(H'=\emptyset\), then \(T'=0\).  Since
+\(|\pi_B(I)|\le |I|=k\), the blue deficit \(D'=D_B\) is nonnegative, and
+\[
+T'=0\le(1+\varepsilon_2)D'
+\]
+because \(0\le\varepsilon_2\).  The pointwise blue block bound is vacuous,
+because no element satisfies \(\mathsf{hugeBlue}\).  The same hierarchy
+calculation as above gives
+\[
+b=pn=\frac{n}{2m}(2pm)\ge\frac{(\log n)^2}{2}\ge1.
+\]
+The deficit \(D_B=k-|\pi_B(I)|\) is a nonnegative integer, so
+\[
+\binom{0}{2}_{\mathbb R}
+\le(1+\varepsilon_1)\binom{D_B}{2}_{\mathbb R}
+\]
+because \(\varepsilon_1\ge0\) and
+\(\binom{D_B}{2}_{\mathbb R}\ge0\) for an integer \(D_B\ge0\).
+For the small-mass implication, the left side is again
+\(\binom02_{\mathbb R}=0\).  It remains only to prove
+\[
+\binom b2_{\mathbb R}+\binom{D_B-b}{2}_{\mathbb R}\ge0. \tag{E_B}
+\]
+If \(D_B=0\), then the left side of \((E_B)\) is
+\[
+\frac{b(b-1)}2+\frac{(-b)(-b-1)}2=b^2\ge0.
+\]
+If \(D_B=1\), it is
+\[
+\frac{b(b-1)}2+\frac{(1-b)(-b)}2=b(b-1)\ge0
+\]
+by \(b\ge1\).  If \(D_B\ge2\), then
+\[
+\binom b2_{\mathbb R}+\binom{D_B-b}{2}_{\mathbb R}
+=\left(b-\frac{D_B}{2}\right)^2+\frac{D_B(D_B-2)}4\ge0.
+\]
+Finally, the large-mass antecedent
+\((1+\varepsilon_2)b\le T'=0\) contradicts
+\((1+\varepsilon_2)b\ge b\ge1\).  Thus the large-mass implication is
+vacuous.  This proves all blue conjuncts when \(H_B=\emptyset\).
+
+Assume now that \(H_B\ne\emptyset\).  The pointwise cap uses the opposite
+projection for a blue huge vertex.  If \(x\in H_B\), then
+\[
+B_x=\pi_R(X_x(I))\subseteq \pi_R(N_x),
+\]
+because \(X_x(I)\subseteq N_x\).  A finite image has no more points than its
+domain, so \(|B_x|\le |\pi_R(N_x)|\le |N_x|\).  The lifted-neighborhood size
+clause of \(\noderef{FiberAndDegreeEvent}\) gives
+\[
+\bigl||N_x|-pn\bigr|\le\varepsilon_2pn,
+\]
+and hence
+\[
+|B_x|\le |N_x|\le(1+\varepsilon_2)pn.
+\]
+This is exactly the pointwise blue conjunct in the Lean statement.
+
+The full huge filter bound from \(\noderef{HugeFamilySizeBound}\), applied
+with the same data as before, gives
+\[
+h'\le2k/t_1, \tag{12}
+\]
+because \(H_B\subseteq H_I\).  Since each element of \(H_B\) is huge,
+\[
+s'\ge h't_1. \tag{13}
+\]
+The blue-blue lifted-codegree clause of \(\noderef{FiberAndDegreeEvent}\)
+gives
+\[
+|X_x(I)\cap X_y(I)|\le100L^3
+\qquad(x\ne y,\ x,y\in H_B).
+\]
+Using the same finite inclusion-exclusion lower bound as in the red case,
+\[
+|W'|\ge
+\sum_{x\in H'}|X_x(I)|
+  -\sum_{\{x,y\}\subset H'}|X_x(I)\cap X_y(I)|,
+\]
+and then using (2), (12), and (13), the total overlap loss is at most
+\(\delta s'\).  Hence
+\[
+|W'|\ge(1-\delta)s'. \tag{14}
+\]
+
+Let \(B_W=\pi_B(W')\).  For \(x\in H_B\), the same-color projection
+\(\pi_B(X_x(I))\) is handled symmetrically.  Write
+\(x=\operatorname{inr}(b_0)\).  If \(v\in\pi_B(X_x(I))\), then
+\(v=\pi_B(z)\) for some \(z\in X_x(I)\), and the containment
+\(X_x(I)\subseteq N_x\) shows that \(v\) lies in the blue base-neighborhood
+of \(b_0\).  The blue base-degree clause of
+\(\noderef{FiberAndDegreeEvent}\), together with
+\(0\le\varepsilon_2\le1\), bounds this neighborhood by
+\((1+\varepsilon_2)pm\le2pm\).  Hence
+\[
+|\pi_B(X_x(I))|\le2pm. \tag{15a}
+\]
+Therefore, by the finite union bound and the hierarchy comparison (1),
+\[
+|B_W|
+\le\sum_{x\in H'}|\pi_B(X_x(I))|
+\le h'\,2pm
+\le \delta h't_1
+\le \delta s'. \tag{15}
+\]
+Since \(W'\subseteq I\),
+\[
+|\pi_B(I)|\le |\pi_B(W')|+|I\setminus W'|
+  =|B_W|+k-|W'|.
+\]
+Rearranging and using (14)--(15) gives
+\[
+D_B=k-|\pi_B(I)|
+\ge |W'|-|B_W|
+\ge(1-2\delta)s'. \tag{16}
+\]
+Also \(|W'|\le s'\), so \(|W'|\le D_B/(1-2\delta)\).  As in the red case,
+the inequalities \(1\le2pm\le\delta t_1\), \(H_B\ne\emptyset\), (13), and
+(16) give
+\[
+D_B\ge(1-2\delta)s'>(1-2\delta)t_1
+\ge(1-2\delta)/\delta\ge98. \tag{17}
+\]
+
+It remains to control the blue opposite mass \(T_B\).  Now the relevant
+fibers are red fibers, because \(B_x=\pi_R(X_x(I))\).  The red fiber-size
+clause of \(\noderef{FiberAndDegreeEvent}\), with
+\(0\le\varepsilon_2\le1\), gives every red fiber size at most \(2L^2\).
+Since \(X_x(I)\) is covered by the red fibers indexed by \(B_x\),
+\[
+|X_x(I)|\le2L^2|B_x|.
+\]
+Thus
+\[
+T_B=\sum_{x\in H'}|B_x|
+\ge\frac{s'}{2L^2}\ge\frac{h't_1}{2L^2}. \tag{18}
+\]
+For the projected union \(U'=\bigcup_{x\in H'}B_x\), the projected
+lifted-codegree clause used is the blue-blue clause with red projections:
+\[
+|B_x\cap B_y|\le200L^3
+\qquad(x\ne y,\ x,y\in H_B).
+\]
+Finite inclusion-exclusion gives
+\[
+|U'|\ge T_B-\sum_{\{x,y\}\subset H'}|B_x\cap B_y|.
+\]
+Each \(B_x\) meets the previously inserted projected sets in at most
+\((2k/t_1+1)200L^3\) points, so the overlap term is at most
+\[
+h'(2k/t_1+1)200L^3
+=\frac{h'}{2L^2}(2k/t_1+1)400L^5.
+\]
+By (4), this is at most
+\[
+\delta\frac{h't_1}{2L^2},
+\]
+and by (18) it is at most \(\delta T_B\).  Hence
+\[
+|U'|\ge(1-\delta)T_B. \tag{19}
+\]
+The set \(U'\) is the red projection of \(W'\), so \(|U'|\le |W'|\).  Combining
+(16), \(|W'|\le s'\), and (19), and using the same elementary inequality
+\[
+\frac{1}{(1-\delta)(1-2\delta)}\le1+\varepsilon_2,
+\]
+gives
+\[
+T_B\le(1+\varepsilon_2)D_B. \tag{20}
+\]
+
+We apply \(\noderef{HugeOppositeProjectionMassNumerics}\) with
+\[
+(D,b,T)=(D_B,pn,T_B).
+\]
+The side conditions are now explicit: \(\varepsilon_1\ge0\) is a hypothesis;
+\(0\le\varepsilon_2\le1\) and
+\(3\varepsilon_2\le\varepsilon_1/10\) come from
+\(\noderef{ParameterHierarchyEventualComparisons}\); \(b=pn\ge0\) follows
+from the rounded definition of \(p\); \(T_B\ge0\) is a finite sum of
+cardinalities; \(D_B=k-|\pi_B(I)|\) is a nonnegative integer because
+the finite image \(\pi_B(I)\) has cardinality at most \(|I|=k\), so \(D_B\)
+is the cast of the natural difference \(k-|\pi_B(I)|\); \(T_B\) is
+integer-valued as a finite sum of cardinalities; (17) gives \(98\le D_B\);
+and (20) gives
+\[
+0\le T_B\le(1+\varepsilon_2)D_B.
+\]
+As in the red case, the helper is used only after the nonempty blue filter
+has supplied the large-deficit condition; the empty blue filter was already
+settled directly.
+The numerical helper therefore gives the three blue binomial conclusions
+\[
+\binom{T_B}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)\binom{D_B}{2}_{\mathbb R},
+\]
+\[
+T_B\le(1+\varepsilon_2)pn\Longrightarrow
+\binom{T_B}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)\left(
+\binom{pn}{2}_{\mathbb R}+\binom{D_B-pn}{2}_{\mathbb R}\right),
+\]
+and
+\[
+(1+\varepsilon_2)pn\le T_B\Longrightarrow
+\binom{(1+\varepsilon_2)pn}{2}_{\mathbb R}
++\binom{T_B-(1+\varepsilon_2)pn}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)\left(
+\binom{pn}{2}_{\mathbb R}+\binom{D_B-pn}{2}_{\mathbb R}\right).
+\]
+Together with the pointwise cap and mass bound already proved, these are
+exactly the five blue conjuncts of the Lean statement.  The five red conjuncts
+were proved above, so the lemma follows.
+\end{proof}

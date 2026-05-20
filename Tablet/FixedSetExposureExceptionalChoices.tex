@@ -1,0 +1,243 @@
+\begin{lemma}
+Let \(I\subseteq[n]\) satisfy
+\[
+|I|=k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+and assume \(0\le\varepsilon_1\le1\),
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\), and
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+Suppose that every sample \(\omega\) satisfying both
+\[
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega)
+\]
+and
+\[
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)
+\]
+also satisfies
+\[
+\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)
+  -10\varepsilon_1k^2
+\le
+\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|.
+\tag{1}
+\]
+Then, under \(\noderef{TwoBiteConditionalProbability}(n,m,p;-|-)\) and
+conditioning on the projection-size cell alone, the probability that \(I\) is
+independent in the final two-bite graph and that the regularity event holds is
+at most
+\[
+\exp\!\left(
+-p\bigl(\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)
+       -\varepsilon^3k^2\bigr)\right).
+\]
+\end{lemma}
+\begin{proof}
+Let
+\[
+S(\omega)=
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)
+\]
+be the projection-size conditioning event, and let
+\[
+A(\omega)=
+\bigl(I\text{ is independent in }\noderef{TwoBiteFinalGraph}(\omega)\bigr)
+\wedge
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega)
+\]
+be the numerator event in the Lean statement.  Thus the left hand side to be
+bounded is exactly
+\[
+\noderef{TwoBiteConditionalProbability}(n,m,p; A\mid S).
+\]
+For readability also write
+\[
+R(\omega)=
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,\omega)
+\]
+for the regularity conjunct of \(A\).
+
+Set
+\[
+f=
+\noderef{ProjectionOpenPairFunction}
+  ((\ell_R:\mathbb R),(\ell_B:\mathbb R),(k:\mathbb R),p,(n:\mathbb R)).
+\tag{2}
+\]
+We instantiate \(\noderef{FixedSetConditionalExposureCellBound}\) with this
+same fixed set \(I\), the same integers \(n,m,k,\ell_R,\ell_B\), the same real
+parameters \(p,\varepsilon,\varepsilon_1,\varepsilon_2\), and the same
+\(n_0\).  Its scalar and hierarchy hypotheses are exactly the present
+hypotheses:
+\[
+0\le\varepsilon_1,\quad \varepsilon_1\le1,\quad
+\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0),\quad n>n_0,
+\]
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+\[
+|I|=k,\qquad
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+The remaining hypothesis of the child theorem is the pointwise implication
+\[
+\forall\omega,\quad
+R(\omega)\to S(\omega)\to
+f-10\varepsilon_1(k:\mathbb R)^2
+\le
+\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|.
+\tag{3}
+\]
+This is exactly assumption (1), after replacing the displayed
+\(\noderef{ProjectionOpenPairFunction}\) by the abbreviation \(f\) from (2).
+The order of hypotheses is also the same as in
+\(\noderef{FixedSetConditionalExposureCellBound}\): first the regularity
+event \(R(\omega)\), then the projection-size event \(S(\omega)\), and then
+the lower bound for
+\(\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|\).
+Thus the pointwise staged-open lower-bound hypothesis is not strengthened or
+weakened; it is the child theorem's hypothesis with the same function
+\[
+f=\noderef{ProjectionOpenPairFunction}
+  ((\ell_R:\mathbb R),(\ell_B:\mathbb R),(k:\mathbb R),p,(n:\mathbb R)).
+\]
+No conditioning event is changed in this step: the regularity hypothesis is
+used only as the first premise \(R(\omega)\) of the pointwise implication,
+and the denominator event remains the projection-size predicate \(S\).
+
+The conclusion of \(\noderef{FixedSetConditionalExposureCellBound}\), after
+this instantiation, is therefore the bound for exactly the same conditional
+probability \(\noderef{TwoBiteConditionalProbability}(n,m,p;A\mid S)\):
+\[
+\noderef{TwoBiteConditionalProbability}(n,m,p;A\mid S)
+\le
+\exp\!\left(
+-p f
++8\sqrt{\varepsilon_1}\,p(k:\mathbb R)^2
++10\varepsilon_1p(k:\mathbb R)^2
++4\log (k:\mathbb R)\right).
+\tag{4}
+\]
+The numerator predicate here is word-for-word the statement's numerator:
+\[
+\omega\mapsto
+\bigl((\noderef{TwoBiteFinalGraph}(\omega))\text{ has }I\text{ independent}\bigr)
+\wedge
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega).
+\]
+It is not the projection-size event and it is not regularity alone.  The
+denominator predicate here is word-for-word the statement's denominator:
+\[
+\omega\mapsto
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega).
+\]
+It contains no regularity conjunct.  Thus (4) already bounds the desired
+conditional probability, but with the larger exponent containing the explicit
+error terms.
+
+It remains only to compare exponents.  Let
+\[
+\Delta=
+8\sqrt{\varepsilon_1}\,p(k:\mathbb R)^2
++10\varepsilon_1p(k:\mathbb R)^2
++4\log (k:\mathbb R).
+\]
+The eventual-comparisons package is evaluated at the present \(n>n_0\).  In
+that definition, the rounded integer scale and edge probability are
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+and
+\[
+\frac12\sqrt{\frac{\log n}{n}}
+=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+The numerical conjunct of
+\(\noderef{ParameterHierarchyEventualComparisons}\) needed here is the
+displayed comparison which absorbs
+\[
+8\sqrt{\varepsilon_1}\,pk^2+10\varepsilon_1pk^2+4\log k,
+\]
+and, applied to this \(n\), reads
+\[
+8\sqrt{\varepsilon_1}\,
+\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right)\,(K:\mathbb R)^2
++10\varepsilon_1
+\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right)\,(K:\mathbb R)^2
++4\log (K:\mathbb R)
+\le
+\varepsilon^3
+\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right)\,(K:\mathbb R)^2.
+\tag{5a}
+\]
+The present hypotheses
+\[
+k=K,\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right)
+\]
+rewrite (5a), including the real casts of \(k\), into
+\[
+\Delta\le \varepsilon^3p(k:\mathbb R)^2. \tag{5}
+\]
+Adding the same term \(-pf\) to both sides of (5) gives
+\[
+ -pf+\Delta
+\le
+-pf+\varepsilon^3p(k:\mathbb R)^2. \tag{6}
+\]
+The right side of (6) is the target exponent.  Indeed, by commutativity and
+associativity of multiplication in \(\mathbb R\),
+\[
+\varepsilon^3p(k:\mathbb R)^2
+=p\bigl(\varepsilon^3(k:\mathbb R)^2\bigr),
+\]
+and by distributivity,
+\[
+-pf+\varepsilon^3p(k:\mathbb R)^2
+=-p\bigl(f-\varepsilon^3(k:\mathbb R)^2\bigr). \tag{7}
+\]
+Combining (6) with this algebraic identity, we have
+\[
+-pf+\Delta
+\le
+-p\bigl(f-\varepsilon^3(k:\mathbb R)^2\bigr).
+\tag{8}
+\]
+The real exponential is monotone increasing; in Lean this is the content of
+\(\texttt{Real.exp\_le\_exp}\), which states
+\(\exp(x)\le\exp(y)\) if and only if \(x\le y\).  Applying this monotonicity
+to (8) gives
+\[
+\exp(-pf+\Delta)
+\le
+\exp\!\left(-p\bigl(f-\varepsilon^3(k:\mathbb R)^2\bigr)\right).
+\tag{9}
+\]
+Combining the child bound (4) with (9) yields
+\[
+\noderef{TwoBiteConditionalProbability}(n,m,p;A\mid S)
+\le
+\exp\!\left(-p\bigl(f-\varepsilon^3(k:\mathbb R)^2\bigr)\right).
+\tag{10}
+\]
+Finally substitute the definition (2) of \(f\).  This is exactly
+\[
+\exp\!\left(
+-(p\cdot(
+\noderef{ProjectionOpenPairFunction}
+  ((\ell_R:\mathbb R),(\ell_B:\mathbb R),(k:\mathbb R),p,(n:\mathbb R))
+ -\varepsilon^3(k:\mathbb R)^2))\right),
+\]
+matching the stated bound.
+This is precisely the claimed conditional probability bound.
+\end{proof}

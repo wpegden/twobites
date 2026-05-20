@@ -1,0 +1,69 @@
+\begin{helper}
+Let \(N\) be a natural number, let
+\(v\in\mathbb R^{\operatorname{Fin}(N)}\), and let \(L\in\mathbb R\).
+Define \(h\colon\mathbb R^{\operatorname{Fin}(N)}\to\mathbb R\) by
+\[
+h(y)=\frac{1}{N!}\sum_{\pi\in S_N}
+\exp\!\left(L\sum_{i=1}^N y_i v_{\pi(i)}\right).
+\]
+Then \(h\) is convex in the following pointwise sense:
+for all \(y,z\) and all \(0\le\theta\le1\),
+\[
+h((1-\theta)y+\theta z)\le (1-\theta)h(y)+\theta h(z).
+\]
+It is also symmetric: for every permutation \(\sigma\) of
+\(\operatorname{Fin}(N)\),
+\[
+h(y\circ\sigma)=h(y).
+\]
+\end{helper}
+\begin{proof}
+Fix a permutation \(\pi\in S_N\), and define
+\[
+\ell_\pi(y)=L\sum_i y_i v_{\pi(i)}.
+\]
+This is an affine, indeed linear, function of the vector \(y\).  For
+\(0\le\theta\le1\),
+\[
+\ell_\pi((1-\theta)y+\theta z)
+=(1-\theta)\ell_\pi(y)+\theta\ell_\pi(z),
+\]
+by distributing the finite sum and the scalar multiplications.  The
+exponential function on \(\mathbb R\) is convex, so
+\[
+\exp(\ell_\pi((1-\theta)y+\theta z))
+\le
+(1-\theta)\exp(\ell_\pi(y))+\theta\exp(\ell_\pi(z)).
+\]
+Summing this inequality over all \(\pi\in S_N\) and multiplying by the
+nonnegative scalar \((N!)^{-1}\) gives
+\[
+h((1-\theta)y+\theta z)
+\le (1-\theta)h(y)+\theta h(z),
+\]
+because finite sums distribute over addition and scalar multiplication.
+This proves convexity.
+
+For symmetry, fix a permutation \(\sigma\).  Then
+\[
+h(y\circ\sigma)
+=\frac1{N!}\sum_{\pi\in S_N}
+\exp\!\left(L\sum_i y_{\sigma(i)}v_{\pi(i)}\right).
+\]
+In the inner sum, put \(j=\sigma(i)\), equivalently
+\(i=\sigma^{-1}(j)\).  Since \(\sigma\) is a bijection,
+\[
+\sum_i y_{\sigma(i)}v_{\pi(i)}
+=\sum_j y_j\,v_{\pi(\sigma^{-1}(j))}.
+\]
+As \(\pi\) ranges over all permutations, the composite
+\(\pi\circ\sigma^{-1}\) also ranges over all permutations exactly once.
+Thus reindexing the finite outer sum by
+\(\tau=\pi\circ\sigma^{-1}\) gives
+\[
+h(y\circ\sigma)
+=\frac1{N!}\sum_{\tau\in S_N}
+\exp\!\left(L\sum_j y_j v_{\tau(j)}\right)
+=h(y).
+\]
+\end{proof}

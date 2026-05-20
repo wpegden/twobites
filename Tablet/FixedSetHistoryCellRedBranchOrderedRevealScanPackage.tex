@@ -1,0 +1,151 @@
+\begin{helper}
+Fix a finite terminal coordinate set \(U\), a nodup ordered reveal list
+\(o\) with \(\operatorname{toFinset}(o)=U\), one blue support label \(B\),
+and one red label \(J\).  Let \(\beta\) range over complete terminal
+blue-trace labels and let \(\tau\) range over transcript labels.  For a
+transcript write
+\[
+P_\tau,\qquad A_\tau,\qquad Z_\tau
+\]
+for its forced-present, forced-absent, and selected-absent coordinate sets,
+and write
+\[
+F_{\beta,J}=B\cup \operatorname{redSupport}(\beta,J).
+\]
+Assume branch labels are determined by complete blue truth tables on \(U\).
+Assume also the realized-cell geometry exported by the branch/transcript
+construction: for every realized \((B,J,\beta,\tau)\), the red support lies
+in \(U\) and is not blue, \(P_\tau,A_\tau\subseteq U\),
+\(P_\tau\cap A_\tau=\emptyset\), \(F_{\beta,J}\subseteq P_\tau\), the blue
+trace of \(\beta\) is encoded by \(P_\tau,A_\tau\) on every blue coordinate
+of \(U\), and \(Z_\tau\subseteq A_\tau\).  Finally assume the forward
+compatibility consequence: a compatible complete assignment contains
+\(P_\tau\), avoids \(A_\tau\setminus Z_\tau\), and has the complete blue
+trace of \(\beta\) on \(U\).
+
+Suppose the paper's blue-first/red-second ordered reveal has supplied the
+following fixed-\((B,J)\) scan interface.  There is a deterministic
+transcript scan
+\[
+\operatorname{scan}:2^U\to\mathcal P\cup\{\bot\},
+\]
+four scan tests, witness assignments \(W_{\beta,\tau}\), read-dependency
+sets \(D_{\beta,\tau}(e)\), prefix sets \(\operatorname{pref}(e)\), fixed
+prefix supports, open-candidate sets, and a selected-present-sibling
+predicate.  The prefix sets lie in \(U\).  For every realized
+\((\beta,\tau)\), \(W_{\beta,\tau}\subseteq U\), every coordinate of
+\(P_\tau\) is present in \(W_{\beta,\tau}\), and every coordinate of
+\(A_\tau\) is absent from \(W_{\beta,\tau}\).  Every read dependency of a
+coordinate is classified as one of the four ordered-reveal roles
+\[
+F_{\beta,J},\qquad P_\tau\setminus F_{\beta,J},\qquad
+Z_\tau,\qquad A_\tau\setminus Z_\tau ,
+\]
+and if \(o=\operatorname{pre}\mathbin{+\!\!+}e::\operatorname{suf}\), then
+\[
+D_{\beta,\tau}(e)\subseteq \operatorname{toFinset}(\operatorname{pre}).
+\]
+Agreement with \(W_{\beta,\tau}\) on \(D_{\beta,\tau}(e)\) preserves all
+four scan tests at \(e\).
+
+Assume the scan has the two recognition properties used in the paper.  If a
+residual assignment \(A_{\rm res}\subseteq U\) satisfies
+\[
+P_\tau\setminus F_{\beta,J}\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset ,
+\]
+then
+\[
+\operatorname{scan}\bigl((A_{\rm res}\setminus Z_\tau)\cup F_{\beta,J}\bigr)
+=\tau .
+\]
+If a complete assignment \(A\subseteq U\) contains \(P_\tau\), avoids
+\(A_\tau\), and has the complete blue trace of \(\beta\), then
+\(\operatorname{scan}(A)=\tau\).
+
+Assume also the missing converse compatibility certificate explicitly: for
+every realized \((\beta,\tau)\), if a complete assignment \(A\subseteq U\)
+contains \(P_\tau\), avoids \(A_\tau\), has the complete blue trace of
+\(\beta\), and the scan returns \(\tau\) on \(A\), then \(A\) is compatible
+with \((B,J,\beta,\tau)\).  Finally assume the residual pruning certificate:
+one residual assignment cannot reconstruct compatibly to two distinct
+realized owners, and the first-mismatch interface would otherwise produce a
+selected-present sibling in one of the two reconstructed assignments.
+
+Then the residual consequences needed by the branch/transcript node hold.
+Every residual assignment \(A_{\rm res}\subseteq U\) satisfying the displayed
+span and avoidance conditions reconstructs to a compatible complete
+assignment
+\[
+A^\ast=(A_{\rm res}\setminus Z_\tau)\cup F_{\beta,J}.
+\]
+Moreover, if one residual assignment reconstructs compatibly to two realized
+pairs \((\beta,\tau)\) and \((\beta',\tau')\), then
+\(\beta=\beta'\) and \(\tau=\tau'\).  The scan interface data listed above,
+including the residual scan recognition, complete scan recognition, exact
+read-set stability, and selected-sibling first-mismatch certificate, remain
+available for downstream fixed-\((B,J)\) arguments.
+\end{helper}
+\begin{proof}
+Fix a realized \((B,J,\beta,\tau)\) and a residual assignment
+\(A_{\rm res}\subseteq U\) satisfying
+\[
+P_\tau\setminus F_{\beta,J}\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset .
+\]
+Put
+\[
+A^\ast=(A_{\rm res}\setminus Z_\tau)\cup F_{\beta,J}.
+\]
+First \(A^\ast\subseteq U\): the residual part lies in \(U\), and the fixed
+support lies in \(P_\tau\subseteq U\).  Next \(P_\tau\subseteq A^\ast\).
+Indeed a coordinate of \(P_\tau\) either already lies in \(F_{\beta,J}\), in
+which case it is reinserted, or lies in \(P_\tau\setminus F_{\beta,J}\), in
+which case it belongs to \(A_{\rm res}\).  Such a coordinate is not selected,
+because \(Z_\tau\subseteq A_\tau\) and \(P_\tau\cap A_\tau=\emptyset\).
+Thus it survives the deletion of \(Z_\tau\).
+
+The reconstructed assignment avoids all of \(A_\tau\).  If
+\(e\in A_\tau\cap F_{\beta,J}\), then
+\(F_{\beta,J}\subseteq P_\tau\) contradicts
+\(P_\tau\cap A_\tau=\emptyset\).  If
+\(e\in A_\tau\cap(A_{\rm res}\setminus Z_\tau)\), then
+\(e\in A_\tau\setminus Z_\tau\) and the residual avoidance hypothesis
+contradicts \(e\in A_{\rm res}\).
+
+Now let \(e\in U\) be blue.  If \(e\) is in the blue trace of \(\beta\),
+then the realized-cell geometry puts \(e\) in \(P_\tau\), hence in
+\(A^\ast\).  Conversely suppose \(e\in A^\ast\).  If \(e\in F_{\beta,J}\),
+then \(e\in P_\tau\), so the blue-trace equivalence gives
+\(e\in\operatorname{blueTrace}(\beta)\).  If
+\(e\in A_{\rm res}\setminus Z_\tau\) and \(e\) were not in the blue trace,
+then the realized-cell geometry would put \(e\) in \(A_\tau\); since
+\(e\notin Z_\tau\), this would put \(e\in A_\tau\setminus Z_\tau\),
+contradicting residual avoidance.  Therefore \(A^\ast\) has exactly the
+complete blue trace of \(\beta\).
+
+By the residual scan-recognition clause, \(\operatorname{scan}(A^\ast)=\tau\).
+The explicit converse compatibility certificate now applies to the four
+facts just checked: \(A^\ast\subseteq U\), \(P_\tau\subseteq A^\ast\),
+\(A^\ast\cap A_\tau=\emptyset\), and the complete blue trace.  Hence
+\(A^\ast\) is compatible with \((B,J,\beta,\tau)\).
+
+The owner-uniqueness conclusion is exactly the residual pruning certificate:
+if the same residual assignment reconstructed compatibly to two realized
+pairs, the selected-sibling first-mismatch alternative would be pruned by
+the fixed-prefix support data, so the two owners must be the same.  The
+remaining displayed scan/read properties are part of the supplied ordered
+reveal interface.  The dependencies used here are the scan construction and
+read stability from
+\(\noderef{FixedSetHistoryCellRISIRevealOrderScanConstruction}\) and
+\(\noderef{FixedSetHistoryCellRISIResidualScanStability}\), the fixed
+red-branch scan interface
+\(\noderef{FixedSetHistoryCellRedBranchScanInterfaceConstruction}\), the
+selected-sibling pruning interface
+\(\noderef{FixedSetHistoryCellRedPrefixScanInvariant}\) and
+\(\noderef{FixedSetHistoryCellFixedBJResidualOverlapConsistency}\), the
+deterministic residual scan-output package
+\(\noderef{FixedSetHistoryCellRedResidualDeterministicScanOutputs}\), and
+the terminal assignment extension
+\(\noderef{FixedSetHistoryCellTerminalAssignmentExtension}\).
+\end{proof}

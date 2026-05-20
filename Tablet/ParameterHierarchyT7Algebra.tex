@@ -1,0 +1,46 @@
+\begin{helper}
+Let \(\eta,\varepsilon_1\in\mathbb R\) and \(n\in\mathbb N\).  Put
+\[
+L=\log n,\quad
+k_R=(1+\eta)\sqrt{nL},\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad
+k=(K:\mathbb R),
+\]
+and
+\[
+t_1=\frac{\sqrt{nL}}{\log L}.
+\]
+Assume \(0<\eta\), \(0<\varepsilon_1\), \(0<n\), \(0<L\), \(0<\log L\),
+\(k_R\le k\), and
+\[
+\frac1{(1+\eta)\log L}\le\varepsilon_1.
+\]
+Then
+\[
+t_1k\le\varepsilon_1 k^2.
+\]
+\end{helper}
+\begin{proof}
+Because \(0<\eta\), \(1+\eta>0\).  Since \(0<n\) and \(0<L\), we have
+\(\sqrt{nL}>0\), so \(k_R>0\).  The assumption \(k_R\le k\) therefore gives
+\(0<k\).
+
+Using the definitions,
+\[
+t_1=\frac{\sqrt{nL}}{\log L}
+=k_R\cdot\frac1{(1+\eta)\log L}.
+\]
+The threshold gives
+\[
+t_1\le \varepsilon_1 k_R.
+\]
+Multiplying by the nonnegative number \(k\) yields
+\[
+t_1k\le \varepsilon_1 k_Rk.
+\]
+Finally, \(k_R\le k\) and \(\varepsilon_1>0\), so
+\[
+\varepsilon_1 k_Rk\le \varepsilon_1 k^2.
+\]
+Combining the two inequalities proves the claim.
+\end{proof}

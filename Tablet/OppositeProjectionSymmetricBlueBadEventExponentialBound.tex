@@ -1,0 +1,154 @@
+\begin{helper}
+Let \(m:\mathbb N\to\mathbb N\) satisfy
+\[
+  m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)
+\]
+for every \(n\), and put
+\[
+  p(n)=\noderef{TwoBiteEdgeProbability}(1/2,n).
+\]
+There is a constant \(c>0\) such that, for all sufficiently large \(n\),
+\[
+\noderef{TwoBiteEventProbability}(n,m(n),p(n),\mathcal B_n)
+  \le m(n)^2\exp(-c(\log n)^3),
+\]
+where \(\mathcal B_n\) is the event that both of the following hold for the
+sample \(\omega\):
+
+\[
+\forall x\in\noderef{TwoBiteBaseVertex}(m(n)),\qquad
+  |\noderef{TwoBiteLiftedNeighborhood}(\omega,x)|\le 2p(n)n,
+\]
+and there is an ordered blue pair \(b,c\in\operatorname{Fin}(m(n))\) with
+\(b\ne c\) such that
+\[
+\begin{aligned}
+&\left|
+  \noderef{TwoBiteRedProjection}(\omega)
+      [\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{Sum.inr} b)]
+  \cap
+  \noderef{TwoBiteRedProjection}(\omega)
+      [\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{Sum.inr} c)]
+ \right|  \\
+&\qquad >
+\left|
+  \noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{Sum.inr} b)
+  \cap
+  \noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{Sum.inr} c)
+\right|
+  +100(\log n)^3 .
+\end{aligned}
+\]
+\end{helper}
+\begin{proof}
+Fix \(m\) satisfying the displayed identity, and write
+\[
+  M=m(n),\qquad p=p(n),\qquad L=\log n .
+\]
+All estimates below are asserted only after increasing \(n\) past a fixed
+threshold.  In particular \(L>0\), \(p\in[0,1]\) by
+\(\noderef{OppositeProjectionEdgeProbBounds}\), and
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n)
+  =\left\lfloor\frac{n}{L^2}\right\rfloor .
+\]
+For each ordered blue pair \((b,c)\) with \(b\ne c\), let \(E_{b,c}\) be the
+event that the global size bound holds and this pair violates the displayed
+projected-intersection estimate.  The event \(\mathcal B_n\) is contained in
+the union of the events \(E_{b,c}\), and there are at most \(M^2\) ordered
+blue pairs.
+
+We bound one fixed pair uniformly.  Apply
+\(\noderef{OppositeProjectionBlueConditioning}\) to condition on the blue
+base graph \(G_B\) and the blue coordinate map \(\rho:\operatorname{Fin} n
+\to \operatorname{Fin} M\).  Cells with zero total mass contribute zero by
+the conditional-probability convention.  On a nonzero cell, the lifted blue
+neighborhoods of \(b\) and \(c\) are fixed sets
+\[
+  U=\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{Sum.inr} b),
+  \qquad
+  V=\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{Sum.inr} c).
+\]
+Let \(U_0=U\setminus V\) and \(V_0=V\setminus U\).  The size bound gives
+\(|U_0|\le 2pn\) and \(|V_0|\le 2pn\).
+
+The only projected intersections beyond the true intersection \(U\cap V\)
+are vertices of \(V_0\) whose red coordinate lies in the red projection of
+\(U_0\); this is exactly the containment supplied by
+\(\noderef{OppositeProjectionIntersectionContainment}\).  After exposing the
+red coordinates of \(U_0\), write the exposure as \(\eta\).  Then
+\(|\pi_R(U_0)|\le |U_0|\), and the row-disjointness hypotheses required by
+\(\noderef{OppositeProjectionBlueExposureTailBound}\) hold for \(U_0\) and
+\(V_0\).  Hence, for \(t=\lceil100(\log n)^3\rceil\), each exposure cell has
+conditional probability at most
+\[
+  \binom{|V_0|}{t}\left(\frac{|U_0|}{m(n)}\right)^t.
+\]
+Averaging over the exposure cells preserves the same bound, since the
+right-hand side is independent of the exposure and zero-mass cells contribute
+zero.
+
+The containment shows that if \(E_{b,c}\) occurs, then the number \(W\) of
+vertices of \(V_0\) whose red coordinate lies in the red projection of
+\(U_0\) is strictly larger than \(100L^3\).  Since \(W\) is an integer, this
+implies \(W\ge t\) for
+\[
+  t=\left\lceil100L^3\right\rceil .
+\]
+Using \(\binom bt\le (eb/t)^t\), the fixed-pair failure probability in a
+blue conditioning cell is therefore at most
+\[
+  \Pr(E_{b,c}\mid G_B,\rho)
+    \le \left(\frac{e|U_0||V_0|}{Mt}\right)^t .
+\]
+If \(t>|V_0|\), then the tail event is empty, so the same upper bound is
+valid trivially.
+
+It remains to estimate the parameter in this last expression.  Since
+\[
+p=\frac12\sqrt{\frac{L}{n}},
+\]
+we have \(p^2n=L/4\).  Also \(n/L^2\to\infty\), so eventually
+\(n/L^2\ge2\).  For every real \(x\ge2\), \(\lfloor x\rfloor\ge x-1\ge x/2\);
+therefore eventually
+\[
+  M=\left\lfloor\frac{n}{L^2}\right\rfloor
+    \ge \frac{n}{2L^2}.
+\]
+Combining this lower bound for \(M\) with \(|U_0|,|V_0|\le2pn\) gives
+\[
+  \frac{|U_0||V_0|}{M}
+    \le \frac{(2pn)^2}{M}
+    =\frac{4p^2n^2}{M}
+    =\frac{Ln}{M}
+    \le 2L^3 .
+\]
+Because \(t=\lceil100L^3\rceil\ge100L^3\), we obtain
+\[
+  \frac{e|U_0||V_0|}{Mt}
+    \le \frac{2eL^3}{100L^3}
+    =\frac e{50}<1 .
+\]
+Set
+\[
+  c=100\log(50/e).
+\]
+This constant is positive, since \(50/e>1\).  The preceding inequality and
+the monotonicity of \(a^s\) in \(s\) for \(0<a<1\) give
+\[
+\left(\frac{e|U_0||V_0|}{Mt}\right)^t
+  \le \left(\frac e{50}\right)^t
+  \le \left(\frac e{50}\right)^{100L^3}
+  = \exp(-cL^3).
+\]
+Thus every fixed ordered blue pair has conditional failure probability at
+most \(\exp(-cL^3)\), uniformly in the blue conditioning data.  Averaging over
+the blue conditioning cells removes the conditioning and preserves this
+uniform bound, with zero-mass cells contributing zero.  Finally, the union
+bound over the at most \(M^2=m(n)^2\) ordered blue pairs gives
+\[
+  \Pr(\text{blue bad event})
+    \le m(n)^2\exp(-c(\log n)^3),
+\]
+as claimed.
+\end{proof}

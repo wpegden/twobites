@@ -1,0 +1,78 @@
+\begin{helper}[SameColorCodegreeLimitBound]
+\label{helper:SameColorCodegreeLimitBound}
+Let \(m(n) = \noderef{TwoBiteNaturalReducedVertexCount}(n)\) and let \(p = \noderef{TwoBiteEdgeProbability}(1/2, n)\).
+Let \(T = \lceil \log n \rceil\). The sequence
+\[
+2 m(n)^2 \binom{m(n)}{T} (p^2)^T
+\]
+is a \(\noderef{NegligibleProbability}\) sequence.
+\end{helper}
+
+\begin{proof}
+Unfold \(\noderef{NegligibleProbability}\); we must prove that the displayed
+sequence tends to \(0\).  Put \(L=\log n\), \(M=m(n)\), and
+\(T=\lceil L\rceil\).  From the hypothesis on \(m\) and the definitions
+\(\noderef{TwoBiteNaturalReducedVertexCount}\),
+\(\noderef{TwoBiteReducedVertexCount}\), and \(\noderef{TwoBiteStretch}\), we
+have
+\[
+M=\left\lfloor \frac{n}{L^2}\right\rfloor .
+\]
+After discarding finitely many \(n\), \(L\ge1\), so the floor bound gives
+\[
+M\le \frac{n}{L^2}\le n.
+\tag{1}
+\]
+The definition \(\noderef{TwoBiteEdgeProbability}\) with \(\beta=1/2\) gives
+\[
+p^2=\frac14\,\frac{L}{n}
+\tag{2}
+\]
+for all sufficiently large \(n\), when \(L/n\ge0\).  Also, by the definition
+of the ceiling, \(T=\lceil L\rceil\) satisfies
+\[
+T\ge L.
+\tag{3}
+\]
+
+By \(\noderef{OppositeProjectionChooseExponentialBound}\),
+\[
+\binom MT\le\left(\frac{eM}{T}\right)^T.
+\]
+Multiplying by \((p^2)^T\) and using (1), (2), and (3), the base of the
+exponential is bounded by
+\[
+\frac{eMp^2}{T}
+\le
+\frac{e}{4L^2}.
+\tag{4}
+\]
+For large \(n\), the right side of (4) is at most \(1\).  Since \(T\ge L\),
+\[
+\binom MT(p^2)^T
+\le
+\left(\frac{e}{4L^2}\right)^T
+\le
+\left(\frac{e}{4L^2}\right)^L
+=
+\exp\!\left(L(1-\log 4-2\log L)\right)
+\le
+\exp\!\left(-\frac12 L\log L\right)
+\tag{5}
+\]
+eventually.
+
+The prefactor is controlled by (1):
+\[
+2M^2\le2n^2=2\exp(2L).
+\tag{6}
+\]
+Combining (5) and (6), the displayed sequence is eventually at most
+\[
+2\exp\!\left(2L-\frac12 L\log L\right).
+\]
+The exponent tends to \(-\infty\), because \(L\log L\) dominates \(L\).
+Hence this upper bound tends to \(0\), and the original nonnegative sequence
+also tends to \(0\).  This proves the required
+\(\noderef{NegligibleProbability}\) statement.
+\end{proof}

@@ -1,0 +1,16 @@
+\begin{lemma}
+Let \(a,b,c\in[m]\) with \(a\ne b\), and put
+\[
+\rho(x,y)=\min(x,y)m+\max(x,y).
+\]
+If \(\rho(a,c)<\rho(a,b)\) and \(\rho(b,c)<\rho(a,b)\), then
+\(c<a\) and \(c<b\).
+\end{lemma}
+\begin{proof}
+If \(a<b\), then \(a\le c\) would imply
+\(\min(b,c)\ge a\) and \(\max(b,c)\ge b\), so
+\(\rho(b,c)\ge am+b=\rho(a,b)\), contradicting
+\(\rho(b,c)<\rho(a,b)\). Hence \(c<a\), and then \(c<b\).
+The case \(b<a\) is symmetric, using
+\(\rho(a,c)<\rho(a,b)\) to get \(c<b\), and then \(c<a\).
+\end{proof}

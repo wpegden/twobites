@@ -1,0 +1,36 @@
+\begin{helper}
+For any event \(A\) and conditioning event \(C\), suppose all
+\(\noderef{TwoBiteSampleWeight}\) values are nonnegative.  If
+\[
+\noderef{TwoBiteEventProbability}(C)\le B_C,\qquad
+\noderef{TwoBiteConditionalProbability}(A\mid C)\le B_A,
+\]
+with \(B_C\ge0\) and \(B_A\ge0\), then
+\[
+\noderef{TwoBiteEventProbability}(A\cap C)\le
+B_C\min(1,B_A).
+\]
+\end{helper}
+\begin{proof}
+Write \(P(E)\) for \(\noderef{TwoBiteEventProbability}(E)\).  Because all
+sample weights are nonnegative, \(P(E)\ge0\) for every event \(E\), and
+monotonicity holds: if \(E\subseteq F\), then \(P(E)\le P(F)\).  Hence
+\(P(A\cap C)\le P(C)\), giving the factor \(1\).
+
+If \(P(C)=0\), monotonicity and nonnegativity give \(P(A\cap C)=0\), so the
+claim follows.  If \(P(C)>0\), unfolding
+\(\noderef{TwoBiteConditionalProbability}\) gives
+\[
+P(A\cap C)/P(C)\le B_A,
+\]
+and multiplying by the positive denominator yields
+\[
+P(A\cap C)\le P(C)B_A.
+\]
+Combining this with \(P(A\cap C)\le P(C)\) gives
+\[
+P(A\cap C)\le P(C)\min(1,B_A).
+\]
+Finally \(P(C)\le B_C\) and \(\min(1,B_A)\ge0\), so multiplication preserves
+the inequality and gives the stated bound.
+\end{proof}

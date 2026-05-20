@@ -1,0 +1,58 @@
+\begin{helper}
+Let \(L=\log n\), \(q=n^{1/4}\), and
+\[
+k_{\mathbb R}=(1+\eta)\sqrt{nL}.
+\]
+Assume \(\eta>0\), \(\varepsilon_1>0\), \(n>0\), \(L>0\), \(k\ge0\),
+\[
+k_{\mathbb R}\le k,\qquad
+\frac{2}{L}\le\frac{\varepsilon_1}{2},
+\]
+and
+\[
+\frac{1}{(1+\eta)q\sqrt L}\le\frac{\varepsilon_1}{2}.
+\]
+Then
+\[
+k\left(\frac{2k}{L}+q\right)\le \varepsilon_1 k^2.
+\]
+\end{helper}
+\begin{proof}
+The first threshold gives
+\[
+k\frac{2k}{L}=\frac{2}{L}k^2
+  \le\frac{\varepsilon_1}{2}k^2.
+\]
+For the second term, multiply
+\[
+\frac{1}{(1+\eta)q\sqrt L}\le\frac{\varepsilon_1}{2}
+\]
+by the positive denominator to get
+\[
+1\le\frac{\varepsilon_1}{2}(1+\eta)q\sqrt L.
+\]
+Multiplying by \(q\ge0\) gives
+\[
+q\le \frac{\varepsilon_1}{2}(1+\eta)q^2\sqrt L.
+\]
+Since \(q^2=\sqrt n\), the right hand side is
+\[
+\frac{\varepsilon_1}{2}(1+\eta)\sqrt n\sqrt L
+  =\frac{\varepsilon_1}{2}k_{\mathbb R}.
+\]
+Using \(k_{\mathbb R}\le k\), we obtain
+\[
+q\le\frac{\varepsilon_1}{2}k.
+\]
+Multiplying by \(k\ge0\) yields
+\[
+kq\le\frac{\varepsilon_1}{2}k^2.
+\]
+Adding the two half-bounds proves
+\[
+k\left(\frac{2k}{L}+q\right)
+=k\frac{2k}{L}+kq
+\le\frac{\varepsilon_1}{2}k^2+\frac{\varepsilon_1}{2}k^2
+=\varepsilon_1 k^2.
+\]
+\end{proof}

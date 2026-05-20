@@ -1,0 +1,24 @@
+\begin{helper}
+Let \(R_h\) be a recorded coordinate set which is exactly
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\).  Then
+every coordinate in
+\(\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\) belongs to
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\) and is not in \(R_h\).
+\end{helper}
+\begin{proof}
+Unfold \(\noderef{TwoBiteStagedOpenPairs}\).  Membership of \(e\) in this set
+means that \(e\) belongs to \(\noderef{TwoBiteProjectionPairSet}(\omega,I)\)
+and, among the filter conditions, that
+\[
+e\notin\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\]
+If \(e\) is red, membership in the projection-pair set says that its endpoint
+pair lies in the red base-pair set of the red projection of \(I\); by the
+definition of \(\noderef{TwoBiteBasePairs}\), this endpoint pair is increasing.
+Thus \(e\) is a red increasing non-loop coordinate, hence lies in
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\).  The blue case is the
+same with the blue projection.
+
+Finally, the assumed equality between \(R_h\) and the pre-terminal recorded
+set transfers the displayed non-membership to \(e\notin R_h\).
+\end{proof}

@@ -1,0 +1,530 @@
+\begin{lemma}
+Let \(\varepsilon>0\), and set
+\[
+\eta=\min\{\varepsilon/2,1/32\},
+\]
+\[
+\varepsilon_1=
+\frac12\min\left\{
+\eta,\left(\frac{\eta^3}{32}\right)^2,\frac{\eta^3}{40}
+\right\},
+\qquad
+\varepsilon_2=\frac12\min\left\{\varepsilon_1,\frac{\varepsilon_1}{30},1\right\}.
+\]
+Then there is \(n_0\) such that
+\[
+\varepsilon_2^{-2}\le n_0
+\]
+and
+\[
+\noderef{ParameterHierarchyEventualComparisons}(\eta,\varepsilon_1,
+\varepsilon_2,n_0)
+\]
+holds.
+\end{lemma}
+\begin{proof}
+By \(\noderef{ParameterHierarchyConstantBounds}\), the constants satisfy
+\[
+0<\eta<1/16,\qquad 0<\varepsilon_2<\varepsilon_1,\qquad
+3\varepsilon_2\le\varepsilon_1/10,\qquad 0\le\varepsilon_2\le1.
+\]
+Choose \(n_0\) at least \(\varepsilon_2^{-2}\), and then enlarge it finitely
+many times as described below.  We prove that every \(n>n_0\) satisfies all
+conjuncts in \(\noderef{ParameterHierarchyEventualComparisons}\).
+
+Write
+\[
+L=\log n,\qquad
+k_R=(1+\eta)\sqrt{nL},\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\qquad
+k=(K:\mathbb R),
+\]
+\[
+m_R=\frac{n}{L^2},\qquad
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+m=(M:\mathbb R),
+\]
+and
+\[
+p=\frac12\sqrt{\frac Ln},\qquad
+t_1=\frac{\sqrt{nL}}{\log L},\qquad
+t_2=n^{1/4+\eta},\qquad
+t_3=n^{2\eta}.
+\]
+First enlarge \(n_0\) so that for every \(n>n_0\),
+\[
+n>1,\quad L>1,\quad \log L>0,\quad k_R>2,\quad m_R>2,\quad
+\sqrt{L/n}\le1,\quad \frac{k_R+1}{n}\le1,\quad
+\frac{\sqrt n}{2L^{3/2}}\ge1.
+\]
+These are eventual conditions because \(L\to\infty\), \(\log L\to\infty\),
+\(\sqrt{nL}\to\infty\), \(n/L^2\to\infty\), \(\sqrt{L/n}\to0\),
+\((k_R+1)/n\to0\), and \(\sqrt n/(2L^{3/2})\to\infty\).
+
+For such \(n\), \(L>1\) makes \(m_R\) and \(k_R\) nonnegative.  Applying
+\(\noderef{NaturalParameterApproximation}\) with \(\kappa=1+\eta\) gives
+\[
+k_R\le k<k_R+1,\qquad m\le m_R<m+1.
+\]
+Since \(k_R>2\), the ceiling inequality gives \(k<k_R+1<2k_R\), while
+\((k_R+1)/n\le1\) gives \(k<n\) and hence \(K\le n\).  Since \(m_R>2\), the
+floor inequality gives
+\[
+\frac12m_R\le m\le m_R,\qquad 0<m.
+\]
+Also \(p\ge0\) and \(p\le1/2\) follow from \(\sqrt{L/n}\ge0\) and
+\(\sqrt{L/n}\le1\).  Finally,
+\[
+2pm\ge p m_R
+=\frac12\sqrt{\frac Ln}\frac{n}{L^2}
+=\frac{\sqrt n}{2L^{3/2}}\ge1.
+\]
+This proves the initial positivity, rounding, and \(1\le2pm\) conjuncts.
+
+It remains to satisfy the finitely many asymptotic inequalities.  Each is
+obtained by enlarging \(n_0\) so that a displayed ratio is below a fixed
+positive constant or above a fixed positive constant.  The needed eventual
+facts are all consequences of the standard growth rule
+\[
+\frac{(\log n)^a(\log\log n)^b}{n^c}\to0\quad(c>0),
+\]
+together with the reciprocal divergence statement.  We record the concrete
+ratio for each conjunct.
+
+For \(n^{4\eta}k\le(\varepsilon_1/2)k^2\), divide by \(k^2>0\) and use
+\(k\ge k_R\).  It is enough that
+\[
+\frac{n^{4\eta}}{k_R}
+=\frac{1}{1+\eta}\frac{n^{-1/2+4\eta}}{\sqrt L}
+\le\frac{\varepsilon_1}{2},
+\]
+which is eventual because \(\eta<1/16\).  For
+\[
+2kL^2\le(\varepsilon_1/8)k^2,
+\]
+it is enough that
+\[
+\frac{2L^2}{k_R}
+=\frac{2}{1+\eta}\frac{L^{3/2}}{\sqrt n}
+\le\frac{\varepsilon_1}{8}.
+\]
+
+For the three-term \(\noderef{RealChooseTwo}\) comparison, use \(L>1\) and
+\[
+\frac1{\sqrt L}-\frac1{2L}\ge\frac1{2\sqrt L}.
+\]
+Since \(\noderef{RealChooseTwo}(k)\ge k^2/4\) for \(k>2\), the desired
+inequality follows once
+\[
+\frac{16L^{5/2}}{k_R}\le1.
+\]
+
+For the exponential binomial inequality, \(K\le n\) gives
+\[
+\binom nK\le n^K=\exp(kL).
+\]
+Also \(\noderef{RealChooseTwo}(k)\ge k^2/4\), \(k\ge k_R\), and
+\(m\le m_R=n/L^2\), so the exponent magnitude is at least
+\[
+\frac{k_R^4}{16Lm_R n^{8\eta}}
+=\frac{(1+\eta)^4}{16}n^{1-8\eta}L^3.
+\]
+Enlarge \(n_0\) so this is at least \(2kL+L\).  Then
+\[
+\exp(-(2kL+L))\exp(kL)\le\exp(-L)=n^{-1}.
+\]
+
+We now verify the remaining conjuncts one by one, each time enlarging \(n_0\)
+if necessary.  We use throughout
+\[
+k_R\le k<2k_R,\qquad \frac12m_R\le m\le m_R,\qquad
+k_R=(1+\eta)\sqrt{nL},\qquad m_R=\frac n{L^2}.
+\tag{A}
+\]
+For \(k>2\), the definition
+\[
+\noderef{RealChooseTwo}(k)=\frac{k(k-1)}2
+\]
+gives
+\[
+\frac{k^2}{4}\le \noderef{RealChooseTwo}(k)\le\frac{k^2}{2}. \tag{C}
+\]
+More generally, whenever \(x\ge0\), we will use the elementary upper bound
+\[
+\noderef{RealChooseTwo}(x)\le x^2. \tag{U}
+\]
+Finally, since \(k<2k_R\) and \(t_1=\sqrt{nL}/\log L\), after enlarging the
+threshold so that \(\log L\ge1\),
+\[
+\frac{2k}{t_1}+1
+<4(1+\eta)\log L+1
+\le 5(1+\eta)\log L. \tag{D}
+\]
+
+For the conjunct
+\[
+\frac{2}{\sqrt L}\noderef{RealChooseTwo}(k)
+\le \frac{\varepsilon_1}{2}k^2,
+\]
+the upper bound in (C) gives
+\[
+\frac{2}{\sqrt L}\noderef{RealChooseTwo}(k)
+\le \frac{k^2}{\sqrt L}.
+\]
+Choose the threshold so that
+\[
+\frac1{\sqrt L}\le \frac{\varepsilon_1}{2}. \tag{T5}
+\]
+Then the desired inequality follows.
+
+For the logarithmic conjunct
+\[
+4\log k\le \frac{\eta^3}{2}pk^2,
+\]
+use \(k<2k_R=2(1+\eta)\sqrt{nL}\), \(k\ge k_R\), and
+\[
+p k_R^2
+=\frac12\sqrt{\frac Ln}\,(1+\eta)^2nL
+=\frac{(1+\eta)^2}{2}\sqrt n\,L^{3/2}.
+\]
+Thus it is enough to require
+\[
+\frac{4\log(2(1+\eta)\sqrt{nL})}{p k_R^2}
+=
+\frac{8\log(2(1+\eta)\sqrt{nL})}
+{(1+\eta)^2\sqrt n\,L^{3/2}}
+\le \frac{\eta^3}{2}. \tag{T6}
+\]
+The left side tends to \(0\), so we enlarge \(n_0\) to make (T6) hold.
+
+For
+\[
+t_1k\le \varepsilon_1 k^2,
+\]
+divide by the positive number \(k\).  Since \(k\ge k_R\),
+\[
+\frac{t_1}{k}\le\frac{t_1}{k_R}
+=\frac{\sqrt{nL}/\log L}{(1+\eta)\sqrt{nL}}
+=\frac1{(1+\eta)\log L}.
+\]
+Choose the threshold so that
+\[
+\frac1{(1+\eta)\log L}\le\varepsilon_1. \tag{T7}
+\]
+
+For
+\[
+\noderef{RealChooseTwo}\left(\frac{2k}{t_1}+1\right)\,100L^3
+\le \frac12 k,
+\]
+combine (D) and (U):
+\[
+\noderef{RealChooseTwo}\left(\frac{2k}{t_1}+1\right)100L^3
+\le 100\bigl(5(1+\eta)\log L\bigr)^2L^3.
+\]
+Since \(k\ge k_R\), it is enough to require
+\[
+\frac{200\bigl(5(1+\eta)\bigr)^2(\log L)^2L^3}
+{(1+\eta)\sqrt{nL}}\le1. \tag{T8}
+\]
+Equivalently, the displayed ratio is a constant multiple of
+\((\log L)^2L^{5/2}/\sqrt n\), so it tends to \(0\).
+
+For
+\[
+\frac{2k}{t_1}(2pm)\le \frac{\varepsilon_1}{10}k,
+\]
+divide by \(k>0\).  Using \(m\le m_R\),
+\[
+2pm\le 2p m_R
+=\sqrt{\frac Ln}\frac n{L^2}
+=\frac{\sqrt n}{L^{3/2}}.
+\]
+Therefore
+\[
+\frac{1}{k}\frac{2k}{t_1}(2pm)
+=\frac{2(2pm)}{t_1}
+\le
+\frac{2\sqrt n/L^{3/2}}{\sqrt{nL}/\log L}
+=\frac{2\log L}{L^2}.
+\]
+Choose the threshold so that
+\[
+\frac{2\log L}{L^2}\le\frac{\varepsilon_1}{10}. \tag{T9}
+\]
+
+For
+\[
+\frac{2k}{t_1}\noderef{RealChooseTwo}(2pm)\le\varepsilon_1 k^2,
+\]
+use (U), \(2pm\le\sqrt n/L^{3/2}\), and \(k\ge k_R\).  After division by
+\(k^2\), the left side is at most
+\[
+\frac{2}{t_1k_R}\left(\frac{\sqrt n}{L^{3/2}}\right)^2
+=
+\frac{2\log L}{(1+\eta)L^4}.
+\]
+Choose the threshold so that
+\[
+\frac{2\log L}{(1+\eta)L^4}\le\varepsilon_1. \tag{T10}
+\]
+
+For
+\[
+\noderef{RealChooseTwo}\left(\frac{2k}{t_1}+1\right)\,200L^3
+\le \frac{\varepsilon_1}{10}k,
+\]
+the same estimate as in (T8) gives the sufficient condition
+\[
+\frac{2000\bigl(5(1+\eta)\bigr)^2(\log L)^2L^3}
+{\varepsilon_1(1+\eta)\sqrt{nL}}\le1. \tag{T11}
+\]
+
+For
+\[
+\noderef{RealChooseTwo}\left(\frac{2k}{t_1}+1\right)
+\noderef{RealChooseTwo}(200L^3)
+\le \frac{\varepsilon_1}{10}k^2,
+\]
+use (D), (U), and
+\(\noderef{RealChooseTwo}(200L^3)\le(200L^3)^2\).  Since
+\(k^2\ge k_R^2=(1+\eta)^2nL\), it is enough that
+\[
+\frac{400000\bigl(5(1+\eta)\bigr)^2(\log L)^2L^5}
+{\varepsilon_1(1+\eta)^2 n}\le1. \tag{T12}
+\]
+
+The next three conjuncts,
+\[
+3\varepsilon_2\le\varepsilon_1/10,\qquad
+0\le\varepsilon_2,\qquad \varepsilon_2\le1,
+\]
+are exactly among the constant bounds supplied by
+\(\noderef{ParameterHierarchyConstantBounds}\), so no threshold is needed.
+
+For
+\[
+2pm\le\frac{\varepsilon_2}{100}t_1,
+\]
+the estimate \(2pm\le\sqrt n/L^{3/2}\) gives
+\[
+\frac{2pm}{t_1}\le
+\frac{\sqrt n/L^{3/2}}{\sqrt{nL}/\log L}
+=\frac{\log L}{L^2}.
+\]
+Choose the threshold so that
+\[
+\frac{\log L}{L^2}\le\frac{\varepsilon_2}{100}. \tag{T16}
+\]
+
+For
+\[
+\left(\frac{2k}{t_1}+1\right)100L^3
+\le\frac{\varepsilon_2}{100}t_1,
+\]
+use (D).  It is enough that
+\[
+\frac{100\cdot5(1+\eta)(\log L)^2L^3}{\sqrt{nL}}
+\le\frac{\varepsilon_2}{100}. \tag{T17}
+\]
+For
+\[
+\left(\frac{2k}{t_1}+1\right)200L^3
+\le\frac{\varepsilon_2}{100}t_1,
+\]
+it is enough that
+\[
+\frac{200\cdot5(1+\eta)(\log L)^2L^3}{\sqrt{nL}}
+\le\frac{\varepsilon_2}{100}. \tag{T18}
+\]
+For
+\[
+\left(\frac{2k}{t_1}+1\right)400L^5
+\le\frac{\varepsilon_2}{100}t_1,
+\]
+it is enough that
+\[
+\frac{400\cdot5(1+\eta)(\log L)^2L^5}{\sqrt{nL}}
+\le\frac{\varepsilon_2}{100}. \tag{T19}
+\]
+The three left sides in (T17)--(T19) tend to \(0\).
+
+For
+\[
+t_2 n^{1/4-\eta}\le\varepsilon_1 k,
+\]
+unfold \(t_2=n^{1/4+\eta}\).  The left side is \(n^{1/2}\).  Since
+\(k\ge k_R=(1+\eta)\sqrt n\sqrt L\), it is enough that
+\[
+\frac{1}{\varepsilon_1(1+\eta)\sqrt L}\le1. \tag{T20}
+\]
+
+For the cutoff comparison
+\[
+\noderef{TwoBiteLargeCutoff}(\eta,n)<\noderef{TwoBiteHugeCutoff}(n),
+\]
+unfold the definitions:
+\[
+\noderef{TwoBiteLargeCutoff}(\eta,n)=n^{1/4+\eta},
+\qquad
+\noderef{TwoBiteHugeCutoff}(n)=\frac{\sqrt{nL}}{\log L}=t_1.
+\]
+It is enough to require
+\[
+\frac{n^{1/4+\eta}\log L}{\sqrt{nL}}
+=\frac{\log L}{n^{1/4-\eta}\sqrt L}<1. \tag{T21}
+\]
+This tends to \(0\), since \(\eta<1/16<1/4\).
+
+For the huge-cutoff upper bound
+\[
+(1+\varepsilon_2)L^2\frac{t_2}{L}
+  +L(1+\varepsilon_2)pm
+<\noderef{TwoBiteHugeCutoff}(n),
+\]
+use \(\varepsilon_2\le1\), so \(1+\varepsilon_2\le2\).  The first term is at
+most \(2Lt_2\), and the second term is at most
+\[
+2Lpm\le 2L\cdot\frac12\frac{\sqrt n}{L^{3/2}}
+=\frac{\sqrt n}{\sqrt L}.
+\]
+Since \(\noderef{TwoBiteHugeCutoff}(n)=t_1=\sqrt{nL}/\log L\), it is enough to
+choose the threshold so that
+\[
+\frac{2Lt_2}{t_1}
+=\frac{2(\log L)L^{1/2}}{n^{1/4-\eta}}<\frac12,
+\qquad
+\frac{\sqrt n/\sqrt L}{t_1}
+=\frac{\log L}{L}<\frac12. \tag{T22}
+\]
+
+For the large-cutoff lower bound
+\[
+100(n^{1/4}+1/2)L^3\le\noderef{TwoBiteLargeCutoff}(\eta,n),
+\]
+first enlarge the threshold so that \(n^{1/4}\ge1\).  Then
+\[
+n^{1/4}+1/2\le2n^{1/4},
+\]
+and it is enough that
+\[
+\frac{200L^3}{n^\eta}\le1. \tag{T23}
+\]
+
+For
+\[
+k< n^{1/4}t_2
+-\noderef{RealChooseTwo}(n^{1/4})\,100L^3,
+\]
+we use (U) to get
+\[
+\noderef{RealChooseTwo}(n^{1/4})\,100L^3\le100n^{1/2}L^3.
+\]
+Choose the threshold so that
+\[
+\frac{100L^3}{n^\eta}\le\frac12. \tag{T24a}
+\]
+Then the negative term is at most \(\frac12n^{1/2+\eta}\), so the right side
+is at least \(\frac12n^{1/2+\eta}\).  Also \(k<2k_R\), so it is enough to
+require
+\[
+\frac{2(1+\eta)\sqrt L}{n^\eta}<\frac12. \tag{T24b}
+\]
+
+For
+\[
+t_3^2k\le\frac{\varepsilon_1}{2}k^2,
+\]
+unfold \(t_3=n^{2\eta}\), so \(t_3^2=n^{4\eta}\).  This is the same reduction
+as the first \(n^{4\eta}\)-conjunct: it follows from
+\[
+\frac{n^{4\eta}}{k_R}\le\frac{\varepsilon_1}{2}. \tag{T25}
+\]
+
+For
+\[
+k\left(\frac{2k}{L}+n^{1/4}\right)\le\varepsilon_1 k^2,
+\]
+divide by \(k>0\).  It is enough to put each summand below
+\((\varepsilon_1/2)k\).  The first is controlled by
+\[
+\frac{2}{L}\le\frac{\varepsilon_1}{2}, \tag{T26a}
+\]
+and the second by \(k\ge k_R\):
+\[
+\frac{n^{1/4}}{k_R}
+=\frac{1}{(1+\eta)n^{1/4}\sqrt L}
+\le\frac{\varepsilon_1}{2}. \tag{T26b}
+\]
+
+For the combined coefficient inequality
+\[
+8\sqrt{\varepsilon_1}pk^2+10\varepsilon_1pk^2+4\log k
+\le \eta^3pk^2,
+\]
+the constant bound gives
+\[
+8\sqrt{\varepsilon_1}+10\varepsilon_1\le\eta^3/2.
+\]
+Multiplying by the nonnegative quantity \(pk^2\) gives the first two terms at
+most \((\eta^3/2)pk^2\).  The logarithmic conjunct already proved from (T6)
+gives
+\[
+4\log k\le(\eta^3/2)pk^2.
+\]
+Adding the two estimates gives the desired \(\eta^3pk^2\) bound.
+
+For the first final exponential,
+\[
+\exp\!\left(kL+2kn^{1/4-3\eta}L-n^{3/4-2\eta}\right)\le\varepsilon_1,
+\]
+use \(k<2k_R=2(1+\eta)\sqrt n\sqrt L\).  The positive part of the exponent is
+bounded by
+\[
+2(1+\eta)n^{1/2}L^{3/2}
++4(1+\eta)n^{3/4-3\eta}L^{3/2}.
+\]
+Choose the threshold so that
+\[
+2(1+\eta)n^{1/2}L^{3/2}\le\frac14 n^{3/4-2\eta},
+\qquad
+4(1+\eta)n^{3/4-3\eta}L^{3/2}\le\frac14 n^{3/4-2\eta}. \tag{T28a}
+\]
+These are equivalent to requiring fixed multiples of
+\(L^{3/2}/n^{1/4-2\eta}\) and \(L^{3/2}/n^\eta\) to be at most \(1/4\), and
+both ratios tend to \(0\).  Under (T28a), the exponent is at most
+\[
+-\frac12 n^{3/4-2\eta}.
+\]
+Since \(\varepsilon_1>0\), choose the threshold further so that
+\[
+\exp\!\left(-\frac12 n^{3/4-2\eta}\right)\le\varepsilon_1. \tag{T28b}
+\]
+
+For the last exponential,
+\[
+\exp\!\left(-\frac{\eta}{4}kL\right)\le\varepsilon_1,
+\]
+use \(k\ge k_R\) to get
+\[
+\frac{\eta}{4}kL
+\ge \frac{\eta(1+\eta)}4\sqrt n\,L^{3/2}.
+\]
+The right side tends to infinity, so enlarge the threshold so that
+\[
+\exp\!\left(-\frac{\eta(1+\eta)}4\sqrt n\,L^{3/2}\right)\le\varepsilon_1.
+\tag{T29}
+\]
+
+All displayed threshold requirements (T5)--(T29) are finite: each ratio that
+must be small is a fixed constant times
+\((\log n)^a(\log\log n)^b/n^c\) with \(c>0\), and each exponent magnitude
+that must be large is a positive power of \(n\) divided by a fixed power of
+\(\log n\) and \(\log\log n\).  Enlarge \(n_0\) to dominate all of these
+finitely many thresholds.
+
+With this single enlarged \(n_0\), every conjunct in
+\(\noderef{ParameterHierarchyEventualComparisons}(\eta,\varepsilon_1,
+\varepsilon_2,n_0)\) holds for all \(n>n_0\), and by construction
+\(\varepsilon_2^{-2}\le n_0\).
+\end{proof}

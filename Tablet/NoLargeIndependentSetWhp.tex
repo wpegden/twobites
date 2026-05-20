@@ -1,0 +1,272 @@
+\begin{lemma}
+Let \(\varepsilon,\eta,\varepsilon_1,\varepsilon_2,\beta\in\mathbb R\) and
+\(n_0\in\mathbb N\).  Assume
+\[
+0<\varepsilon,\qquad 0<\eta,\qquad \eta<\varepsilon,\qquad
+\beta=\frac12,
+\]
+and
+\[
+\noderef{ParameterHierarchy}(\eta,\varepsilon_1,\varepsilon_2,n_0).
+\]
+Then, with high probability in \(n\) under the two-bite law
+\[
+\noderef{TwoBiteEventProbability}
+\left(n,\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\noderef{TwoBiteEdgeProbability}(\beta,n),-\right),
+\]
+the final graph satisfies
+\[
+\noderef{IndependenceNumberLess}\!\left(
+\noderef{TwoBiteFinalGraph}(\omega)_0,
+(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right).
+\]
+\end{lemma}
+\begin{proof}
+Fix the parameters in the statement.  The equality \(\beta=1/2\) means that
+the probability law in the target statement is the same as the law with edge
+parameter \(1/2\).  For every \(n\), set
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p(n)=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and define the common probability functional
+\[
+\mathbb P_n(E)
+=\noderef{TwoBiteEventProbability}(n,M(n),p(n),E).
+\tag{P}
+\]
+All probabilities below are taken with respect to this same \(\mathbb P_n\).
+Also write
+\[
+x_\eta(n)=\noderef{TwoBiteIndependenceScale}(1+\eta,n)
+=(1+\eta)\sqrt{(n:\mathbb R)\log(n:\mathbb R)},
+\]
+\[
+x_\varepsilon(n)=\noderef{TwoBiteIndependenceScale}(1+\varepsilon,n)
+=(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)},
+\]
+and
+\[
+K_\eta(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n).
+\]
+The subscript \(\eta\) is important: all fixed-set estimates below use the
+smaller scale parameter \(\eta\), while the final independence-number target is
+the larger \(\varepsilon\)-scale \(x_\varepsilon(n)\).
+
+By \(\noderef{NaturalIndependenceScaleFitsTarget}\), applied to
+\(0<\eta<\varepsilon\), there is \(N_{\mathrm{fit}}\) such that for all
+\(n\ge N_{\mathrm{fit}}\),
+\[
+(K_\eta(n):\mathbb R)<x_\varepsilon(n). \tag{1}
+\]
+By \(\noderef{NaturalParameterApproximation}\), for all sufficiently large \(n\)
+the ceiling approximation gives
+\[
+x_\eta(n)\le (K_\eta(n):\mathbb R)<x_\eta(n)+1.
+\tag{2}
+\]
+Since \(x_\eta(n)\to\infty\) and \((x_\eta(n)+1)/n\to0\), increase the threshold
+once more to obtain \(N_{\mathrm{size}}\) such that for all
+\(n\ge N_{\mathrm{size}}\),
+\[
+0<K_\eta(n)<n. \tag{3}
+\]
+Indeed, for such \(n\) we have \(1\le x_\eta(n)\) and \(x_\eta(n)+1<n\), and
+(2) then forces \(1\le K_\eta(n)\) and \(K_\eta(n)<n\).  Hence
+\(\texttt{Nat.choose}(n,K_\eta(n))\) is positive and counts the
+\(K_\eta(n)\)-element subsets of the \(n\)-element vertex set \(\mathrm{Fin}(n)\).
+
+Now define the three regularity components, all at the \(\eta\)-scale:
+\[
+\mathcal D_n(\omega)=\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2),
+\]
+\[
+\mathcal M_n(\omega)=
+\noderef{TwoBiteMediumClosedPairsEvent}(k=K_\eta(n),\eta,\varepsilon_1,\omega),
+\]
+\[
+\mathcal S_n(\omega)=
+\noderef{TwoBiteSmallClosedPairsEvent}(k=K_\eta(n),\eta,\varepsilon_1,\omega).
+\]
+Let
+\[
+\mathcal R_n=\mathcal D_n\cap\mathcal M_n\cap\mathcal S_n.
+\]
+Unfolding \(\noderef{TwoBiteRegularityEvent}\), this is exactly the event
+\[
+\noderef{TwoBiteRegularityEvent}
+(k=K_\eta(n),\eta,\varepsilon_1,\varepsilon_2).
+\tag{4}
+\]
+
+We first prove that \(\mathcal R_n\) holds with high probability under the
+common law \(\mathbb P_n\).  Let \(\rho>0\).  The hierarchy
+\(\noderef{ParameterHierarchy}(\eta,\varepsilon_1,\varepsilon_2,n_0)\) supplies
+the positivity hypotheses needed by the three high-probability children.  Apply
+\(\noderef{FiberAndDegreeConcentration}\) with \(\varepsilon_2\), with
+\(\beta=1/2\), and with the function \(m(n)=M(n)\).  Its probability functional
+is exactly \(\mathbb P_n\) by (P), so
+\[
+\mathbb P_n(\mathcal D_n)\to1.
+\]
+Since complements under the finite two-bite probability law satisfy
+\(\mathbb P_n(E^c)=1-\mathbb P_n(E)\), choose \(N_D\) such that for
+\(n\ge N_D\),
+\[
+\mathbb P_n(\mathcal D_n^c)<\rho/6. \tag{5}
+\]
+
+Apply \(\noderef{MediumClosedPairsBound}\) with the scale parameter
+\(\eta\), the same \(\varepsilon_1,\varepsilon_2,n_0\), the same hierarchy
+\(\noderef{ParameterHierarchy}(\eta,\varepsilon_1,\varepsilon_2,n_0)\),
+\(\beta=1/2\), \(m(n)=M(n)\), and
+\[
+k(n)=K_\eta(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n).
+\]
+Again the probability functional is \(\mathbb P_n\), and the event in the child
+is exactly \(\mathcal M_n\).  Thus \(\mathbb P_n(\mathcal M_n)\to1\), so choose
+\(N_M\) such that for \(n\ge N_M\),
+\[
+\mathbb P_n(\mathcal M_n^c)<\rho/6. \tag{6}
+\]
+
+Apply \(\noderef{SmallClosedPairsBound}\) with the same data
+\(\eta,\varepsilon_1,\varepsilon_2,n_0\), \(\beta=1/2\), \(m(n)=M(n)\), and
+\[
+k(n)=K_\eta(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n).
+\]
+Its law is still \(\mathbb P_n\), and its event is exactly \(\mathcal S_n\).
+Choose \(N_S\) such that for \(n\ge N_S\),
+\[
+\mathbb P_n(\mathcal S_n^c)<\rho/6. \tag{7}
+\]
+For \(n\ge\max\{N_D,N_M,N_S\}\), the complement of the intersection satisfies
+\[
+\mathcal R_n^c
+=\mathcal D_n^c\cup\mathcal M_n^c\cup\mathcal S_n^c.
+\]
+The finite union bound for \(\mathbb P_n\), followed by (5), (6), and (7), gives
+\[
+\mathbb P_n(\mathcal R_n^c)
+\le
+\mathbb P_n(\mathcal D_n^c)+\mathbb P_n(\mathcal M_n^c)+
+\mathbb P_n(\mathcal S_n^c)
+<\frac{\rho}{2}. \tag{8}
+\]
+
+Set \(\delta=\rho/2\).  Apply
+\(\noderef{FixedSetIndependenceProbability}\) with this \(\delta>0\) and with
+the hierarchy
+\[
+\noderef{ParameterHierarchy}(\eta,\varepsilon_1,\varepsilon_2,n_0).
+\]
+This is the point where the fixed-set bound uses \(\eta\), not
+\(\varepsilon\).  The child gives a threshold \(N_{\mathrm{fix}}\ge n_0\) such
+that whenever \(n>N_{\mathrm{fix}}\), \(m=M(n)\), \(p=p(n)\), and
+\(I\subseteq\mathrm{Fin}(n)\) satisfies
+\[
+|I|=K_\eta(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),
+\]
+we have
+\[
+\mathbb P_n\!\left(
+I\text{ is independent in }\noderef{TwoBiteFinalGraph}(\omega)_0
+\text{ and }\mathcal R_n(\omega)\right)
+\le
+\delta\,\binom{n}{K_\eta(n)}^{-1}. \tag{9}
+\]
+Indeed, the regularity event in the child is
+\[
+\noderef{TwoBiteRegularityEvent}
+(k=|I|,\eta,\varepsilon_1,\varepsilon_2,\omega),
+\]
+and since \(|I|=K_\eta(n)\), this is the same event \(\mathcal R_n\) by (4).
+
+Let \(G_n(\omega)=\noderef{TwoBiteFinalGraph}(\omega)_0\), and let
+\(\mathcal B_n\) be the bad event that the desired final conclusion fails:
+\[
+\mathcal B_n(\omega)\Longleftrightarrow
+\neg\noderef{IndependenceNumberLess}(G_n(\omega),x_\varepsilon(n)).
+\]
+Unfolding \(\noderef{IndependenceNumberLess}\), if \(\mathcal B_n(\omega)\)
+holds, then there is a finite set \(J\subseteq\mathrm{Fin}(n)\) such that
+\[
+G_n(\omega)\text{ is independent on }J
+\qquad\text{and}\qquad
+x_\varepsilon(n)\le (|J|:\mathbb R). \tag{10}
+\]
+For \(n\ge N_{\mathrm{fit}}\), (1) and (10) give
+\[
+(K_\eta(n):\mathbb R)<x_\varepsilon(n)\le(|J|:\mathbb R).
+\]
+Thus \(K_\eta(n)\le |J|\) as natural numbers: if \(|J|<K_\eta(n)\), the
+order-preserving cast \(\mathbb N\to\mathbb R\) would give
+\((|J|:\mathbb R)<(K_\eta(n):\mathbb R)\), contradicting the display.
+For \(n\ge N_{\mathrm{size}}\), (3) also gives \(0<K_\eta(n)\).  Since
+\(K_\eta(n)\le |J|\), choose a \(K_\eta(n)\)-element subset
+\[
+I\subseteq J.
+\]
+For example, enumerate the finite set \(J\) and take any first
+\(K_\eta(n)\) elements.  The set \(I\) is independent in \(G_n(\omega)\):
+if an edge of \(G_n(\omega)\) had both endpoints in \(I\), then the same edge
+would have both endpoints in \(J\), contradicting the independence of \(J\).
+Therefore, on \(\mathcal B_n\cap\mathcal R_n\), there exists a
+\(K_\eta(n)\)-element subset \(I\) which is independent and for which
+\(\mathcal R_n\) holds.  Equivalently,
+\[
+\mathcal B_n\cap\mathcal R_n
+\subseteq
+\bigcup_{\substack{I\subseteq \mathrm{Fin}(n)\\ |I|=K_\eta(n)}}
+\left\{
+I\text{ is independent in }G_n
+\right\}\cap\mathcal R_n. \tag{11}
+\]
+
+For \(n\ge N_{\mathrm{size}}\), the indexing family in (11) has exactly
+\(\texttt{Nat.choose}(n,K_\eta(n))\) members, because \(0\le K_\eta(n)\le n\)
+and \(\mathrm{Fin}(n)\) has \(n\) vertices.  Applying the finite union bound to
+(11) and then using the fixed-set estimate (9) for every indexed set \(I\), we
+obtain
+\[
+\mathbb P_n(\mathcal B_n\cap\mathcal R_n)
+\le
+\sum_{\substack{I\subseteq \mathrm{Fin}(n)\\ |I|=K_\eta(n)}}
+\delta\,\binom{n}{K_\eta(n)}^{-1}.
+\]
+The sum has \(\binom{n}{K_\eta(n)}\) identical upper bounds, so
+\[
+\mathbb P_n(\mathcal B_n\cap\mathcal R_n)
+\le
+\binom{n}{K_\eta(n)}
+\delta\,\binom{n}{K_\eta(n)}^{-1}
+=\delta. \tag{12}
+\]
+The last equality uses the positivity of
+\(\texttt{Nat.choose}(n,K_\eta(n))\) from (3), so multiplication by its real
+reciprocal cancels.
+
+Finally,
+\[
+\mathcal B_n\subseteq \mathcal R_n^c\cup(\mathcal B_n\cap\mathcal R_n).
+\]
+For all \(n\) above the maximum of the thresholds already chosen, (8) and (12)
+give
+\[
+\mathbb P_n(\mathcal B_n)
+\le
+\mathbb P_n(\mathcal R_n^c)+\mathbb P_n(\mathcal B_n\cap\mathcal R_n)
+<\frac{\rho}{2}+\delta
+=\rho.
+\]
+Because \(\rho>0\) was arbitrary, \(\mathbb P_n(\mathcal B_n)\to0\).  Using the
+same complement identity under \(\mathbb P_n\), the probability of
+\[
+\noderef{IndependenceNumberLess}(G_n(\omega),x_\varepsilon(n))
+\]
+tends to \(1\).  Since \(x_\varepsilon(n)=(1+\varepsilon)
+\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\), and since the original probability
+law with \(\beta\) is the same law by \(\beta=1/2\), this is precisely the
+asserted \(\noderef{WithHighProbability}\) statement.
+\end{proof}

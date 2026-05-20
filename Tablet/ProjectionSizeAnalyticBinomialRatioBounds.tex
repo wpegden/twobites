@@ -1,0 +1,14 @@
+\begin{lemma}
+For any natural numbers \(n\) and \(k\) and any natural numbers \(N\) and \(k\) with \(1\le k\le N\), the binomial coefficients satisfy the bounds
+\[
+\binom nk \le \left(\frac{en}{k}\right)^k,
+\]
+and
+\[
+\left(\frac Nk\right)^k \le \binom Nk.
+\]
+\end{lemma}
+\begin{proof}
+The upper bound follows from \(\binom nk \le \frac{n^k}{k!}\) and \(k! \ge \frac{k^k}{e^k}\).
+The lower bound follows since \(\binom Nk = \prod_{i=0}^{k-1} \frac{N-i}{k-i}\) and \(\frac{N-i}{k-i} \ge \frac Nk\) for \(N\ge k\ge 1\).
+\end{proof}

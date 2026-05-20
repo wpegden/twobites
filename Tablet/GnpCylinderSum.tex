@@ -1,0 +1,17 @@
+\begin{helper}[GnpCylinderSum]
+\label{helper:GnpCylinderSum}
+Let \(m\) be a natural number and \(p \in \mathbb{R}\).
+Let \(r\) and \(s\) be distinct vertices in \(\operatorname{Fin}(m)\).
+Let \(S\) be a subset of \(\operatorname{Fin}(m)\) such that \(r \notin S\) and \(s \notin S\).
+The sum of the \(G(m,p)\) product law over graphs \(G\) where \(r\) and \(s\) are adjacent to all elements in \(S\) is exactly \((p^2)^{|S|}\):
+\[
+\sum_{G : \forall t \in S, G.Adj(r,t) \land G.Adj(s,t)} \noderef{GnpGraphWeight}(p, G) = (p^2)^{|S|}.
+\]
+\end{helper}
+
+\begin{proof}
+By \(\noderef{GnpGraphWeightSumOne}\), the graph weight is a product over all unordered pairs of vertices.
+Fixing the adjacency of \(r\) and \(s\) to all vertices in \(S\) forces exactly \(2 |S|\) edge coordinates to be present, because \(r\) and \(s\) are distinct and disjoint from \(S\).
+These forced edges contribute a factor of \(p^{2|S|} = (p^2)^{|S|}\).
+Summing over the remaining unforced edge coordinates yields \(1\).
+\end{proof}

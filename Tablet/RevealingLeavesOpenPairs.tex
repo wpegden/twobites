@@ -1,0 +1,273 @@
+\begin{lemma}
+Let \(I\subseteq [n]\), put \(k=|I|\), and write
+\[
+\ell_R=|\pi_R(I)|,\qquad \ell_B=|\pi_B(I)|.
+\]
+Assume \(\varepsilon_1\ge0\),
+\(\noderef{ParameterHierarchyEventualComparisons}(\varepsilon,\varepsilon_1,
+\varepsilon_2,n_0)\), \(n>n_0\), and
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Suppose also that the sample parameters are the rounded hierarchy parameters
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+If \(\noderef{FiberAndDegreeEvent}\) holds and the medium and small closed-pair
+events \(\noderef{TwoBiteMediumClosedPairsEvent}\) and
+\(\noderef{TwoBiteSmallClosedPairsEvent}\) hold at the same parameters, then
+after the staged revelation procedure at least
+\[
+f(\ell_R,\ell_B,k,p,n)-10\varepsilon_1k^2
+\]
+open projected pairs remain unrevealed, where
+\(f=\noderef{ProjectionOpenPairFunction}\).  Equivalently,
+\[
+f(\ell_R,\ell_B,k,p,n)-10\varepsilon_1k^2
+\le |\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)|.
+\]
+\end{lemma}
+\begin{proof}
+All sets in the proof are finite subsets of the same tagged projected-pair
+ambient set.  Put
+\[
+P_I=\noderef{TwoBiteProjectionPairSet}(\omega,I),
+\]
+and write \(C(e)\) for
+\(\noderef{TwoBiteProjectionPairClosed}(\omega,I,e)\),
+\(C_{\mathrm{sc}}(e)\) for
+\(\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e)\), \(R(e)\)
+for \(\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,e)\), and
+\(Q(e)\) for
+\(e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\).  With
+this notation the definitions give
+\[
+\noderef{TwoBiteUnclosedProjectedPairs}(\omega,I)
+  =\{e\in P_I:\neg C(e)\},
+\]
+\[
+\noderef{TwoBiteTouchedProjectedPairs}(\omega,\varepsilon,I)
+  =\{e\in P_I:R(e)\},
+\]
+and
+\[
+\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)
+  =\{e\in P_I:\neg C_{\mathrm{sc}}(e)\wedge\neg R(e)\wedge\neg Q(e)\}.
+\]
+Let
+\[
+U_I=\noderef{TwoBiteUnclosedProjectedPairs}(\omega,I),\qquad
+T_I=\noderef{TwoBiteTouchedProjectedPairs}(\omega,\varepsilon,I).
+\]
+By \(\noderef{TwoBiteSameColorClosedImpliesClosed}\), applied to this same
+sample \(\omega\), this same set \(I\), and an arbitrary tagged coordinate
+\(e\), same-color closedness in the one-sided \(C^+(I)\) sense implies full
+closedness in the \(X_x(I)\) sense.  In the notation above, the helper gives
+the pointwise implication
+\[
+C_{\mathrm{sc}}(e)\Longrightarrow C(e).
+\tag{A0}
+\]
+By the definition of \(\noderef{TwoBitePreTerminalRecordedPairs}\), a
+pre-terminal recorded coordinate has one of two forms.  In the incident
+coordinate branch, it is a same-color coordinate with one endpoint
+staged-revealed and the other endpoint projection-contained.  Unfolding
+\(\noderef{TwoBiteProjectionPairTouched}\) shows that such a coordinate is
+touched.  In the \(X_x(I)\)-pair branch, it is represented by a pair in
+\(X_x(I)\) for some staged-revealed vertex \(x\);
+unfolding \(\noderef{TwoBiteProjectionPairClosed}\) shows that it is closed.
+Thus
+\[
+Q(e)\Longrightarrow C(e)\vee R(e).
+\tag{A1}
+\]
+For a fixed \(e\), the ordinary propositional contrapositive of (A0) is
+\[
+\neg C(e)\Longrightarrow \neg C_{\mathrm{sc}}(e).
+\tag{A0'}
+\]
+\[
+\neg C(e)\wedge\neg R(e)\Longrightarrow \neg Q(e)
+\tag{A1'}
+\]
+is the propositional contrapositive of (A1).
+The definitions of \(\noderef{TwoBiteUnclosedProjectedPairs}\),
+\(\noderef{TwoBiteTouchedProjectedPairs}\), and
+\(\noderef{TwoBiteStagedOpenPairs}\), together with (A0') and (A1'), imply the inclusion
+\[
+U_I\setminus T_I
+\subseteq
+\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I).
+\tag{A}
+\]
+Indeed, if \(e\in U_I\setminus T_I\), then \(e\in U_I\) and \(e\notin T_I\).
+The first membership unfolds to \(e\in P_I\) and \(\neg C(e)\).  The
+contrapositive (A0') gives \(\neg C_{\mathrm{sc}}(e)\).  To get the touched
+exclusion, suppose for contradiction that
+\(R(e)\) held.  Since we already know
+\(e\in P_I\), the defining filter identity
+\(T_I=\{e\in P_I:R(e)\}\) would put \(e\) in \(T_I\), contradicting
+\(e\notin T_I\).  Hence \(\neg R(e)\).  Applying (A1') to
+\(\neg C(e)\) and \(\neg R(e)\) gives \(\neg Q(e)\).  Thus \(e\in P_I\),
+\(\neg C_{\mathrm{sc}}(e)\), \(\neg R(e)\), and \(\neg Q(e)\), which is
+exactly the defining membership condition for
+\(\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\).
+
+For the finite sets \(U_I\) and \(T_I\), the set \(U_I\) is the disjoint union
+of the elements outside \(T_I\) and the elements inside \(T_I\):
+\[
+U_I=(U_I\setminus T_I)\,\dot\cup\,(U_I\cap T_I).
+\]
+The two pieces are disjoint because no element can both lie in \(T_I\) and lie
+outside \(T_I\), and every element of \(U_I\) lies in exactly one of the two
+pieces.  Therefore the natural-cardinality equality is
+\[
+|U_I|=|U_I\setminus T_I|+|U_I\cap T_I|.
+\]
+The inclusion \(U_I\cap T_I\subseteq T_I\) gives
+\[
+|U_I\cap T_I|\le |T_I|.
+\]
+Adding \(|U_I\setminus T_I|\) to both sides gives
+\[
+|U_I\setminus T_I|+|U_I\cap T_I|
+\le |U_I\setminus T_I|+|T_I|.
+\]
+Using the preceding equality for the left-hand side,
+\[
+|U_I|\le |U_I\setminus T_I|+|T_I|.
+\]
+Cast this natural-cardinality inequality to real numbers.  Since the cast
+\(\mathbb N\to\mathbb R\) is order preserving and respects addition, we get
+\[
+(|U_I|:\mathbb R)
+\le (|U_I\setminus T_I|:\mathbb R)+(|T_I|:\mathbb R).
+\]
+Subtracting \((|T_I|:\mathbb R)\) from both sides gives the real-valued
+cardinality inequality used below:
+\[
+(|U_I|:\mathbb R)-(|T_I|:\mathbb R)
+\le (|U_I\setminus T_I|:\mathbb R).
+\tag{B}
+\]
+Combining the inclusion (A) with monotonicity of finite-set cardinality gives
+\[
+(|U_I\setminus T_I|:\mathbb R)
+\le
+\left(\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|:
+\mathbb R\right).
+\tag{C}
+\]
+Therefore, from (B) and (C),
+\[
+\left(\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|:
+\mathbb R\right)
+\ge (|U_I|:\mathbb R)-(|T_I|:\mathbb R).
+\]
+
+Now apply \(\noderef{ProjectionClosedPairLossBound}\) with exactly the same
+objects as in the present lemma: the sample is \(\omega\), the vertex set is
+\(I\), the parameters are \(\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), the
+ambient sample has the same \(n,m,p\), and the rounded identities supplied to
+the child are
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),\qquad
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+These are precisely the rounded \(m\), rounded \(p\), and
+\(k=|I|\) hypotheses of the active statement.  The remaining hypotheses of the
+child are also present verbatim: \(0\le\varepsilon_1\),
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\),
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\), and the medium and
+small closed-pair events with the child theorem's explicit parameter
+\(k:=|I|\):
+\[
+\noderef{TwoBiteMediumClosedPairsEvent}(\varepsilon,\varepsilon_1,\omega)
+\text{ at } k=|I|,
+\qquad
+\noderef{TwoBiteSmallClosedPairsEvent}(\varepsilon,\varepsilon_1,\omega)
+\text{ at } k=|I|.
+\]
+The conclusion of the child, with this same \(\omega\) and \(I\), is
+\[
+f\!\left(((I.image(\pi_R^\omega)).card:\mathbb R),
+((I.image(\pi_B^\omega)).card:\mathbb R),
+(|I|:\mathbb R),p,(n:\mathbb R)\right)
+-9\varepsilon_1(|I|:\mathbb R)^2
+\le (|U_I|:\mathbb R).
+\]
+By the definitions fixed at the start of the statement,
+\[
+\ell_R=((I.image(\pi_R^\omega)).card:\mathbb R),\qquad
+\ell_B=((I.image(\pi_B^\omega)).card:\mathbb R),\qquad
+k=(|I|:\mathbb R).
+\]
+Thus the displayed child conclusion is exactly
+\[
+f(\ell_R,\ell_B,k,p,n)-9\varepsilon_1k^2\le (|U_I|:\mathbb R).
+\tag{D}
+\]
+
+Apply \(\noderef{StagedTouchedPairsBound}\) with the same sample \(\omega\),
+the same set \(I\), the same parameters
+\(\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), and the same scale identity
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+This child does not require the rounded \(m\) and \(p\) identities, so those
+ambient identities are simply unchanged and unused in this application.  Its
+required hypotheses \(0\le\varepsilon_1\), the same eventual-comparisons
+package, \(n>n_0\), and
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\) are exactly among the
+active assumptions.  Its conclusion is stated for
+\(\noderef{TwoBiteTouchedProjectedPairs}(\omega,\varepsilon,I)\), which is
+the set \(T_I\) defined above, so it gives
+\[
+(|T_I|:\mathbb R)\le \varepsilon_1k^2.
+\tag{E}
+\]
+
+Combine the finite-set inequality with the two child estimates as follows.
+From (B) and (C),
+\[
+\left(\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|:
+\mathbb R\right)
+\ge (|U_I|:\mathbb R)-(|T_I|:\mathbb R).
+\tag{F}
+\]
+Inequality (D) says that \((|U_I|:\mathbb R)\) is at least
+\[
+f(\ell_R,\ell_B,k,p,n)-9\varepsilon_1k^2,
+\]
+and (E) says that subtracting \((|T_I|:\mathbb R)\) loses at most
+\(\varepsilon_1k^2\).  Therefore
+\[
+(|U_I|:\mathbb R)-(|T_I|:\mathbb R)
+\ge \bigl(f(\ell_R,\ell_B,k,p,n)-9\varepsilon_1k^2\bigr)
+    -\varepsilon_1k^2.
+\tag{G}
+\]
+Combining (F) and (G) gives
+\[
+\left(\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|:
+\mathbb R\right)
+\ge
+\bigl(f(\ell_R,\ell_B,k,p,n)-9\varepsilon_1k^2\bigr)-\varepsilon_1k^2.
+\]
+The right-hand side is
+\[
+f(\ell_R,\ell_B,k,p,n)-10\varepsilon_1k^2,
+\]
+because \(9\varepsilon_1k^2+\varepsilon_1k^2=10\varepsilon_1k^2\).  Thus
+\[
+f(\ell_R,\ell_B,k,p,n)-10\varepsilon_1k^2
+\le
+\left(\left|\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\right|:
+\mathbb R\right).
+\]
+This is the asserted lower bound.
+\end{proof}

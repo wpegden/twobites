@@ -1,0 +1,73 @@
+\begin{lemma}
+For every \(n\) for which the real reduced count and real independent-set scale
+are nonnegative,
+\[
+M(n)\le \noderef{TwoBiteReducedVertexCount}(n)<M(n)+1
+\]
+and
+\[
+\noderef{TwoBiteIndependenceScale}(\kappa,n)
+\le K_\kappa(n)
+<\noderef{TwoBiteIndependenceScale}(\kappa,n)+1,
+\]
+where \(M=\noderef{TwoBiteNaturalReducedVertexCount}\) and
+\(K_\kappa=\noderef{TwoBiteNaturalIndependenceScale}\).
+\end{lemma}
+\begin{proof}
+Fix \(\kappa\) and \(n\), and assume
+\[
+0\le \noderef{TwoBiteReducedVertexCount}(n),
+\qquad
+0\le \noderef{TwoBiteIndependenceScale}(\kappa,n).
+\]
+Put
+\[
+m_R=\noderef{TwoBiteReducedVertexCount}(n),\qquad
+k_R=\noderef{TwoBiteIndependenceScale}(\kappa,n),
+\]
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+K_\kappa(n)=\noderef{TwoBiteNaturalIndependenceScale}(\kappa,n).
+\]
+
+Unfolding \(\noderef{TwoBiteNaturalReducedVertexCount}\), the integer
+\(M(n)\) is \(\lfloor m_R\rfloor\), the natural floor of \(m_R\).  The first
+nonnegativity hypothesis says \(m_R\ge0\), so the natural floor is governed by
+the usual real floor inequalities:
+\[
+\lfloor m_R\rfloor\le m_R
+\qquad\text{and}\qquad
+m_R<\lfloor m_R\rfloor+1.
+\]
+Substituting \(M(n)=\lfloor m_R\rfloor\) gives the first two conjuncts, in the
+same order as the Lean statement:
+\[
+(M(n):\mathbb R)\le m_R
+\]
+and
+\[
+m_R<(M(n):\mathbb R)+1.
+\]
+
+Unfolding \(\noderef{TwoBiteNaturalIndependenceScale}\), the integer
+\(K_\kappa(n)\) is \(\lceil k_R\rceil\), the natural ceiling of \(k_R\).  The
+second nonnegativity hypothesis says \(k_R\ge0\), so the natural ceiling
+inequalities apply in real-valued form:
+\[
+k_R\le \lceil k_R\rceil
+\qquad\text{and}\qquad
+\lceil k_R\rceil<k_R+1.
+\]
+Substituting \(K_\kappa(n)=\lceil k_R\rceil\) gives the remaining two conjuncts,
+again in the order of the Lean statement:
+\[
+k_R\le (K_\kappa(n):\mathbb R)
+\]
+and
+\[
+(K_\kappa(n):\mathbb R)<k_R+1.
+\]
+Replacing \(m_R\) and \(k_R\) by their definitions yields exactly the four
+claimed inequalities.
+\end{proof}

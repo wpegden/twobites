@@ -1,0 +1,8 @@
+\begin{helper}
+Let \(N\) be a natural number, and let \(u, v \in \mathbb{R}^{\operatorname{Fin}(N)}\) be two vectors that are both nonincreasing. If \(u\) is a permutation of \(v\), then \(u = v\).
+\end{helper}
+\begin{proof}
+Both \(u\) and \(v\) are nonincreasing permutations of the same multiset of entries. We claim they agree coordinate by coordinate. If not, let \(r\) be the first position where they differ.
+If \(u_r < v_r\), put \(t = v_r\). Since \(v\) is nonincreasing, at least the first \(r+1\) entries of \(v\) are \(\ge t\). Since \(u\) is nonincreasing and \(u_r < t\), at most the first \(r\) entries of \(u\) are \(\ge t\). This contradicts the equality of multisets.
+The case \(u_r > v_r\) is symmetric. Therefore \(u = v\).
+\end{proof}

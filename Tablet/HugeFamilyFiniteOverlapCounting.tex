@@ -1,0 +1,77 @@
+\begin{helper}
+Let \(H\) be a finite index set and let \(A_x\subseteq I\) be finite sets
+indexed by \(x\in H\), with \(|I|=k\).  Suppose that, for every \(x\in H\),
+\[
+t<|A_x|\le k,
+\]
+and that every two distinct \(x,y\in H\) satisfy
+\[
+|A_x\cap A_y|\le C.
+\]
+Assume \(t>0\), \(C\ge0\), and
+\[
+\binom{2k/t+1}{2}_{\mathbb R}C\le\frac12 k.
+\]
+Then
+\[
+\sum_{x\in H}|A_x|\le2k,\qquad |H|\le\frac{2k}{t}.
+\]
+\end{helper}
+\begin{proof}
+Put \(a=2k/t\).  Since \(k\ge0\) and \(t>0\), we have \(a\ge0\).  We first
+prove \(|H|\le a\).  Suppose instead that \(|H|>a\).  Let
+\[
+r=\max\{1,\lceil a\rceil\}.
+\]
+Then \(1\le r\), \(a\le r\le a+1\), and \(r\le |H|\).  Choose a subset
+\(B\subseteq H\) with \(|B|=r\).  Since each \(A_x\) with \(x\in B\) has
+cardinality strictly greater than \(t\), summing the strict inequalities gives
+\[
+\sum_{x\in B}|A_x|>rt\ge at=2k.
+\]
+
+By \(\noderef{HugeFamilyFiniteUnionLowerBound}\),
+\[
+\left|\bigcup_{x\in B}A_x\right|
+\ge
+\sum_{x\in B}|A_x|-\binom r2_{\mathbb R}C.
+\]
+The function \(u\mapsto \binom u2_{\mathbb R}=u(u-1)/2\) is increasing on
+\([1,\infty)\): for \(1\le u\le v\),
+\[
+\binom v2_{\mathbb R}-\binom u2_{\mathbb R}
+=\frac{(v-u)(u+v-1)}2\ge0.
+\]
+Because \(1\le r\le a+1\) and \(C\ge0\),
+\[
+\binom r2_{\mathbb R}C
+\le \binom{a+1}{2}_{\mathbb R}C
+\le \frac12 k.
+\]
+Thus
+\[
+\left|\bigcup_{x\in B}A_x\right|>\frac32 k.
+\]
+But every \(A_x\) is contained in \(I\), so the union is contained in \(I\)
+and has cardinality at most \(k\).  This contradicts \(k\ge0\).  Therefore
+\(|H|\le a=2k/t\).
+
+Now apply \(\noderef{HugeFamilyFiniteUnionLowerBound}\) to \(B=H\).  Since
+\(|H|\le a\), the same monotonicity argument gives
+\[
+\binom{|H|}{2}_{\mathbb R}C\le \frac12 k.
+\]
+The union over \(H\) is contained in \(I\), so its cardinality is at most
+\(k\).  Rearranging the lower bound
+\[
+\left|\bigcup_{x\in H}A_x\right|
+\ge
+\sum_{x\in H}|A_x|-\binom{|H|}{2}_{\mathbb R}C
+\]
+therefore yields
+\[
+\sum_{x\in H}|A_x|
+\le k+\binom{|H|}{2}_{\mathbb R}C
+\le \frac32 k\le2k.
+\]
+\end{proof}

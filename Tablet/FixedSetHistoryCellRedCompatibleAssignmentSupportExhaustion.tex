@@ -1,0 +1,65 @@
+\begin{helper}
+Fix a history cell, a fixed blue support label \(B\), and a fixed red label
+\(J\).  Let \(\mathcal T\) be the branch-label type, let \(\mathcal P\) be
+the transcript family, and let
+\[
+\mathsf{Comp}(A,\beta,\tau)
+\]
+mean that the complete terminal assignment \(A\subseteq U\) is compatible
+with the realized fixed-\((B,J)\) cell \((\beta,\tau)\).
+
+Assume that compatibility is witnessed by an actual reconstructed sample
+\(\omega_A\): for every compatible realized triple
+\((A,\beta,\tau)\), the sample \(\omega_A\) belongs to the fixed-count target
+and lies in the cell \(G_{B,J,\beta,\tau}\).  Assume further that the cell
+and support-label construction identify the fixed labels with the present
+staged-open supports of \(\omega_A\):
+\[
+B=
+\{e\in\operatorname{StagedOpen}(\omega_A,\varepsilon,I):
+  X_e(\omega_A)=1,\ e\text{ is blue}\},
+\]
+\[
+R_{\beta,J}=
+\{e\in\operatorname{StagedOpen}(\omega_A,\varepsilon,I):
+  X_e(\omega_A)=1,\ e\text{ is red}\}.
+\]
+Finally assume that if \(e\in O_\beta\) is an open candidate and \(e\in A\),
+then \(e\) is staged-open and present in the reconstructed sample
+\(\omega_A\).
+
+Then fixed-support exhaustion holds for compatible complete assignments: if
+\(\mathsf{Comp}(A,\beta,\tau)\), \(e\in O_\beta\), and \(e\in A\), then
+\[
+e\in B\cup R_{\beta,J}.
+\]
+\end{helper}
+\begin{proof}
+Fix a compatible realized triple \((A,\beta,\tau)\) and an open candidate
+\(e\in O_\beta\) with \(e\in A\).  By the reconstruction hypothesis there is
+an associated target sample \(\omega_A\) in the fixed
+\((B,J,\beta,\tau)\) cell.  The branch/transcript cell construction supplies
+the two support identities displayed in the statement: \(B\) is the blue
+present staged-open support of \(\omega_A\), and \(R_{\beta,J}\) is the red
+present staged-open support of \(\omega_A\).  These identities are the
+support-label information from
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\) and
+\(\noderef{FixedSetHistoryCellRedSupportLabels}\), applied to the
+reconstructed sample rather than only to an original target sample.
+
+The open-candidate realization hypothesis says that \(e\) is staged-open and
+present in \(\omega_A\).  There are two color cases.  If \(e\) is a blue
+coordinate, then by the defining identity for \(B\), the staged-open and
+present facts place \(e\) in \(B\).  If \(e\) is a red coordinate, then the
+same facts and the defining identity for \(R_{\beta,J}\) place \(e\) in
+\(R_{\beta,J}\).  In either case,
+\[
+e\in B\cup R_{\beta,J}.
+\]
+
+This proves the support-exhaustion input needed by
+\(\noderef{FixedSetHistoryCellRedSelectedAbsenceSiblingPruning}\) from a
+compatible assignment only after constructing the corresponding target cell
+sample.  Thus the argument does not use support labels for unrelated
+nonempty cells as if they applied to every terminal cylinder assignment.
+\end{proof}

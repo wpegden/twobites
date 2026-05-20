@@ -1,0 +1,90 @@
+\begin{helper}
+For every two-bite sample \(\omega\), vertex set \(I\), and tagged projected
+coordinate \(e\), same-color closedness in the one-sided
+\(C^+(I)\) sense implies full closedness:
+\[
+\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e)
+\Longrightarrow
+\noderef{TwoBiteProjectionPairClosed}(\omega,I,e).
+\]
+\end{helper}
+\begin{proof}
+We prove the red and blue tag cases separately.
+
+Suppose first that \(e=\operatorname{red}(q)\) and that
+\(\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e)\) holds.  By the
+definition of \(\noderef{TwoBiteProjectionPairSameColorClosed}\), there is a
+red base vertex \(r\) such that
+\[
+q\in
+\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteXPlus}(\omega,I,\operatorname{red}(r)))\bigr).
+\tag{1}
+\]
+Unfolding \(\noderef{TwoBiteBasePairs}\), (1) says that both endpoints of the
+ordered base pair \(q\) lie in the red projection of
+\(\noderef{TwoBiteXPlus}(\omega,I,\operatorname{red}(r))\), with the required
+increasing endpoint order.  The endpoint-order part of (1) is unchanged in
+the full-closed predicate, so only the endpoint membership has to be enlarged.
+
+Take an arbitrary vertex
+\[
+v\in\noderef{TwoBiteXPlus}(\omega,I,\operatorname{red}(r)).
+\]
+By the definition of \(\noderef{TwoBiteXPlus}\), \(v\in I\) and
+\[
+v\in\noderef{TwoBiteLiftedPositiveNeighborhood}(\omega,\operatorname{red}(r)).
+\]
+Unfolding \(\noderef{TwoBiteLiftedPositiveNeighborhood}\) in the red case,
+this means
+\[
+r<\pi_R^\omega(v)
+\quad\text{and}\quad
+\noderef{TwoBiteRedGraph}(\omega)\text{ contains the edge }
+\{r,\pi_R^\omega(v)\}.
+\]
+The second conjunct is exactly the red-case membership condition for
+\[
+v\in\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{red}(r)).
+\]
+Together with \(v\in I\), this gives
+\[
+v\in\noderef{TwoBiteX}(\omega,I,\operatorname{red}(r)).
+\]
+Therefore
+\[
+\noderef{TwoBiteXPlus}(\omega,I,\operatorname{red}(r))
+\subseteq
+\noderef{TwoBiteX}(\omega,I,\operatorname{red}(r)),
+\]
+and applying the red projection preserves this containment.  Hence each
+endpoint of \(q\) which lies in the projected \(X_r^+(I)\) set in (1) also
+lies in the projected \(X_r(I)\) set.  Keeping the same endpoint order, (1)
+implies
+\[
+q\in
+\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}(\omega,I,\operatorname{red}(r)))\bigr).
+\]
+This is precisely the red case of
+\(\noderef{TwoBiteProjectionPairClosed}(\omega,I,e)\), witnessed by the same
+base vertex \(\operatorname{red}(r)\).
+
+The blue case is identical with the colors interchanged.  If
+\(e=\operatorname{blue}(q)\), the one-sided same-color closed predicate gives
+a blue vertex \(b\) and membership of \(q\) in the blue projected pairs of
+\(\noderef{TwoBiteXPlus}(\omega,I,\operatorname{blue}(b))\).  Membership in
+the positive blue lifted neighborhood consists of the larger-index condition
+\(b<\pi_B^\omega(v)\) together with the blue base adjacency condition.  Dropping
+the larger-index condition leaves exactly membership in the full blue lifted
+neighborhood, so
+\[
+\noderef{TwoBiteXPlus}(\omega,I,\operatorname{blue}(b))
+\subseteq
+\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b)).
+\]
+The same projection and endpoint-order argument shows that \(q\) is a blue
+projected pair inside \(X_b(I)\).  Thus
+\(\noderef{TwoBiteProjectionPairClosed}(\omega,I,e)\) holds in the blue case
+as well.
+\end{proof}

@@ -1,0 +1,20 @@
+\begin{helper}
+Let \(I\) be a finite set of size \(k\), let \(W\subseteq I\), and let
+\(\pi\) be a map from the ambient vertex set to a finite projection set.  Then
+\[
+|W|-|\pi(W)|\le k-|\pi(I)|.
+\]
+\end{helper}
+\begin{proof}
+Every point of \(\pi(I)\) is either the projection of a point of \(W\), or the
+projection of a point of \(I\setminus W\).  Hence
+\[
+|\pi(I)|\le |\pi(W)|+|\pi(I\setminus W)|
+  \le |\pi(W)|+|I\setminus W|.
+\]
+Since \(W\subseteq I\), we have \(|I\setminus W|=|I|-|W|=k-|W|\).  Substituting
+this into the preceding inequality and rearranging gives
+\[
+|W|-|\pi(W)|\le k-|\pi(I)|.
+\]
+\end{proof}

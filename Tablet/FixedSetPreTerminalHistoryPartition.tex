@@ -1,0 +1,346 @@
+\begin{helper}
+Fix \(I\subseteq[n]\), integers \(k,\ell_R,\ell_B\), and parameters
+\(m,p,\varepsilon\).  On the projection-size event
+\[
+S=\{\omega:
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)\}
+\]
+there is a finite disjoint partition by pre-terminal exposure histories.  For
+each history \(h\) there is a representative sample \(\omega_h\) and a
+recorded coordinate set \(R_h\) such that
+\[
+\omega\in C_h
+\quad\Longleftrightarrow\quad
+\omega\hbox{ has the same injection as }\omega_h
+\hbox{ and agrees with }\omega_h\hbox{ on every coordinate of }R_h.
+\tag{1}
+\]
+The recorded set \(R_h\) is the exact set of red and blue base-edge
+coordinates queried before the terminal coordinate scan begins.  Equivalently,
+for every \(\omega\in C_h\),
+\[
+e\in R_h
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\tag{1'}
+\]
+Agreement on the injection and on \(R_h\) replays every
+\(\noderef{TwoBiteStageRevealedVertex}\) predicate and hence every
+\(\noderef{TwoBiteProjectionPairTouched}\) predicate.  Finally, if
+\(\omega\in C_h\) and
+\[
+e\in\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I),
+\]
+then \(e\) is an increasing non-loop terminal coordinate in
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\) and \(e\notin R_h\).
+\end{helper}
+\begin{proof}
+Fix deterministic orders of the finite base-vertex set
+\(\noderef{TwoBiteBaseVertex}(m)\), of ordered pairs of base vertices, and of
+the terminal coordinate universe
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\).  When two same-color base
+vertices \(x,y\) are distinct, write \([x,y]\) for the corresponding tagged
+coordinate with the two endpoints put in increasing order; if the colors are
+different or \(x=y\), there is no such terminal coordinate.
+
+We define a canonical pre-terminal replay for a sample \(\omega\).  The replay
+keeps a finite recorded set \(R\) and, for every \(e\in R\), the truth value
+\(\noderef{TwoBiteEdgeCoordinateValue}(\omega,e)\).  The order of the replay
+is fixed once and for all as follows.
+
+First, the replay reads only the injection \(\omega.2.2\).  From the injection
+it computes \(\pi_R^\omega\), \(\pi_B^\omega\), every
+\(\noderef{TwoBiteProjectionContains}(\omega,I,x)\), and every fiber
+\(\noderef{TwoBiteBaseFiber}(\omega,x)\cap I\).  Hence it computes
+\(\noderef{TwoBiteStageF1}(\omega,I,x)\) for every \(x\), since
+\(\noderef{TwoBiteStageF1}\) is precisely projection containment together with
+the numerical fiber-size test.
+
+Second, the replay computes \(F_2\) by scanning the ordered pairs \((x,y)\).
+If \(x\) is not projection-contained, then
+\(\noderef{TwoBiteStageF2}(\omega,\varepsilon,I,x)\) is false by definition,
+so no adjacency value is needed for this \(x\).  If \(x\) is
+projection-contained and \(y\notin F_1\), then \(y\) cannot contribute to the
+defining \(F_2\)-count.  If \(x\) and \(y\) have different colors, or if
+\(x=y\), the value of \(\noderef{TwoBiteBaseAdj}(\omega,x,y)\) is false by
+the definition of \(\noderef{TwoBiteBaseAdj}\) and by simplicity of the base
+graphs.  The only coordinates read in this pass are therefore the distinct
+same-color pairs with \(x\) projection-contained and \(y\in F_1\).  For each
+such pair, before reading the edge value, the replay inserts \([x,y]\) into
+\(R\), unless it was already inserted, and then reads
+\(\noderef{TwoBiteEdgeCoordinateValue}(\omega,[x,y])\).
+
+This insertion is non-circular.  At this point \(F_1\) and projection
+containment have already been computed from the injection.  Since
+\(y\in F_1\), the definition of
+\(\noderef{TwoBiteStageRevealedVertex}\) already implies that \(y\) is
+staged-revealed, independently of the yet-to-be-computed \(F_2\) table.  Thus
+\([x,y]\) satisfies the incident-coordinate branch of
+\(\noderef{TwoBitePreTerminalRecordedPairs}\): one endpoint, namely \(y\), is
+staged-revealed and the other endpoint, namely \(x\), is
+projection-contained.  The early recording of \([x,y]\) is exactly the
+paper's pre-terminal query of an adjacency to an \(F_1\)-vertex; later
+incident-coordinate recording may encounter the same coordinate again but
+does not change \(R\).  After the ordered scan over \(y\), the replay knows
+the finite set
+\[
+\{y:\noderef{TwoBiteStageF1}(\omega,I,y)
+       \text{ and }\noderef{TwoBiteBaseAdj}(\omega,x,y)\}
+\]
+for every projection-contained \(x\), and therefore it knows
+\(\noderef{TwoBiteStageF2}(\omega,\varepsilon,I,x)\) for every \(x\).
+
+Third, the replay computes the staged-revealed predicate
+\[
+\noderef{TwoBiteStageRevealedVertex}(\omega,\varepsilon,I,x)
+\Longleftrightarrow
+\neg\noderef{TwoBiteProjectionContains}(\omega,I,x)
+\vee\noderef{TwoBiteStageF1}(\omega,I,x)
+\vee\noderef{TwoBiteStageF2}(\omega,\varepsilon,I,x).
+\tag{2}
+\]
+Fourth, for every staged-revealed vertex \(x\), the paper reveals all
+neighbors and non-neighbors of \(x\) inside the appropriate projection of
+\(I\).  In tablet terms, for every same-color projection-contained endpoint
+\(z\) with \(z\ne x\), the replay inserts the incident coordinate \([x,z]\)
+and stores its edge value.  If \(z=x\), the relevant same-color adjacency is a
+loop and is false in the simple base graph, so no terminal coordinate exists
+or is queried.  The inserted coordinates are exactly the incident-coordinate
+alternatives in \(\noderef{TwoBitePreTerminalRecordedPairs}\).
+
+Fifth, with those incident values known, \(X_x(I)\) is determined for each
+staged-revealed \(x\).  Indeed, for \(u\in I\), membership
+\[
+u\in\noderef{TwoBiteX}(\omega,I,x)
+\]
+means, by the definition of \(\noderef{TwoBiteX}\) and
+\(\noderef{TwoBiteLiftedNeighborhood}\), that \(u\in I\) and the same-color
+base edge from \(x\) to the projection of \(u\) is present.  The projection of
+each \(u\in I\) is projection-contained.  If this projected endpoint is
+distinct from \(x\) and has the same color, the required incident coordinate
+was recorded in the preceding paragraph; if it is a loop or has the opposite
+color, the relevant base adjacency is false by definition.  The replay can
+therefore compute the red and blue projected images of \(X_x(I)\), then scan
+the terminal coordinate universe and record exactly the red coordinates
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}(\omega,I,x))\bigr)
+\]
+and the blue coordinates
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_B^\omega(\noderef{TwoBiteX}(\omega,I,x))\bigr)
+\]
+for staged-revealed \(x\).  These are exactly the \(X_x(I)\)-pair alternatives
+in \(\noderef{TwoBitePreTerminalRecordedPairs}\).
+
+Consequently, for every sample \(\omega\), the final output \(R(\omega)\) of
+this replay satisfies
+\[
+e\in R(\omega)
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\tag{3}
+\]
+The forward implication follows from the two ways the replay records a
+coordinate: incident coordinates satisfy the first branch of
+\(\noderef{TwoBitePreTerminalRecordedPairs}\), and \(X_x(I)\)-pair coordinates
+satisfy the second branch.  The reverse implication follows by the same case
+split.  An incident coordinate in the first branch is recorded when the replay
+handles its staged-revealed endpoint.  A coordinate in the second branch is
+recorded when the replay scans pairs in \(X_x(I)\) for the witnessing
+staged-revealed vertex \(x\).
+
+Define the transcript of \(\omega\) to be
+\[
+\tau(\omega)=
+\bigl(\omega.2.2,\ R(\omega),\
+(\noderef{TwoBiteEdgeCoordinateValue}(\omega,e))_{e\in R(\omega)}\bigr).
+\tag{4}
+\]
+Only finitely many transcripts occur: there are finitely many injections,
+finitely many subsets of
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\), and finitely many truth
+tables on each subset.  Let \(H\) be the finite set of transcripts realized by
+samples in \(S\).  For each \(h\in H\), choose a representative
+\(\omega_h\in S\) with \(\tau(\omega_h)=h\), set \(R_h=R(\omega_h)\), and
+define
+\[
+C_h=\{\omega:\omega.2.2=\omega_h.2.2
+\text{ and }
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,e)
+\Longleftrightarrow
+\noderef{TwoBiteEdgeCoordinateValue}(\omega_h,e)
+\text{ for every }e\in R_h\}.
+\tag{5}
+\]
+This is the cylinder description (1).
+
+We next record the deterministic uniqueness property of the replay.  Suppose
+two samples \(\omega_0,\omega_1\) have the same injection and that
+\(\omega_1\) agrees with \(\omega_0\) on every coordinate of \(R(\omega_0)\),
+with the same truth value
+\(\noderef{TwoBiteEdgeCoordinateValue}(-,e)\).  Running the replay on
+\(\omega_1\) makes the same decisions as running it on \(\omega_0\), outputs
+the same recorded set, and records the same truth table.  The proof is an
+induction over the ordered replay steps just defined.
+
+The injection step is identical by assumption.  Projection containment,
+fibers, and \(F_1\) are functions only of that common injection, so the two
+runs have the same projection-contained vertices and the same \(F_1\)-table.
+During the \(F_2\)-pass, the two runs therefore consider the same ordered
+candidate pairs.  Opposite-color and loop candidates are false in both runs
+without reading a coordinate.  For a distinct same-color candidate with
+\(x\) projection-contained and \(y\in F_1\), the first run inserts \([x,y]\).
+As explained above, \(y\in F_1\) makes \(y\) staged-revealed by (2), while
+\(x\) is projection-contained; hence \([x,y]\) satisfies the
+incident-coordinate branch of
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega_0,\varepsilon,I)\).  By
+(3), this coordinate is in \(R(\omega_0)\).  The assumed agreement on
+\(R(\omega_0)\) therefore gives the same edge value for \([x,y]\) in the two
+runs.  Thus every \(F_2\)-adjacency contribution is the same, and the two
+\(F_2\)-counts agree.  This argument uses only the already-known \(F_1\) table
+to place the queried coordinate in \(R(\omega_0)\); it does not assume the
+\(F_2\)-status of \(x\) in advance.
+
+With projection containment, \(F_1\), and \(F_2\) agreeing, equation (2) gives
+the same staged-revealed vertices in the two runs.  The incident-coordinate
+completion step is then the same: it scans the same staged-revealed vertices
+and the same projection-contained same-color endpoints, and every coordinate
+it reads is an incident branch coordinate for \(\omega_0\), hence lies in
+\(R(\omega_0)\) by (3), so the stored truth values agree.  Finally consider
+the \(X_x(I)\)-pair step.  For a staged-revealed \(x\) and \(u\in I\), the
+projection of \(u\) is determined by the common injection.  If the relevant
+base adjacency is a non-loop same-color adjacency, its coordinate was inserted
+in the incident-coordinate completion step for \(\omega_0\), and therefore
+belongs to \(R(\omega_0)\); agreement on \(R(\omega_0)\) gives the same
+adjacency value.  Loop and opposite-color cases are false in both runs by the
+definitions.  Hence the two runs compute the same sets
+\(\noderef{TwoBiteX}(-,I,x)\), the same red and blue projected images, and the
+same terminal \(X_x(I)\)-pair coordinates.  The replay therefore has a unique
+output determined by the common injection and the truth table on the first
+run's recorded set.
+
+The cells cover \(S\).  If \(\omega\in S\), then
+\(\tau(\omega)\in H\), and the representative of that transcript has the same
+injection, the same recorded set, and the same recorded truth table as
+\(\omega\); hence \(\omega\in C_{\tau(\omega)}\).  Conversely, if
+\(\omega\in C_h\), then \(\omega\) has the same injection as
+\(\omega_h\in S\).  The event
+\(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,-)\) depends only on
+\(|I|\) and on the two projection images of \(I\), and those are fixed by the
+injection.  Therefore \(\omega\in S\).  This proves both the covering
+equivalence and the containment of each cell in \(S\).
+
+The cells are disjoint.  If \(\omega\in C_h\cap C_{h'}\), then
+\(\omega_h\), \(\omega\), and \(\omega_{h'}\) all have the same injection.
+The sample \(\omega\) agrees with \(\omega_h\) on \(R_h\) and with
+\(\omega_{h'}\) on \(R_{h'}\).  Since \(R_h=R(\omega_h)\), deterministic
+replay uniqueness applied first to \((\omega_h,\omega)\) says that the replay
+of \(\omega\) has the same recorded set and the same recorded truth table as
+the replay of \(\omega_h\); therefore \(\tau(\omega)=h\).  Applying the same
+argument to \((\omega_{h'},\omega)\) gives \(\tau(\omega)=h'\).  A
+deterministic run has only one transcript, so \(h=h'\).  Hence distinct cells
+are disjoint.  Also
+\(\omega_h\in C_h\) for every \(h\), because a representative has the same
+injection as itself and agrees with itself on every coordinate of \(R_h\).
+
+The exact-recorded equivalence (1') follows from the same uniqueness argument.
+Let \(\omega\in C_h\).  Since \(C_h\) gives the same injection as \(\omega_h\)
+and the same truth table on \(R_h=R(\omega_h)\), deterministic replay
+uniqueness applied to \((\omega_h,\omega)\) gives
+\[
+R(\omega)=R(\omega_h)=R_h.
+\tag{6a}
+\]
+For the first inclusion, if \(e\in R_h\), then (6a) gives
+\(e\in R(\omega)\), and (3) gives
+\[
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\]
+For the reverse inclusion, if
+\[
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I),
+\]
+then (3) gives \(e\in R(\omega)\), and (6a) gives \(e\in R_h\).  Thus, for
+every tagged coordinate \(e\),
+\[
+e\in R_h
+\Longleftrightarrow
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\tag{6}
+\]
+
+Now prove the replay-preservation clause.  Let \(\omega\in C_h\), and let
+\(\omega'\) have the same injection as \(\omega\) and the same edge values as
+\(\omega\) on every coordinate of \(R_h\).  Projection containment agrees
+between \(\omega\) and \(\omega'\), because
+\(\noderef{TwoBiteProjectionContains}\) uses only the red and blue projections
+of the common injection.  The fibers
+\(\noderef{TwoBiteBaseFiber}(-,x)\cap I\) also agree, because the fibers are
+defined by those same projections.  Therefore every
+\(\noderef{TwoBiteStageF1}\) predicate agrees.
+
+Fix \(x\).  If \(x\) is not projection-contained, then
+\(\noderef{TwoBiteStageF2}(-,\varepsilon,I,x)\) is false for both samples.  If
+\(x\) is projection-contained, the possible \(y\)'s counted by \(F_2\) are the
+same in both samples because the \(F_1\) table agrees.  If a candidate has the
+opposite color from \(x\), then
+\(\noderef{TwoBiteBaseAdj}(-,x,y)\) is false in both samples by definition of
+\(\noderef{TwoBiteBaseAdj}\).  If \(y=x\), then the same adjacency is a loop
+and is false in both samples because the base red and blue graphs are simple.
+For every remaining same-color candidate \(y\in F_1\) with \(y\ne x\), the
+definition of \(\noderef{TwoBiteStageRevealedVertex}\) makes \(y\)
+staged-revealed in \(\omega\), because its \(F_1\)-disjunct holds.  The
+endpoint \(x\) is projection-contained in \(\omega\) by the present case.
+Thus the incident-coordinate branch of
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\) contains
+\([x,y]\).  By (6), \([x,y]\in R_h\).  The assumed \(R_h\)-agreement gives the
+same edge value for \([x,y]\), hence the same truth value of
+\(\noderef{TwoBiteBaseAdj}(-,x,y)\).  Thus the finite \(F_2\) count is
+identical for \(\omega\) and \(\omega'\), so
+\[
+\noderef{TwoBiteStageF2}(\omega,\varepsilon,I,x)
+\Longleftrightarrow
+\noderef{TwoBiteStageF2}(\omega',\varepsilon,I,x).
+\]
+Combining projection containment, \(F_1\), and \(F_2\) in (2), every
+\(\noderef{TwoBiteStageRevealedVertex}\) predicate agrees between \(\omega\)
+and \(\omega'\).
+
+Finally, \(\noderef{TwoBiteProjectionPairTouched}\) is defined by cases on the
+tagged coordinate and says that one of the two same-color endpoints is
+staged-revealed.  Since staged-revealed vertices agree for all base vertices,
+the touched predicate agrees for every tagged coordinate.
+
+It remains to prove the terminal-exclusion clause.  Let
+\[
+e\in\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I).
+\]
+Unfolding \(\noderef{TwoBiteStagedOpenPairs}\), the coordinate \(e\) lies in
+\(\noderef{TwoBiteProjectionPairSet}(\omega,I)\), is not
+\(\noderef{TwoBiteProjectionPairSameColorClosed}\), is not touched, and is not
+in \(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\).
+From \(e\in\noderef{TwoBiteProjectionPairSet}(\omega,I)\), unfold the
+projected-pair-set definition.  In the red case,
+\[
+e=\operatorname{red}(q)
+\quad\text{with}\quad
+q\in\noderef{TwoBiteBasePairs}(I.\operatorname{image}\pi_R^\omega),
+\]
+and in the blue case the analogous statement holds with \(\pi_B^\omega\).
+Unfolding \(\noderef{TwoBiteBasePairs}\) and
+\(\noderef{TwoBitePairsInSet}\), the pair \(q\) is represented in increasing
+non-loop order.  Therefore \(e\in
+\noderef{TwoBiteTerminalCoordinateUniverse}(m)\).
+
+If \(e\in R_h\), then the exact-recorded equivalence (6), applied to
+\(\omega\in C_h\), gives
+\[
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I),
+\]
+contradicting the recorded-coordinate exclusion in staged-openness.  Hence
+\(e\notin R_h\).  This proves the terminal-universe and unrecorded conclusions
+and completes the construction of the finite disjoint pre-terminal history
+partition.
+\end{proof}

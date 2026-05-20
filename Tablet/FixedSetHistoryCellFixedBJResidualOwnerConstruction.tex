@@ -1,0 +1,72 @@
+\begin{helper}
+Fix a terminal coordinate set \(U\), a finite transcript family
+\(\mathcal P\), and realized branch/transcript pairs
+\(\mathsf{Realized}(\beta,\tau)\).  For each pair let
+\[
+P_\tau,\qquad A_\tau,\qquad Z_\tau,\qquad F_{\beta,\tau}
+\]
+denote the forced-present set, forced-absent set, selected-absence set, and
+fixed present support.  Assume a single deterministic residual scan
+\[
+\operatorname{scan}_{B,J}:2^U\to
+  \{\hbox{branch/transcript pairs}\}\cup\{\bot\}
+\]
+for residual assignments \(A\subseteq U\).  The scan is fixed after the
+support labels \(B,J\) have been fixed; it is not chosen separately for a
+candidate branch/transcript pair.
+
+Assume the residual-cylinder stability supplied by this one fixed
+\((B,J)\) scan: whenever \(\tau\in\mathcal P\),
+\(\mathsf{Realized}(\beta,\tau)\), \(F_{\beta,\tau}\subseteq P_\tau\), and
+\[
+P_\tau\setminus F_{\beta,\tau}\subseteq A,\qquad
+A\cap(A_\tau\setminus Z_\tau)=\emptyset ,
+\]
+then
+\[
+\operatorname{scan}_{B,J}(A)=\operatorname{some}(\beta,\tau).
+\]
+
+Then there is a single residual owner function
+\[
+\operatorname{owner}_{B,J}:2^U\to
+  \{\hbox{branch/transcript pairs}\}\cup\{\bot\}
+\]
+such that, for every realized \((\beta,\tau)\) with
+\(F_{\beta,\tau}\subseteq P_\tau\), the whole residual cylinder
+\[
+\{A\subseteq U:
+  P_\tau\setminus F_{\beta,\tau}\subseteq A,\ 
+  A\cap(A_\tau\setminus Z_\tau)=\emptyset\}
+\]
+is contained in the owner fiber of \((\beta,\tau)\).
+\end{helper}
+\begin{proof}
+Define the owner to be the scan itself:
+\[
+\operatorname{owner}_{B,J}(A)=\operatorname{scan}_{B,J}(A).
+\]
+This is visibly a single function of the residual assignment \(A\), because
+the scan-stability hypothesis in the statement is already a statement about
+one fixed scan \(\operatorname{scan}_{B,J}\).  If the same residual
+assignment were claimed by two realized pairs through that hypothesis, then
+the same function value would be both \(\operatorname{some}(\beta,\tau)\)
+and \(\operatorname{some}(\beta',\tau')\), forcing
+\((\beta,\tau)=(\beta',\tau')\).  Thus the owner is not constructed from a
+pair-dependent residual compatibility relation.
+
+Fix a realized pair \((\beta,\tau)\) and a residual assignment \(A\) in its
+displayed residual cylinder.  By the residual-cylinder stability hypothesis
+for the single scan,
+\[
+\operatorname{scan}_{B,J}(A)=\operatorname{some}(\beta,\tau).
+\]
+Since the owner is this scan, immediately
+\[
+\operatorname{owner}_{B,J}(A)=(\beta,\tau).
+\]
+Because \(A\) was arbitrary in the residual cylinder, the whole cylinder is
+contained in the owner fiber of \((\beta,\tau)\).  This proves the required
+pair-independent owner construction before any mass-packing lemma is
+applied.
+\end{proof}

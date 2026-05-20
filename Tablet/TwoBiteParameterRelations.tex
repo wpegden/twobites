@@ -1,0 +1,70 @@
+\begin{lemma}
+With \(s,m,p,k\) as in
+\(\noderef{TwoBiteStretch}\), \(\noderef{TwoBiteReducedVertexCount}\),
+\(\noderef{TwoBiteEdgeProbability}\), and
+\(\noderef{TwoBiteIndependenceScale}\), and with
+\(\beta=\frac12\) and \(\kappa=1+\varepsilon\), the parameters are positive for
+all sufficiently large \(n\) and agree with the formulas used in the paper.
+\end{lemma}
+\begin{proof}
+Fix \(\varepsilon,\beta,\kappa\) with \(0<\varepsilon\),
+\(\beta=\frac12\), and \(\kappa=1+\varepsilon\).  Choose a threshold \(n_0\)
+large enough that every \(n\ge n_0\) satisfies \(n>1\).  Then \(n>0\) and
+\(\log n>0\).
+
+For such an \(n\), unfold \(\noderef{TwoBiteStretch}\).  It gives
+\[
+s=\log^2 n.
+\]
+Since \(\log n>0\), its square is positive, so \(s>0\).  This is exactly the
+first asserted positivity statement \(0<\noderef{TwoBiteStretch}(n)\).
+
+Next unfold \(\noderef{TwoBiteEdgeProbability}\).  With \(\beta=\frac12\),
+\[
+p=\frac12\sqrt{\frac{\log n}{n}}.
+\]
+The factor \(\frac12\) is positive.  The quotient \(\frac{\log n}{n}\) is
+positive because both numerator and denominator are positive.  Therefore its
+square root is positive, and the product is positive.  Hence
+\[
+0<\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+
+Unfolding \(\noderef{TwoBiteReducedVertexCount}\) gives the reduced base-graph
+size
+\[
+m=\frac{n}{\noderef{TwoBiteStretch}(n)}
+  =\frac{n}{\log^2 n},
+\]
+using the already unfolded expression for \(s\).  This is the \(m=n/s\)
+relation used in the paper.  Since \(n>0\) and \(s>0\), division by the
+positive number \(s\) preserves positivity, so
+\[
+m=\frac ns>0.
+\]
+
+Finally unfold \(\noderef{TwoBiteIndependenceScale}\).  For every \(n\),
+\[
+\noderef{TwoBiteIndependenceScale}(\kappa,n)
+  =\kappa\sqrt{n\log n}.
+\]
+Substituting \(\kappa=1+\varepsilon\) gives
+\[
+k=(1+\varepsilon)\sqrt{n\log n}.
+\]
+Moreover \(\kappa=1+\varepsilon>0\), because \(0<\varepsilon\).  Also
+\(n\log n>0\), since both \(n\) and \(\log n\) are positive.  Hence
+\(\sqrt{n\log n}>0\), and multiplying the two positive factors gives
+\[
+k=\kappa\sqrt{n\log n}>0.
+\]
+
+Thus, for all \(n\ge n_0\), all four parameters are positive and have the
+displayed formulas:
+\[
+s=\log^2 n,\qquad
+m=\frac{n}{s}=\frac{n}{\log^2 n},\qquad
+p=\frac12\sqrt{\frac{\log n}{n}},\qquad
+k=(1+\varepsilon)\sqrt{n\log n}.
+\]
+\end{proof}

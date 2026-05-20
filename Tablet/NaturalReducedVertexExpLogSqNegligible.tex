@@ -1,0 +1,22 @@
+\begin{helper}[Natural reduced vertex times Gaussian log tail is negligible]
+For every constant \(c>0\) and
+\(m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\),
+\[
+  m(n)\exp\!\left(-c(\log n)^2\right)\to 0 .
+\]
+\end{helper}
+\begin{proof}
+It is enough to compare \(m(n)\) with \(n\).  Unfolding
+\(\noderef{TwoBiteNaturalReducedVertexCount}\),
+\(\noderef{TwoBiteReducedVertexCount}\), and \(\noderef{TwoBiteStretch}\),
+we have \(m(n)\le n/(\log n)^2\).  For sufficiently large \(n\),
+\(\log n\ge1\), so \(m(n)\le n\).  Therefore
+\[
+  m(n)e^{-c(\log n)^2}
+  \le n e^{-c(\log n)^2}
+  = \exp(\log n-c(\log n)^2).
+\]
+As \(y\to\infty\), \(y-cy^2\to-\infty\), hence
+\(\exp(y-cy^2)\to0\).  Composing with \(y=\log n\to\infty\) and squeezing
+between \(0\) and the displayed upper bound proves the claim.
+\end{proof}

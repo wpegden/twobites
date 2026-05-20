@@ -1,0 +1,97 @@
+\begin{lemma}
+Let \(0<\varepsilon\), let \(K,n,\ell_R,\ell_B\) be natural numbers with
+\(0<K\), and let \(p,\eta\in\mathbb R\).  Put
+\[
+x_R=\frac{\ell_R}{K},\qquad x_B=\frac{\ell_B}{K},
+\qquad
+f=\noderef{ProjectionOpenPairFunction}.
+\]
+Assume
+\[
+0\le K\log n,\qquad \eta\le\frac{\varepsilon}{80},
+\qquad 0\le\ell_R,\ell_B\le K,
+\qquad x_R+x_B\le1-\frac{\varepsilon}{2}.
+\]
+Then
+\[
+\begin{aligned}
+&\left(\eta+\left(\frac12+\eta\right)-\frac{2-x_R-x_B}{2}\right)K\log n\\
+&\quad
++\min\left\{0,\,
+-p\left(f(\ell_R,\ell_B,K,p,n)-\varepsilon^3K^2\right)\right\}
+\le -4\eta K\log n.
+\end{aligned}
+\]
+\end{lemma}
+\begin{proof}
+The condition \(0<K\) is the natural-number boundary condition needed to make
+the displayed ratios \(x_R=\ell_R/K\) and \(x_B=\ell_B/K\) ordinary real
+ratios.  The feasibility assumptions \(0\le\ell_R,\ell_B\le K\) are the range
+used in the parent summation; this proof only needs the resulting lower-regime
+inequality \(x_R+x_B\le1-\varepsilon/2\).
+
+The exact definition of \(f=\noderef{ProjectionOpenPairFunction}\), with
+\(\binom y2_{\mathbb R}=y(y-1)/2\), is
+\[
+\begin{aligned}
+f(\ell_R,\ell_B,K,p,n)
+&=\frac{\ell_R(\ell_R-1)}2+\frac{\ell_B(\ell_B-1)}2\\
+&\quad-\min\left\{
+\frac{(K-\ell_R)(K-\ell_R-1)}2,\,
+\frac{(pn)(pn-1)}2+
+\frac{(K-\ell_R-pn)(K-\ell_R-pn-1)}2
+\right\}\\
+&\quad-\min\left\{
+\frac{(K-\ell_B)(K-\ell_B-1)}2,\,
+\frac{(pn)(pn-1)}2+
+\frac{(K-\ell_B-pn)(K-\ell_B-pn-1)}2
+\right\}.
+\end{aligned}
+\]
+No lower bound on this expression is required in the lower regime.  The
+summand contains
+\[
+\min\left\{1,\exp\left(-p(f(\ell_R,\ell_B,K,p,n)-\varepsilon^3K^2)\right)\right\}.
+\]
+After taking logarithms in the parent argument, this factor contributes at
+most
+\[
+\min\left\{0,\,
+-p\left(f(\ell_R,\ell_B,K,p,n)-\varepsilon^3K^2\right)\right\}\le0, \tag{1}
+\]
+because the minimum of \(0\) and any real number is at most \(0\).  Thus the
+rounded values of \(K\) and \(p\) introduce no error term in this lower-regime
+helper; the only large-\(n\) facts needed before applying the helper are the
+two parent-side boundary estimates \(0<K\) and \(0\le K\log n\).
+
+It remains to bound the coefficient of \(K\log n\).  This coefficient is
+\[
+\eta+\frac12+\eta-\frac{2-x_R-x_B}{2}
+=2\eta+\frac{x_R+x_B-1}{2}.
+\]
+Since \(x_R+x_B\le1-\varepsilon/2\),
+\[
+2\eta+\frac{x_R+x_B-1}{2}
+\le 2\eta-\frac{\varepsilon}{4}.
+\]
+The hypothesis \(\eta\le\varepsilon/80\) gives
+\[
+6\eta\le \frac{6\varepsilon}{80}
+=\frac{3\varepsilon}{40}
+\le \frac{\varepsilon}{4},
+\]
+and therefore
+\[
+2\eta-\frac{\varepsilon}{4}
+\le -4\eta,
+\]
+because the last inequality is exactly
+\(6\eta\le\varepsilon/4\) after adding \(4\eta+\varepsilon/4\) to both sides.
+Multiplying by the nonnegative quantity \(K\log n\) gives
+\[
+\left(\eta+\left(\frac12+\eta\right)-\frac{2-x_R-x_B}{2}\right)K\log n
+\le -4\eta K\log n. \tag{2}
+\]
+Adding the nonpositive term from (1) to the left side of (2) preserves the
+inequality and proves the claim.
+\end{proof}

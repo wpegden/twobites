@@ -1,0 +1,53 @@
+\begin{helper}
+Let \(\Omega\) be finite and let \(q:\Omega\to\mathbb R\) be nonnegative with
+\(\sum_a q(a)=1\).  Let \(Z:\Omega^r\to\mathbb R\), define
+\[
+w(\omega)=\prod_{i=0}^{r-1}q(\omega_i),
+\qquad
+\mu=\sum_{\omega\in\Omega^r}w(\omega)Z(\omega),
+\]
+and assume that for every \(\lambda>0\),
+\[
+\sum_\omega w(\omega)e^{\lambda(Z(\omega)-\mu)}
+\le
+\exp\!\left(\frac{r\lambda^2c^2}{8}\right).
+\]
+If \(c>0\) and \(t\ge0\), then
+\[
+\sum_{\omega: \mu+t\le Z(\omega)}w(\omega)
+\le
+\exp\!\left(-\frac{2t^2}{r c^2}\right),
+\]
+with the \(r=0\) Lean real-field case interpreted as the trivial right hand
+side \(e^0=1\).
+\end{helper}
+\begin{proof}
+By \noderef{ProductWeightSumOne}, the total mass of \(w\) is \(1\), so the
+tail mass is at most \(1\).  This proves the claim when \(t=0\).
+
+Assume \(t>0\).  For any \(\lambda>0\) and any outcome in the tail,
+\(t\le Z(\omega)-\mu\), hence
+\[
+1\le e^{\lambda(Z(\omega)-\mu-t)}
+=e^{-\lambda t}e^{\lambda(Z(\omega)-\mu)}.
+\]
+Multiplying by the nonnegative weight \(w(\omega)\), summing over the tail,
+and then enlarging the sum to all outcomes gives
+\[
+\sum_{\omega:\mu+t\le Z(\omega)}w(\omega)
+\le
+e^{-\lambda t}
+\sum_\omega w(\omega)e^{\lambda(Z(\omega)-\mu)}
+\le
+\exp\!\left(-\lambda t+\frac{r\lambda^2c^2}{8}\right).
+\]
+If \(r=0\), taking \(\lambda=1\) gives a bound at most \(e^{-t}\le1\), which
+is the displayed right hand side under Lean's real division convention.  If
+\(r>0\), the denominator \(r c^2\) is positive, and choosing
+\(\lambda=4t/(r c^2)\) minimizes the quadratic exponent.  Substituting this
+value gives exactly
+\[
+-\lambda t+\frac{r\lambda^2c^2}{8}
+=-\frac{2t^2}{r c^2}.
+\]
+\end{proof}

@@ -1,0 +1,210 @@
+\begin{helper}
+Fix \(\eta>0\), let \(\beta=1/2\), and let
+\[
+m(n)=M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n).
+\]
+Put \(p(n)=\noderef{TwoBiteEdgeProbability}(\beta,n)\).  Under
+\(\noderef{TwoBiteEventProbability}(n,m(n),p(n))\), the simultaneous event
+\[
+\forall x\in \noderef{TwoBiteBaseVertex}(m(n)),\qquad
+\noderef{WithinRelativeError}\!\left(
+  \eta,\ p(n)n,\ |\noderef{TwoBiteLiftedNeighborhood}(\omega,x)|
+\right)
+\]
+holds with high probability in the sense of \(\noderef{WithHighProbability}\).
+\end{helper}
+\begin{proof}
+Write \(L=\log n\), \(M=M(n)\), and
+\[
+p=p(n)=\frac12\sqrt{\frac{L}{n}}.
+\]
+By \(\noderef{TwoBiteNaturalReducedVertexCount}\), together with
+\(\noderef{TwoBiteReducedVertexCount}\) and \(\noderef{TwoBiteStretch}\), for
+all sufficiently large \(n\),
+\[
+M=\left\lfloor\frac{n}{L^2}\right\rfloor,\qquad
+\frac12\frac{n}{L^2}\le M\le \frac n{L^2},\qquad n\le M^2.
+\tag{1}
+\]
+The nonempty injection support and normalization at this rounded size are
+also supplied eventually by \(\noderef{TwoBiteNaturalTotalMassOneEventually}\).
+Moreover
+\[
+pn=\frac12\sqrt{nL}\to\infty,\qquad \log M=O(L),
+\tag{2}
+\]
+so \(pn/\log M\to\infty\).
+
+Set
+\[
+\gamma=\min\{\eta/6,1/2\}.
+\]
+Then \(0<\gamma\le1/2\).  By
+\(\noderef{FiberAndDegreeBaseDegreeConcentration}\), applied with tolerance
+\(\gamma\), with high probability every red base degree and every blue base
+degree is within relative error \(\gamma\) of \(pM\).  Denote this event by
+\(\mathcal G_n\).  It is enough to show that, on \(\mathcal G_n\), the
+conditional probability that some lifted neighborhood has size outside
+relative error \(\eta\) from \(pn\) tends to \(0\), because
+\(\Pr(\mathcal G_n)\to1\).
+
+Fix a red base vertex \(r\in\operatorname{Fin}(M)\) and condition on the red
+base graph \(G_R=\noderef{TwoBiteRedGraph}(\omega)\).  Let
+\[
+d_r=\big|\{u\in\operatorname{Fin}(M):G_R.Adj\,r\,u\}\big|.
+\]
+By the definition of \(\noderef{TwoBiteLiftedNeighborhood}\), together with
+\(\noderef{TwoBiteRedProjection}\) and \(\noderef{TwoBiteEmbedding}\),
+\(\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))\) is the
+set of final vertices whose injected product cell has red coordinate in
+\(N_{G_R}(r)\).  Equivalently, among the \(M^2\) product cells
+\[
+\operatorname{Fin}(M)\times\operatorname{Fin}(M),
+\]
+the marked cells are
+\[
+N_{G_R}(r)\times\operatorname{Fin}(M),
+\]
+and this marked set has cardinality \(d_rM\).
+
+The two-bite sample weight factors by \(\noderef{TwoBiteSampleWeight}\) into
+the red graph weight, the blue graph weight, and
+\(\noderef{UniformInjectionWeight}\).  Conditional on \(G_R\), the event just
+described depends only on the injection coordinate and not on the blue graph.
+The blue graph weights sum to \(1\) by \(\noderef{GnpGraphWeightSumOne}\).
+Since \(n\le M^2\), \(\noderef{UniformInjectionWeight}\) is the reciprocal of
+the number of injections, so the injection coordinate is a uniform ordered
+sample of \(n\) distinct cells from \(M^2\) cells.  Therefore, conditional on
+\(G_R\), the random variable
+\[
+N_r=|\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))|
+\]
+is hypergeometric with population size \(M^2\), marked-set size \(d_rM\), and
+sample size \(n\).  Its conditional mean is
+\[
+\mu_r=n\frac{d_rM}{M^2}=\frac{nd_r}{M}.
+\tag{3}
+\]
+
+On \(\mathcal G_n\), the red degree satisfies
+\[
+|d_r-pM|\le \gamma pM.
+\tag{4}
+\]
+Multiplying (4) by \(n/M\) gives
+\[
+|\mu_r-pn|\le \gamma pn.
+\tag{5}
+\]
+Also \(\gamma\le1/2\) gives
+\[
+\mu_r\ge(1-\gamma)pn\ge \frac12 pn,
+\qquad
+\mu_r\le(1+\gamma)pn.
+\tag{6}
+\]
+
+The node \(\noderef{HypergeometricMgfComparison}\) applies to the
+hypergeometric variable \(N_r\).  Put \(\mu=\mu_r\) for this paragraph.  The
+moment-generating-function comparison says that, for every real \(\lambda\),
+\[
+\mathbb E\!\left[e^{\lambda N_r}\mid G_R\right]
+\le \exp\!\left(\mu(e^\lambda-1)\right).
+\tag{7a}
+\]
+For the upper tail, take \(\lambda_+=\log(1+\gamma)>0\).  Markov's
+inequality and (7a) give
+\[
+\begin{aligned}
+\Pr(N_r\ge(1+\gamma)\mu\mid G_R)
+&=\Pr(e^{\lambda_+N_r}\ge e^{\lambda_+(1+\gamma)\mu}\mid G_R)\\
+&\le e^{-\lambda_+(1+\gamma)\mu}
+   \mathbb E[e^{\lambda_+N_r}\mid G_R]\\
+&\le
+\exp\!\left(
+  -\mu\bigl((1+\gamma)\log(1+\gamma)-\gamma\bigr)
+\right).
+\end{aligned}
+\tag{7b}
+\]
+For the lower tail, take \(\lambda_-=-\log(1-\gamma)>0\) and apply (7a) with
+\(-\lambda_-\).  On the event \(N_r\le(1-\gamma)\mu\), the random variable
+\(e^{-\lambda_-N_r}\) is at least
+\(e^{-\lambda_-(1-\gamma)\mu}\).  Thus Markov's inequality gives
+\[
+\begin{aligned}
+\Pr(N_r\le(1-\gamma)\mu\mid G_R)
+&\le e^{\lambda_-(1-\gamma)\mu}
+   \mathbb E[e^{-\lambda_-N_r}\mid G_R]\\
+&\le
+\exp\!\left(
+  \mu\bigl(-(1-\gamma)\log(1-\gamma)-\gamma\bigr)
+\right)\\
+&=
+\exp\!\left(
+  -\mu\bigl(\gamma+(1-\gamma)\log(1-\gamma)\bigr)
+\right).
+\end{aligned}
+\tag{7c}
+\]
+For \(0<\gamma\le1/2\), both
+\[
+a_+=(1+\gamma)\log(1+\gamma)-\gamma,
+\qquad
+a_-=\gamma+(1-\gamma)\log(1-\gamma)
+\]
+are positive.  Define \(c_\gamma=\min\{a_+,a_-\}>0\).  Combining (7b) and
+(7c) gives, conditionally on \(G_R\) and on \(\mathcal G_n\),
+\[
+\Pr\bigl(|N_r-\mu_r|>\gamma\mu_r\mid G_R\bigr)
+\le 2\exp(-c_\gamma\mu_r)
+\le 2\exp(-(c_\gamma/2)pn),
+\tag{7}
+\]
+where the last inequality uses (6).
+
+If the tail event in (7) does not occur, then using (5) and (6),
+\[
+|N_r-pn|
+\le |N_r-\mu_r|+|\mu_r-pn|
+\le \gamma\mu_r+\gamma pn
+\le \gamma(1+\gamma)pn+\gamma pn
+\le 3\gamma pn
+\le \eta pn.
+\tag{8}
+\]
+Thus the failure of
+\(\noderef{WithinRelativeError}(\eta,pn,N_r)\) on \(\mathcal G_n\) is bounded
+by the right side of (7).
+
+The blue case is identical.  For a blue vertex \(b\), condition on
+\(G_B=\noderef{TwoBiteBlueGraph}(\omega)\).  The marked cells are
+\[
+\operatorname{Fin}(M)\times N_{G_B}(b),
+\]
+whose size is \(d_bM\), and
+\(\noderef{TwoBiteBlueProjection}\) identifies
+\(\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(b))\) with
+the injected vertices landing in those marked cells.  The same
+hypergeometric estimate and the blue half of
+\(\noderef{FiberAndDegreeBaseDegreeConcentration}\) give the same bound
+\[
+2\exp(-(c_\gamma/2)pn)
+\]
+for each fixed blue vertex.
+
+There are \(M\) red and \(M\) blue base vertices.  By the union bound, the
+conditional probability, on \(\mathcal G_n\), that any lifted neighborhood
+violates the required relative-error bound is at most
+\[
+4M\exp(-(c_\gamma/2)pn).
+\tag{9}
+\]
+By (2), the logarithm of (9) is
+\[
+\log 4+\log M-(c_\gamma/2)pn\to-\infty,
+\]
+so (9) tends to \(0\).  Combining this with
+\(\Pr(\mathcal G_n)\to1\) proves that the simultaneous lifted-neighborhood
+size concentration event has probability tending to \(1\), as required.
+\end{proof}

@@ -1,0 +1,59 @@
+\begin{helper}
+Fix \(U_0,V_0\subseteq\operatorname{Fin}n\), a red graph \(G_R\), a row map
+\(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), and an exposure
+\(\eta:U_0\to\operatorname{Fin}m\).  Put \(S=\eta(U_0)\).  Let
+\(X_{\mathrm{all},\eta}\) be the set of injections
+\(\phi:\operatorname{Fin}n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m\) satisfying
+\[
+(\phi(v))_1=\rho(v)\quad\text{for every }v
+\]
+and
+\[
+(\phi(u))_2=\eta(u)\quad\text{for every }u\in U_0.
+\]
+For each finite set \(T\subseteq\operatorname{Fin}n\), let
+\(X_{\mathrm{good},\eta}(T)\subseteq X_{\mathrm{all},\eta}\) be the subset
+where \((\phi(v))_2\in S\) for every \(v\in T\).  Then the conditional
+probability, under the conditioning \(G_R,\rho,\eta\), that at least \(t\)
+vertices of \(V_0\) have blue coordinate in \(S\) is at most
+\[
+\sum_{\substack{T\subseteq V_0\\ |T|=t}}
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}.
+\]
+\end{helper}
+\begin{proof}
+Unfold \(\noderef{TwoBiteConditionalProbability}\).  If the conditioning
+event has zero \(\noderef{TwoBiteEventProbability}\), the conditional
+probability is defined to be \(0\), and the displayed upper bound is
+immediate.
+
+Assume the conditioning event has nonzero probability.  Expanding
+\(\noderef{TwoBiteEventProbability}\) over the finite two-bite sample space,
+the red graph \(G_R\), the red row map \(\rho\), and the exposed blue
+coordinates \(\eta\) are fixed by the conditioning event.  The remaining
+blue graph contributes a common total factor, and the uniform injection
+weight is common to all admissible injections.  After canceling these common
+factors in the conditional probability, any event depending only on the
+injection is measured by the corresponding cardinality ratio inside
+\(X_{\mathrm{all},\eta}\).
+
+Let
+\[
+W_\eta(\phi)=|\{v\in V_0:(\phi(v))_2\in S\}|.
+\]
+If \(W_\eta(\phi)\ge t\), then the set
+\(\{v\in V_0:(\phi(v))_2\in S\}\) contains a \(t\)-element subset
+\(T\subseteq V_0\).  Therefore the tail event is contained in the finite
+union, over all \(T\in\operatorname{powersetCard}(t,V_0)\), of the events
+defining \(X_{\mathrm{good},\eta}(T)\).  Applying the finite union bound to
+the cardinality ratios gives
+\[
+\Pr(W_\eta\ge t\mid G_R,\rho,\eta)
+\le
+\sum_{T\in\operatorname{powersetCard}(t,V_0)}
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}.
+\]
+This is the claimed bridge from the conditional tail probability to the
+fixed-\(T\) injection-count ratios.
+\end{proof}

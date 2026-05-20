@@ -1,0 +1,332 @@
+\begin{helper}
+Let \(H\) be a history cell, \(T\) a target event, \(U\) the terminal
+coordinate set, and let \(o\) be a nodup terminal order with
+\(\operatorname{toFinset}(o)=U\).  Suppose the terminal coordinates are
+outside the recorded coordinates, and suppose both the recorded coordinates
+and terminal coordinates lie in
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\).  Thus all coordinates
+used in the scan are tagged increasing non-loop base-edge coordinates, and
+the recorded and terminal coordinate sets have compatible canonical
+orientations.  Suppose \(T\subseteq H\), every
+staged-open coordinate of a sample in \(H\) lies in \(U\), and every target
+sample has open-pair count at least \(a\).  Assume the prefix-safety
+hypothesis along \(o\): whenever two samples agree on the embedding, on the
+recorded coordinates, and on all coordinates preceding \(e\) in \(o\), the
+membership of \(e\) in staged-open pairs, touched pairs, same-color-closed
+pairs, and pre-terminal recorded pairs is the same for the two samples.
+Suppose also that the blue support label family \(\mathcal B\) consists of
+\(u_B\)-element blue subsets of \(U\), and that every \(\omega\in T\) has a
+label \(B\in\mathcal B\) equal to its present blue staged-open support.
+Assume every \(\omega\in T\) has red present staged-open support of
+cardinality \(u_R\).  Finally assume the red support decoder works uniformly
+after a complete blue trace is fixed: whenever \(\omega\in T\) and
+\(\beta_0\in H\) agree on all blue terminal coordinates of \(U\), there is a
+red label \(J\) whose branch-decoded support from \(\beta_0\) is exactly the
+present red staged-open support of \(\omega\).  Assume also that the edge
+probability lies in the product-measure range \(0\le p\le1/2\).
+
+Then there is a finite type \(\mathcal T\) of branch/blue-trace labels, a
+finite set \(\mathcal P\) of transcripts, a blue-trace map
+\(\operatorname{blueTrace}:\mathcal T\to\{\hbox{subsets of }U\}\), a
+representative branch \(b(\beta)\in H\) for every label
+\(\beta\in\mathcal T\), a beta-indexed red decoder
+\[
+\operatorname{redSupport}(\beta,J)
+  =\operatorname{branchRedSupport}(b(\beta),J),
+\]
+and cell events
+\[
+G_{B,J,\beta,\tau}\subseteq \{\hbox{samples}\},
+\]
+indexed by \(B\in\mathcal B\), \(J\in\mathcal J\),
+\(\beta\in\mathcal T\), and \(\tau\in\mathcal P\), such that:
+
+For every \(\beta\in\mathcal T\), the set
+\(\operatorname{blueTrace}(\beta)\) is a subset of \(U\), consists only of
+blue coordinates, and records the actual terminal blue truth table of the
+representative branch: for every blue coordinate \(e\in U\),
+\[
+X_e(b(\beta))=1
+  \quad\Longleftrightarrow\quad
+e\in\operatorname{blueTrace}(\beta).
+\]
+The label is unique for this terminal blue truth table: if
+\(\beta,\beta'\in\mathcal T\) have the same membership on every blue
+coordinate of \(U\), then \(\beta=\beta'\).  Thus extra nonterminal or red
+coordinates cannot distinguish two labels with the same complete terminal
+blue trace.
+
+First, the cells cover \(T\cap H\): every \(\omega\in T\cap H\) lies in some
+\(G_{B,J,\beta,\tau}\) with \(B\in\mathcal B\),
+\(\beta\in\mathcal T\), and \(\tau\in\mathcal P\).
+
+Second, whenever \(B\in\mathcal B\), \(J\in\mathcal J\),
+\(\beta\in\mathcal T\), \(\tau=(P_\tau,A_\tau,Z_\tau)\in\mathcal P\), and a
+sample \(\omega\) lies in \(G_{B,J,\beta,\tau}\), the following properties
+hold:
+\[
+b(\beta)\in H,\qquad
+\operatorname{redSupport}(\beta,J)
+  =\operatorname{branchRedSupport}(b(\beta),J),
+\]
+and \(b(\beta)\) has the complete terminal blue trace
+\(\operatorname{blueTrace}(\beta)\); that is, for every blue coordinate
+\(e\in U\),
+\[
+X_e(b(\beta))=1
+  \quad\Longleftrightarrow\quad
+e\in\operatorname{blueTrace}(\beta).
+\]
+\[
+|\operatorname{redSupport}(\beta,J)|=u_R,\qquad
+\operatorname{redSupport}(\beta,J)\subseteq U,
+\]
+and this decoded support consists only of red coordinates;
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+B\cup\operatorname{redSupport}(\beta,J)\subseteq P_\tau,\qquad
+Z_\tau\subseteq A_\tau,
+\]
+and \(P_\tau,A_\tau\) encode the complete blue terminal trace:
+for every blue coordinate \(e\in U\),
+\[
+e\in\operatorname{blueTrace}(\beta)\quad\Longleftrightarrow\quad
+e\in P_\tau,
+\qquad
+e\notin\operatorname{blueTrace}(\beta)\quad\Longleftrightarrow\quad
+e\in A_\tau .
+\]
+\[
+\max(0,a-u_R-u_B)\le |Z_\tau|.
+\]
+Moreover, relative to any sample \(\omega\) lying in the cell, the label
+\(\beta\) records the complete blue terminal trace of \(\omega\): for every
+blue coordinate \(e\in U\),
+\[
+X_e(\omega)=1
+  \quad\Longleftrightarrow\quad
+e\in\operatorname{blueTrace}(\beta),
+\]
+and the transcript forces every coordinate of \(P_\tau\) present and every
+coordinate of \(A_\tau\) absent in \(\omega\).
+
+The construction also exposes the combinatorial support data needed by the
+later fixed-\((B,J)\) product-tree summation.  There is a predicate saying
+which formal pairs \((B,J,\beta,\tau)\) are realized, and an
+assignment-compatibility predicate for terminal assignments.  The realized
+predicate is not merely a zero/nonzero tag: if
+\(\mathsf{Realized}(B,J,\beta,\tau)\) holds, then the realized pair satisfies
+the red-support cardinality and color facts, the transcript subset and
+disjointness facts, \(B\cup\operatorname{redSupport}(\beta,J)\subseteq
+P_\tau\), \(Z_\tau\subseteq A_\tau\), the complete blue-trace equivalences,
+and the selected-absence lower bound displayed above.  Compatible
+assignments contain \(P_\tau\), avoid \(A_\tau\setminus Z_\tau\), and agree
+with the complete blue trace on all unselected blue coordinates.  Functional
+scan disjointness says that one terminal assignment cannot be compatible
+with two distinct realized \((\beta,\tau)\) for the same \(B,J\).
+
+The node does not assert fixed-\((B,J)\) residual scan completeness,
+residual owner uniqueness, residual leaf ownership, or residual mass
+normalization.  Those fixed-\((B,J)\) reveal-order and product-tree facts are
+supplied downstream, at the fixed-\((B,J)\) residual support layer where the
+scan, released blocks, and leaf certificates are explicit.  Non-realized
+formal pairs have no cell samples.
+
+Thus this node remains the branch/transcript interface: it constructs the
+branch labels, transcripts, realized geometry, complete-assignment
+compatibility, functional disjointness, and non-realized-cell exclusion.  It
+deliberately leaves the residual scan and released-block partition to the
+later fixed-\((B,J)\) support nodes.
+\end{helper}
+\begin{proof}
+For a target sample \(\omega\), choose its blue support label
+\(B\in\mathcal B\).  Let \(\operatorname{Blue}(\omega)\) be the complete set
+of blue terminal coordinates of \(U\) which are present in \(\omega\).  Among
+the finitely many complete blue traces which occur for target samples, choose
+one representative branch \(b(\beta)\in H\) for each trace.  The label
+\(\beta\) is this complete blue trace together with the chosen representative
+for that trace, and \(\operatorname{blueTrace}(\beta)\) is exactly the
+terminal blue coordinate set of that trace.  Hence
+\(\operatorname{blueTrace}(\beta)\subseteq U\), every member of
+\(\operatorname{blueTrace}(\beta)\) is blue, and membership in
+\(\operatorname{blueTrace}(\beta)\) agrees with the value of
+\(b(\beta)\) on every terminal blue coordinate.  Because only one
+representative label is chosen for each complete terminal blue truth table,
+two labels with the same membership on all blue coordinates of \(U\) are
+equal.  The branch partition in
+\(\noderef{FixedSetHistoryCellAdaptiveBranchPartition}\) supplies the cover
+and disjointness of the complete blue trace classes.
+These representative branches are chosen as global returned data: for every
+label \(\beta\), \(b(\beta)\in H\), independently of whether a later cell
+with label \(\beta\) is nonempty.
+
+For the target sample \(\omega\), take the unique label \(\beta\) whose
+blue trace is \(\operatorname{Blue}(\omega)\).  By construction,
+\(\omega\) and \(b(\beta)\) agree on every blue terminal coordinate.  The
+uniform red support-label hypothesis applied to this representative branch
+therefore gives a red label \(J\) such that
+\[
+\operatorname{branchRedSupport}(b(\beta),J)
+\]
+is exactly the red present staged-open support of \(\omega\).  Define
+\(\operatorname{redSupport}(\beta,J)\) to be this branch-decoded support.
+This definition is global in the two labels: for every \(\beta\) and every
+red label \(J\),
+\[
+\operatorname{redSupport}(\beta,J)
+  =\operatorname{branchRedSupport}(b(\beta),J).
+\]
+Thus the red package is still allowed to depend on the representative branch
+chosen for the complete blue trace, but there is only one branch label for
+that trace, so later summations do not acquire multiplicity from several
+representatives with the same blue values.
+
+For a nonempty cell, the cell event remembers the target sample, the chosen
+representative branch, and the assigned red label.  The assigned-label
+equality says that the decoded support is the red present staged-open support
+of that sample.  Therefore the decoded support has cardinality \(u_R\), is
+contained in \(U\), consists only of red coordinates, and every coordinate in
+it is both staged-open and present.  The cardinality assertion uses the
+explicit fixed red-count hypothesis on target samples.  The containment and
+red-color assertions follow from the definition of red present staged-open
+support and from staged-open containment in \(U\).  The blue label hypothesis
+gives the same facts for \(B\), with cardinality \(u_B\) and blue color.
+
+Run the deterministic prefix scan along the order \(o\).  The scan records a
+triple \(\tau=(P_\tau,A_\tau,Z_\tau)\): coordinates forced present,
+coordinates forced absent, and the selected absent coordinates.  In the
+returned transcript, put the present supports
+\(B\cup\operatorname{redSupport}(\beta,J)\) into \(P_\tau\), put the whole
+complete blue terminal trace \(\operatorname{blueTrace}(\beta)\) into
+\(P_\tau\), and put every blue terminal coordinate outside that trace into
+\(A_\tau\).  The selected absences \(Z_\tau\) are also inserted into
+\(A_\tau\).  Since \(B\) is contained in the blue trace of the sample, the
+red support is red-only, and \(Z_\tau\) is disjoint from
+\(B\cup\operatorname{redSupport}(\beta,J)\), the two forced sets are
+disjoint.  Hence for every nonempty cell witnessed by \(\omega\) one has
+\(P_\tau,A_\tau\subseteq U\), \(P_\tau\cap A_\tau=\emptyset\),
+\[
+B\cup\operatorname{redSupport}(\beta,J)\subseteq P_\tau,\qquad
+Z_\tau\subseteq A_\tau.
+\]
+Moreover the construction gives, for every blue \(e\in U\),
+\[
+e\in\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in P_\tau,
+\qquad
+e\notin\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in A_\tau .
+\]
+
+The canonical absence selection lemma
+\(\noderef{FixedSetHistoryCellCanonicalAbsenceSelection}\) applies to the red
+and blue present supports.  Its prefix-safety input is exactly the
+prefix-safety hypothesis of this node: for a split \(o=\mathrm{pre}\, e\,
+\mathrm{suffix}\), any comparison sample agreeing on the embedding, recorded
+coordinates, and all coordinates in \(\mathrm{pre}\) has the same
+staged-open, touched, same-color-closed, and pre-terminal-recorded status at
+\(e\).  The remaining inputs are the nodup order, the equality
+\(\operatorname{toFinset}(o)=U\), the containment of all staged-open
+coordinates in \(U\), and the facts just proved that the red and blue support
+sets are exactly the present staged-open coordinates already accounted for.
+The target lower bound
+\[
+a\le |\operatorname{StagedOpen}(\omega,\varepsilon,I)|
+\]
+and the fixed support sizes \(u_R,u_B\) give
+\[
+\max(0,a-u_R-u_B)\le |Z_\tau|.
+\]
+By construction of the complete blue trace, for every blue terminal
+coordinate \(e\in U\), \(X_e(\omega)=1\) exactly when
+\(e\in\operatorname{blueTrace}(\beta)\).  By
+construction of the transcript, all coordinates in \(P_\tau\) are present and
+all coordinates in \(A_\tau\) are absent in any sample lying in the cell.
+The sample's own labels and transcript place it in one of the displayed
+cells, giving the cover of \(T\cap H\).
+
+Finally record the product-tree support data.  For fixed \(B,J,\beta,\tau\),
+declare
+\[
+\mathsf{Realized}(B,J,\beta,\tau)
+\]
+to mean exactly that the cell \(G_{B,J,\beta,\tau}\) is nonempty.  Thus, if
+the formal pair is not realized and a sample \(\omega\) lay in the cell, then
+\(\omega\) itself would witness nonemptiness, a contradiction.  This proves
+the required zero-contribution statement for non-realized formal pairs before
+any summation over formal indices is made.
+Conversely, if \(\mathsf{Realized}(B,J,\beta,\tau)\) holds, choose a witness
+\(\omega\in G_{B,J,\beta,\tau}\).  Applying the nonempty-cell geometry
+already proved above to this witness gives the red-support size and color,
+the containments in \(U\), \(P_\tau\cap A_\tau=\emptyset\),
+\(B\cup\operatorname{redSupport}(\beta,J)\subseteq P_\tau\),
+\(Z_\tau\subseteq A_\tau\), the complete blue-trace equivalences, and
+\(\max(0,a-u_R-u_B)\le |Z_\tau|\).  This is the exported
+realized-geometry certificate used by the mixed normalization package; it is
+not inferred from the one-way non-realized exclusion.
+
+For a terminal assignment \(A\subseteq U\), define
+\(\operatorname{Compat}(A;B,J,\beta,\tau)\) as a stronger
+internal certificate than the three forward consequences exported in the
+statement.  First,
+\[
+P_\tau\subseteq A,\qquad A\cap A_\tau=\emptyset .
+\]
+The displayed exported avoidance
+\[
+A\cap(A_\tau\setminus Z_\tau)=\emptyset
+\]
+then follows immediately, since \(A_\tau\setminus Z_\tau\subseteq A_\tau\).
+This distinction is essential: disjointness from
+\(A_\tau\setminus Z_\tau\) alone would not say anything about selected
+coordinates in \(Z_\tau\).  Second, for every blue terminal coordinate
+\(e\in U\setminus Z_\tau\),
+\[
+e\in A\quad\Longleftrightarrow\quad
+e\in\operatorname{blueTrace}(\beta).
+\]
+Third, the complete blue trace, including selected coordinates, is the
+branch trace:
+\[
+\forall e\in U,\quad e\hbox{ blue}\Longrightarrow
+  \bigl(e\in A\Longleftrightarrow
+    e\in\operatorname{blueTrace}(\beta)\bigr).
+\]
+Fourth, the realized compatibility certificate is single-owner: if another
+realized \((\beta',\tau')\) has \(P_{\tau'}\subseteq A\), the full
+disjointness \(A\cap A_{\tau'}=\emptyset\), and the same complete blue
+terminal trace on \(A\), then \(\tau'=\tau\).  Thus compatibility is not
+merely a span condition; it contains the full selected-coordinate absence
+needed before applying the realized single-owner comparison.  This
+realized-only comparison is built into the local compatibility certificate
+so that no total branch assignment has to be chosen.
+
+The exported forward consequences are now checked one by one.  The first
+component gives \(P_\tau\subseteq A\).  Full disjointness from \(A_\tau\)
+gives the stated weaker disjointness from \(A_\tau\setminus Z_\tau\).  The
+blue-trace components give the complete blue trace, and hence also the
+unselected blue-trace agreement stated in the helper.  If one terminal
+assignment \(A\) is compatible with two realized cells \((\beta,\tau)\) and
+\((\beta',\tau')\), the two complete-blue-trace clauses and
+branch-functionality give \(\beta=\beta'\).  The compatibility certificate
+for \((\beta,\tau)\) can then be applied to the second realized cell because
+the second compatibility certificate supplies exactly the missing premises:
+\[
+P_{\tau'}\subseteq A,\qquad A\cap A_{\tau'}=\emptyset,
+\]
+together with the same complete blue trace on \(A\).  Therefore
+\(\tau'=\tau\).  Hence a complete terminal assignment is compatible with at
+most one realized \((\beta,\tau)\) for the fixed \(B,J\).
+
+The fixed-\((B,J)\) released residual blocks and residual leaf masses are
+intentionally not constructed in this node.  Those data belong to the
+downstream fixed-count summation layer, which combines this node's realized
+geometry, compatibility, and functional disjointness with the separate
+fixed-\((B,J)\) residual scan and leaf support.
+
+The non-realized-cell exclusion is immediate from the definition of
+\(\mathsf{Realized}\).  If a formal pair is not realized and some sample
+\(\omega\) lay in \(G_{B,J,\beta,\tau}\), then \(\omega\) would witness that
+the cell is nonempty, contradicting non-realization.  This completes the
+branch/transcript interface consumed by the later fixed-count summation.
+\end{proof}

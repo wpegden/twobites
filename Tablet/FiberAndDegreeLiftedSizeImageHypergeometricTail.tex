@@ -1,0 +1,54 @@
+\begin{helper}[Arbitrary marked-set injection image tail]
+Fix natural numbers \(n,m,q\), a marked set
+\(K\subseteq \operatorname{Fin}(m)\times\operatorname{Fin}(m)\) with
+\(|K|=q\), and \(0<\delta\le 1/2\).  Assume \(n\le m^2\), and put
+\[
+  \mu = n\frac{q}{m^2}.
+\]
+Then the number of injections
+\(\phi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) whose image hits \(K\)
+outside the interval \([(1-\delta)\mu,(1+\delta)\mu]\) is at most
+\[
+  \left(
+    \exp\!\left(-(\delta+(1-\delta)\log(1-\delta))\mu\right)
+    +
+    \exp\!\left(-(((1+\delta)\log(1+\delta)-\delta)\mu)\right)
+  \right)
+  \left|\operatorname{Inj}\!\left(
+    \operatorname{Fin}(n),
+    \operatorname{Fin}(m)\times\operatorname{Fin}(m)
+  \right)\right|.
+\]
+\end{helper}
+\begin{proof}
+Transport the product population
+\(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) to
+\(\operatorname{Fin}(m^2)\) using the standard product equivalence.  The
+transported marked set has cardinality \(q\), and \(q\le m^2\) because it is
+the cardinality of a subset of the product population.  For a uniformly chosen
+\(n\)-subset of \(\operatorname{Fin}(m^2)\), the upper Chernoff bound
+\(\noderef{HypergeometricCountingUpperChernoffBound}\) gives
+\[
+  \Pr\{|S\cap K|>(1+\delta)\mu\}
+  \le
+  \exp\!\left(-(((1+\delta)\log(1+\delta)-\delta)\mu)\right),
+\]
+and the lower-tail bound
+\(\noderef{HypergeometricCountingLowerTailBound}\) gives
+\[
+  \Pr\{|S\cap K|<(1-\delta)\mu\}
+  \le
+  \exp\!\left(-(\delta+(1-\delta)\log(1-\delta))\mu\right).
+\]
+The nodes \(\noderef{FinProductTailCountEquiv}\) and
+\(\noderef{FinProductLowerTailCountEquiv}\) identify these transported
+subset counts with the corresponding product-population subset counts.
+Finally, \(\noderef{UniformInjectionImage}\) says that every \(n\)-subset of
+the product population is hit by the same number of injections, so multiplying
+the two subset probabilities by the total number of injections gives the
+corresponding upper and lower injection-count bounds.  The injections outside
+the displayed interval are contained in the union of the upper-tail and
+lower-tail injection events, so the finite union bound gives the displayed
+two-sided estimate.
+\end{proof}

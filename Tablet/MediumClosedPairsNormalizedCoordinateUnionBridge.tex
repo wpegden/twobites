@@ -1,0 +1,42 @@
+\begin{lemma}
+Fix finite red centers \(B_R\), blue centers \(B_B\), red projections \(P_R\),
+and blue projections \(P_B\).  Normalize every nonloop ordered red candidate
+\((r,s)\in B_R\times P_R\) to the unordered coordinate
+\((\min(r,s),\max(r,s))\), tagged red, and normalize every nonloop ordered
+blue candidate \((b,c)\in B_B\times P_B\) in the same way, tagged blue.  Let
+\(C\) be the union of these normalized coordinate sets.  Suppose \(0\le p\le1\)
+and suppose that every \(t\)-element \(A\subseteq C\) satisfies
+\[
+\noderef{TwoBiteEventProbability}
+\left(\{\omega:\text{every coordinate in }A\text{ is present in }\omega\}\right)
+\le p^t .
+\]
+Then the probability that at least \(t\) coordinates of \(C\) are present is
+at most
+\[
+\binom{|B_R||P_R|+|B_B||P_B|}{t}p^t .
+\]
+\end{lemma}
+\begin{proof}
+Let \(R_0\subseteq B_R\times P_R\) and \(B_0\subseteq B_B\times P_B\) be the
+nonloop ordered candidate pairs.  The normalized red coordinate set is the
+image of \(R_0\), so its cardinality is at most \(|R_0|\).  Since
+\(R_0\subseteq B_R\times P_R\), we have \(|R_0|\le |B_R||P_R|\).  The same
+argument gives the blue bound \(|B_0|\le |B_B||P_B|\).
+
+The union \(C\) has cardinality at most the sum of the red and blue normalized
+coordinate-set cardinalities, hence
+\[
+|C|\le |B_R||P_R|+|B_B||P_B|.
+\]
+Applying \(\noderef{MediumClosedPairsCoordinateUnionBridge}\) with this
+cardinality bound and with the assumed fixed-subset product-law bound gives
+exactly
+\[
+\noderef{TwoBiteEventProbability}
+\left(\{\omega:\text{at least }t\text{ coordinates of }C
+\text{ are present}\}\right)
+\le
+\binom{|B_R||P_R|+|B_B||P_B|}{t}p^t .
+\]
+\end{proof}

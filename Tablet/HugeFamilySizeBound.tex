@@ -1,0 +1,233 @@
+\begin{lemma}
+Assume
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\),
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad |I|=k,
+\]
+and \(\noderef{FiberAndDegreeEvent}\).  Let \(H_I\) be the huge class and put
+\[
+t_1=\noderef{TwoBiteHugeCutoff}(n),\qquad C=100(\log n)^3.
+\]
+Then
+\[
+\sum_{x\in H_I}|X_x(I)|\le 2k,
+\qquad
+|H_I|\le \frac{2k}{t_1}.
+\]
+\end{lemma}
+\begin{proof}
+All finite cardinalities in this proof are used in two forms.  Before casting,
+they are natural-number cardinalities of finite sets; when they occur in an
+inequality with \(k,t_1\), or \(C\), they are cast to \(\mathbb R\).  The
+identity \(|I|=k\) is therefore used as the real identity
+\((|I|:\mathbb R)=(k:\mathbb R)\).
+
+Recall that \(H_I\) is the finite filter of base vertices satisfying
+\(\noderef{TwoBiteHugeClass}(\omega,I,x)\).  Thus, if \(x\in H_I\), the
+membership statement first gives the predicate
+\(\noderef{TwoBiteHugeClass}(\omega,I,x)\), and unfolding that predicate gives
+the strict lower cutoff and the trivial upper bound
+\[
+t_1<|X_x(I)|\le |I|=k. \tag{1}
+\]
+Unfolding \(\noderef{TwoBiteX}\) gives the actual set identity
+\[
+X_x(I)=I\cap N_x,
+\]
+so every element of \(X_x(I)\) lies in \(I\).  Hence
+\[
+X_x(I)\subseteq I. \tag{1a}
+\]
+
+If \(x,y\in H_I\) are distinct, then (1a) is not needed for the overlap
+bound; instead the definition \(X_z(I)=I\cap N_z\) gives
+\[
+X_x(I)\cap X_y(I)\subseteq N_x\cap N_y.
+\]
+We check the possible colors of \(x\) and \(y\), writing base vertices as
+elements of the disjoint sum \(V_R\sqcup V_B\).  If
+\(x=\operatorname{inl}(r)\) and \(y=\operatorname{inl}(s)\) are both red, then
+\(x\ne y\) is exactly \(r\ne s\), and the red-red lifted-neighborhood
+intersection clause of \(\noderef{FiberAndDegreeEvent}\) gives
+\[
+|N_r\cap N_s|\le 100(\log n)^3=C.
+\]
+If \(x=\operatorname{inr}(b)\) and \(y=\operatorname{inr}(c)\) are both blue,
+the blue-blue clause gives the same bound for \(|N_b\cap N_c|\).  If one
+vertex is red and the other blue, then the sum constructors already make them
+distinct, and the mixed red-blue lifted-neighborhood intersection clause gives
+the same bound.  In all three cases, cardinality monotonicity applied to
+\(X_x(I)\cap X_y(I)\subseteq N_x\cap N_y\) gives
+\[
+|X_x(I)\cap X_y(I)|\le C. \tag{2}
+\]
+Thus, for every finite \(B\subseteq H_I\),
+\[
+k\ge\left|\bigcup_{x\in B}X_x(I)\right|
+\ge \sum_{x\in B}|X_x(I)|
+  -\binom{|B|}{2}_{\mathbb R}C. \tag{3}
+\]
+We spell out the second inequality.  Enumerate \(B=\{b_1,\ldots,b_r\}\) and
+write \(A_i=X_{b_i}(I)\).  If \(r=0\), then the union and the sum are both
+empty and the claimed lower bound is \(0\ge0\).  Assume now \(r>0\), and put
+\[
+U_j=A_1\cup\cdots\cup A_j\qquad (0\le j\le r),
+\]
+with \(U_0=\varnothing\).  For \(0\le j<r\), the finite-cardinality identity
+\[
+|U_{j+1}|=|U_j|+|A_{j+1}|-|U_j\cap A_{j+1}|.
+\]
+holds before casting.  After casting to real numbers we use the same equality
+in \(\mathbb R\).  Since
+\[
+U_j\cap A_{j+1}\subseteq
+\bigcup_{1\le i\le j}(A_i\cap A_{j+1}),
+\]
+the finite union bound gives
+\[
+|U_j\cap A_{j+1}|
+\le\sum_{1\le i\le j}|A_i\cap A_{j+1}|.
+\]
+The elements \(b_i\) are all distinct, so (2) applies to each pair
+\((b_i,b_{j+1})\).  Therefore, after casting all cardinalities and \(j\) to
+\(\mathbb R\),
+\[
+|U_j\cap A_{j+1}|
+\le jC.
+\]
+Inducting on \(j\) gives
+\[
+\left|\bigcup_{x\in B}X_x(I)\right|
+\ge
+\sum_{x\in B}|X_x(I)|
+-
+\sum_{j=0}^{r-1} jC
+=
+\sum_{x\in B}|X_x(I)|
+-\binom r2_{\mathbb R}C.
+\]
+The last equality is the ordinary finite pair count:
+\[
+\sum_{j=0}^{r-1}j=\frac{r(r-1)}2=\binom r2_{\mathbb R},
+\]
+which is the number of unordered pairs in the \(r\)-element enumeration.
+Here \(r=|B|\), so this is exactly the lower bound in (3).  The first
+inequality in (3) follows because (1a) gives \(X_x(I)\subseteq I\) for every
+\(x\), so the union over \(B\) is a subset of \(I\), and \(|I|=k\).
+
+Apply the eventual-comparisons package at the present \(n\).  Its
+huge-overlap conjunct is the explicit finite inequality
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}C\le\frac12k. \tag{4}
+\]
+The cutoff \(t_1\) is positive for the present large \(n\): unfolding
+\(\noderef{TwoBiteHugeCutoff}\) gives
+\[
+t_1=\frac{\sqrt{n\log n}}{\log\log n},
+\]
+and the eventual range is chosen beyond \(e^e\), so \(n>1\),
+\(\log n>0\), \(\log\log n>0\), and the quotient is positive.  Also
+\(C=100(\log n)^3\) is nonnegative, and \(k=(|I|:\mathbb R)\ge0\).  Hence
+\[
+a:=2k/t_1
+\]
+is nonnegative.  Suppose first that
+\[
+(|H_I|:\mathbb R)>a. \tag{5}
+\]
+Let \(r=\lceil a\rceil\), the least natural number with \(a\le r\).  Since
+\(|H_I|\) is a natural number and its real cast is strictly larger than \(a\),
+we have
+\[
+r\le |H_I|. \tag{6}
+\]
+Also the ceiling property gives
+\[
+a\le r\le a+1. \tag{7}
+\]
+If \(r=0\), then \(a=0\), and (5) says \(H_I\) is nonempty.  Choose
+\(x\in H_I\).  Since \(a=2k/t_1\), \(a=0\), \(t_1>0\), and \(k\ge0\), we have
+\(k=0\).  Then (1) gives \(t_1<|X_x(I)|\le k=0\), contradicting \(t_1>0\).
+Thus \(r>0\).
+
+By (6), choose a subfamily as follows.  List the finite set \(H_I\) without
+repetition as \(h_1,\ldots,h_q\), where \(q=|H_I|\).  Since \(r\le q\), take
+\[
+B=\{h_1,\ldots,h_r\}.
+\]
+Then
+\[
+B\subseteq H_I,\qquad |B|=r=\left\lceil 2k/t_1\right\rceil.
+\]
+For each \(x\in B\), (1) gives the strict real inequality
+\(|X_x(I)|>t_1\).  Because \(B\) has \(r>0\) elements, summing these strict
+inequalities is legitimate: the sum of the positive gaps
+\(\sum_{x\in B}(|X_x(I)|-t_1)\) is positive.  Hence
+\[
+\sum_{x\in B}|X_x(I)|>rt_1. \tag{8}
+\]
+Since \(t_1>0\) and \(r\ge a=2k/t_1\), we have
+\[
+rt_1\ge 2k. \tag{9}
+\]
+Moreover \(r\le a+1\).  The real binomial function
+\(\binom u2_{\mathbb R}=u(u-1)/2\) is increasing on \([1,\infty)\): if
+\(1\le u\le v\), then
+\[
+\binom v2_{\mathbb R}-\binom u2_{\mathbb R}
+  =\frac{(v-u)(u+v-1)}2\ge0.
+\]
+If \(r=1\), then \(\binom r2_{\mathbb R}=0\), while
+\(a+1\ge1\) and \(C\ge0\) make
+\(\binom{a+1}{2}_{\mathbb R}C\ge0\).  Therefore, using \(C\ge0\),
+\[
+\binom r2_{\mathbb R}C
+\le
+\binom{a+1}{2}_{\mathbb R}C
+\le \frac12 k, \tag{10}
+\]
+where in the case \(r\ge2\) the first inequality uses the displayed
+monotonicity with \(1\le r\le a+1\), and the last inequality is exactly (4).
+Combining (3), (8), (9), and (10),
+\[
+k\ge\left|\bigcup_{x\in B}X_x(I)\right|
+> |B|t_1-\binom{|B|}{2}_{\mathbb R}C
+\ge 2k-\frac12k=\frac32k,
+\]
+a contradiction because \(k\ge0\) implies \(\frac32k\ge k\).  Hence
+\[
+(|H_I|:\mathbb R)\le 2k/t_1. \tag{11}
+\]
+This is the second asserted bound.
+
+Now take \(B=H_I\) in (3).  Since
+\((|H_I|:\mathbb R)\le2k/t_1=a\), the same comparison (4), with the same
+monotonicity justification as above, gives the needed overlap estimate.
+Indeed, if \(|H_I|=0\) or \(|H_I|=1\), then
+\(\binom{|H_I|}{2}_{\mathbb R}=0\), and hence
+\[
+\binom{|H_I|}{2}_{\mathbb R}C=0\le\frac12k
+\]
+because \(C\ge0\) and \(k\ge0\).  Otherwise \(|H_I|\ge2\), so
+\(|H_I|\) lies in the monotonicity interval \([1,\infty)\).  From (11),
+\(|H_I|\le a\le a+1\), and the monotonicity of
+\(\binom u2_{\mathbb R}\) on \([1,\infty)\), followed by multiplication by
+the nonnegative number \(C\) and then by (4), gives
+\[
+\binom{|H_I|}{2}_{\mathbb R}C\le\frac12k.
+\]
+The lower bound (3) for \(B=H_I\) rearranges to
+\[
+\sum_{x\in H_I}|X_x(I)|
+\le k+\binom{|H_I|}{2}_{\mathbb R}C.
+\]
+Therefore
+\[
+\sum_{x\in H_I}|X_x(I)|
+\le k+\binom{|H_I|}{2}_{\mathbb R}C
+\le \frac32k\le2k.
+\]
+This proves both asserted bounds.
+\end{proof}

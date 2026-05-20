@@ -1,0 +1,48 @@
+\begin{helper}
+If the event that the size bound holds but some ordered blue pair violates
+the projected-intersection estimate is negligible, then the blue implication
+event has high probability.
+\end{helper}
+\begin{proof}
+Fix \(n\) and abbreviate the two-bite probability functional by
+\[
+\mathbb P_n(E)=
+\noderef{TwoBiteEventProbability}\bigl(n,m(n),
+\noderef{TwoBiteEdgeProbability}(\beta,n),E\bigr).
+\]
+Let \(G_n\) be the event in which the size bound implies the blue
+intersection bound for every ordered blue pair.  Let \(B_n\) be the event
+that the size bound holds and at least one ordered blue pair violates the
+blue bound.  The event \(G_n\) is the complement of \(B_n\).  Indeed, if
+\(G_n\) fails, then the size bound holds and the universal blue estimate
+fails.  Negating the universal quantifier produces an ordered pair \(b,c\)
+for which the hypothesis \(b\ne c\) holds and the displayed inequality
+fails.  Since the two sides of that inequality are real numbers, failure of
+\(\le\) is the strict reverse inequality, so this pair witnesses \(B_n\).
+Conversely, any witness to \(B_n\) makes the implication defining \(G_n\)
+false.
+
+The weights defining \(\mathbb P_n\) have exact total mass \(1\) for all
+sufficiently large \(n\), by
+\(\noderef{TwoBiteNaturalTotalMassOneEventually}\).  That node proves the
+needed injection support \(n\le m(n)^2\) from
+\(m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\), uses the positive
+cardinality of
+\(\operatorname{Fin}n\hookrightarrow(\operatorname{Fin}m(n)\times
+\operatorname{Fin}m(n))\) to put \(\noderef{UniformInjectionWeight}\) in its
+reciprocal branch, and then factors the whole-sample mass into two
+\(\noderef{GnpGraphWeightSumOne}\) graph factors and the uniform-injection
+factor.  Therefore, eventually, the finite indicator sums for complementary
+events \(G_n\) and \(B_n\) add to the total mass \(1\), giving
+\[
+\mathbb P_n(G_n)=1-\mathbb P_n(B_n).
+\]
+
+The hypothesis says precisely that \(\mathbb P_n(B_n)\to0\), in the notation
+of \(\noderef{NegligibleProbability}\).  Therefore
+\[
+\mathbb P_n(G_n)=1-\mathbb P_n(B_n)\to1.
+\]
+Unfolding \(\noderef{WithHighProbability}\), this is the desired
+high-probability statement for the blue implication event.
+\end{proof}

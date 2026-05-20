@@ -1,0 +1,78 @@
+\begin{helper}
+In the fixed history cell, assume \(u_R\le u_B\).  With
+\[
+a=f(\ell_R,\ell_B)-10\varepsilon_1 k^2,
+\]
+there are natural numbers \(N_R,N_B\) such that
+\[
+N_R\le 3\varepsilon_1 k^2,\qquad N_B\le k^2,
+\]
+and the conditional probability of the fixed-count target is at most
+\[
+\binom{N_R}{u_B}p^{u_B}\binom{N_B}{u_R}p^{u_R}
+(1-p)^{\max(0,a-u_B-u_R)}.
+\]
+Here blue is the later-color support controlled by the exceptional sets, and
+red is the first-color support controlled by the \(k\)-set projection
+universe.
+\end{helper}
+\begin{proof}
+This is the color-reversed version of
+\(\noderef{FixedSetHistoryCellFixedCountRedWeightSum}\), but we spell out the
+objects to fix the bookkeeping.  Let \(H\) be the history cell and let
+\(T_{u_R,u_B}\) be the same fixed-count target event.  Put
+\[
+L=\max(0,a-u_B-u_R).
+\]
+
+Use \(\noderef{FixedSetHistoryCellGlobalBlueExceptionalWitness}\) to replace
+the branch-dependent blue exceptional sets by one global bound
+\(N_R\le3\varepsilon_1k^2\).  For each complete red terminal branch, every
+regular independent completion has its blue present staged-open support
+inside a blue exceptional set of cardinality at most \(N_R\).  Therefore the
+blue later support has at most \(\binom{N_R}{u_B}\) possible global labels.
+
+The first-color red present support lies in the projected-pair universe
+coming from \(I\).  Since \(|I|=k\), that universe has size at most \(k^2\);
+write this size as \(N_B\).  Thus there are at most
+\(\binom{N_B}{u_R}\) red first-color support labels.
+
+For fixed support labels, partition the event by complete red terminal traces
+and by prefix transcripts of the canonical absence-selection algorithm.  The
+complete trace partition is supplied by
+\(\noderef{FixedSetHistoryCellAdaptiveBranchPartition}\), and the selected
+absent set \(Z_\tau\) is supplied by
+\(\noderef{FixedSetHistoryCellCanonicalAbsenceSelection}\).  It is disjoint
+from the two present supports and has size at least \(L\).
+
+Each cell fixes a set \(P_\tau\) of present terminal coordinates and a
+disjoint set \(A_\tau\) of absent terminal coordinates.  These sets include
+all complete-trace values and all prefix-transcript values, not only the two
+support labels and selected absences.  Applying
+\(\noderef{FixedSetHistoryCellFixedCylinderCharge}\) to the terminal product
+law bounds the raw cell mass by
+\[
+\Pr(H)\,p^{|P_\tau|}(1-p)^{|A_\tau|}.
+\]
+
+When the cell weights are summed for fixed support labels, the auxiliary
+terminal coordinates fixed only to determine the trace or transcript are
+reindexed over a finite residual set.  Their total contribution is
+\[
+\sum_W p^{|W|}(1-p)^{|W^c|}=(p+(1-p))^{|W\cup W^c|}=1.
+\]
+The mandatory blue and red present supports contribute \(p^{u_B}p^{u_R}\),
+and the selected absences contribute at most \((1-p)^L\).  Hence the total
+weight for fixed support labels is bounded by
+\[
+p^{u_B}p^{u_R}(1-p)^L.
+\]
+
+Summing over at most \(\binom{N_R}{u_B}\) blue support labels and at most
+\(\binom{N_B}{u_R}\) red support labels gives the displayed total weight.
+The cover, per-cell estimates, and total weight estimate are exactly the
+hypotheses of \(\noderef{FixedSetHistoryCellBranchTranscriptSummation}\).
+This bounds the raw probability of \(H\cap T_{u_R,u_B}\).  If \(\Pr(H)=0\),
+the conditional probability is zero by
+\(\noderef{TwoBiteConditionalProbability}\); otherwise divide by \(\Pr(H)\).
+\end{proof}

@@ -1,0 +1,39 @@
+\begin{helper}
+Let \(n,m\) be natural numbers, let \(U_0,T\subseteq \operatorname{Fin} n\),
+let \(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), and let
+\(\eta:U_0\to\operatorname{Fin}m\).  Put
+\[
+S=\operatorname{im}(\eta),\qquad R_i=\{v:\rho(v)=i\}.
+\]
+Let \(X_{\mathrm{all},\eta}\) be the set of injections with first coordinate
+\(\rho\) and eta-conditioned second coordinate on \(U_0\), and let
+\(X_{\mathrm{good},\eta}(T)\) be the subset for which every \(v\in T\) has
+second coordinate in \(S\).  For each row \(i\), let \(g_i\) be the number
+of injective maps \(f:R_i\to\operatorname{Fin}m\) satisfying the eta
+condition on \(U_0\cap R_i\) and also sending every \(v\in T\cap R_i\) into
+\(S\).  Then
+\[
+|X_{\mathrm{good},\eta}(T)|=\prod_i g_i.
+\]
+\end{helper}
+\begin{proof}
+Use the same row decomposition as for the all-set product.  A good global
+injection \(\phi\) determines row maps \(f_i(v)=(\phi(v))_2\).  The
+argument using equality of first coordinates shows that each \(f_i\) is
+injective on \(R_i\), and the eta condition on \(\phi\) gives the row eta
+condition on \(U_0\cap R_i\).  In addition, if \(v\in T\cap R_i\), then the
+goodness of \(\phi\) gives \(f_i(v)=(\phi(v))_2\in S\).  Hence the row map
+in row \(i\) is counted by \(g_i\).
+
+Conversely, given a tuple of row maps counted by the \(g_i\), define
+\(\phi(v)=(\rho(v),f_{\rho(v)}(v))\).  Rowwise injectivity again gives
+global injectivity because different rows have different first coordinates.
+The row eta conditions put \(\phi\) in \(X_{\mathrm{all},\eta}\), and the
+row good conditions say exactly that every vertex of \(T\cap R_i\) maps
+into \(S\) in row \(i\).  Since the rows partition \(\operatorname{Fin} n\),
+these row conditions are equivalent to the global condition defining
+\(X_{\mathrm{good},\eta}(T)\).  The two constructions are inverse, so
+\(X_{\mathrm{good},\eta}(T)\) is in bijection with the finite cartesian
+product of the row sets counted by \(g_i\).  Taking cardinalities gives the
+product identity.
+\end{proof}

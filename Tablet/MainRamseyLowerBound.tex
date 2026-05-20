@@ -1,0 +1,60 @@
+\begin{theorem}
+For every real \(\eta>0\), there is an integer \(k_0\) such that for every
+integer \(k\ge k_0\) there is an integer \(N\) with
+\[
+\noderef{RamseyWitness}(N,k)
+\]
+and
+\[
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le (N:\mathbb R).
+\]
+Unfolding \(\noderef{RamseyScale}\) and \(\noderef{RamseyWitness}\), this is
+the usual \(\eta\)-form of the lower bound
+\[
+R(3,k)\ge \left(\frac12+o(1)\right)\frac{k^2}{\log k}.
+\]
+\end{theorem}
+\begin{proof}
+We prove the formal statement directly from the two child theorems
+\(\noderef{MainIndependence}\) and \(\noderef{MainToRamseyWitness}\).
+
+First record that \(\noderef{MainIndependence}\) supplies exactly the
+hypothesis required by \(\noderef{MainToRamseyWitness}\).  Namely, for every
+real \(\varepsilon>0\), \(\noderef{MainIndependence}\) gives an integer
+\(n_0\) such that for every integer \(n\ge n_0\) there exists a simple graph
+\(G\) on \(\mathrm{Fin}(n)\) with
+\[
+G.\mathrm{CliqueFree}(3)
+\]
+and
+\[
+\noderef{IndependenceNumberLess}
+\left(G,(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right).
+\]
+This is word-for-word the input hypothesis \(h_{\mathrm{main}}\) in
+\(\noderef{MainToRamseyWitness}\).
+
+Now fix a real number \(\eta>0\).  Apply
+\(\noderef{MainToRamseyWitness}\) with
+\[
+h_{\mathrm{main}}=\noderef{MainIndependence}
+\]
+and then apply the resulting conclusion to this \(\eta\).  We obtain an
+integer \(k_0\) such that, for every integer \(k\ge k_0\), there exists an
+integer \(N\) satisfying the two conclusions
+\[
+\noderef{RamseyWitness}(N,k)
+\]
+and
+\[
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le (N:\mathbb R).
+\]
+This is exactly the pair of assertions required by the theorem for the fixed
+\(\eta\).  Since \(\eta>0\) was arbitrary, the quantified statement follows.
+
+The final explanatory sentence in the statement is not an additional formal
+step.  It is the interpretation of the same quantified conclusion using the
+definition of \(\noderef{RamseyWitness}\), the scale definition
+\(\noderef{RamseyScale}(k)=k^2/\log k\), and the asymptotic scale comparison
+recorded in \(\noderef{RamseyScaleConversion}\).
+\end{proof}

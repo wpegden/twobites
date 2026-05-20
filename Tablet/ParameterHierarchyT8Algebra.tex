@@ -1,0 +1,57 @@
+\begin{helper}
+Let \(\eta\in\mathbb R\) and \(n\in\mathbb N\).  Put
+\[
+L=\log n,\quad
+k_R=(1+\eta)\sqrt{nL},\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad k=(K:\mathbb R),
+\]
+and
+\[
+t_1=\frac{\sqrt{nL}}{\log L}.
+\]
+Assume \(0<\eta\), \(0<n\), \(0<L\), \(0<\log L\), \(0\le k\),
+\(k_R\le k\), \(0<t_1\),
+\[
+\frac{2k}{t_1}+1\le5(1+\eta)\log L,
+\]
+and
+\[
+\frac{200(5(1+\eta))^2(\log L)^2L^3}
+{(1+\eta)\sqrt{nL}}\le1.
+\]
+Then
+\[
+\noderef{RealChooseTwo}\left(\frac{2k}{t_1}+1\right)100L^3
+\le\frac12k.
+\]
+\end{helper}
+\begin{proof}
+Set
+\[
+x=\frac{2k}{t_1}+1,\qquad A=5(1+\eta)\log L.
+\]
+The assumptions \(0\le k\) and \(0<t_1\) imply \(x\ge0\).  By the upper
+bound in \(\noderef{RealChooseTwoQuadraticBounds}\),
+\[
+\noderef{RealChooseTwo}(x)\le x^2.
+\]
+The displayed \(D\)-estimate gives \(x\le A\), and \(A\ge0\), so
+\[
+\noderef{RealChooseTwo}(x)\le x^2\le A^2.
+\]
+Multiplying by the nonnegative quantity \(100L^3\) gives
+\[
+\noderef{RealChooseTwo}(x)100L^3\le 100A^2L^3.
+\]
+The threshold assumption has positive denominator and is therefore equivalent
+to
+\[
+200(5(1+\eta))^2(\log L)^2L^3\le k_R.
+\]
+Since \(A^2=(5(1+\eta))^2(\log L)^2\), the previous inequality yields
+\[
+100A^2L^3\le\frac12 k_R.
+\]
+Finally \(k_R\le k\), so \(\frac12k_R\le\frac12k\).  Combining these
+inequalities proves the claim.
+\end{proof}

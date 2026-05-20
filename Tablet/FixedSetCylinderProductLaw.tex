@@ -1,0 +1,139 @@
+\begin{helper}
+Let \(0<p<1\).  Fix a nonempty history event \(C\) in the two-bite sample
+space, a representative sample \(\omega_0\in C\), a recorded coordinate set
+\(R\), and a finite terminal candidate coordinate set \(U\).  Assume that
+\(C\) is exactly the cylinder
+\[
+\omega\in C
+\quad\Longleftrightarrow\quad
+\omega\hbox{ has the same injection as }\omega_0
+\hbox{ and }
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,e)
+=\noderef{TwoBiteEdgeCoordinateValue}(\omega_0,e)
+\hbox{ for every }e\in R.
+\tag{1}
+\]
+Assume also that \(U\cap R=\emptyset\), and that every element of both \(R\)
+and \(U\) is a red or blue non-loop base-edge coordinate represented with
+increasing endpoint order.  This canonical-orientation hypothesis is part of
+the independence assertion: it rules out the possibility that \(R\) records
+\(\operatorname{red}(b,a)\) while \(U\) exposes
+\(\operatorname{red}(a,b)\), or the analogous blue coordinate.  The set \(U\)
+is only a fixed set of coordinates not constrained by the cylinder; it is not
+assumed to be the final staged-open set.  Then, for every \(A\subseteq U\),
+\[
+\noderef{TwoBiteConditionalProbability}
+\bigl(\text{exactly the coordinates in }A\text{ are present on }U
+\mid C\bigr)
+=p^{|A|}(1-p)^{|U|-|A|}.
+\tag{2}
+\]
+\end{helper}
+\begin{proof}
+Let \(\mathcal U\) be the finite tagged coordinate universe consisting of all
+red and blue increasing non-loop base-edge coordinates in \(\mathrm{Fin}(m)\).
+The hypotheses put \(R\subseteq\mathcal U\) and \(U\subseteq\mathcal U\).
+Write
+\[
+W=\mathcal U\setminus(R\cup U).
+\]
+Since \(R\) and \(U\) are both subsets of \(\mathcal U\) and \(U\cap R=\emptyset\),
+the three finite sets \(R\), \(U\), and \(W\) are disjoint and cover every red
+or blue edge coordinate whose
+\noderef{GnpGraphWeight} factor can vary after the injection is fixed.
+Here the phrase ``can vary'' is literal after unfolding the weight
+definitions.  A two-bite sample is a red graph, a blue graph, and an
+injection.  By \(\noderef{TwoBiteSampleWeight}\), its weight is
+\[
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,m).
+\]
+The injection factor is independent of every red and blue edge value.  Each
+\(\noderef{GnpGraphWeight}\) is the finite product over increasing non-loop
+base pairs, with factor \(p\) when the corresponding edge is present and
+factor \(1-p\) when it is absent.  Finally,
+\(\noderef{TwoBiteEdgeCoordinateValue}\) simply reads the red adjacency for a
+red tagged coordinate and the blue adjacency for a blue tagged coordinate.
+Thus the graph-coordinate factors relevant to this proof are exactly the
+tagged increasing non-loop coordinates in \(\mathcal U\).
+
+The cylinder description (1) has two consequences.  First, every sample in
+\(C\) has the same injection as \(\omega_0\).  Second, every coordinate in
+\(R\) has the same truth value as in \(\omega_0\).  Conversely, there are no
+other restrictions in the definition of \(C\): if the injection and the
+\(R\)-table agree with \(\omega_0\), then the sample is in \(C\).  In
+particular, the coordinates in \(U\) and \(W\) are unrestricted by the
+conditioning event.
+
+The last sentence uses the canonical-orientation hypotheses in an essential
+way.  Suppose \(e\in U\) and a recorded coordinate \(r\in R\) reads the same
+underlying graph adjacency as \(e\).  The two coordinates must have the same
+color, because red and blue graph factors are distinct.  If
+\(e=\operatorname{red}(a,b)\) and \(r=\operatorname{red}(c,d)\), then both
+\(a<b\) and \(c<d\).  Equality of the underlying unordered base edge therefore
+forces \(a=c\) and \(b=d\), so \(r=e\); the blue case is identical.  This
+contradicts \(U\cap R=\emptyset\).  Thus no recorded coordinate, even through
+the symmetry of simple-graph adjacency, fixes a coordinate of \(U\).
+
+Because \(\omega_0\in C\), the cylinder has at least one sample.  The
+injection factor
+\(\noderef{UniformInjectionWeight}(n,m)\) is positive on any injection that
+occurs in the sample space, and \(0<p<1\) makes every factor \(p\) and
+\(1-p\) in the red and blue graph weights positive.  More explicitly, the
+injection of \(\omega_0\) exists, so the number of injections is nonzero and
+the reciprocal defining
+\(\noderef{UniformInjectionWeight}(n,m)\) is positive.  The fixed
+\(R\)-truth table contributes a finite product of factors, each equal to
+either \(p\) or \(1-p\), hence a positive factor.  The coordinates in \(U\)
+and \(W\) are not restricted by the cylinder, so they contribute positive
+total mass.  Therefore
+\[
+\noderef{TwoBiteEventProbability}(C)>0,
+\tag{3}
+\]
+so the nonzero branch of
+\(\noderef{TwoBiteConditionalProbability}\) is used.
+
+Fix \(A\subseteq U\).  In the numerator for the event that exactly \(A\)
+occurs on \(U\), unfold \(\noderef{TwoBiteEventProbability}\).  It is the
+finite sum of \(\noderef{TwoBiteSampleWeight}\) over those samples which both
+lie in \(C\) and satisfy the \(U\)-event.  For every summand, the injection
+is the fixed injection of \(\omega_0\), the \(R\)-coordinates have the fixed
+table inherited from \(\omega_0\), and the \(U\)-coordinates are fixed by
+\[
+e\in A \Longleftrightarrow
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,e).
+\]
+Because \(A\subseteq U\), every coordinate of \(U\) contributes \(p\) exactly
+when it lies in \(A\), and contributes \(1-p\) exactly when it lies in
+\(U\setminus A\).  Thus the contribution of \(U\) to every numerator summand is
+\[
+p^{|A|}(1-p)^{|U|-|A|}. \tag{4}
+\]
+The coordinates in \(W\) are not mentioned either by the cylinder \(C\) or by
+the event on \(U\).  Summing over the two possible values of any one
+\(w\in W\) gives \(p+(1-p)=1\).  Iterating over the finite set \(W\), all
+\(W\)-coordinates contribute a total factor \(1\).  In Lean this last
+iteration is the usual finite-product calculation using
+\(\texttt{Finset.prod\_eq\_one}\) after each unrestricted coordinate has
+been summed out.
+
+The denominator \(\noderef{TwoBiteEventProbability}(C)\) has the same fixed
+injection factor and the same fixed \(R\)-table factor as the numerator,
+because the denominator sums over the same cylinder \(C\) but imposes no
+condition on \(U\).  Its \(W\)-coordinates again sum to \(1\).  Its
+\(U\)-coordinates are unrestricted, so their total
+factor is
+\[
+\sum_{B\subseteq U}p^{|B|}(1-p)^{|U|-|B|}
+=\prod_{e\in U}(p+(1-p))=1. \tag{5}
+\]
+Consequently the numerator is exactly the common fixed injection and
+recorded-table factor multiplied by the \(U\)-factor in (4), while the
+denominator is the same common factor multiplied by \(1\).  The common factor
+is positive by (3), and
+\(\noderef{TwoBiteConditionalProbability}\) is therefore the ordinary quotient
+of numerator by denominator.  Cancelling the common factor and dividing by
+the positive denominator gives (2).
+\end{proof}

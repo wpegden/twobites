@@ -1,0 +1,21 @@
+\begin{helper}[Small-Class Final-Pairs Contribution Bound]
+Let \(\omega\) be a two-bite sample and let \(x\) be a base vertex in the
+small class for \(I\). If
+\[
+c_{\mathrm{prod}}=\frac12 n^{4\varepsilon},
+\]
+then any filtered subset of
+\(\noderef{TwoBiteFinalPairs}(\noderef{TwoBiteX}(\omega,I,x))\) has cardinality
+at most \(c_{\mathrm{prod}}\).
+\end{helper}
+\begin{proof}
+Filtering can only decrease cardinality. By \(\noderef{FinalPairsCardLeHalfSq}\),
+\[
+|\noderef{TwoBiteFinalPairs}(\noderef{TwoBiteX}(\omega,I,x))|
+\le \frac12 |\noderef{TwoBiteX}(\omega,I,x)|^2.
+\]
+Since \(x\) is in the small class, \(|\noderef{TwoBiteX}(\omega,I,x)|\le
+\noderef{TwoBiteSmallCutoff}(\varepsilon,n)=n^{2\varepsilon}\). Squaring this
+nonnegative inequality and using \((n^{2\varepsilon})^2=n^{4\varepsilon}\)
+gives the desired bound.
+\end{proof}

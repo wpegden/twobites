@@ -1,0 +1,27 @@
+\begin{helper}
+Let \(U\) be a finite terminal coordinate set and let \(U_B\subseteq U\) be a
+specified blue coordinate subset.  Let \(R\subseteq U\) be a red support of
+size \(u_R\), disjoint from \(U_B\), and let \(S\subseteq U_B\) be a fixed
+blue trace.  Then the complete-assignment product mass of all
+\(A\subseteq U\) whose blue part is exactly \(S\) and which contain \(R\) is
+\[
+\sum_{\substack{A\subseteq U\\ A\cap U_B=S\\ R\subseteq A}}
+  p^{|A|}(1-p)^{|U|-|A|}
+=
+p^{u_R}p^{|S|}(1-p)^{|U_B|-|S|}.
+\]
+\end{helper}
+\begin{proof}
+The constraints \(A\cap U_B=S\) and \(R\subseteq A\) are exactly the cylinder
+constraints in which every element of \(R\cup S\) is present and every element
+of \(U_B\setminus S\) is absent.  The present and absent sets are disjoint:
+\(S\) is contained in \(U_B\), \(R\) is disjoint from \(U_B\), and
+\(S\cap(U_B\setminus S)=\emptyset\).  The finite product-cylinder identity
+\(\noderef{FinsetPowersetCylinderMass}\) therefore gives
+\[
+p^{|R\cup S|}(1-p)^{|U_B\setminus S|}.
+\]
+Since \(R\) is disjoint from \(S\), \(|R\cup S|=|R|+|S|=u_R+|S|\).  Since
+\(S\subseteq U_B\), \(|U_B\setminus S|=|U_B|-|S|\).  Rewriting the powers
+gives the claimed expression.
+\end{proof}

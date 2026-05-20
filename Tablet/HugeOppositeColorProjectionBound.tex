@@ -1,0 +1,293 @@
+\begin{lemma}
+Under the hypotheses of \(\noderef{HugeFamilySizeBound}\), and assuming also
+\(\varepsilon_1\ge0\), suppose the sample parameters are the rounded hierarchy
+parameters
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+Then the opposite-color huge projected-pair sums satisfy
+\[
+\sum_{x\in H_I\cap V_R}\binom{|\pi_B(X_x(I))|}{2}_{\mathbb R}
+\le
+(1+\varepsilon_1)
+\min\left\{
+\binom{k-|\pi_R(I)|}{2}_{\mathbb R},
+\binom{pn}{2}_{\mathbb R}+
+\binom{k-|\pi_R(I)|-pn}{2}_{\mathbb R}
+\right\},
+\]
+and the color-swapped estimate with \(R\) and \(B\) interchanged.
+\end{lemma}
+\begin{proof}
+Let
+\[
+C(u)=\noderef{RealChooseTwo}(u)=\binom{u}{2}_{\mathbb R}.
+\]
+We first record the two finite convexity estimates used below.
+In each application the finite family is indexed by a Lean `Finset.filter`;
+choosing any enumeration of that finite set turns the sum into the list form
+written here, and the estimates are invariant under the chosen enumeration.
+
+First, if \(b_1,\ldots,b_h\) are nonnegative real numbers, then
+\[
+\sum_i C(b_i)\le C\left(\sum_i b_i\right). \tag{1}
+\]
+For two nonnegative terms this is the identity
+\[
+C(r+s)-C(r)-C(s)=rs\ge0.
+\]
+Induct on the finite list: the partial sum already accumulated is
+nonnegative, the next term is nonnegative, and the two-term identity shows
+that replacing \(C(P)+C(b)\) by \(C(P+b)\) can only increase the right side.
+This proves (1), including the empty-list case where both sides are \(0\).
+
+Second, suppose \(0\le M\), \(0\le b_i\le M\) for every \(i\), let
+\[
+B=\sum_i b_i,
+\]
+and assume \(M\le B\).  Then
+\[
+\sum_i C(b_i)\le C(M)+C(B-M). \tag{2}
+\]
+If the list is empty, then \(0\le M\le B=0\), so \(M=0\) and both sides are
+\(0\).  Otherwise
+order the finite list arbitrarily and let \(j\) be the first index for which
+the partial sum \(P_j=\sum_{i\le j}b_i\) is at least \(M\).  Then
+\[
+P_{j-1}\le M,\qquad b_j\le M,\qquad P_j-M\ge0.
+\]
+By (1) applied to the first \(j-1\) terms,
+\[
+\sum_{i<j}C(b_i)\le C(P_{j-1}).
+\]
+Since \(P_j=P_{j-1}+b_j\), the explicit difference formula
+\[
+C(M)+C(P_j-M)-C(P_{j-1})-C(b_j)
+  =(M-P_{j-1})(M-b_j)
+\]
+is nonnegative.  Thus
+\[
+\sum_{i\le j}C(b_i)\le C(M)+C(P_j-M).
+\]
+All remaining \(b_i\) and \(P_j-M\) are nonnegative, so applying (1) to
+\(P_j-M\) together with the remaining terms gives
+\[
+C(P_j-M)+\sum_{i>j}C(b_i)
+\le C(B-M).
+\]
+Adding this to the preceding display proves (2).  In the complementary case
+\(B\le M\), (1) gives directly
+\[
+\sum_i C(b_i)\le C(B). \tag{3}
+\]
+
+We now prove the red-to-blue estimate and match it to the first Lean
+conjunct.  Define the exact huge-red predicate and filter by
+\[
+\mathsf{hugeRed}(x)\iff
+\noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists r,\ x=\operatorname{inl}(r),
+\]
+\[
+H_R=\operatorname{univ}.\operatorname{filter}(\mathsf{hugeRed}).
+\]
+For \(x\in H_R\), set
+\[
+a_x=
+\bigl|X_x(I).\operatorname{image}
+  (\noderef{TwoBiteBlueProjection}(\omega))\bigr|,
+\]
+and put
+\[
+T_R=\sum_{x\in H_R}a_x,\qquad
+D_R=(k:\mathbb R)-
+  \bigl((I.\operatorname{image}
+    (\noderef{TwoBiteRedProjection}(\omega))).\operatorname{card}:\mathbb R\bigr),
+\]
+\[
+b=p\cdot(n:\mathbb R),\qquad M=(1+\varepsilon_2)b.
+\]
+Unfolding \(\noderef{TwoBiteProjectedPairSum}\), the left side of the first
+Lean conjunct is exactly
+\[
+S_R=\sum_{x\in H_R}C(a_x)
+=\noderef{TwoBiteProjectedPairSum}
+  (\omega,I,\mathsf{hugeRed},\noderef{TwoBiteBlueProjection}(\omega)). \tag{4}
+\]
+Notice the deliberate cross-color bookkeeping: the summand uses the blue
+projection \(\pi_B\), but the deficit \(D_R\) uses
+\(|I.\operatorname{image}\pi_R|\), exactly as in the Lean statement.
+
+Apply \(\noderef{HugeOppositeProjectionMassControl}\) with the same
+\(\omega,I,n,m,k,p,\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), the same
+hypotheses \(0\le\varepsilon_1\),
+\(\noderef{ParameterHierarchyEventualComparisons}\), \(n_0<n\), the same
+rounded equalities for \(m,p,k\), the same \(|I|=k\), and the same
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\).  In the notation of
+that child, its `redMass' is exactly \(T_R\), its `redDeficit' is exactly
+\(D_R\), and its `blockScale' is exactly \(b=p(n:\mathbb R)\).  Its
+first, third, fourth, and fifth red conjuncts give respectively
+\[
+0\le a_x\le M\qquad(x\in H_R), \tag{5}
+\]
+where nonnegativity is cardinality nonnegativity, and
+\[
+C(T_R)\le(1+\varepsilon_1)C(D_R), \tag{6}
+\]
+\[
+T_R\le M\Longrightarrow
+C(T_R)\le
+(1+\varepsilon_1)\bigl(C(b)+C(D_R-b)\bigr), \tag{7}
+\]
+\[
+M\le T_R\Longrightarrow
+C(M)+C(T_R-M)\le
+(1+\varepsilon_1)\bigl(C(b)+C(D_R-b)\bigr). \tag{8}
+\]
+The unused second red conjunct is the mass-deficit estimate
+\(T_R\le(1+\varepsilon_2)D_R\); it is part of the child package but is not
+needed for this aggregation step.
+The hierarchy package gives \(0\le\varepsilon_2\), and the rounded definition
+of \(p\) gives \(0\le b\), so \(0\le M\).  Hence the convexity estimates above
+apply to the finite family \((a_x)_{x\in H_R}\).
+
+By (1) and (6),
+\[
+S_R=\sum_{x\in H_R}C(a_x)
+\le C(T_R)
+\le(1+\varepsilon_1)C(D_R). \tag{9}
+\]
+This is the one-block side of the minimum.  For the two-block side, split the
+linear order on \(T_R\) and \(M\).  If \(T_R\le M\), then (3) and (7) give
+\[
+S_R\le C(T_R)
+\le(1+\varepsilon_1)\bigl(C(b)+C(D_R-b)\bigr). \tag{10}
+\]
+If \(M\le T_R\), then (2), the pointwise cap (5), and (8) give
+\[
+S_R\le C(M)+C(T_R-M)
+\le(1+\varepsilon_1)\bigl(C(b)+C(D_R-b)\bigr). \tag{11}
+\]
+The two cases cover all possibilities, so (10)--(11) prove the two-block side
+unconditionally:
+\[
+S_R\le(1+\varepsilon_1)\bigl(C(b)+C(D_R-b)\bigr). \tag{12}
+\]
+Let \(A_R=C(D_R)\) and \(B_R=C(b)+C(D_R-b)\).  From (9) and (12) we have
+\[
+S_R\le(1+\varepsilon_1)A_R,\qquad
+S_R\le(1+\varepsilon_1)B_R.
+\]
+By the defining property of the minimum in a linear order, these two
+inequalities give
+\[
+S_R\le\min\{(1+\varepsilon_1)A_R,(1+\varepsilon_1)B_R\}.
+\]
+Because \(1+\varepsilon_1\ge0\), multiplication by \(1+\varepsilon_1\) is
+monotone and
+\[
+\min\{(1+\varepsilon_1)A_R,(1+\varepsilon_1)B_R\}
+=(1+\varepsilon_1)\min\{A_R,B_R\}.
+\]
+Combining these two displays yields
+\[
+S_R\le
+(1+\varepsilon_1)\min\{C(D_R),\,C(b)+C(D_R-b)\},
+\]
+which is precisely the red-huge/blue-projection inequality in the Lean
+statement, with \(b=p\cdot(n:\mathbb R)\).
+
+We prove the blue-to-red estimate separately, again matching the Lean
+conjunct.  Define
+\[
+\mathsf{hugeBlue}(x)\iff
+\noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists q,\ x=\operatorname{inr}(q),
+\]
+\[
+H_B=\operatorname{univ}.\operatorname{filter}(\mathsf{hugeBlue}).
+\]
+For \(x\in H_B\), set
+\[
+c_x=
+\bigl|X_x(I).\operatorname{image}
+  (\noderef{TwoBiteRedProjection}(\omega))\bigr|,
+\]
+and put
+\[
+T_B=\sum_{x\in H_B}c_x,\qquad
+D_B=(k:\mathbb R)-
+  \bigl((I.\operatorname{image}
+    (\noderef{TwoBiteBlueProjection}(\omega))).\operatorname{card}:\mathbb R\bigr).
+\]
+Unfolding \(\noderef{TwoBiteProjectedPairSum}\), the left side of the second
+Lean conjunct is
+\[
+S_B=\sum_{x\in H_B}C(c_x)
+=\noderef{TwoBiteProjectedPairSum}
+  (\omega,I,\mathsf{hugeBlue},\noderef{TwoBiteRedProjection}(\omega)). \tag{13}
+\]
+Here the summand uses the red projection \(\pi_R\), while the deficit \(D_B\)
+uses \(|I.\operatorname{image}\pi_B|\), exactly as required.
+
+The blue conclusions of
+\(\noderef{HugeOppositeProjectionMassControl}\), instantiated with the same
+data as above, are read with `blueMass' \(=T_B\), `blueDeficit' \(=D_B\), and
+the same `blockScale' \(=b\).  Its first, third, fourth, and fifth blue
+conjuncts give respectively
+\[
+0\le c_x\le M\qquad(x\in H_B), \tag{14}
+\]
+\[
+C(T_B)\le(1+\varepsilon_1)C(D_B), \tag{15}
+\]
+\[
+T_B\le M\Longrightarrow
+C(T_B)\le
+(1+\varepsilon_1)\bigl(C(b)+C(D_B-b)\bigr), \tag{16}
+\]
+and
+\[
+M\le T_B\Longrightarrow
+C(M)+C(T_B-M)\le
+(1+\varepsilon_1)\bigl(C(b)+C(D_B-b)\bigr). \tag{17}
+\]
+Again, the child also supplies \(T_B\le(1+\varepsilon_2)D_B\), but the
+present proof only needs the displayed pointwise and binomial conclusions.
+Using (1) and (15),
+\[
+S_B\le C(T_B)\le(1+\varepsilon_1)C(D_B). \tag{18}
+\]
+For the two-block side, if \(T_B\le M\), then (3) and (16) give
+\[
+S_B\le(1+\varepsilon_1)\bigl(C(b)+C(D_B-b)\bigr),
+\]
+while if \(M\le T_B\), then (2), the pointwise cap (14), and (17) give the
+same inequality.  Thus
+\[
+S_B\le(1+\varepsilon_1)\bigl(C(b)+C(D_B-b)\bigr). \tag{19}
+\]
+Let \(A_B=C(D_B)\) and \(B_B=C(b)+C(D_B-b)\).  Equations (18) and (19) give
+\[
+S_B\le(1+\varepsilon_1)A_B,\qquad
+S_B\le(1+\varepsilon_1)B_B.
+\]
+Hence
+\[
+S_B\le\min\{(1+\varepsilon_1)A_B,(1+\varepsilon_1)B_B\}.
+\]
+As above, \(1+\varepsilon_1\ge0\), so
+\[
+\min\{(1+\varepsilon_1)A_B,(1+\varepsilon_1)B_B\}
+=(1+\varepsilon_1)\min\{A_B,B_B\}.
+\]
+Therefore
+\[
+S_B\le
+(1+\varepsilon_1)\min\{C(D_B),\,C(b)+C(D_B-b)\}.
+\]
+This is exactly the blue-huge/red-projection inequality in the second Lean
+conjunct.  The two proved inequalities are the desired conjunction.
+\end{proof}

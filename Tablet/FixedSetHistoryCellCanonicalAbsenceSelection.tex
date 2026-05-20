@@ -1,0 +1,52 @@
+\begin{helper}
+Fix a history cell \(C\), terminal set \(U\), recorded set \(R_h\), and a fixed
+terminal scan order.  Assume the prefix-safety statement for the scan: when a
+coordinate \(e\) is reached, staged-openness, touchedness, same-color
+closedness, and recordedness of \(e\) are determined by the history and the
+previously exposed terminal coordinates.  Let \(\omega\in C\) satisfy
+\[
+a\le |\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)|.
+\]
+Let \(R\) and \(B\) be the present red and blue staged-open supports, and
+assume every present staged-open terminal coordinate lies in \(R\cup B\).
+Then there is a finite set \(Z\subseteq U\), disjoint from \(R\cup B\), such
+that every coordinate in \(Z\) is staged-open and absent in \(\omega\),
+each member of \(Z\) is selected at a scan position where prefix-safety makes
+the staged-open test measurable from the past, and
+\[
+\max(0,a-|R|-|B|)\le |Z|.
+\]
+\end{helper}
+\begin{proof}
+Let \(S=\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\).  By the
+terminal containment hypothesis, \(S\subseteq U\).  Split \(S\) into present
+and absent coordinates.  The present coordinates are assumed to lie in
+\(R\cup B\), so the absent staged-open coordinates contain
+\[
+S\setminus (R\cup B).
+\]
+The cardinality of this set is at least
+\[
+|S|-|R|-|B|.
+\]
+Since \(a\le |S|\), it is also at least \(a-|R|-|B|\) in the real-valued
+sense.  If this number is nonpositive, take \(Z=\emptyset\).  Otherwise,
+scan the fixed terminal order and choose the first
+\(\lceil a-|R|-|B|\rceil\) coordinates belonging to
+\(S\setminus(R\cup B)\).  This is possible by the preceding cardinality
+bound.
+
+The chosen set is contained in \(U\), is disjoint from \(R\cup B\), and every
+chosen coordinate is staged-open and absent by construction.  Moreover, each
+chosen coordinate is chosen at the moment it is encountered in the fixed
+terminal order.  The prefix-safety hypothesis says that, at that moment, the
+facts used to test staged-openness and exclusion from the recorded and
+same-color-closed/touched predicates depend only on the history and earlier
+terminal values.  Hence requiring the chosen coordinate to be absent still
+charges a fresh terminal Bernoulli factor.  The number of chosen coordinates
+is exactly the ceiling in the positive case and zero in the nonpositive case,
+so in both cases
+\[
+\max(0,a-|R|-|B|)\le |Z|.
+\]
+\end{proof}

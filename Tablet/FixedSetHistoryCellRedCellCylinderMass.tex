@@ -1,0 +1,126 @@
+\begin{helper}
+Let \(H\) be a history cell, \(T\) a target event, \(U\) the terminal
+coordinate set, and let
+\[
+G_{B,J,\beta,\tau}
+\]
+be a red branch/transcript cell family indexed by
+\[
+B\in\mathcal B,\qquad J\in\mathcal J,\qquad
+\beta\in\mathcal T,\qquad \tau=(P_\tau,A_\tau,Z_\tau)\in\mathcal P,
+\]
+where \(\mathcal T\) is the finite branch/trace label type.
+Assume \(0\le p\le 1/2\).  Assume the complete terminal product law over
+\(H\): for every \(A\subseteq U\), the conditional probability, given \(H\),
+of the complete assignment \(X_e=1\) exactly on \(A\) is
+\[
+p^{|A|}(1-p)^{|U|-|A|}.
+\]
+Assume also that whenever a sample lies in \(G_{B,J,\beta,\tau}\), the sets
+\(P_\tau\) and \(A_\tau\) are disjoint subsets of \(U\), every coordinate in
+\(P_\tau\) is present, and every coordinate in \(A_\tau\) is absent.
+
+Then there is a real-valued cell weight \(w_{B,J,\beta,\tau}\), defined for
+all \(B\in\mathcal B\), \(J\in\mathcal J\),
+\(\beta\in\mathcal T\), and \(\tau\in\mathcal P\), such that for every
+such index
+\[
+0\le w_{B,J,\beta,\tau},
+\]
+\[
+w_{B,J,\beta,\tau}\le p^{|P_\tau|}(1-p)^{|A_\tau|},
+\]
+and the raw event-probability bound holds:
+\[
+\Pr(T\cap H\cap G_{B,J,\beta,\tau})
+\le
+\Pr(H)\,w_{B,J,\beta,\tau}.
+\]
+\end{helper}
+\begin{proof}
+Fix indices \(B,J,\beta,\tau\), with
+\(\tau=(P_\tau,A_\tau,Z_\tau)\).  Set
+\[
+w_{B,J,\beta,\tau}=p^{|P_\tau|}(1-p)^{|A_\tau|}.
+\]
+Since \(0\le p\le 1/2\), also \(p\le1\) and \(0\le1-p\).  Hence this weight
+is nonnegative and it satisfies the displayed cylinder-factor upper bound
+with equality.
+
+The cell-geometry hypothesis gives, for every sample in the cell,
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,
+\]
+and the cell event implies that every coordinate of \(P_\tau\) is present
+and every coordinate of \(A_\tau\) is absent.  Hence
+\[
+T\cap H\cap G_{B,J,\beta,\tau}
+\subseteq
+H\cap\{X_e=1\text{ for }e\in P_\tau,\,
+      X_e=0\text{ for }e\in A_\tau\}.
+\]
+The right-hand event is a terminal cylinder: it is the disjoint union, over
+all complete terminal assignments \(S\subseteq U\) with
+\(P_\tau\subseteq S\) and \(S\cap A_\tau=\emptyset\), of the complete
+assignment events \(X_e=1\) exactly for \(e\in S\).  The complete terminal
+product law assigns such an \(S\) the conditional mass
+\[
+p^{|S|}(1-p)^{|U|-|S|}.
+\]
+Factoring out the forced present coordinates in \(P_\tau\) and the forced
+absent coordinates in \(A_\tau\), the unmentioned terminal coordinates each
+contribute \(p+(1-p)=1\).  Thus the conditional mass of the whole cylinder
+is bounded by, and in the exact product case equals,
+\[
+p^{|P_\tau|}(1-p)^{|A_\tau|}.
+\]
+
+Apply the terminal cylinder charge
+\(\noderef{FixedSetHistoryCellFixedCylinderCharge}\), using the complete
+terminal product law for \(H\), to the disjoint present and absent sets
+\(P_\tau,A_\tau\).  It gives the conditional cylinder bound
+\[
+\Pr(P_\tau\text{ present and }A_\tau\text{ absent}\mid H)
+\le p^{|P_\tau|}(1-p)^{|A_\tau|}.
+\]
+
+It remains to pass carefully from this conditional estimate to the raw cell
+mass estimate.  Write \(\Pr\) for
+\(\noderef{TwoBiteEventProbability}\).  The sample weights are nonnegative
+by \(\noderef{TwoBiteSampleWeightNonnegative}\), since \(0\le p\le1\).  Hence
+event probability is monotone under containment: if \(E\subseteq F\), then
+the finite sum defining \(\Pr(E)\) is obtained from the sum for \(\Pr(F)\)
+by deleting nonnegative terms, so \(\Pr(E)\le\Pr(F)\).
+
+First suppose \(\Pr(H)>0\).  By the definition of
+\(\noderef{TwoBiteConditionalProbability}\), the conditional probability of
+the cylinder given \(H\) is
+\[
+\frac{\Pr(H\cap\{P_\tau\text{ present},A_\tau\text{ absent}\})}{\Pr(H)}.
+\]
+The displayed conditional cylinder bound therefore gives
+\[
+\Pr(H\cap\{P_\tau\text{ present},A_\tau\text{ absent}\})
+\le
+\Pr(H)\,w_{B,J,\beta,\tau}
+\]
+after multiplying by the positive denominator \(\Pr(H)\).  By the containment
+of \(T\cap H\cap G_{B,J,\beta,\tau}\) in this cylinder event and by
+monotonicity,
+\[
+\Pr(T\cap H\cap G_{B,J,\beta,\tau})
+\le \Pr(H)\,w_{B,J,\beta,\tau}.
+\]
+
+Now suppose \(\Pr(H)=0\).  The event \(T\cap H\cap G_{B,J,\beta,\tau}\) is a
+subevent of \(H\).  Monotonicity from the nonnegative sample weights gives
+\[
+\Pr(T\cap H\cap G_{B,J,\beta,\tau})\le \Pr(H)=0.
+\]
+The left side is also nonnegative, again by nonnegative sample weights, so it
+is \(0\).  Since \(w_{B,J,\beta,\tau}\ge0\), the right side
+\(\Pr(H)w_{B,J,\beta,\tau}\) is also \(0\), giving the raw bound in the
+zero-history-mass case.  This two-case multiplication step is the concrete
+case split behind the general monotone conditional-intersection estimate in
+\(\noderef{TwoBiteConditionalIntersectionBound}\).
+\end{proof}

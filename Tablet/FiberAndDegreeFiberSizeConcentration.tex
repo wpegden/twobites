@@ -1,0 +1,194 @@
+\begin{lemma}
+Let \(M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n) = \lfloor n/\log^2 n \rfloor\), and let \(\beta = 1/2\). For any \(\eta>0\), under the two-bite law, the probability of the simultaneous red and blue fiber-size concentration event
+\[
+\big(\forall r\in V_R, \noderef{WithinRelativeError}(\eta, \log^2 n, |\noderef{RedFiber}(\omega,r)|)\big) \land
+\big(\forall b\in V_B, \noderef{WithinRelativeError}(\eta, \log^2 n, |\noderef{BlueFiber}(\omega,b)|)\big)
+\]
+tends to \(1\) as \(n\to\infty\).
+\end{lemma}
+\begin{proof}
+Let \(L=\log n\), \(M=M(n)\), and
+\(p=\noderef{TwoBiteEdgeProbability}(1/2,n)\).  By
+\(\noderef{TwoBiteNaturalReducedVertexCount}\), together with
+\(\noderef{TwoBiteReducedVertexCount}\) and \(\noderef{TwoBiteStretch}\),
+\[
+M=\left\lfloor \frac n{L^2}\right\rfloor ,
+\]
+so, after discarding finitely many initial \(n\), we may assume
+\[
+\frac12\,\frac n{L^2}\le M\le \frac n{L^2},\qquad
+\left|\frac nM-L^2\right|\le \frac{\eta}{4}L^2,\qquad
+\frac nM\le 2L^2,
+\tag{1}
+\]
+and \(n\le M^2\).  The last inequality is also one of the eventual
+conclusions of \(\noderef{TwoBiteNaturalTotalMassOneEventually}\) for
+\(\beta=1/2\) and this rounded choice of \(m(n)=M(n)\).  These finite
+initial values do not affect \(\noderef{WithHighProbability}\), which is a
+limit statement.
+
+We first identify the exact law of one fiber count.  Fix such an \(n\) and a
+red base vertex \(r\in \operatorname{Fin}(M)\).  By
+\(\noderef{TwoBiteSample}\), an outcome in the two-bite sample space is a
+triple
+\[
+\omega=(G_R,G_B,\pi),
+\qquad
+\pi:\operatorname{Fin}(n)\hookrightarrow \operatorname{Fin}(M)\times
+\operatorname{Fin}(M).
+\]
+The map \(\pi\) is \(\noderef{TwoBiteEmbedding}(\omega)\).  By
+\(\noderef{TwoBiteRedProjection}\), the red projection of a final vertex is
+the first coordinate of \(\pi(v)\), and by \(\noderef{RedFiber}\)
+\[
+|\noderef{RedFiber}(\omega,r)|
+=\left|\{v\in \operatorname{Fin}(n):(\pi(v))_1=r\}\right|.
+\tag{2}
+\]
+Thus the random variable in (2) depends only on the injection coordinate
+\(\pi\), not on \(G_R\) or \(G_B\).
+
+Let \(A\) be any set of possible values of the count in (2), for example an
+upper-tail, lower-tail, or two-sided tail event.  By
+\(\noderef{TwoBiteEventProbability}\), the probability of \(A\) is the sum of
+\(\noderef{TwoBiteSampleWeight}\) over all triples
+\((G_R,G_B,\pi)\) for which the injection \(\pi\) gives a count in \(A\).
+The weight factors as
+\[
+\noderef{TwoBiteSampleWeight}(G_R,G_B,\pi)
+=\noderef{GnpGraphWeight}(p,G_R)\,
+  \noderef{GnpGraphWeight}(p,G_B)\,
+  \noderef{UniformInjectionWeight}(n,M).
+\tag{3}
+\]
+Since membership in \(A\) depends only on \(\pi\), the finite sum factors:
+\[
+\sum_{\pi:\,X_r(\pi)\in A}\noderef{UniformInjectionWeight}(n,M)
+\left(\sum_{G_R}\noderef{GnpGraphWeight}(p,G_R)\right)
+\left(\sum_{G_B}\noderef{GnpGraphWeight}(p,G_B)\right).
+\]
+Both graph sums are \(1\) by \(\noderef{GnpGraphWeightSumOne}\).  Therefore
+the marginal probability is exactly
+\[
+\sum_{\pi:\,X_r(\pi)\in A}\noderef{UniformInjectionWeight}(n,M).
+\tag{4}
+\]
+Because \(n\le M^2\), injections from \(\operatorname{Fin}(n)\) to
+\(\operatorname{Fin}(M)\times\operatorname{Fin}(M)\) exist.  Hence
+\(\noderef{UniformInjectionWeight}\) is the reciprocal of the number of such
+injections, and (4) is precisely the uniform law on ordered samples of \(n\)
+distinct cells from the population
+\[
+U=\operatorname{Fin}(M)\times\operatorname{Fin}(M),\qquad |U|=M^2.
+\]
+The marked set for the fixed red vertex is the row
+\[
+R_r=\{r\}\times\operatorname{Fin}(M),
+\qquad |R_r|=M.
+\]
+Equation (2) counts how many of the \(n\) sampled cells lie in this marked
+row.  Thus \(X_r=|\noderef{RedFiber}(\omega,r)|\) is a hypergeometric count
+with population size \(M^2\), marked-set size \(M\), and sample size \(n\).
+Its mean is
+\[
+\mu=n\frac{M}{M^2}=\frac nM.
+\tag{5}
+\]
+
+The same reduction holds for a fixed blue vertex
+\(b\in \operatorname{Fin}(M)\).  By \(\noderef{TwoBiteBlueProjection}\) and
+\(\noderef{BlueFiber}\),
+\[
+|\noderef{BlueFiber}(\omega,b)|
+=\left|\{v\in \operatorname{Fin}(n):(\pi(v))_2=b\}\right|,
+\]
+and the marked set is the column
+\[
+B_b=\operatorname{Fin}(M)\times\{b\},
+\qquad |B_b|=M.
+\]
+The graph weights marginalize away exactly as above, so this blue fiber count
+has the same hypergeometric law and the same mean \(\mu=n/M\).
+
+We now record the tail estimate used for these hypergeometric variables.
+For a sample of size \(s\) without replacement from a population of size
+\(N\) with \(K\) marked elements, put \(q=K/N\) and \(\mu=sq\).  The node
+\(\noderef{HypergeometricMgfComparison}\) gives, for every real
+\(\lambda\),
+\[
+\mathbb E e^{\lambda Y}
+\le (1-q+qe^\lambda)^s
+\le \exp(\mu(e^\lambda-1)).
+\tag{6}
+\]
+Let \(0<\delta\le 1/2\).  Applying Markov's inequality to (6) with
+\(\lambda=\log(1+\delta)\) gives
+\[
+\Pr(Y\ge(1+\delta)\mu)
+\le \exp\!\left(-\mu((1+\delta)\log(1+\delta)-\delta)\right).
+\]
+Applying (6) to \(-\lambda\), with
+\(\lambda=-\log(1-\delta)\), gives
+\[
+\Pr(Y\le(1-\delta)\mu)
+\le \exp\!\left(-\mu((1-\delta)\log(1-\delta)+\delta)\right).
+\]
+The two displayed exponents are positive for \(0<\delta\le1/2\), so with
+\[
+c_\delta=\min\{(1+\delta)\log(1+\delta)-\delta,\,
+                (1-\delta)\log(1-\delta)+\delta\}>0
+\]
+we have
+\[
+\Pr(|Y-\mu|>\delta\mu)\le 2\exp(-c_\delta\mu).
+\tag{7}
+\]
+
+Set
+\[
+\delta=\min\{\eta/4,\,1/4\}.
+\]
+Then \(0<\delta\le1/2\).  For the red fiber count \(X_r\), (5) and (7) give
+\[
+\Pr(|X_r-\mu|>\delta\mu)\le 2e^{-c_\delta\mu}.
+\tag{8}
+\]
+If \(|X_r-\mu|\le\delta\mu\), then by (1) and
+\(\delta\le\eta/4\),
+\[
+|X_r-L^2|
+\le |X_r-\mu|+|\mu-L^2|
+\le \delta\mu+\frac{\eta}{4}L^2
+\le \frac{\eta}{4}\cdot 2L^2+\frac{\eta}{4}L^2
+\le \eta L^2.
+\]
+This is exactly
+\(\noderef{WithinRelativeError}(\eta,L^2,X_r)\).  Therefore failure of the
+red relative-error statement implies the tail event in (8).  Since
+\(\mu=n/M\) and (1) gives \(\mu\ge L^2\) for all sufficiently large \(n\),
+\[
+\Pr\bigl(\neg\noderef{WithinRelativeError}
+(\eta,L^2,|\noderef{RedFiber}(\omega,r)|)\bigr)
+\le 2e^{-c_\delta L^2}.
+\tag{8a}
+\]
+The identical estimate holds for every blue vertex \(b\), with
+\(\noderef{BlueFiber}\) in place of \(\noderef{RedFiber}\).
+
+There are \(M\) red vertices and \(M\) blue vertices.  By the union bound, the
+probability that any red or blue fiber violates the required relative-error
+bound is at most
+\[
+4M e^{-c_\delta L^2}.
+\tag{9}
+\]
+Using \(M\le n/L^2\) from (1), the logarithm of the right side is at most
+\[
+\log 4+\log n-2\log L-c_\delta L^2,
+\]
+which tends to \(-\infty\) because \(L=\log n\) and \(L^2\) dominates \(L\).
+Thus the failure probability tends to \(0\).  Equivalently, the
+\(\noderef{TwoBiteEventProbability}\) of the simultaneous red and blue
+fiber-size concentration event tends to \(1\), which is the asserted
+\(\noderef{WithHighProbability}\) conclusion.
+\end{proof}

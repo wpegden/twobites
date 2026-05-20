@@ -1,0 +1,98 @@
+\begin{helper}[Pushforward Agreement]
+Fix $n\in\mathbb N$, $I\subseteq\mathrm{Fin}(n)$, parameter $\varepsilon\in\mathbb R$, parameter $M\in\mathbb N$, and $p_0\in\mathbb R$.
+Let $\pi:\mathrm{Fin}(n)\hookrightarrow\mathrm{Fin}(M)\times\mathrm{Fin}(M)$ be an embedding.
+Let $Z_{\mathrm{prod}}(v)=\noderef{FixedSetProductModelVar}(I,\varepsilon,p_0,\pi,v)$.
+Let $Z_I(\omega)$ be the sample-based quantity defined identically as in \(\noderef{FixedSetProductModelTail}\).
+Let $P_R=\{\pi(u)_1:u\in I\}$, $P_B=\{\pi(u)_2:u\in I\}$.
+Let $D(\omega)$ denote the incident data extracted from sample $\omega$, and let $D(v)$ denote the incident data extracted from product assignment $v$, defined identically as in \(\noderef{FixedSetProductModelTailPushforwardGraphFiberSum}\) and \(\noderef{FixedSetProductModelTailPushforwardProductFiberSum}\).
+For any predicate $H$, define the induced data predicate $H_D(D)$ as $\exists v: D(v)=D \land H(Z_{\mathrm{prod}}(v))$.
+Then for any sample $\omega$ with \(\noderef{TwoBiteEmbedding}(\omega)=\pi\), we have the logical equivalence
+\[
+H(Z_I(\omega)) \iff H_D(D(\omega)),
+\]
+and as sets of product assignments, we have the equality
+\[
+\{v: H(Z_{\mathrm{prod}}(v))\} = \{v: H_D(D(v))\}.
+\]
+\end{helper}
+\begin{proof}
+Fix a sample \(\omega\) in the cell, so
+\(\noderef{TwoBiteEmbedding}(\omega)=\pi\).  Define a product assignment
+\(v_\omega\) from the incident data of \(\omega\) as follows.  For a red
+coordinate \(x\), set the first component of \(v_{\omega,x}\) to
+\[
+D_R(\omega)(x)=
+\begin{cases}
+\emptyset, & x\in P_R,\\
+\{r\in P_R:\text{\(x\) is adjacent to \(r\) in the red graph of \(\omega\)}\},
+  & x\notin P_R,
+\end{cases}
+\]
+and set the redundant second component arbitrarily, say to \(\emptyset\).
+For a blue coordinate \(y+M\), set the second component to the analogous set
+\(D_B(\omega)(y)\), and set the redundant first component to \(\emptyset\).
+Then, by construction, \(D(v_\omega)=D(\omega)\).
+
+We now check that this equality of incident data forces equality of the two
+values.  In the sample \(\omega\), because the embedding is \(\pi\), every
+vertex \(u\in I\) has red projection \(\pi(u)_1\in P_R\) and blue projection
+\(\pi(u)_2\in P_B\).  In the product sample defining
+\(\noderef{FixedSetProductModelVar}\), the red graph is
+\[
+\noderef{FixedSetFakeGraph}
+  \bigl(P_R,\;x\mapsto (v_x)_1\bigr),
+\]
+and the blue graph is the corresponding fake graph on \(P_B\) using the
+second components of the last \(M\) coordinates.
+
+For a red base vertex \(x\notin P_R\) and \(u\in I\), the red lifted
+neighborhood condition in \(\omega\) is exactly the assertion that
+\(\pi(u)_1\in D_R(\omega)(x)\).  The red lifted neighborhood condition in the
+product sample is, after unfolding \(\noderef{FixedSetFakeGraph}\), exactly
+the assertion that \(\pi(u)_1\in (v_x)_1\).  If \(D(v)=D(\omega)\), these two
+conditions are identical.  If \(x\in P_R\), then the base vertex
+\(\operatorname{inl}x\) belongs to the embedded set removed before the
+external-small-class stage, so its neighborhood value is irrelevant to the
+final count.  The same argument applies to blue base vertices \(y\notin P_B\),
+using \(D_B\) and the second components of the blue coordinates.
+
+It follows that for every external red or blue base vertex \(x\), the set
+\(\noderef{TwoBiteX}(\omega,I,x)\) equals the corresponding
+\(\noderef{TwoBiteX}\) set in the product sample.  Therefore their
+cardinalities are equal, so the \(\noderef{TwoBiteSmallClass}\) predicate
+selects exactly the same external base vertices.  For each selected base
+vertex, the input set to \(\noderef{TwoBiteFinalPairs}\) is the same, hence
+the final-pair set is the same.  The red and blue projection maps used in the
+projection-distinct filter are also the same, because both samples have
+embedding \(\pi\).  Thus the union of final pairs and its
+projection-distinct subfilter are equal, so their cardinalities are equal:
+\[
+Z_I(\omega)=Z_{\mathrm{prod}}(v)
+\quad\text{whenever }D(v)=D(\omega).
+\]
+In particular \(Z_I(\omega)=Z_{\mathrm{prod}}(v_\omega)\).
+
+This proves the first equivalence.  If \(H(Z_I(\omega))\) holds, the
+assignment \(v_\omega\) satisfies \(D(v_\omega)=D(\omega)\) and
+\[
+H(Z_{\mathrm{prod}}(v_\omega))=H(Z_I(\omega)),
+\]
+so \(H_D(D(\omega))\) holds.  Conversely, if \(H_D(D(\omega))\) holds, choose
+\(v\) with \(D(v)=D(\omega)\) and \(H(Z_{\mathrm{prod}}(v))\).  The equality
+just proved gives \(Z_{\mathrm{prod}}(v)=Z_I(\omega)\), hence
+\(H(Z_I(\omega))\).
+
+For the product-assignment set equality, one inclusion is immediate: if
+\(H(Z_{\mathrm{prod}}(v))\), take \(v'=v\) in the definition of
+\(H_D(D(v))\).  Conversely, if \(H_D(D(v))\), choose \(v'\) with
+\(D(v')=D(v)\) and \(H(Z_{\mathrm{prod}}(v'))\).  The same incident-data
+argument applied to the two product samples gives
+\[
+Z_{\mathrm{prod}}(v')=Z_{\mathrm{prod}}(v),
+\]
+because their fake red and blue graphs have the same adjacencies relevant to
+all \(\noderef{TwoBiteX}\), \(\noderef{TwoBiteSmallClass}\),
+\(\noderef{TwoBiteFinalPairs}\), and projection-distinct filters.  Hence
+\(H(Z_{\mathrm{prod}}(v))\).  The two filtered sets of product assignments are
+therefore equal.
+\end{proof}

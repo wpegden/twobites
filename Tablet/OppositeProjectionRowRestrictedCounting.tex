@@ -1,0 +1,13 @@
+\begin{lemma}
+Let $A$ and $Y$ be finite types, and let $B \subseteq A$ and $X \subseteq Y$ be finite subsets.
+The number of injective functions $f : A \hookrightarrow Y$ such that $f(b) \in X$ for all $b \in B$ is given by
+\[
+(|X|)_{|B|} (|Y| - |B|)_{|A| - |B|}.
+\]
+\end{lemma}
+\begin{proof}
+Every such injection restricts to an injection from $B$ to $X$, for which there are $(|X|)_{|B|}$ choices.
+For each such restriction, the remaining $|A| - |B|$ elements of $A$ must map injectively into the remaining $|Y| - |B|$ elements of $Y$, avoiding the $|B|$ elements already in the image of the restriction.
+This gives $(|Y| - |B|)_{|A| - |B|}$ choices for the extension.
+Since the number of extensions is independent of the choice of restriction, the total number of such injective functions is the product $(|X|)_{|B|} (|Y| - |B|)_{|A| - |B|}$.
+\end{proof}

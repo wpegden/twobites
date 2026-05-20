@@ -1,0 +1,77 @@
+\begin{lemma}
+For each fixed \(0<\eta<1/2\), put \(c=\frac12-\eta\).  Then
+\[
+c\,\noderef{RamseyScale}(k)
+\]
+tends to infinity with \(k\).  Moreover,
+\[
+\frac{\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)}{\log k}\to 2,
+\]
+equivalently
+\[
+\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)=2\log k+o(\log k).
+\]
+\end{lemma}
+\begin{proof}
+Let \(c=\frac12-\eta\).  Since \(0<\eta<1/2\), we have \(c>0\).
+By \(\noderef{RamseyScale}\),
+\[
+c\,\noderef{RamseyScale}(k)
+=c\,\frac{k^2}{\log k}.
+\]
+We first prove that this tends to infinity.  Let \(B\in\mathbb R\) be an
+arbitrary target lower bound.  For all sufficiently large \(k\) we have
+\(k>1\), hence \(\log k>0\), and also the elementary estimate
+\(\log k\le k\).  If \(B\le0\), then
+\(c k^2/\log k>0\ge B\) for all such \(k\).  If \(B>0\), choose \(K\) so large
+that \(K>1\) and \(cK\ge B\).  Then for every \(k\ge K\),
+\[
+c\,\frac{k^2}{\log k}\ge c\,\frac{k^2}{k}=ck\ge cK\ge B.
+\]
+Thus for every real \(B\), \(c\,\noderef{RamseyScale}(k)\ge B\) eventually,
+which is exactly
+\[
+c\,\noderef{RamseyScale}(k)\to\infty.
+\]
+
+It remains to compute the logarithmic ratio.  The previous positivity also
+shows that for all sufficiently large \(k\), the logarithms below are taken of
+positive quantities.  Using \(c>0\), \(\log k>0\), and
+\(\noderef{RamseyScale}(k)=k^2/\log k\), we have
+\[
+\begin{aligned}
+\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)
+&=\log c+\log\left(\frac{k^2}{\log k}\right)\\
+&=\log c+\log(k^2)-\log(\log k)\\
+&=\log c+2\log k-\log\log k.
+\end{aligned}
+\]
+Dividing by \(\log k\), which is positive eventually, gives
+\[
+\frac{\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)}{\log k}
+=2+\frac{\log c}{\log k}
+ -\frac{\log\log k}{\log k}.
+\]
+The middle term tends to \(0\), because \(\log c\) is a fixed real number and
+\(\log k\to\infty\).
+
+We also have
+\[
+\frac{\log\log k}{\log k}\to0.
+\]
+Indeed, set \(t=\log k\).  Then \(t\to\infty\).  For \(t\ge1\), the elementary
+calculus estimate \(\log t\le\sqrt t\) holds: the function
+\(\sqrt t-\log t\) decreases on \(1\le t\le4\), remains positive at \(t=4\),
+and then increases for \(t\ge4\).  Therefore, once \(t=\log k\ge1\),
+\[
+0\le\frac{\log\log k}{\log k}
+=\frac{\log t}{t}
+\le \frac{\sqrt t}{t}
+=\frac1{\sqrt t},
+\]
+and the final expression tends to \(0\) because \(t\to\infty\).  Hence both
+error terms in the displayed ratio tend to \(0\), so
+\[
+\frac{\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)}{\log k}\to2.
+\]
+\end{proof}

@@ -1,0 +1,90 @@
+\begin{helper}[Product Fiber Sum]
+Fix $n\in\mathbb N$, $I\subseteq\mathrm{Fin}(n)$, parameter $M\in\mathbb N$, and $p_0\in\mathbb R$ with $0\le p_0\le1$.
+Let $\pi:\mathrm{Fin}(n)\hookrightarrow\mathrm{Fin}(M)\times\mathrm{Fin}(M)$ be an embedding.
+Let $P_R=\{\pi(u)_1:u\in I\}$, $P_B=\{\pi(u)_2:u\in I\}$.
+Let $q=\noderef{FixedSetProductModelMassFn}(p_0,P_R,P_B)$.
+Let $\mathcal D$ be the finite set of incident-data families $D=(D_R, D_B)$ where $D_R:\mathrm{Fin}(M)\setminus P_R\to\mathcal{P}(P_R)$ and $D_B:\mathrm{Fin}(M)\setminus P_B\to\mathcal{P}(P_B)$.
+For a product assignment $v$, define its incident data $D(v)$ by $D_R(x)=v_x^{(1)}$ for $x\notin P_R$, and $D_B(y)=v_{y+M}^{(2)}$ for $y\notin P_B$.
+Then for any predicate $H$ on the data, we have
+\[
+\sum_{\{v:H(D(v))\}}\prod_iq(v_i) = \sum_{\{D\in\mathcal D: H(D)\}} \nu(D),
+\]
+where $\nu(D)$ is the mass
+\[
+\prod_{x\notin P_R} p_0^{|D_R(x)|}(1-p_0)^{|P_R|-|D_R(x)|} \prod_{y\notin P_B} p_0^{|D_B(y)|}(1-p_0)^{|P_B|-|D_B(y)|}.
+\]
+\end{helper}
+\begin{proof}
+For data \(D\), let \(F_D=\{v:D(v)=D\}\) be the finite fiber of product
+assignments.  The fibers \(F_D\) partition the full product assignment space,
+so finite distributivity gives
+\[
+\sum_{\{v:H(D(v))\}}\prod_i q(v_i)
+=
+\sum_D {\bf 1}_{H(D)}
+   \sum_{v\in F_D}\prod_iq(v_i).
+\]
+It remains to compute the inner fiber mass.
+
+First consider invalid data.  If \(D_R(x)\ne\emptyset\) for some \(x\in P_R\)
+or \(D_B(y)\ne\emptyset\) for some \(y\in P_B\), then \(F_D=\emptyset\),
+because \(D(v)\) is defined to be \(\emptyset\) on those embedded
+coordinates.  If \(x\notin P_R\) but \(D_R(x)\not\subseteq P_R\), then every
+assignment in the fiber has first component \(D_R(x)\) at that red coordinate,
+and \(\noderef{FixedSetProductModelMassFn}\) assigns that coordinate weight
+\(0\).  The same applies if \(D_B(y)\not\subseteq P_B\).  Hence invalid data
+have fiber mass \(0\).
+
+Assume now that \(D\) is valid.  Expand the product over the \(2M\) product
+coordinates and apply finite Fubini, so the fiber mass factors into one
+coordinate sum for each coordinate.  For a red coordinate \(x\notin P_R\), the
+fiber fixes the first component to \(R=D_R(x)\) and leaves the second
+component arbitrary.  Therefore the coordinate sum is
+\[
+\sum_B q(R,B).
+\]
+Terms with \(B\not\subseteq P_B\) are zero by
+\(\noderef{FixedSetProductModelMassFn}\), while for \(B\subseteq P_B\) the
+definition of \(q\) factors as
+\[
+p_0^{|R|}(1-p_0)^{|P_R|-|R|}
+\cdot p_0^{|B|}(1-p_0)^{|P_B|-|B|}.
+\]
+The second factor sums to \(1\) by the normalization component of
+\(\noderef{FixedSetProductModelMass}\).  Thus the red outside coordinate
+contributes
+\[
+p_0^{|D_R(x)|}(1-p_0)^{|P_R|-|D_R(x)|}.
+\]
+For a red coordinate \(x\in P_R\), the map \(D(v)\) imposes no condition on
+the coordinate pair, so the whole coordinate sum is
+\[
+\sum_{(R,B)}q(R,B)=1
+\]
+again by \(\noderef{FixedSetProductModelMass}\).
+
+The blue coordinates are symmetric.  For \(y\notin P_B\), the second component
+is fixed to \(B=D_B(y)\), the first component is summed out, and the
+coordinate contribution is
+\[
+p_0^{|D_B(y)|}(1-p_0)^{|P_B|-|D_B(y)|}.
+\]
+For \(y\in P_B\), the entire coordinate pair is unrestricted and contributes
+\(1\).
+
+Multiplying all coordinate contributions, the fiber mass for valid \(D\) is
+exactly
+\[
+\nu(D)=
+\prod_{x\notin P_R}p_0^{|D_R(x)|}(1-p_0)^{|P_R|-|D_R(x)|}
+\prod_{y\notin P_B}p_0^{|D_B(y)|}(1-p_0)^{|P_B|-|D_B(y)|}.
+\]
+Substituting the invalid-data zero calculation and the valid-data fiber
+calculation into the fiber decomposition gives
+\[
+\sum_{\{v:H(D(v))\}}\prod_iq(v_i)
+=
+\sum_{\{D\in\mathcal D:H(D)\}}\nu(D),
+\]
+as required.
+\end{proof}

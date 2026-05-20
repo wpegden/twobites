@@ -1,0 +1,140 @@
+\begin{helper}
+Let \(N\) be a natural number, and let
+\(c,b\in\mathbb R^{\operatorname{Fin}(N)}\) have nonnegative integer
+entries and equal total sums.  Suppose \(b\) is nonincreasing.  Suppose
+there is a nonincreasing rearrangement \(x\) of \(c\) such that, for every
+\(0\le r\le N\), the sum of the first \(r\) entries of \(x\) is at least
+the sum of the first \(r\) entries of \(b\).  If
+\(h\colon\mathbb R^{\operatorname{Fin}(N)}\to\mathbb R\) is convex and
+symmetric under coordinate permutations, then
+\[
+h(b)\le h(c).
+\]
+\end{helper}
+\begin{proof}
+It is enough to prove that \(b\) belongs to the convex hull of the
+permutations of \(x\).  Indeed, if
+\[
+b=\sum_{\sigma\in S_N} w_\sigma\,\sigma(x),\qquad
+w_\sigma\ge0,\qquad \sum_{\sigma\in S_N}w_\sigma=1,
+\]
+then convexity gives
+\[
+h(b)\le \sum_{\sigma\in S_N}w_\sigma h(\sigma(x)).
+\]
+By symmetry each \(h(\sigma(x))\) is equal to \(h(x)\), so the right hand
+side is \(h(x)\).  Since \(x\) is a permutation of \(c\), symmetry again
+gives \(h(x)=h(c)\).  Thus the displayed convex-hull inclusion implies the
+claim.
+
+We now prove that convex-hull inclusion.  Write the prefix slack of a sorted
+vector \(u\) relative to \(b\) as
+\[
+S_r(u)=\sum_{i<r}u_i-\sum_{i<r}b_i\qquad(0\le r\le N).
+\]
+The hypotheses say \(S_r(x)\ge0\) for all \(r\), and the equality of total
+sums says \(S_N(x)=0\).  If \(x=b\), there is nothing to prove.  Otherwise,
+let \(i\) be the first coordinate at which \(x_i\ne b_i\).  Since all
+earlier coordinates agree, \(S_{i+1}(x)=x_i-b_i\).  The prefix inequality
+forces \(x_i>b_i\); it cannot be \(x_i<b_i\).  Because the total discrepancy
+is zero, some later coordinate must satisfy \(x_j<b_j\).  Let \(j>i\) be the
+first such coordinate.
+
+For every prefix ending between \(i\) and \(j-1\), a positive discrepancy at
+\(i\) has appeared and no negative discrepancy has yet canceled it, so the
+slack is strictly positive.  Define
+\[
+\delta=\min\Bigl(x_i-b_i,\ b_j-x_j,\ \min_{i<r\le j}S_r(x)\Bigr).
+\]
+All quantities in this minimum are positive integers: the entries of
+\(b\) and \(x\) are nonnegative integers, and \(x\) is a permutation of
+the nonnegative-integer vector \(c\).  Hence \(\delta\) is a positive
+integer.
+
+Let \(y\) be obtained from \(x\) by moving \(\delta\) units from coordinate
+\(i\) to coordinate \(j\):
+\[
+y_i=x_i-\delta,\qquad y_j=x_j+\delta,\qquad y_k=x_k\ (k\ne i,j).
+\]
+The choices \(\delta\le x_i-b_i\) and \(\delta\le b_j-x_j\) show that the
+affected coordinates remain nonnegative integers.  The total sum is
+unchanged.  The prefix slacks are unchanged before \(i\), reduced by
+\(\delta\) for the prefixes that contain \(i\) but not \(j\), and unchanged
+again after \(j\).  Since \(\delta\) was chosen no larger than all the
+intermediate slacks, every prefix slack of \(y\) is still nonnegative.
+
+This transfer also has the needed convex-combination form.  Because both
+\(x\) and \(b\) are nonincreasing and \(i<j\), we have \(b_i\ge b_j\); from
+\(x_i>b_i\) and \(x_j<b_j\) it follows that \(x_i>x_j\).  Put
+\[
+\theta=\frac{\delta}{x_i-x_j}.
+\]
+The denominator is positive, and
+\[
+x_i-x_j=(x_i-b_i)+(b_i-b_j)+(b_j-x_j)
+\]
+with all three summands nonnegative and the first and third positive.  Since
+\(\delta\le x_i-b_i\) and \(\delta\le b_j-x_j\), we get
+\(0\le\theta\le1\).  On the two affected coordinates,
+\[
+(y_i,y_j)
+=(1-\theta)(x_i,x_j)+\theta(x_j,x_i),
+\]
+and every other coordinate is unchanged.  Thus
+\[
+y=(1-\theta)x+\theta\,\tau(x),
+\]
+where \(\tau\) is the transposition swapping \(i\) and \(j\).
+
+The vector \(y\) may fail to be nonincreasing.  Let \(y^\downarrow\) be a
+nonincreasing rearrangement of \(y\).  For each \(r\), the sum of the first
+\(r\) entries of \(y^\downarrow\) is the maximum possible sum of \(r\)
+coordinates of \(y\), so it is at least the sum of the first \(r\)
+coordinates in the displayed ordering of \(y\).  Hence
+\(y^\downarrow\) still has all prefix slacks nonnegative.  Since
+\(y^\downarrow\) is a permutation of \(y\), applying the sorting permutation
+to the convex-combination identity above shows
+\[
+y^\downarrow
+=(1-\theta)\rho(x)+\theta\,\rho(\tau(x))
+\]
+for some permutation \(\rho\).  Therefore \(y^\downarrow\) lies in the
+convex hull of the permutations of \(x\).
+
+It remains to see that iterating this operation reaches \(b\).  Use the
+integer measure
+\[
+D(u)=\sum_{k=1}^N |u_k-b_k|
+\]
+on nonincreasing nonnegative-integer vectors \(u\) with the same total sum
+as \(b\) and with nonnegative prefix slacks.  Before resorting, the transfer
+decreases the two affected absolute values by \(\delta\) each:
+\[
+|y_i-b_i|=|x_i-b_i|-\delta,\qquad
+|y_j-b_j|=|x_j-b_j|-\delta,
+\]
+and all other terms are unchanged.  Thus \(D(y)=D(x)-2\delta<D(x)\).
+Sorting cannot increase \(D\) relative to the already sorted vector \(b\).
+Indeed, an adjacent inverted pair in \(y\) has values \(a\le d\) in the
+order \((a,d)\), while the corresponding entries of \(b\) satisfy
+\(b_r\ge b_s\).  The elementary rearrangement inequality
+\[
+|d-b_r|+|a-b_s|\le |a-b_r|+|d-b_s|
+\]
+shows that swapping the larger value leftward does not increase the
+two-coordinate contribution to \(D\).  Repeating adjacent swaps until the
+vector is sorted gives
+\[
+D(y^\downarrow)\le D(y)<D(x).
+\]
+
+Since \(D\) is a nonnegative integer, this strictly decreasing process
+terminates.  A terminal vector satisfying the same hypotheses must be
+\(b\): if it were not \(b\), the first positive discrepancy \(i\), the first
+later negative discrepancy \(j\), and the positive transfer just constructed
+would still be available.  Therefore, starting from \(x\), finitely many
+steps reach \(b\), and at each step the new sorted vector lies in the convex
+hull of permutations of the previous one.  Composing these finite convex
+combinations shows that \(b\) lies in the convex hull of the permutations of
+\(x\), as required.
+\end{proof}

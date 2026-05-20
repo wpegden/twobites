@@ -1,0 +1,40 @@
+\begin{lemma}
+Let \(H,k,t_1,p,m,\varepsilon_1\) be real numbers.  If
+\[
+H\le \frac{2k}{t_1},\qquad
+1\le 2pm,
+\]
+and
+\[
+\left(\frac{2k}{t_1}\right)\noderef{RealChooseTwo}(2pm)
+\le \varepsilon_1 k^2,
+\]
+then
+\[
+H\,\noderef{RealChooseTwo}(2pm)\le \varepsilon_1 k^2.
+\]
+\end{lemma}
+\begin{proof}
+Put \(D=2pm\) and \(Q=\noderef{RealChooseTwo}(D)\).  From \(1\le D\) we have
+\(0\le D\) and \(0\le D-1\).  By the definition of
+\(\noderef{RealChooseTwo}\),
+\[
+Q=\frac{D(D-1)}2,
+\]
+so \(Q\ge0\).
+
+Multiplying the hypothesis \(H\le 2k/t_1\) by the nonnegative real number
+\(Q\) gives
+\[
+H Q\le \left(\frac{2k}{t_1}\right)Q.
+\]
+The third hypothesis gives
+\[
+\left(\frac{2k}{t_1}\right)Q\le \varepsilon_1 k^2.
+\]
+Transitivity of the order on real numbers therefore gives
+\[
+H\,\noderef{RealChooseTwo}(2pm)=H Q\le \varepsilon_1 k^2,
+\]
+as required.
+\end{proof}

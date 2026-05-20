@@ -1,0 +1,248 @@
+\begin{helper}
+In the fixed exposure-history cell of
+\(\noderef{FixedSetHistoryCellFixedCountProductBound}\), put
+\[
+a=f(\ell_R,\ell_B)-10\varepsilon_1 k^2 .
+\]
+For fixed nonnegative counts \(u_R,u_B\), the finite branch/transcript
+decomposition gives the following two ordered product bounds.  If
+\(u_B\le u_R\), then there are natural numbers \(N_R,N_B\) with
+\[
+N_R\le 3\varepsilon_1 k^2,\qquad N_B\le k^2
+\]
+such that the conditional probability of the fixed-count target is at most
+\[
+\binom{N_R}{u_R}p^{u_R}\binom{N_B}{u_B}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)}.
+\]
+If \(u_R\le u_B\), then the same statement holds after interchanging the
+colors:
+\[
+\binom{N_R}{u_B}p^{u_B}\binom{N_B}{u_R}p^{u_R}
+(1-p)^{\max(0,a-u_B-u_R)}
+\]
+with \(N_R\le3\varepsilon_1 k^2\) and \(N_B\le k^2\).
+\end{helper}
+\begin{proof}
+We prove the case \(u_B\le u_R\).  The proof of the second displayed
+inequality is the same argument with the two colors interchanged.
+
+Write \(H\) for the fixed history cell and write \(T_{u_R,u_B}\) for the
+event in the statement: the final \(I\)-set is independent, the regularity
+event holds, and the red and blue present staged-open terminal supports have
+cardinalities \(u_R\) and \(u_B\).  Put
+\[
+L=\max(0,a-u_R-u_B).
+\]
+All terminal coordinates lie in the finite set \(U\) called ``terminal'' in
+the statement, and the history-cell hypotheses say that \(H\) fixes the
+embedding and every recorded coordinate.  Thus, after conditioning on \(H\),
+the only remaining random coordinates relevant to this argument are the
+terminal coordinates, in the fixed order supplied in the statement.  The
+terminal product law is exactly the product law used in
+\(\noderef{FixedSetHistoryCellTerminalProductPartition}\).
+
+First choose the finite blue support universe.  Let \(U_B\) be the set of
+blue terminal projected pairs that can arise from pairs of vertices of
+\(I\).  The pair set on \(I\) has at most \(k^2\) ordered pairs, so
+\[
+N_B:=|U_B|\le k^2.
+\]
+Every blue present staged-open support of a sample in \(H\cap T_{u_R,u_B}\)
+is a subset \(B\subseteq U_B\) of size \(u_B\).  Hence the number of possible
+blue supports is at most \(\binom{N_B}{u_B}\).
+
+Fix such a blue support \(B\).  We next partition the samples with blue
+support \(B\) by their complete blue terminal trace.  A trace \(\sigma\) is a
+choice, for every blue terminal coordinate \(e\), of whether
+\(X_e=1\) or \(X_e=0\).  The trace class consists of samples whose blue
+terminal values agree with \(\sigma\), and whose blue present staged-open
+support is exactly \(B\).  These trace classes cover the part of
+\(H\cap T_{u_R,u_B}\) with blue support \(B\), and two different traces are
+disjoint, by \(\noderef{FixedSetHistoryCellAdaptiveBranchPartition}\).
+There are finitely many such traces because \(U\) is finite.
+
+For every pair \((B,\sigma)\) whose trace class meets
+\(H\cap T_{u_R,u_B}\), choose one representative branch
+\(\beta_{B,\sigma}\) in that nonempty class.  Apply the branch exceptional-set
+hypothesis to this representative.  Since the representative itself is in
+\(T_{u_R,u_B}\), it is regular and agrees with itself on the blue terminal
+trace; therefore the red exceptional set \(E_R(B,\sigma)\) supplied by the
+hypothesis satisfies
+\[
+|E_R(B,\sigma)|\le 3\varepsilon_1 k^2,
+\]
+because \(\noderef{ClosedPairsBound}\) is the assertion
+\(|E_R(B,\sigma)|\le 3\varepsilon_1 k^2\).  For any other sample in the same
+trace class, the same branch hypothesis applies: it agrees with
+\(\beta_{B,\sigma}\) on the embedding, recorded coordinates, and all blue
+terminal coordinates, so every red present staged-open coordinate of that
+sample lies in \(E_R(B,\sigma)\).
+
+Define \(N_R\) to be the maximum of the finite set of cardinalities
+\(|E_R(B,\sigma)|\), over all nonempty pairs \((B,\sigma)\) just described;
+if there is no such pair, set \(N_R=0\).  The preceding bound for every
+nonempty pair gives
+\[
+N_R\le 3\varepsilon_1 k^2.
+\]
+Moreover, for each fixed nonempty \((B,\sigma)\), the red support \(R\) of
+any sample in the trace class is a \(u_R\)-element subset of
+\(E_R(B,\sigma)\).  Since \(|E_R(B,\sigma)|\le N_R\), padding
+\(E_R(B,\sigma)\) inside an \(N_R\)-element set injects its \(u_R\)-subsets
+into the \(u_R\)-subsets of that \(N_R\)-element set.  Thus, uniformly in
+\((B,\sigma)\), the number of possible red supports is at most
+\(\binom{N_R}{u_R}\).  Fix such a padding injection for every nonempty
+\((B,\sigma)\).  We use its image as a global red-support label
+\(\rho\), so the final summation is indexed by \(B\) and \(\rho\), while the
+complete traces \(\sigma\) are still summed through their cylinder weights.
+
+Now fix \(B\), a nonempty trace \(\sigma\), and a red support
+\[
+R\subseteq E_R(B,\sigma),\qquad |R|=u_R.
+\]
+Inside this fixed branch and support class, apply
+\(\noderef{FixedSetHistoryCellCanonicalAbsenceSelection}\) to each successful
+sample.  Its hypotheses are satisfied as follows.  The regularity and
+projection-size assumptions give
+\[
+a\le |\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)|,
+\]
+all staged-open coordinates are terminal by the history-cell containment
+hypothesis, all present blue staged-open coordinates are in \(B\), and all
+present red staged-open coordinates are in \(R\) by the exceptional-set
+argument above.  Hence the canonical selection produces a set
+\[
+Z(\omega)\subseteq U\setminus(B\cup R)
+\]
+of absent staged-open terminal coordinates such that
+\[
+|Z(\omega)|\ge L.
+\]
+Each coordinate of \(Z(\omega)\) is selected at the moment it is reached in
+the fixed terminal order, and the prefix-safety hypothesis says that the
+decision to select it depends only on the history and the terminal values
+strictly earlier in the order.
+
+We refine once more by prefix transcripts.  A transcript \(\tau\) records:
+the fixed blue trace \(\sigma\); the fixed blue support \(B\); the fixed red
+support \(R\); every terminal value inspected before and while the canonical
+algorithm selects the coordinates of \(Z\); and the selected absent set
+\(Z_\tau\).  In particular, every terminal value fixed by the complete trace
+or by the prefix transcript is recorded in \(\tau\), including terminal
+values that are not members of \(B\), \(R\), or \(Z_\tau\).  For such a
+transcript define two disjoint finite sets
+\[
+P_\tau=\{e:\tau\text{ fixes }X_e=1\},\qquad
+A_\tau=\{e:\tau\text{ fixes }X_e=0\}.
+\]
+Thus \(B\cup R\subseteq P_\tau\), \(Z_\tau\subseteq A_\tau\), and every fixed
+terminal value from \(\sigma\) and from the prefix transcript belongs to
+exactly one of \(P_\tau\) and \(A_\tau\).  The cell \(G_{B,\sigma,R,\tau}\)
+is the event that all these fixed terminal values occur, together with the
+history \(H\).  These cells are finite in number and cover the portion of
+\(H\cap T_{u_R,u_B}\) with the fixed data \(B,\sigma,R\).  Distinct complete
+traces or distinct transcripts disagree on at least one terminal value or on
+the stopping data of the canonical selection, so the refinement is a genuine
+finite partition, up to empty cells.
+
+The weight attached to this cell is the raw history mass multiplied by the
+corresponding terminal-cylinder factor:
+\[
+w_{B,\sigma,R,\tau}
+=\Pr(H)\,p^{|P_\tau|}(1-p)^{|A_\tau|}.
+\]
+This is the weight for all terminal values fixed by the trace and transcript,
+not only for the mandatory support and absence coordinates.  Since
+\(P_\tau\) and \(A_\tau\) are disjoint subsets of \(U\), the fixed-cylinder
+bound \(\noderef{FixedSetHistoryCellFixedCylinderCharge}\), applied using the
+complete terminal product law, gives
+\[
+\Pr(H\cap G_{B,\sigma,R,\tau})
+\le w_{B,\sigma,R,\tau}.
+\]
+If \(\Pr(H)=0\), both sides of this raw estimate are zero or nonnegative, and
+the conditional probability is zero by
+\(\noderef{TwoBiteConditionalProbability}\).  Assume for the moment that
+\(\Pr(H)>0\); then dividing all raw weights by \(\Pr(H)\) gives the same
+estimates inside the conditional product space.
+
+It remains to sum these cell weights without introducing a trace or
+transcript counting factor.  Fix a blue support \(B\) and a global
+red-support label \(\rho\).  Consider all cells
+\(G_{B,\sigma,R,\tau}\) for all complete blue traces \(\sigma\), all actual
+red supports \(R\subseteq E_R(B,\sigma)\) whose padding image is \(\rho\),
+and all prefix transcripts \(\tau\).  If no such actual support exists for a
+trace, that trace contributes no cells.  Otherwise, view the complete trace
+and the prefix transcript together as a finite decision tree in the terminal
+order.  At a node of the tree, the next coordinate to inspect is determined
+by the history and the previously recorded terminal values.  If that
+coordinate is one of the mandatory present coordinates in the actual set
+\(B\cup R\), only the present child is retained and contributes a factor
+\(p\).  If it is one of the selected absent coordinates in \(Z_\tau\), only
+the absent child is retained and contributes a factor \(1-p\).  Every other
+terminal value fixed by the blue trace or by the prefix transcript is
+auxiliary: when the leaves over all \(\sigma\) and \(\tau\) with the fixed
+labels \(B,\rho\) are summed, both possible children occur and their factors
+add to
+\[
+p+(1-p)=1.
+\]
+Equivalently, after removing the mandatory present set \(B\cup R\) and the
+selected absent set \(Z_\tau\), the remaining fixed terminal coordinates are
+reindexed by subsets \(W\) of a finite residual set, and their contribution is
+\[
+\sum_W p^{|W|}(1-p)^{|W^c|}=1.
+\]
+This is a finite partition/reindexing identity, not an omission of the trace
+or transcript values: those values are included in \(P_\tau\) or \(A_\tau\)
+before the summation is performed.
+
+Consequently, after summing over all complete traces and prefix transcripts
+compatible with the fixed labels \(B\) and \(\rho\), all auxiliary terminal
+factors sum to at most \(1\), while the mandatory factors remain.  For every
+nonempty leaf, the actual mandatory red support has size \(u_R\), and the
+blue support has size \(u_B\).  Thus the mandatory present factors contribute
+\[
+p^{|B|}p^{|R|}=p^{u_B}p^{u_R}.
+\]
+The selected absent set has size at least \(L\), and \(0\le p\le 1/2\) implies
+\(1/2\le 1-p\le1\).  Hence increasing the exponent can only decrease the
+factor, so
+\[
+(1-p)^{|Z_\tau|}\le (1-p)^L.
+\]
+Thus the conditional sum of all transcript weights for fixed \(B\) and
+\(\rho\)
+is at most
+\[
+p^{u_B}p^{u_R}(1-p)^L.
+\]
+
+Finally sum over supports.  There are at most \(\binom{N_B}{u_B}\) choices
+for \(B\), and there are at most \(\binom{N_R}{u_R}\) global red-support
+labels \(\rho\).  The finite cell family, the per-cell raw estimates, and the
+preceding total weight bound for each pair of labels are precisely the
+hypotheses of
+\(\noderef{FixedSetHistoryCellBranchTranscriptSummation}\).  That lemma gives
+the raw estimate
+\[
+\Pr(H\cap T_{u_R,u_B})
+\le
+\Pr(H)\binom{N_R}{u_R}p^{u_R}\binom{N_B}{u_B}p^{u_B}(1-p)^L.
+\]
+When \(\Pr(H)>0\), division by \(\Pr(H)\) gives the first displayed
+conditional-probability bound.  When \(\Pr(H)=0\), the conditional probability
+is zero and the same inequality follows from the nonnegativity of all factors.
+
+For the case \(u_R\le u_B\), repeat the construction with the colors
+interchanged.  The complete trace is now the red terminal trace, its support
+universe has size \(N_B\le k^2\), and the branch hypothesis supplies blue
+exceptional sets whose finite maximum is \(N_R\le3\varepsilon_1k^2\).  The
+same transcript-weight summation gives
+\[
+\binom{N_R}{u_B}p^{u_B}\binom{N_B}{u_R}p^{u_R}
+(1-p)^{\max(0,a-u_B-u_R)},
+\]
+which is the second displayed bound.
+\end{proof}

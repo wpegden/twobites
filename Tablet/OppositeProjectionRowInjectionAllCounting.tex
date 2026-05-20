@@ -1,0 +1,64 @@
+\begin{lemma}
+For any fixed red row map $\rho: \operatorname{Fin}n \to \operatorname{Fin}m$, let
+\[
+X_{\rm all}
+=\{\phi:\operatorname{Fin}n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m:
+(\phi(v))_1=\rho(v)\text{ for every }v\}.
+\]
+For each row $i\in\operatorname{Fin}m$, put $R_i=\{v:\rho(v)=i\}$ and $q_i=|R_i|$.
+Then the cardinality of $X_{\rm all}$ is given by the product over rows of $(m)_{q_i}$, where $(m)_{q_i}$ is the falling factorial:
+\[
+|X_{\rm all}| = \prod_{i\in\operatorname{Fin}m} (m)_{q_i}.
+\]
+\end{lemma}
+\begin{proof}
+For each row \(i\), let \(\mathcal B_i\) be the set of injective maps
+\(b_i:R_i\hookrightarrow \operatorname{Fin}m\).  We first give an explicit
+bijection
+\[
+X_{\rm all}\longleftrightarrow \prod_{i\in\operatorname{Fin}m}\mathcal B_i .
+\]
+Given \(\phi\in X_{\rm all}\), define its row restriction \(b_i\) by
+\[
+b_i(v)=(\phi(v))_2\qquad (v\in R_i).
+\]
+This is injective on \(R_i\): if \(v,w\in R_i\) and \(b_i(v)=b_i(w)\), then
+\((\phi(v))_2=(\phi(w))_2\), while the fixed-row condition gives
+\((\phi(v))_1=\rho(v)=i=\rho(w)=(\phi(w))_1\).  Hence
+\(\phi(v)=\phi(w)\), and injectivity of \(\phi\) gives \(v=w\).
+
+Conversely, suppose we are given a family of rowwise injections
+\((b_i)_i\), with \(b_i:R_i\hookrightarrow\operatorname{Fin}m\).  Define
+\[
+\phi(v)=(\rho(v), b_{\rho(v)}(v)).
+\]
+Here \(v\in R_{\rho(v)}\) by definition of \(R_{\rho(v)}\), so the expression
+is well-defined.  The first coordinate of \(\phi(v)\) is \(\rho(v)\), so
+\(\phi\) satisfies the fixed-row condition.  To prove \(\phi\) is globally
+injective, suppose \(\phi(v)=\phi(w)\).  Equality of first coordinates gives
+\(\rho(v)=\rho(w)=i\).  Thus \(v,w\in R_i\).  Equality of second coordinates
+then gives \(b_i(v)=b_i(w)\), and injectivity of \(b_i\) gives \(v=w\).
+These two constructions are inverse to each other, since restricting the
+assembled map recovers each \(b_i\), and assembling the row restrictions of
+\(\phi\) recovers \(\phi\) pointwise.
+
+It remains to count each row factor.  If \(q_i>m\), then there is no
+injective map from the \(q_i\)-element set \(R_i\) into
+\(\operatorname{Fin}m\), so \(|\mathcal B_i|=0\).  The falling factorial
+\((m)_{q_i}\) is also \(0\) in this case.  If \(q_i\le m\), then an element
+of \(\mathcal B_i\) is counted by choosing distinct blue coordinates for the
+vertices of \(R_i\), one at a time: there are \(m\) choices for the first
+vertex, \(m-1\) for the second, and so on.  Thus
+\[
+(m)_{q_i}=m(m-1)\cdots(m-q_i+1),
+\]
+choices are available in row \(i\).  Therefore \(|\mathcal B_i|=(m)_{q_i}\)
+for every row, including the zero case \(q_i>m\).  The displayed bijection
+and the finite product rule give
+\[
+|X_{\rm all}|=\prod_{i\in\operatorname{Fin}m}|\mathcal B_i|
+=\prod_{i\in\operatorname{Fin}m}(m)_{q_i},
+\]
+as claimed.
+\end{proof}

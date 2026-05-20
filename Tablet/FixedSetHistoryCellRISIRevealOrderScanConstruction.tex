@@ -1,0 +1,100 @@
+\begin{helper}
+Fix a finite terminal coordinate set \(U\), a nodup ordered RISI scan list
+\(o\) with \(\operatorname{toFinset}(o)=U\), a realized terminal truth
+table \(W\subseteq U\), a branch label \(\beta\), and a transcript
+\(\tau=(P_\tau,A_\tau,Z_\tau)\).  Let \(F_\tau\subseteq P_\tau\) be the
+fixed present support.  Assume
+\[
+P_\tau,A_\tau\subseteq U,\qquad
+Z_\tau\subseteq A_\tau,\qquad
+P_\tau\cap A_\tau=\emptyset,
+\]
+and assume every coordinate of \(P_\tau\) is present in \(W\), while every
+coordinate of \(A_\tau\) is absent in \(W\).
+
+For each terminal coordinate \(e\), let \(D_\tau(e)\) be the set of terminal
+coordinates read by the RISI scan when it evaluates, at \(e\),
+staged-openness, touchedness, same-color closedness, and pre-terminal
+recordedness.  The generated scan interface consists of the following
+explicit clauses.
+
+First, every read coordinate has already been classified by the transcript:
+for every \(e\in U\) and every \(c\in D_\tau(e)\), the coordinate \(c\) is
+one of
+\[
+F_\tau,\qquad P_\tau\setminus F_\tau,\qquad
+Z_\tau,\qquad A_\tau\setminus Z_\tau .
+\]
+Moreover, if \(o=\mathrm{pre}\, e\,\mathrm{suffix}\), then
+\[
+D_\tau(e)\subseteq \operatorname{toFinset}(\mathrm{pre});
+\]
+that is, the scan reads only earlier terminal coordinates.  In the intended
+branch/transcript instantiation, this past-read condition is obtained by
+applying the terminal truth-table extension
+\(\noderef{FixedSetHistoryCellTerminalAssignmentExtension}\) and then using
+the prefix-safety hypothesis of the branch/transcript cell.
+
+Second, the sets \(D_\tau(e)\) are exact read sets for the four tests: for
+any terminal truth table \(A\subseteq U\), if \(A\) and \(W\) agree on
+\(D_\tau(e)\), then the staged-open, touched, same-color-closed, and
+pre-terminal-recorded tests at \(e\) have the same values for \(A\) and
+\(W\).  The selected absent coordinates used in this generated interface
+are the canonical selected absences supplied by
+\(\noderef{FixedSetHistoryCellCanonicalAbsenceSelection}\).
+
+Third, the RISI scan is deterministic from the ordered list and these four
+test outcomes: if a terminal truth table \(A\subseteq U\) has the same four
+test outcomes as \(W\) at every \(e\in U\), then the scan returns the same
+branch label and transcript,
+\[
+\operatorname{branchOfAssignment}(A)=\beta,\qquad
+\operatorname{scanTranscript}(A)=\operatorname{some}(\tau).
+\]
+
+Then the generated interface supplies exactly the three consequences needed
+by the residual scan-stability step:
+\[
+D_\tau(e)\subseteq P_\tau\cup A_\tau\qquad(e\in U),
+\]
+agreement on \(D_\tau(e)\) is enough to preserve all four tests at \(e\),
+and equality of all four test outcomes over \(U\) forces scan output
+\((\beta,\tau)\).
+\end{helper}
+\begin{proof}
+Fix \(e\in U\) and \(c\in D_\tau(e)\).  By the generated classification
+clause there are four cases.
+
+If \(c\in F_\tau\), then \(F_\tau\subseteq P_\tau\), so
+\(c\in P_\tau\subseteq P_\tau\cup A_\tau\).  If
+\(c\in P_\tau\setminus F_\tau\), then again \(c\in P_\tau\), hence
+\(c\in P_\tau\cup A_\tau\).  If \(c\in Z_\tau\), then
+\(Z_\tau\subseteq A_\tau\), so \(c\in A_\tau\subseteq P_\tau\cup A_\tau\).
+Finally, if \(c\in A_\tau\setminus Z_\tau\), then \(c\in A_\tau\), hence
+\(c\in P_\tau\cup A_\tau\).  Since \(c\) was arbitrary, this proves
+\[
+D_\tau(e)\subseteq P_\tau\cup A_\tau .
+\]
+
+The same classification also explains why the RISI read is a legal prefix
+read in the intended scan: whenever \(o=\mathrm{pre}\,e\,\mathrm{suffix}\),
+the generated past-read clause gives
+\(D_\tau(e)\subseteq\operatorname{toFinset}(\mathrm{pre})\).  Thus the
+branch/transcript prefix-safety hypothesis applies precisely to the
+coordinates in \(D_\tau(e)\); no later terminal coordinate is used in the
+test at \(e\).
+
+Now let \(A\subseteq U\) be a terminal truth table which agrees with
+\(W\) on \(D_\tau(e)\).  The exact-read-stability clause says directly
+that this agreement preserves, at the coordinate \(e\), each of the four
+quantities read by the scan: staged-openness, touchedness, same-color
+closedness, and pre-terminal recordedness.  This proves the second exported
+consequence.
+
+Finally suppose \(A\subseteq U\) has the same four test outcomes as \(W\) at
+every terminal coordinate.  The deterministic-output clause of the generated
+RISI scan interface applies to this whole test sequence.  Therefore the
+branch chosen from \(A\) is \(\beta\), and the transcript returned by the
+scan on \(A\) is \(\operatorname{some}(\tau)\).  This is the third exported
+consequence.
+\end{proof}

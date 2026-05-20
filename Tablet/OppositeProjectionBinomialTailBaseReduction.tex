@@ -1,0 +1,30 @@
+\begin{lemma}
+Let \(V,M,t\) be natural numbers and let \(q\ge 0\) be real.  If \(M>0\), then
+\[
+  \binom Vt \left(\frac{q}{M}\right)^t
+  \le
+  \left(\frac{eVq}{tM}\right)^t .
+\]
+For \(t=0\), the displayed inequality is interpreted in the Lean sense: both
+sides are zeroth powers, so it asserts \(1\le 1\), even though the quotient
+notation contains the factor \(tM\).
+\end{lemma}
+\begin{proof}
+If \(t=0\), then \(\binom V0=1\), \((q/M)^0=1\), and the right-hand side is
+also a zeroth power, so the desired inequality is \(1\le 1\).
+
+Assume now that \(t>0\).  Then the denominators displayed below are nonzero.
+By \noderef{OppositeProjectionChooseExponentialBound},
+\[
+  \binom Vt \le \left(\frac{eV}{t}\right)^t .
+\]
+Since \(q/M\ge 0\), its \(t\)-th power is nonnegative, so multiplying the
+preceding inequality by \((q/M)^t\) preserves the inequality.  The right-hand
+side is
+\[
+  \left(\frac{eV}{t}\right)^t \left(\frac{q}{M}\right)^t
+  =
+  \left(\frac{eVq}{tM}\right)^t ,
+\]
+which proves the claim.
+\end{proof}

@@ -1,0 +1,29 @@
+\begin{helper}
+For every \(\eta>0\) and every \(\varepsilon_1>0\), there is \(n_0\) such
+that for every \(n>n_0\), if \(L=\log n\), then
+\[
+\exp\!\left(-\frac{\eta(1+\eta)}4\sqrt n\,\sqrt L\,L\right)
+\le \varepsilon_1.
+\]
+\end{helper}
+\begin{proof}
+Put \(c=\eta(1+\eta)/4\).  Since \(\eta>0\), we have \(c>0\).  As
+\(n\to\infty\), both \(\sqrt n\to\infty\) and \(L=\log n\to\infty\).  Enlarge
+\(n_0\) so that \(L\ge1\); then \(\sqrt L\,L\ge1\).  Also enlarge \(n_0\) so that
+\[
+\sqrt n\ge \max\left\{0,\frac{-\log\varepsilon_1}{c}\right\}.
+\]
+For such \(n\),
+\[
+c\sqrt n\,\sqrt L\,L\ge c\sqrt n\ge -\log\varepsilon_1.
+\]
+Hence
+\[
+-c\sqrt n\,\sqrt L\,L\le \log\varepsilon_1.
+\]
+Because \(\varepsilon_1>0\), exponentiating gives
+\[
+\exp(-c\sqrt n\,\sqrt L\,L)\le\varepsilon_1,
+\]
+which is the claimed bound.
+\end{proof}

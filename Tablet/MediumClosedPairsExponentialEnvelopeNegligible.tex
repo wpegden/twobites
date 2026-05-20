@@ -1,0 +1,40 @@
+\begin{lemma}
+Assume \(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\).
+Let
+\[
+K(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Then
+\[
+\exp\!\left(
+K(n)\log n+
+2K(n)n^{1/4-3\varepsilon}\log n
+-n^{3/4-2\varepsilon}
+\right)
+\longrightarrow 0 .
+\]
+\end{lemma}
+\begin{proof}
+The hierarchy gives \(0<\varepsilon<1/16\).  We prove convergence by the
+order characterization of convergence to \(0\).  The exponential envelope is
+always positive, so it is eventually above every negative number.
+
+Let \(b>0\).  Put \(\delta=b/2\).  Apply
+\(\noderef{ParameterHierarchyBaseThreshold}\) to obtain the eventual rounded
+upper bound
+\[
+K(n)<2(1+\varepsilon)\sqrt{n\log n}.
+\]
+Apply \(\noderef{ParameterHierarchyT28Threshold}\) with tolerance \(\delta\).
+After increasing the threshold and also requiring \(n>n_0\),
+\(\noderef{ParameterHierarchyLogPositivity}\) gives \(\log n>0\), and the two
+T28 threshold inequalities plus
+\[
+\exp\!\left(-\frac12 n^{3/4-2\varepsilon}\right)\le\delta
+\]
+hold.  Rewriting \(\sqrt{n\log n}=\sqrt n\,\sqrt{\log n}\), all hypotheses of
+\(\noderef{ParameterHierarchyT28Algebra}\) are satisfied with
+\(k=K(n)\).  That lemma gives the envelope at \(n\) at most \(\delta\), hence
+strictly below \(b\).  Since this works for every \(b>0\), the envelope tends
+to \(0\).
+\end{proof}

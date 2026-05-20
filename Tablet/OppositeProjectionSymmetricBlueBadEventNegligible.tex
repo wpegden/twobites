@@ -1,0 +1,85 @@
+\begin{helper}
+Under the natural two-bite scaling with \(\beta=1/2\), the probability that
+the size bound holds and some ordered blue pair violates the projected
+intersection estimate is negligible.
+\end{helper}
+\begin{proof}
+For each \(n\), write
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}(1/2,n),\qquad L=\log n .
+\]
+The hypotheses in the Lean statement identify the probability space with
+\(\noderef{TwoBiteEventProbability}(n,M,p,\cdot)\).  It is therefore enough
+to show that the bad event has probability tending to \(0\).
+
+Fix an ordered blue pair \(b\ne c\), and let \(E_{b,c}\) be the event that
+the size bound holds and this pair violates the desired blue projected
+intersection inequality.  We first bound the probability of \(E_{b,c}\)
+uniformly in \(b,c\).  Average over the blue conditioning cells supplied by
+\(\noderef{OppositeProjectionBlueConditioning}\): a cell fixes the blue base
+graph \(G_B\) and the blue coordinate map \(\rho:\operatorname{Fin} n\to
+\operatorname{Fin} M\).  Cells of zero mass contribute zero by the
+conditional-probability convention, so consider a nonzero cell.
+
+Inside this cell the lifted blue neighborhoods of \(b\) and \(c\) are fixed
+sets \(U\) and \(V\).  Put \(U_0=U\setminus V\) and \(V_0=V\setminus U\).
+On the size-bound event,
+\[
+|U_0|\le |U|\le 2pn,\qquad |V_0|\le |V|\le 2pn .
+\]
+The only projected intersections not already coming from \(U\cap V\) are
+witnessed by vertices of \(V_0\) whose red coordinate lies in the red
+projection of \(U_0\); this is exactly the containment supplied by
+\(\noderef{OppositeProjectionIntersectionContainment}\).
+
+Expose the red coordinates of all vertices in \(U_0\), and call the exposure
+\(\eta\).  Then \(S(\eta)=\pi_R(U_0)\) satisfies
+\(|S(\eta)|\le |U_0|\).  The sets \(U_0\) and \(V_0\) are disjoint, and the
+rows used by \(U_0\) and \(V_0\) are distinct because they lie over blue rows
+adjacent to \(b\) but not \(c\), and to \(c\) but not \(b\), respectively.
+Thus the hypotheses of
+\(\noderef{OppositeProjectionBlueExposureTailBound}\) hold for every
+nonzero exposure cell.  That node gives, for every \(t\),
+\[
+\Pr(W_\eta\ge t\mid G_B,\rho,\eta)
+\le \binom{|V_0|}{t}\left(\frac{|S(\eta)|}{M}\right)^t
+\le \binom{|V_0|}{t}\left(\frac{|U_0|}{M}\right)^t ,
+\]
+where \(W_\eta\) counts vertices of \(V_0\) whose red coordinate falls in
+\(S(\eta)\).  Averaging the exposure cells preserves the same bound, since
+the right-hand side is independent of the exposure and zero-mass cells add
+nothing.  Using \(\binom bt\le(eb/t)^t\), we obtain
+\[
+\Pr(W\ge t\mid G_B,\rho)
+\le \left(\frac{e|U_0||V_0|}{Mt}\right)^t .
+\]
+
+Now use the parameter estimates from
+\(\noderef{OppositeProjectionEdgeProbBounds}\).  Since
+\[
+p=\frac12\sqrt{\frac{L}{n}},\qquad
+M=\left\lfloor\frac{n}{L^2}\right\rfloor ,
+\]
+the size bounds imply, for all sufficiently large \(n\),
+\[
+\frac{|U_0||V_0|}{M}\le 2L^3 .
+\]
+Take \(t=\lceil100L^3\rceil\).  Then
+\[
+\frac{e|U_0||V_0|}{Mt}\le \frac e{50}<1,
+\]
+so the tail is at most \(\exp(-cL^3)\) for the positive constant
+\(c=100\log(50/e)\).  If \(t>|V_0|\), the same bound holds because the event
+is empty.
+
+Thus each fixed ordered blue pair has bad probability at most
+\(\exp(-c(\log n)^3)\), uniformly over the blue conditioning data.  There
+are at most \(M^2\) ordered blue pairs.  The union bound gives total bad
+probability at most
+\[
+M^2\exp(-c(\log n)^3),
+\]
+which tends to \(0\) by \(\noderef{OppositeProjectionAsymptoticBound}\).
+Therefore the blue bad event in the statement is negligible.
+\end{proof}

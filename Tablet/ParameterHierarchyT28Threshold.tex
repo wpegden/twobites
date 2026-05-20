@@ -1,0 +1,63 @@
+\begin{helper}
+For every \(\eta>0\), every \(\varepsilon_1>0\), and every
+\(\eta<1/16\), there is \(n_0\) such that for every \(n>n_0\), if
+\(L=\log n\), then
+\[
+\frac{2(1+\eta)\sqrt L\,L}{n^{1/4-2\eta}}\le \frac14,
+\]
+\[
+\frac{4(1+\eta)\sqrt L\,L}{n^\eta}\le \frac14,
+\]
+and
+\[
+\exp\!\left(-\frac12 n^{3/4-2\eta}\right)\le\varepsilon_1.
+\]
+\end{helper}
+\begin{proof}
+Put \(a=1/4-2\eta\) and \(b=3/4-2\eta\).  The hypothesis
+\(\eta<1/16\) gives \(a>0\) and \(b>0\).  Since \(\log n=o(n^{a/2})\),
+we may enlarge \(n_0\) so that
+\[
+L\le c_1 n^{a/2},\qquad c_1=\frac1{8(1+\eta)}.
+\]
+Also enlarge \(n_0\) so that \(L\ge1\).  Then \(\sqrt L\le L\), and hence
+\[
+\sqrt L\,L\le L^2\le c_1^2 n^a.
+\]
+The choice of \(c_1\) makes
+\[
+2(1+\eta)c_1^2\le \frac14,
+\]
+so
+\[
+2(1+\eta)\sqrt L\,L\le \frac14 n^a,
+\]
+which is equivalent to the first displayed inequality.
+
+Similarly, because \(\log n=o(n^{\eta/2})\), after enlarging \(n_0\) we have
+\[
+L\le c_2 n^{\eta/2},\qquad c_2=\frac1{16(1+\eta)}.
+\]
+Again \(L\ge1\) gives
+\[
+\sqrt L\,L\le L^2\le c_2^2 n^\eta,
+\]
+and the choice of \(c_2\) gives
+\[
+4(1+\eta)c_2^2\le\frac14.
+\]
+This proves the second displayed inequality.
+
+Finally, since \(b>0\), \(n^b\to\infty\).  Enlarge \(n_0\) so that
+\[
+n^b\ge \max\{0,-2\log\varepsilon_1\}.
+\]
+Then
+\[
+-\frac12n^b\le \log\varepsilon_1.
+\]
+Because \(\varepsilon_1>0\), exponentiating gives
+\[
+\exp\!\left(-\frac12 n^b\right)\le\varepsilon_1.
+\]
+\end{proof}

@@ -1,0 +1,58 @@
+\begin{helper}[TwoBiteBlueMarginal]
+\label{helper:TwoBiteBlueMarginal}
+Let \(n \le m^2\). For any event \(E\) depending only on the blue graph, the probability of \(E\) under \(\noderef{TwoBiteEventProbability}(n, m, p)\) is equal to its marginal probability under \(\noderef{GnpGraphWeight}(p, \cdot)\):
+\[
+\Pr(E(\noderef{TwoBiteBlueGraph}(\omega))) = \sum_{G : E(G)} \noderef{GnpGraphWeight}(p, G).
+\]
+\end{helper}
+
+\begin{proof}
+By \(\noderef{TwoBiteSample}\), a sample is a triple
+\[
+\omega=(G_R,G_B,\pi),
+\]
+where \(G_R\) is the red base graph, \(G_B\) is the blue base graph, and
+\(\pi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) is the injection.  The
+definition \(\noderef{TwoBiteBlueGraph}\) extracts the second graph
+coordinate \(G_B\).
+
+Expand the event probability using \(\noderef{TwoBiteEventProbability}\) and
+\(\noderef{TwoBiteSampleWeight}\):
+\[
+\Pr(E(\noderef{TwoBiteBlueGraph}(\omega)))
+=
+\sum_{G_R,G_B,\pi}
+\mathbf 1_{E(G_B)}\,
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,m).
+\tag{1}
+\]
+Fix the projected blue graph \(G_B\).  In the inner sum over the irrelevant
+coordinates \(G_R\) and \(\pi\), the factor
+\(\mathbf 1_{E(G_B)}\noderef{GnpGraphWeight}(p,G_B)\) is constant.  Since
+\(n\le m^2\), the injection type is nonempty, so
+\(\noderef{UniformInjectionWeight}(n,m)\) is the reciprocal of the number of
+injections.  Therefore
+\[
+\sum_\pi \noderef{UniformInjectionWeight}(n,m)=1.
+\tag{2}
+\]
+The red graph coordinate has total mass
+\[
+\sum_{G_R}\noderef{GnpGraphWeight}(p,G_R)=1
+\tag{3}
+\]
+by \(\noderef{GnpGraphWeightSumOne}\).  Substituting (2) and (3) into (1)
+leaves
+\[
+\sum_{G_B}
+\mathbf 1_{E(G_B)}\,\noderef{GnpGraphWeight}(p,G_B),
+\]
+which is exactly
+\[
+\sum_{G_B:\,E(G_B)} \noderef{GnpGraphWeight}(p,G_B).
+\]
+This is the asserted blue marginal identity.
+\end{proof}

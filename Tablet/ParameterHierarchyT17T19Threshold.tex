@@ -1,0 +1,51 @@
+\begin{helper}
+For every \(\eta>0\) and \(\varepsilon_2>0\), there is \(n_0\) such that
+for every \(n>n_0\), if \(L=\log n\), then
+\[
+\frac{100\cdot5(1+\eta)(\log L)^2L^3}{\sqrt{nL}}
+\le\frac{\varepsilon_2}{100},
+\]
+\[
+\frac{200\cdot5(1+\eta)(\log L)^2L^3}{\sqrt{nL}}
+\le\frac{\varepsilon_2}{100},
+\]
+and
+\[
+\frac{400\cdot5(1+\eta)(\log L)^2L^5}{\sqrt{nL}}
+\le\frac{\varepsilon_2}{100}.
+\]
+\end{helper}
+\begin{proof}
+It is enough to prove the last displayed inequality eventually, with
+\(L\ge1\) and \(\log L\ge0\), because for \(L\ge1\) the first two left
+sides are bounded above by the third one: \(100L^3\le400L^5\) and
+\(200L^3\le400L^5\), while the common factor
+\(5(1+\eta)(\log L)^2/\sqrt{nL}\) is nonnegative.
+
+Let \(C=400\cdot5(1+\eta)\).  Since \(\log n=o(n^{1/16})\), choose
+\(n_0\) large enough that for every \(n>n_0\),
+\[
+L\ge1,\qquad \log L\ge0,\qquad L\le n^{1/16},
+\qquad n^{-1/16}\le\frac{\varepsilon_2}{100C}.
+\]
+Then
+\[
+\frac{L^7}{\sqrt n}
+\le \frac{n^{7/16}}{n^{1/2}}
+=n^{-1/16}
+\le\frac{\varepsilon_2}{100C},
+\]
+and hence
+\[
+C\frac{L^7}{\sqrt n}\le\frac{\varepsilon_2}{100}.
+\]
+For such \(n\), \(\log L\le L\), so \((\log L)^2\le L^2\), and
+\(\sqrt{nL}\ge\sqrt n\) because \(L\ge1\).  Therefore
+\[
+\frac{400\cdot5(1+\eta)(\log L)^2L^5}{\sqrt{nL}}
+\le
+400\cdot5(1+\eta)\frac{L^7}{\sqrt n}
+\le\frac{\varepsilon_2}{100}.
+\]
+As noted at the start, this also gives the two smaller displayed bounds.
+\end{proof}

@@ -1,0 +1,39 @@
+\begin{helper}
+Let \(n\in\mathbb N\).  Put
+\[
+L=\log n,\quad
+m_R=\frac{n}{L^2},\quad
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\quad m=(M:\mathbb R),
+\]
+and
+\[
+p=\frac12\sqrt{\frac Ln}.
+\]
+Assume \(0<n\), \(0<L\), and \(m\le m_R\).  Then
+\[
+2pm\le\frac{\sqrt n}{L^{3/2}}.
+\]
+\end{helper}
+\begin{proof}
+Since \(p\ge0\), the inequality \(m\le m_R\) gives
+\[
+2pm\le 2pm_R.
+\]
+Using \(p=\frac12\sqrt{L/n}\), \(m_R=n/L^2\), and positivity of \(n\) and
+\(L\),
+\[
+2pm_R=\sqrt{\frac Ln}\frac{n}{L^2}
+=\frac{\sqrt L}{\sqrt n}\frac{n}{L^2}.
+\]
+Because \((\sqrt n)^2=n\), this equals
+\[
+\frac{\sqrt n\,\sqrt L}{L^2}.
+\]
+Finally \(L^{3/2}=L\sqrt L\), so
+\[
+\frac{\sqrt n\,\sqrt L}{L^2}
+=\frac{\sqrt n}{L\sqrt L}
+=\frac{\sqrt n}{L^{3/2}}.
+\]
+Combining these equalities with the first inequality proves the claim.
+\end{proof}

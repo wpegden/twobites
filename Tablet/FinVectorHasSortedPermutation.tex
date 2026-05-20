@@ -1,0 +1,51 @@
+\begin{helper}
+For every natural number \(N\) and every vector
+\(c\in\mathbb R^{\operatorname{Fin}(N)}\), there is a vector
+\(x\in\mathbb R^{\operatorname{Fin}(N)}\) and a permutation
+\(\sigma\) of \(\operatorname{Fin}(N)\) such that
+\[
+x_i=c_{\sigma(i)}\quad\text{for all }i
+\]
+and
+\[
+i\le j\implies x_j\le x_i .
+\]
+In other words, every finite real vector admits a nonincreasing
+permuted ordering, with ties broken arbitrarily.
+\end{helper}
+\begin{proof}
+We argue by an explicit finite selection procedure.  Let
+\(U=\operatorname{Fin}(N)\).  If \(N=0\), then \(U\) is empty; take the unique
+empty vector and the unique empty permutation.  The asserted equations and
+order condition are vacuous.
+
+Assume now that \(N>0\).  Since \(U\) is finite and the set of already chosen
+coordinates will always be finite, the following recursive construction is
+well defined.  At step \(0\), choose an index \(\sigma(0)\in U\) on which
+\(c\) attains its maximum over all of \(U\).  At step \(r+1<N\), after
+\(\sigma(0),\ldots,\sigma(r)\) have been chosen distinctly, choose
+\(\sigma(r+1)\) on which \(c\) attains its maximum over the nonempty finite
+set
+\[
+U\setminus\{\sigma(0),\ldots,\sigma(r)\}.
+\]
+If several indices have the same value, choose any one of them.  This tie
+choice is harmless because equal values may be ordered in either way.
+
+By construction the selected indices are all distinct.  There are exactly
+\(N\) steps and \(U\) has exactly \(N\) elements, so every element of \(U\) is
+selected once.  Thus the assignment \(r\mapsto \sigma(r)\), after identifying
+the ordinal positions \(0,\ldots,N-1\) with \(\operatorname{Fin}(N)\), is a
+bijection of \(U\), hence a permutation.
+
+Define \(x_r=c_{\sigma(r)}\).  If \(r\le s\), then when \(\sigma(r)\) was
+chosen, the later element \(\sigma(s)\) had not yet been chosen and therefore
+belonged to the remaining candidate set.  Since \(\sigma(r)\) was chosen to
+maximize \(c\) on that candidate set,
+\[
+c_{\sigma(s)}\le c_{\sigma(r)}.
+\]
+Equivalently, \(x_s\le x_r\).  This proves the required nonincreasing order,
+and the defining equation \(x_i=c_{\sigma(i)}\) proves that \(x\) is a
+permutation of \(c\).
+\end{proof}

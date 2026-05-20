@@ -1,0 +1,34 @@
+\begin{helper}
+Let \(N,n\) be natural numbers.  Let
+\(x\in\mathbb R^{\operatorname{Fin}(N)}\) be a nonincreasing vector with
+nonnegative integer entries and total sum \(n\).  Then for every
+\(r\le N\), the sum of the first \(r\) entries of \(x\) is at least
+\(\min(r,n)\):
+\[
+\min(r,n)\le \sum_{i<r}x_i .
+\]
+\end{helper}
+\begin{proof}
+The case \(r=0\) is immediate, since both sides are \(0\).  Assume
+\(0<r\le N\).  Because every \(x_i\) is a nonnegative integer, each
+coordinate is either \(0\) or at least \(1\).
+
+First suppose \(r\le n\).  If the first \(r\) entries had sum strictly less
+than \(r\), then \(r\) nonnegative integer summands would have total less
+than \(r\).  If the \(r\)-th entry were at least \(1\), then, because the
+vector is nonincreasing, all first \(r\) entries would be at least \(1\), and
+their sum would be at least \(r\), a contradiction.  Thus the \(r\)-th entry
+is \(0\).  Nonnegativity and monotonicity then force every later entry to be
+\(0\) as well.  Hence the total sum of all \(N\) entries is the same as the
+sum of the first \(r\) entries, which is strictly less than \(r\le n\).  This
+contradicts the total sum \(n\).  Therefore the first \(r\) entries have sum
+at least \(r\), which is \(\min(r,n)\) in this case.
+
+Now suppose \(n\le r\).  If some entry after the first \(r\) positions were
+positive, then, because the vector is nonincreasing and has nonnegative
+integer entries, all of the first \(r+1\) entries would be at least \(1\).
+Their sum would then be at least \(r+1\), and hence greater than or equal to
+\(n+1\), contradicting the total sum \(n\).  Thus every positive entry is
+among the first \(r\) coordinates, so the first \(r\) entries contain the
+entire total sum \(n\).  Hence their sum is \(n=\min(r,n)\).
+\end{proof}

@@ -1,0 +1,102 @@
+\begin{lemma}
+Assume \(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\),
+\(\eta>0\), and \(\eta\le\varepsilon^2/320\).  For all sufficiently large
+\(n\), with
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+the following holds uniformly for \(0\le\ell_R,\ell_B\le K\).  If
+\[
+x_R=\ell_R/K,\qquad x_B=\ell_B/K,\qquad
+x_R+x_B\ge1+\varepsilon/2,
+\]
+then
+\[
+\begin{aligned}
+&\left(\eta+\left(\frac12+\eta\right)-\frac{2-x_R-x_B}{2}\right)K\log n\\
+&\quad
+-p\left(
+\binom{\ell_R}{2}_{\mathbb R}+\binom{\ell_B}{2}_{\mathbb R}
+-\binom{K-\ell_R}{2}_{\mathbb R}
+-\binom{K-\ell_B}{2}_{\mathbb R}
+-\varepsilon^3K^2\right)\\
+&\le
+-\frac{\varepsilon(x_R+x_B-1-\varepsilon^2-\varepsilon^3)}{2}K\log n
++3\eta K\log n .
+\end{aligned}
+\]
+\end{lemma}
+\begin{proof}
+Write \(s=x_R+x_B\) and \(u=s-1\).  Expanding
+\(\binom y2_{\mathbb R}=y(y-1)/2\) gives, for any \(0\le x\le1\),
+\[
+\binom{xK}{2}_{\mathbb R}-\binom{K-xK}{2}_{\mathbb R}
+=\frac{x^2K^2-xK-(1-x)^2K^2+(1-x)K}{2}
+=\frac{(2x-1)(K^2-K)}{2}.
+\]
+Adding this identity for \(x=x_R\) and \(x=x_B\) gives the exact identity
+\[
+\binom{\ell_R}{2}_{\mathbb R}+\binom{\ell_B}{2}_{\mathbb R}
+-\binom{K-\ell_R}{2}_{\mathbb R}
+-\binom{K-\ell_B}{2}_{\mathbb R}
+=u(K^2-K). \tag{1}
+\]
+Thus the left side in the lemma is
+\[
+\left(2\eta+\frac{u}{2}\right)K\log n
+-p\bigl(u(K^2-K)-\varepsilon^3K^2\bigr). \tag{2}
+\]
+
+The rounded comparison in \(\noderef{ParameterHierarchyEventualComparisons}\)
+gives
+\[
+(1+\varepsilon)\sqrt{n\log n}\le K
+<(1+\varepsilon)\sqrt{n\log n}+1.
+\]
+Since \(p=\frac12\sqrt{\log n/n}\), increasing the threshold makes the two
+uniform estimates
+\[
+\left|pK-\frac{1+\varepsilon}{2}\log n\right|
+\le \frac{\eta}{16}\log n,
+\qquad
+p\le \frac{\eta}{16}\log n
+\tag{3}
+\]
+valid.  The second estimate is trivial for large \(n\), and the first follows
+by multiplying the displayed bound on \(K\) by \(p\), where the additive error is
+exactly \(p\).  We also increase the threshold so that \(K\log n\ge0\).
+
+The regime hypotheses give \(0\le u\le1\).  From (3),
+\[
+p\,u(K^2-K)
+\ge
+\left(\frac{1+\varepsilon}{2}\log n-\frac{\eta}{16}\log n\right)uK
+-\frac{\eta}{16}K\log n,
+\]
+and
+\[
+p\varepsilon^3K^2
+\le
+\left(\frac{1+\varepsilon}{2}\log n+\frac{\eta}{16}\log n\right)
+\varepsilon^3K.
+\]
+Substituting these two estimates into (2) yields
+\[
+\left(
+2\eta+\frac{u}{2}
+-\frac{1+\varepsilon}{2}u
++\frac{1+\varepsilon}{2}\varepsilon^3
+\right)K\log n
++\left(\frac{u}{16}+\frac1{16}+\frac{\varepsilon^3}{16}\right)\eta K\log n.
+\]
+Since \(0\le u\le1\) and \(0<\varepsilon<1\), the parenthesized error
+coefficient is at most \(3/16\).  The non-error coefficient is
+\[
+-\frac{\varepsilon(u-\varepsilon^2-\varepsilon^3)}{2},
+\]
+plus the explicit \(2\eta\) from the first line.  Therefore the total error is
+at most \((2+3/16)\eta K\log n\), which is bounded by \(3\eta K\log n\).
+Substituting \(u=s-1=x_R+x_B-1\) proves the claimed bound.
+\end{proof}

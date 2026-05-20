@@ -1,0 +1,23 @@
+\begin{helper}
+Let \(u,v,w\) be three lifted vertices whose three pairs are red overlay edges.
+For the red projected-pair rank used in \(\noderef{TwoBiteFinalGraph}\), one of
+the three red projected pairs \(uv\), \(uw\), or \(vw\) is strictly latest:
+either the ranks of \(uw\) and \(vw\) are both smaller than the rank of \(uv\),
+or the ranks of \(uv\) and \(vw\) are both smaller than the rank of \(uw\), or
+the ranks of \(uv\) and \(uw\) are both smaller than the rank of \(vw\).
+\end{helper}
+\begin{proof}
+Write \(r_x\) for the red projection of a lifted vertex \(x\).  Since
+\(uv,uw,vw\) are red overlay edges, the definition of
+\(\noderef{TwoBiteOverlay}\) gives red base adjacencies
+\(r_ur_v\), \(r_ur_w\), and \(r_vr_w\).  The red base graph is a simple graph,
+so it is loopless.  Therefore \(r_u\ne r_v\), \(r_u\ne r_w\), and
+\(r_v\ne r_w\).
+
+Applying \(\noderef{FinPairRankLatestOfDistinct}\) to the three pairwise
+distinct red projections \(r_u,r_v,r_w\), one of the three projected red pairs
+has rank strictly larger than the other two.  If the largest rank is that of
+\(uv\), we obtain the first alternative in the statement.  If it is that of
+\(uw\), we obtain the second alternative.  If it is that of \(vw\), we obtain
+the third alternative.
+\end{proof}

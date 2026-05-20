@@ -1,0 +1,39 @@
+\begin{lemma}
+Fix red and blue center sets \(B_R,B_B\), red and blue projection sets
+\(P_R,P_B\), and an integer \(K\).  Suppose
+\[
+|P_R|\le K,\qquad |P_B|\le K.
+\]
+Let \(p\ge0\), \(A>0\), and suppose
+\[
+p\,(|B_R|+|B_B|)K\le \frac{A}{4e}.
+\]
+If a fixed-pair bad event has probability, or product weight, at most the
+\(t\)-subset union-bound quantity with
+\[
+N=|B_R||P_R|+|B_B||P_B|,\qquad t=\lceil A\rceil,
+\]
+namely
+\[
+\binom Nt p^t,
+\]
+then the bad event has probability, or product weight, at most
+\[
+\exp(-A/4).
+\]
+\end{lemma}
+\begin{proof}
+The candidate red set has at most \(|B_R||P_R|\) entries, and the candidate
+blue set has at most \(|B_B||P_B|\) entries.  Hence
+\[
+N=|B_R||P_R|+|B_B||P_B|
+\le |B_R|K+|B_B|K=(|B_R|+|B_B|)K.
+\]
+Multiplying by \(p\ge0\), the assumed mean bound gives
+\[
+pN\le p(|B_R|+|B_B|)K\le \frac{A}{4e}.
+\]
+The fixed-candidate binomial tail estimate
+\(\noderef{MediumClosedPairsFixedCandidateBinomialTail}\), applied with this
+candidate count \(N\), now gives the bound \(\exp(-A/4)\).
+\end{proof}

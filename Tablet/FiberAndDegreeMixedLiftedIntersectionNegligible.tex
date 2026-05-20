@@ -1,0 +1,93 @@
+\begin{helper}[FiberAndDegreeMixedLiftedIntersectionNegligible]
+\label{helper:FiberAndDegreeMixedLiftedIntersectionNegligible}
+Let \(\beta=1/2\), let
+\[
+m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p(n)=\noderef{TwoBiteEdgeProbability}(\beta,n),
+\]
+and let probabilities be taken with respect to
+\(\noderef{TwoBiteEventProbability}(n,m(n),p(n))\).  The following event has
+negligible probability in the sense of \(\noderef{NegligibleProbability}\):
+there exist \(r,b\in\operatorname{Fin}(m(n))\) such that
+\[
+\left|
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(b))
+\right|
+>100(\log n)^3,
+\]
+and, simultaneously, all red and blue base degrees are bounded by
+\[
+2p(n)m(n):
+\quad
+\forall r\in\operatorname{Fin}(m(n)),\ 
+\noderef{GraphDegreeCount}(\omega.1,r)\le 2p(n)m(n),
+\]
+\[
+\forall b\in\operatorname{Fin}(m(n)),\ 
+\noderef{GraphDegreeCount}(\omega.2.1,b)\le 2p(n)m(n).
+\]
+\end{helper}
+
+\begin{proof}
+Write \(M=m(n)\), \(p=p(n)\), and \(L=\log n\).  Let \(E_n\) be exactly the
+event in the statement: a bad mixed lifted intersection occurs and all red
+and blue base degrees are at most \(2pM\).
+We may discard finitely many \(n\).  By
+\(\noderef{TwoBiteNaturalTotalMassOneEventually}\), eventually
+\[
+n\le M^2,
+\]
+and because \(L=\log n\to\infty\), eventually \(L\ge1\).  Also the hypotheses
+\(\beta=1/2\) and \(m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\)
+identify \(p\) with \(\noderef{TwoBiteEdgeProbability}(1/2,n)\).
+
+Fix base graphs \(G_R,G_B\) on \(\operatorname{Fin}(M)\).  If either
+\[
+\exists r,\quad \noderef{GraphDegreeCount}(G_R,r)>2pM
+\]
+or
+\[
+\exists b,\quad \noderef{GraphDegreeCount}(G_B,b)>2pM,
+\]
+then no two-bite sample whose base graphs are \(G_R,G_B\) can lie in
+\(E_n\), because the degree-good conjunct in \(E_n\) is false.  Hence the
+conditional probability of \(E_n\) given these base graphs is \(0\).
+
+If instead the fixed base graphs satisfy the degree bounds, then the event
+\(E_n\) is contained in the event that some mixed lifted intersection is
+larger than \(100L^3\).  The hypothesis required by
+\(\noderef{FiberAndDegreeMixedLiftedIntersectionUniformBound}\) consists of
+the specialized parameter identities and eventual inequalities just recorded,
+together with the fixed-graph degree bound
+\[
+\forall r,b,\quad
+\noderef{GraphDegreeCount}(G_R,r)\le2pM
+\quad\text{and}\quad
+\noderef{GraphDegreeCount}(G_B,b)\le2pM.
+\]
+Therefore, for every fixed pair of base graphs,
+\[
+\Pr(E_n\mid G_R,G_B)\le M^2\exp(-2L^3).
+\tag{1}
+\]
+
+Apply \(\noderef{FiberAndDegreeMixedLiftedIntersectionConditioning}\) to the
+event \(E_n\) with \(C=M^2\exp(-2L^3)\).  The bound (1) is uniform over all
+fixed base graphs, so the unconditional probability satisfies
+\[
+\noderef{TwoBiteEventProbability}(n,M,p)(E_n)
+\le M^2\exp(-2L^3).
+\tag{2}
+\]
+Finally, \(\noderef{OppositeProjectionAsymptoticBound}\), applied with
+\(c=2\) and \(m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\), gives
+\[
+M(n)^2\exp(-2(\log n)^3)\to0.
+\]
+Combining this convergence with (2) proves that the sequence of probabilities
+in the statement tends to \(0\), which is precisely the
+\(\noderef{NegligibleProbability}\) conclusion.
+\end{proof}

@@ -1,0 +1,91 @@
+\begin{helper}
+Fix a terminal coordinate set \(U\), a blue support \(B\), a red label
+\(J\), a finite branch-label type \(\mathcal T\), and a finite transcript
+family \(\mathcal P\).  Let
+\[
+\mathsf{Realized}(\beta,\tau)
+\]
+mean that \((\beta,\tau)\) is a nonempty fixed \((B,J)\) red cell, where
+\(\tau=(P_\tau,A_\tau,Z_\tau)\).  Assume \(B\) is a blue \(u_B\)-subset of
+\(U\).  For every realized cell, assume the decoded red support
+\(R_{\beta,J}\) is a red \(u_R\)-subset of \(U\), and that
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad Z_\tau\subseteq A_\tau,\qquad
+\max(0,a-u_R-u_B)\le |Z_\tau|.
+\]
+
+Assume that the residual product tree for these fixed supports has a finite
+leaf set \(\Lambda\), a leaf mass \(\nu:\Lambda\to\mathbb R\), and a leaf
+assignment
+\[
+\iota(\beta,\tau)\in\Lambda
+\]
+for every formal branch/transcript pair.  The leaf masses are nonnegative
+and normalized:
+\[
+0\le \nu(\lambda)\quad(\lambda\in\Lambda),\qquad
+\sum_{\lambda\in\Lambda}\nu(\lambda)\le1.
+\]
+Assume also that the leaf assignment is injective on realized cells: if
+\(\tau,\tau'\in\mathcal P\), both cells are realized, and
+\[
+\iota(\beta,\tau)=\iota(\beta',\tau'),
+\]
+then \(\beta=\beta'\) and \(\tau=\tau'\).  Then there are cell-indexed
+residual masses \(r_{\beta,\tau}\) such that
+\[
+\sum_{\beta\in\mathcal T}
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    r_{\beta,\tau}\le1,
+\]
+\[
+0\le r_{\beta,\tau}
+\]
+on realized cells, and
+\[
+r_{\beta,\tau}=\nu(\iota(\beta,\tau))
+\]
+on realized cells.
+\end{helper}
+\begin{proof}
+Define
+\[
+r_{\beta,\tau}=\nu(\iota(\beta,\tau))
+\]
+for all formal pairs \((\beta,\tau)\).  On a realized pair this immediately
+gives the displayed identity, and nonnegativity follows from the
+nonnegativity of the corresponding residual leaf mass.
+
+It remains to prove the total bound.  Let
+\[
+\mathcal C=\{(\beta,\tau):\tau\in\mathcal P,\,
+  \mathsf{Realized}(\beta,\tau)\}
+\]
+be the finite set of realized cells.  The injectivity hypothesis says exactly
+that the map \((\beta,\tau)\mapsto\iota(\beta,\tau)\) is injective on
+\(\mathcal C\).  Therefore the sum of the cell residual masses is the sum of
+the same leaf masses over the image \(\iota(\mathcal C)\), with no leaf
+counted twice:
+\[
+\sum_{(\beta,\tau)\in\mathcal C} r_{\beta,\tau}
+=
+\sum_{\lambda\in\iota(\mathcal C)} \nu(\lambda).
+\]
+The image \(\iota(\mathcal C)\) is a subset of the finite residual leaf set
+\(\Lambda\).  Since every \(\nu(\lambda)\) is nonnegative, enlarging the sum
+from this image to all leaves can only increase it:
+\[
+\sum_{\lambda\in\iota(\mathcal C)} \nu(\lambda)
+\le
+\sum_{\lambda\in\Lambda}\nu(\lambda).
+\]
+The residual product-tree normalization gives the final upper bound
+\[
+\sum_{\lambda\in\Lambda}\nu(\lambda)\le1.
+\]
+Combining the three displayed relations proves the claimed subprobability
+bound for the cell-indexed residual masses.
+\end{proof}

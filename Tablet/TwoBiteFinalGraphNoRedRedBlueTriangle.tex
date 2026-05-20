@@ -1,0 +1,17 @@
+\begin{helper}
+For every two-bite sample \(\omega\), the final graph has no mixed triangle in
+which two red edges share a vertex and the opposite edge is blue.
+\end{helper}
+\begin{proof}
+Suppose, for contradiction, that \(uv\) and \(uw\) are final red edges and
+\(vw\) is a final blue edge.  A final red edge is an overlay red edge that was
+not deleted, so \(uv\) and \(uw\) are red overlay edges.  A final blue edge is
+an overlay blue edge that was not deleted, so \(vw\) is a blue overlay edge.
+
+The blue mixed-deletion clause in \(\noderef{TwoBiteFinalGraph}\) says that if
+there is a center \(c\) such that \(cv\) and \(cw\) are red overlay edges while
+\(vw\) is a blue overlay edge, then the blue edge \(vw\) is selected for
+deletion.  Applying this clause with center \(c=u\), the three overlay edges
+\(uv,uw,vw\) witness that \(vw\) is blue-deleted.  This contradicts the fact
+that \(vw\) remains a final blue edge.
+\end{proof}

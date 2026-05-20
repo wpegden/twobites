@@ -1,0 +1,48 @@
+\begin{helper}
+Let \(a,b,c\in\operatorname{Fin}m\) be pairwise distinct.  For the projected
+pair rank
+\[
+  \rho(x,y)=\min(x,y)\,m+\max(x,y),
+\]
+where \(x\) and \(y\) are represented by their natural-number coordinates, one
+of the three unordered pairs \(ab\), \(ac\), or \(bc\) is strictly latest:
+either \(\rho(a,c)<\rho(a,b)\) and \(\rho(b,c)<\rho(a,b)\), or
+\(\rho(a,b)<\rho(a,c)\) and \(\rho(b,c)<\rho(a,c)\), or
+\(\rho(a,b)<\rho(b,c)\) and \(\rho(a,c)<\rho(b,c)\).
+\end{helper}
+\begin{proof}
+Since \(a,b,c\) are pairwise distinct elements of \(\operatorname{Fin}m\),
+their natural-number coordinates are pairwise distinct.  Hence exactly one of
+the three coordinates is the smallest.
+
+First observe the basic monotonicity of \(\rho\).  If the smaller coordinate
+of an unordered pair \(xy\) is strictly smaller than the smaller coordinate of
+another unordered pair \(zt\), then \(\rho(x,y)<\rho(z,t)\).  Indeed, the
+larger coordinate of \(xy\) is still \(<m\).  Thus
+\[
+  \min(x,y)m+\max(x,y)<\min(x,y)m+m=(\min(x,y)+1)m.
+\]
+If \(\min(x,y)<\min(z,t)\), then
+\(\min(x,y)+1\le \min(z,t)\), so
+\[
+  (\min(x,y)+1)m\le \min(z,t)m
+      \le \min(z,t)m+\max(z,t)=\rho(z,t).
+\]
+Combining the inequalities gives \(\rho(x,y)<\rho(z,t)\).
+
+If \(a\) has the smallest coordinate, then both pairs \(ab\) and \(ac\) have
+smaller coordinate \(a\), while the pair \(bc\) has smaller coordinate
+\(\min(b,c)>a\).  By the monotonicity just proved,
+\(\rho(a,b)<\rho(b,c)\) and \(\rho(a,c)<\rho(b,c)\), giving the third
+alternative.
+
+If \(b\) has the smallest coordinate, the same argument shows that \(ab\) and
+\(bc\) both have smaller coordinate \(b\), while \(ac\) has smaller coordinate
+\(\min(a,c)>b\).  Hence \(\rho(a,b)<\rho(a,c)\) and
+\(\rho(b,c)<\rho(a,c)\), giving the second alternative.
+
+If \(c\) has the smallest coordinate, then \(ac\) and \(bc\) both have smaller
+coordinate \(c\), while \(ab\) has smaller coordinate \(\min(a,b)>c\).  Hence
+\(\rho(a,c)<\rho(a,b)\) and \(\rho(b,c)<\rho(a,b)\), giving the first
+alternative.
+\end{proof}

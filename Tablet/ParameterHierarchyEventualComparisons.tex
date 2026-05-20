@@ -1,0 +1,124 @@
+\begin{definition}
+The eventual-comparisons package for
+\((\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\) is the assertion that for
+every integer \(n>n_0\), after setting the real scales
+\[
+k_{\mathbb R}=(1+\varepsilon)\sqrt{n\log n},\qquad
+m_{\mathbb R}=\frac{n}{\log^2 n},\qquad
+p=\frac12\sqrt{\frac{\log n}{n}},
+\]
+and the integer rounded parameters
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),\qquad
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\]
+with \(k=K\) and \(m=M\) when these integer parameters are viewed as real
+numbers, and after setting
+\[
+t_1=\frac{\sqrt{n\log n}}{\log\log n},\qquad
+t_2=n^{1/4+\varepsilon},\qquad
+t_3=n^{2\varepsilon},
+\]
+the following rounding and numerical inequalities all hold:
+\[
+0<m,\qquad
+0\le p\le\frac12,\qquad
+1\le 2pm,\qquad
+k_{\mathbb R}\le k<k_{\mathbb R}+1,\qquad
+m\le m_{\mathbb R}<m+1,
+\]
+\[
+n^{4\varepsilon}k\le \frac{\varepsilon_1}{2}k^2,\qquad
+2k(\log n)^2\le \frac{\varepsilon_1}{8}k^2,
+\]
+\[
+\frac{1}{2\log n}\binom{k}{2}_{\mathbb R}
+  +2k(\log n)^2
+  +\frac{1}{\sqrt{\log n}}\binom{k}{2}_{\mathbb R}
+  \le
+  \frac{2}{\sqrt{\log n}}\binom{k}{2}_{\mathbb R},
+\]
+\[
+\exp\!\left(
+  -\frac{\binom{k}{2}_{\mathbb R}^2}
+  {(\log n)m\,n^{8\varepsilon}}
+  \right)\binom{n}{K}\le \frac1n,
+\]
+\[
+\frac{2}{\sqrt{\log n}}\binom{k}{2}_{\mathbb R}
+  \le \frac{\varepsilon_1}{2}k^2,
+\]
+\[
+4\log k\le \frac{\varepsilon^3}{2}pk^2,\qquad
+t_1k\le \varepsilon_1k^2,
+\]
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}100(\log n)^3\le \frac12 k,
+\]
+\[
+\frac{2k}{t_1}\,2pm\le \frac{\varepsilon_1}{10}k,
+\]
+\[
+\frac{2k}{t_1}\binom{2pm}{2}_{\mathbb R}\le \varepsilon_1k^2,
+\]
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}200(\log n)^3
+  \le \frac{\varepsilon_1}{10}k,
+\]
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}
+  \binom{200(\log n)^3}{2}_{\mathbb R}
+  \le \frac{\varepsilon_1}{10}k^2,\qquad
+3\varepsilon_2\le \frac{\varepsilon_1}{10},
+\qquad
+0\le\varepsilon_2\le1,
+\]
+\[
+2pm\le\frac{\varepsilon_2}{100}t_1,\qquad
+(2k/t_1+1)100(\log n)^3\le\frac{\varepsilon_2}{100}t_1,
+\]
+\[
+(2k/t_1+1)200(\log n)^3\le\frac{\varepsilon_2}{100}t_1,\qquad
+(2k/t_1+1)400(\log n)^5\le\frac{\varepsilon_2}{100}t_1,
+\]
+\[
+t_2n^{1/4-\varepsilon}\le \varepsilon_1k,
+\]
+\[
+\noderef{TwoBiteLargeCutoff}(\varepsilon,n)
+  <\noderef{TwoBiteHugeCutoff}(n),
+\]
+\[
+(1+\varepsilon_2)(\log n)^2\frac{t_2}{\log n}
+  +(\log n)(1+\varepsilon_2)pm
+  < \noderef{TwoBiteHugeCutoff}(n)=t_1,
+\]
+\[
+100\left(n^{1/4}+\frac12\right)(\log n)^3
+  \le \noderef{TwoBiteLargeCutoff}(\varepsilon,n)=t_2,
+\]
+\[
+t_3^2k\le \frac{\varepsilon_1}{2}k^2,\qquad
+k<n^{1/4}t_2-\binom{n^{1/4}}{2}_{\mathbb R}100(\log n)^3,
+\]
+\[
+k\left(\frac{2k}{\log n}+n^{1/4}\right)\le \varepsilon_1k^2,
+\]
+\[
+8\sqrt{\varepsilon_1}\,pk^2+10\varepsilon_1pk^2+4\log k
+  \le \varepsilon^3pk^2,
+\]
+\[
+\exp\!\left(k\log n+2kn^{1/4-3\varepsilon}\log n
+  -n^{3/4-2\varepsilon}\right)\le \varepsilon_1,
+\]
+\[
+\exp\!\left(-\frac{\varepsilon}{4}k\log n\right)\le \varepsilon_1.
+\]
+Here \(\binom{k}{2}_{\mathbb R}\) denotes the real-valued binomial expression
+from \(\noderef{RealChooseTwo}\).  The displayed inequalities involving
+\(2k/t_1+1\), \(2pm\), \(200(\log n)^3\), and \(400(\log n)^5\) are the finite
+comparison conjuncts used for the huge-projection argument, including the
+relative-error comparisons needed to turn the paper's \(o(k)\) terms into
+deficit-relative bounds.
+\end{definition}

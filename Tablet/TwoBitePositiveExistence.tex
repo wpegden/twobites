@@ -1,0 +1,86 @@
+\begin{lemma}
+For every real \(\varepsilon>0\), there is an integer \(n_0\) such that for
+every integer \(n\ge n_0\) there exist an integer \(m\), a real \(p\), and a
+sample
+\[
+\omega\in\noderef{TwoBiteSample}(n,m,p)
+\]
+such that
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+\[
+0<\noderef{TwoBiteSampleWeight}(\omega),
+\]
+the shadow graph \(\noderef{TwoBiteFinalGraph}(\omega)_0\) has no triangle,
+and
+\[
+\noderef{IndependenceNumberLess}\!\left(
+\noderef{TwoBiteFinalGraph}(\omega)_0,
+(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\right).
+\]
+\end{lemma}
+\begin{proof}
+Fix \(\varepsilon>0\).  Apply
+\(\noderef{ParameterHierarchyChoice}\) to choose
+\(\eta\), \(\varepsilon_1\), \(\varepsilon_2\), and a hierarchy threshold
+\(n_{\mathrm h}\) such that
+\[
+0<\eta<\varepsilon
+\qquad\text{and}\qquad
+\noderef{ParameterHierarchy}(\eta,\varepsilon_1,\varepsilon_2,n_{\mathrm h})
+\]
+holds.  Put \(\beta=\frac12\),
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p(n)=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+By \(\noderef{TwoBiteParameterRelations}\) and the definition of
+\(\noderef{TwoBiteEdgeProbability}\), after increasing the final threshold if
+necessary,
+\[
+p(n)=\frac12\sqrt{\frac{\log n}{n}}
+\]
+and \(p(n)>0\).  The integer \(M(n)\) is the floor of the paper's real base size
+\(n/\log^2 n\), so it is the constructible base-graph size used by the finite
+probability space.
+
+Apply \(\noderef{NoLargeIndependentSetWhp}\) with target \(\varepsilon\),
+inner hierarchy parameter \(\eta\), and \(\beta=\frac12\).  Its conclusion says,
+in the sense of \(\noderef{WithHighProbability}\), that the probabilities
+\[
+P_n=\noderef{TwoBiteEventProbability}\bigl(n,M(n),p(n),\,
+\{\omega:\mathrm{IndependenceNumberLess}
+(G(\omega),(1+\varepsilon)\sqrt{n\log n})\}\bigr)
+\]
+tend to \(1\).  Hence, after increasing the threshold again, \(P_n>0\) for every
+\(n\) under consideration.
+
+Fix such an \(n\).  By the definition
+\(\noderef{TwoBiteEventProbability}\), the number \(P_n\) is the finite sum of
+\(\noderef{TwoBiteSampleWeight}(\omega)\) over exactly those two-bite samples
+\(\omega\) for which
+\[
+\mathrm{IndependenceNumberLess}
+(G(\omega),(1+\varepsilon)\sqrt{n\log n})
+\]
+holds.  If every summand in this finite sum were \(0\), the sum would be \(0\),
+contrary to \(P_n>0\).  Choose a summand with positive weight, and call the
+corresponding sample \(\omega\).  Then
+\[
+0<\noderef{TwoBiteSampleWeight}(\omega)
+\]
+and the final graph \(G(\omega)\) has independence number less than
+\((1+\varepsilon)\sqrt{n\log n}\), which is precisely the predicate
+\(\noderef{IndependenceNumberLess}\) appearing in the statement.
+
+Finally, \(\noderef{TwoBiteDeletionTriangleFree}\) applies to every two-bite
+sample, independently of the probabilistic estimates.  Applying it to the
+chosen \(\omega\) shows that the simple final graph \(G(\omega)\) has no
+triangle.  Thus the chosen parameters \(m=M(n)\), \(p=p(n)\), and the
+positive-weight sample \(\omega\) satisfy all required conclusions:
+the rounded definition of \(m\), the displayed formula for \(p\),
+triangle-freeness of the final graph, and the required independence-number
+bound.
+\end{proof}

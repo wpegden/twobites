@@ -1,0 +1,100 @@
+\begin{helper}[Product Model Lipschitz Estimate]
+Fix \(n,M\in\mathbb N\), \(I\subseteq\mathrm{Fin}(n)\),
+\(\varepsilon,p_0\in\mathbb R\), an embedding
+\[
+\pi:\mathrm{Fin}(n)\hookrightarrow\mathrm{Fin}(M)\times\mathrm{Fin}(M),
+\]
+and set
+\[
+c_{\mathrm{prod}}=\frac12 n^{4\varepsilon}.
+\]
+If two product assignments \(v\) and \(v'\) agree at every coordinate except
+possibly one, then
+\[
+\left|
+\noderef{FixedSetProductModelVar}(I,\varepsilon,p_0,\pi,v)
+-
+\noderef{FixedSetProductModelVar}(I,\varepsilon,p_0,\pi,v')
+\right|
+\le c_{\mathrm{prod}}.
+\]
+\end{helper}
+\begin{proof}
+Unfold \(\noderef{FixedSetProductModelVar}\).  Each product coordinate
+corresponds to one base vertex: if \(i<M\), it controls the first component of
+the red external-neighborhood data at the red vertex \(x\); if \(M\le i<2M\),
+it controls the second component of the blue external-neighborhood data at the
+blue vertex \(x\).  Let \(x_i\) denote this one possibly changed base vertex.
+For every other base vertex \(y\ne x_i\), the reconstructed graph adjacency
+between \(y\) and the embedded projections of \(I\) is identical for \(v\) and
+\(v'\).  Hence
+\[
+\noderef{TwoBiteX}(\omega_v,I,y)
+=\noderef{TwoBiteX}(\omega_{v'},I,y),
+\]
+and the small-class predicate and final-pair contribution at \(y\) are also
+identical.
+
+For each assignment \(w\), let
+\[
+F_y(w)=
+\noderef{TwoBiteFinalPairs}(\noderef{TwoBiteX}(\omega_w,I,y))
+\]
+after applying the distinct-red-and-blue-projection filter, and set
+\(F_y(w)=\varnothing\) if \(y\) is not in the external small-class set
+\[
+S_I^{\mathrm{ext}}(\omega_w)
+=\{z:\noderef{TwoBiteSmallClass}(\omega_w,\varepsilon,I,z)\}\setminus P_I.
+\]
+This convention includes the embedded-coordinate cases \(y\in P_R\) or
+\(y\in P_B\): such \(y\) is removed by \(P_I\), so its contribution is empty
+for both assignments.  With this notation the counted set for \(w\) is
+\[
+A(w)=\bigcup_y F_y(w).
+\]
+All terms with \(y\ne x_i\) are the same for \(v\) and \(v'\).  Let
+\[
+U=\bigcup_{y\ne x_i}F_y(v)=\bigcup_{y\ne x_i}F_y(v').
+\]
+Then
+\[
+A(v)=U\cup F_{x_i}(v),\qquad
+A(v')=U\cup F_{x_i}(v').
+\]
+Since \(U\) is common,
+\[
+|A(v)|=|U|+|F_{x_i}(v)\setminus U|,\qquad
+|A(v')|=|U|+|F_{x_i}(v')\setminus U|.
+\]
+Therefore
+\[
+\bigl||A(v)|-|A(v')|\bigr|
+\le
+\max\{|F_{x_i}(v)\setminus U|,\ |F_{x_i}(v')\setminus U|\}
+\le
+\max\{|F_{x_i}(v)|,\ |F_{x_i}(v')|\}.
+\]
+This is the exact set-cardinality comparison: only the one changed
+coordinate's contribution can alter the union cardinality; the common union
+does not create a second uncontrolled error term.
+
+It remains to bound each possible changed contribution.  If \(x_i\) is not in
+the external small class for the relevant assignment, then
+\(F_{x_i}=\varnothing\).  If \(x_i\) is in the external small class, the
+definition of \(\noderef{TwoBiteSmallClass}\) gives
+\[
+|\noderef{TwoBiteX}(\omega_w,I,x_i)|
+\le \noderef{TwoBiteSmallCutoff}(\varepsilon,n)=n^{2\varepsilon}.
+\]
+The cardinality bound \(\noderef{FinalPairsCardLeHalfSq}\) gives
+\[
+|F_{x_i}(w)|
+\le
+|\noderef{TwoBiteFinalPairs}(\noderef{TwoBiteX}(\omega_w,I,x_i))|
+\le \frac12\,|\noderef{TwoBiteX}(\omega_w,I,x_i)|^2
+\le \frac12 n^{4\varepsilon}=c_{\mathrm{prod}}.
+\]
+This applies to \(w=v\) and to \(w=v'\).  Hence both terms in the maximum are
+at most \(c_{\mathrm{prod}}\), and the absolute difference of the two counted
+values is at most \(c_{\mathrm{prod}}\).
+\end{proof}

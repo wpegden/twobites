@@ -1,0 +1,18 @@
+\begin{helper}
+Let \(\eta\le\varepsilon\).  If all red fibers and all blue fibers satisfy
+the \(\eta\)-relative error estimate around \((\log n)^2\), then the same red
+and blue fiber clauses hold with tolerance \(\varepsilon\).
+\end{helper}
+\begin{proof}
+For every fiber, the target \((\log n)^2\) is nonnegative.  The
+\(\eta\)-relative error estimate says
+\[
+|X-(\log n)^2|\le \eta(\log n)^2.
+\]
+Since \(\eta\le\varepsilon\), multiplying by the nonnegative target gives
+\(\eta(\log n)^2\le\varepsilon(\log n)^2\).  Thus
+\[
+|X-(\log n)^2|\le\varepsilon(\log n)^2.
+\]
+This argument applies independently to every red fiber and every blue fiber.
+\end{proof}

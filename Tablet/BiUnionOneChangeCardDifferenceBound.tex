@@ -1,0 +1,14 @@
+\begin{helper}[One-Changed-Index Biunion Cardinal Difference Bound]
+Let \(s\) be a finite index set and let \(A_x,B_x\) be finite sets indexed by
+\(s\). If \(A_x=B_x\) for every \(x\in s\setminus\{k\}\), then
+\[
+\bigl|\bigl|\bigcup_{x\in s} A_x\bigr|-\bigl|\bigcup_{x\in s} B_x\bigr|\bigr|
+\le \max\{|A_k|,|B_k|\}.
+\]
+\end{helper}
+\begin{proof}
+The unions over \(s\setminus\{k\}\) are equal by the hypothesis; call this
+common union \(U\). If \(k\notin s\), the two full unions are equal. If
+\(k\in s\), the two full unions are \(U\cup A_k\) and \(U\cup B_k\), so the
+claim follows from \(\noderef{CommonUnionCardDifferenceBound}\).
+\end{proof}

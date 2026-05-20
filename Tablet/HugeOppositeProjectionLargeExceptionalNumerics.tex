@@ -1,0 +1,69 @@
+\begin{helper}
+Let \(C(x)=\binom{x}{2}_{\mathbb R}=x(x-1)/2\).  Suppose
+\[
+0\le \varepsilon_2\le1,\qquad 30\varepsilon_2\le\varepsilon_1,\qquad
+98\le d,
+\]
+and let \(b,y,u\in\mathbb R\) satisfy
+\[
+0\le b,\qquad 0\le y\le1,\qquad 0\le u\le1,\qquad b+u=d,
+\]
+and
+\[
+|y-u|\le 2\varepsilon_2 d.
+\]
+Then
+\[
+C((1+\varepsilon_2)b)+C(y)
+\le
+(1+\varepsilon_1)\bigl(C(b)+C(u)\bigr).
+\]
+\end{helper}
+\begin{proof}
+Put \(Q=C(b)+C(u)\).  Since \(b+u=d\),
+\[
+Q-C(d-1)=(1-u)(b-1).
+\]
+The assumptions \(u\le1\) and \(d\ge98\) imply \(1-u\ge0\) and
+\(b-1=d-u-1\ge0\), hence \(C(d-1)\le Q\).  Also \(C(d-1)\ge0\), so
+\(Q\ge0\).
+
+For the stretched \(b\)-block,
+\[
+C((1+\varepsilon_2)b)-C(b)
+=\frac{\varepsilon_2((2+\varepsilon_2)b^2-b)}2.
+\]
+Because \(0\le\varepsilon_2\le1\), \(0\le b\le d\), and \(d\ge0\), this is at most
+\[
+\frac32\,\varepsilon_2 d^2. \tag{1}
+\]
+
+For the terminal block,
+\[
+C(y)-C(u)=\frac{(y-u)(y+u-1)}2.
+\]
+The bounds \(0\le y,u\le1\) give \(-1\le y+u-1\le1\), while
+\(|y-u|\le2\varepsilon_2d\).  Thus
+\[
+C(y)-C(u)\le\varepsilon_2d. \tag{2}
+\]
+
+For \(d\ge98\),
+\[
+\frac32d^2+d\le30C(d-1).
+\]
+Multiplying by \(\varepsilon_2\ge0\), then using \(C(d-1)\le Q\), gives
+\[
+\frac32\varepsilon_2d^2+\varepsilon_2d
+\le30\varepsilon_2Q.
+\]
+Finally \(30\varepsilon_2\le\varepsilon_1\) and \(Q\ge0\) imply
+\[
+30\varepsilon_2Q\le\varepsilon_1Q.
+\]
+Combining this with (1) and (2) yields
+\[
+C((1+\varepsilon_2)b)+C(y)-Q\le\varepsilon_1Q,
+\]
+which is equivalent to the claimed inequality.
+\end{proof}

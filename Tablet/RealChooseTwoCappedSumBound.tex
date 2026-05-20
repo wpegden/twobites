@@ -1,0 +1,61 @@
+\begin{helper}
+For every type \(\alpha\), every finite set \(s\) of elements of \(\alpha\),
+every function \(a:\alpha\to\mathbb R\), and every \(M\in\mathbb R\), suppose
+\[
+0\le M,
+\qquad
+\forall x\in s,\ 0\le a(x),
+\qquad
+\forall x\in s,\ a(x)\le M,
+\]
+and
+\[
+M\le \sum_{x\in s}a(x).
+\]
+Then
+\[
+\sum_{x\in s}\noderef{RealChooseTwo}(a(x))
+\le
+\noderef{RealChooseTwo}(M)+
+\noderef{RealChooseTwo}\!\left(\left(\sum_{x\in s}a(x)\right)-M\right).
+\]
+\end{helper}
+\begin{proof}
+Write \(C(u)=\noderef{RealChooseTwo}(u)=u(u-1)/2\).  It is enough to prove
+the corresponding square estimate, because the linear terms cancel:
+\[
+\sum_{x\in s} C(a(x))
+=\frac{\sum_{x\in s} a(x)^2-\sum_{x\in s} a(x)}{2},
+\]
+while
+\[
+C(M)+C(B-M)=\frac{M^2+(B-M)^2-B}{2},
+\qquad B=\sum_{x\in s}a(x).
+\]
+We prove
+\[
+\sum_{x\in s}a(x)^2\le M^2+(B-M)^2
+\]
+by induction on the finite set.  The empty case has \(0\le M\le0\), hence
+\(M=0\), and is immediate.  For the induction step, remove one element with
+value \(u\), and let \(R\) be the remaining sum.
+
+If \(M\le R\), the induction hypothesis applied to the remaining family gives
+\[
+\sum_{\mathrm{rest}}a_x^2\le M^2+(R-M)^2.
+\]
+Adding \(u^2\) and using \(u\ge0\) gives
+\[
+M^2+(R-M)^2+u^2
+\le M^2+(R+u-M)^2.
+\]
+If \(R\le M\), first use the elementary nonnegative square-sum bound
+\(\sum_{\mathrm{rest}}a_x^2\le R^2\), proved by the same finite induction from
+\((R+u)^2-R^2-u^2=2Ru\ge0\).  Since also \(u\le M\), one has
+\[
+u^2+R^2\le M^2+(R+u-M)^2.
+\]
+Thus the square estimate holds after inserting the removed element in both
+cases.  Translating back through the displayed identity for \(C\) proves the
+claimed capped sum bound.
+\end{proof}

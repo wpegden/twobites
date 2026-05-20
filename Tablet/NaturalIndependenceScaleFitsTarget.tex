@@ -1,0 +1,83 @@
+\begin{lemma}
+Let \(0<\eta<\varepsilon\).  For all sufficiently large \(n\), the rounded
+integer scale
+\[
+K_{1+\eta}(n)=
+\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n)
+\]
+is still strictly below the larger real target
+\[
+\noderef{TwoBiteIndependenceScale}(1+\varepsilon,n)
+=(1+\varepsilon)\sqrt{n\log n}.
+\]
+\end{lemma}
+\begin{proof}
+Set
+\[
+s(n)=\sqrt{n\log n},\qquad
+x_\eta(n)=(1+\eta)s(n),\qquad
+x_\varepsilon(n)=(1+\varepsilon)s(n).
+\]
+From \(0<\eta\) and \(\eta<\varepsilon\), we have
+\[
+0<\varepsilon-\eta
+\qquad\text{and}\qquad
+0<1+\eta.
+\]
+The gap between the two real scales is
+\[
+x_\varepsilon(n)-x_\eta(n)
+=(\varepsilon-\eta)s(n).
+\]
+The factor \(\varepsilon-\eta\) is fixed and positive, while
+\(s(n)=\sqrt{n\log n}\to\infty\).  Choose \(n_0\) so large that for every
+\(n\ge n_0\):
+\[
+\log n\ge0, \tag{1}
+\]
+\[
+0\le \noderef{TwoBiteReducedVertexCount}(n)
+\quad\text{and}\quad
+0\le \noderef{TwoBiteIndependenceScale}(1+\eta,n), \tag{2}
+\]
+and
+\[
+1<(\varepsilon-\eta)s(n). \tag{3}
+\]
+The first inequality ensures \(s(n)\) is the square root of a nonnegative
+quantity.  Together with \(0<1+\eta\), it gives the second nonnegativity
+condition in (2); the reduced-count nonnegativity follows from
+\(\noderef{TwoBiteReducedVertexCount}(n)=n/\log^2 n\) for the same large \(n\).
+
+Now fix \(n\ge n_0\).  Apply \(\noderef{NaturalParameterApproximation}\) with
+\(\kappa=1+\eta\), using the two nonnegativity hypotheses in (2).  Its fourth
+conjunct gives the rounded-ceiling upper bound
+\[
+(K_{1+\eta}(n):\mathbb R)<x_\eta(n)+1.
+\]
+Indeed, after unfolding \(\noderef{TwoBiteIndependenceScale}\), the right side
+is
+\[
+\noderef{TwoBiteIndependenceScale}(1+\eta,n)+1
+=(1+\eta)s(n)+1=x_\eta(n)+1.
+\]
+By (3),
+\[
+x_\eta(n)+1<x_\eta(n)+(\varepsilon-\eta)s(n).
+\]
+Unfolding the two real scales and collecting the coefficient of \(s(n)\),
+\[
+x_\eta(n)+(\varepsilon-\eta)s(n)
+=(1+\eta)s(n)+(\varepsilon-\eta)s(n)
+=(1+\varepsilon)s(n)
+=x_\varepsilon(n).
+\]
+Therefore
+\[
+(K_{1+\eta}(n):\mathbb R)
+<x_\eta(n)+1
+<x_\varepsilon(n)
+=\noderef{TwoBiteIndependenceScale}(1+\varepsilon,n).
+\]
+This proves the asserted strict comparison for every \(n\ge n_0\).
+\end{proof}

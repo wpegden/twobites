@@ -1,0 +1,7 @@
+\begin{helper}
+For any natural numbers $S \le m$ and $h \le S$, the product over $0 \le l < h$ of the fractions $(S-l)/(m-l)$ is bounded by $(S/m)^h$.
+\end{helper}
+\begin{proof}
+For any $0 \le l < h$, since $l \le S \le m$, both $S-l$ and $m-l$ are non-negative, and $S/m$ is valid. We cross-multiply $(S-l)/m-l \le S/m$ to get $m(S-l) \le S(m-l)$, which simplifies to $mS - ml \le mS - Sl$, or $Sl \le ml$, which is true since $S \le m$ and $l \ge 0$.
+Taking the product of these non-negative terms over all $h$ values of $l$ gives the upper bound $(S/m)^h$.
+\end{proof}

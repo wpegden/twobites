@@ -1,0 +1,24 @@
+\begin{definition}
+For a two-bite sample \(\omega\), the final two-bite graph \(G(\omega)\) is the
+colored multigraph obtained from the overlay \(\noderef{TwoBiteOverlay}\) by the
+paper's deletion rules.  First order all unordered pairs in \(V_R\)
+lexicographically, and order all unordered pairs in \(V_B\) in the same way.
+Starting with the colored edge sets
+\(\widetilde E_R(G)\) and \(\widetilde E_B(G)\), remove exactly the following
+colored edges:
+\begin{enumerate}
+\item from every red triangle, remove the red edge whose projected pair in
+\(V_R\) is latest in the red lexicographic order;
+\item from every blue triangle, remove the blue edge whose projected pair in
+\(V_B\) is latest in the blue lexicographic order;
+\item from every mixed triangle with red edges \(v_iv_j,v_iv_\ell\) and blue
+edge \(v_jv_\ell\), remove the blue edge \(v_jv_\ell\);
+\item from every mixed triangle with blue edges \(v_iv_j,v_iv_\ell\) and red
+edge \(v_jv_\ell\), remove the red edge \(v_jv_\ell\).
+\end{enumerate}
+The remaining red and blue edges are \(E_R(G)\) and \(E_B(G)\), with double
+edges still retained as two colored edges.  Equivalently, a colored edge remains
+if and only if it is present in the overlay and it is not selected by the
+corresponding red, blue, or mixed deletion rule.  Triangle-freeness is a theorem
+about this edge set, not an assumption built into the definition.
+\end{definition}

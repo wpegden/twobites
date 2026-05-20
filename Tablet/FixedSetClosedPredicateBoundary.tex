@@ -1,0 +1,53 @@
+\begin{helper}
+Fix a sample \(\omega\), a set \(I\), and a base vertex \(x\).  The closed
+predicate has the following boundary properties.
+
+First,
+\[
+v\in\noderef{TwoBiteX}(\omega,I,x)
+\quad\Longleftrightarrow\quad
+v\in I\ \hbox{and}\
+v\in\noderef{TwoBiteLiftedNeighborhood}(\omega,x).
+\]
+Second, if \(x\) is staged-revealed and a same-color base coordinate \(c\) is
+incident with \(x\), then
+\(\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,c)\) holds.
+Third, if a red tagged coordinate \(q\) lies in
+\[
+\noderef{TwoBiteBasePairs}
+\bigl((\noderef{TwoBiteX}(\omega,I,x)).\pi_R^\omega\bigr),
+\]
+then \(\operatorname{red}(q)\) is
+\(\noderef{TwoBiteProjectionPairClosed}(\omega,I,\operatorname{red}(q))\).
+The analogous blue statement holds with \(\pi_B^\omega\).
+\end{helper}
+\begin{proof}
+The first assertion is exactly the definition of
+\(\noderef{TwoBiteX}\).  That definition filters \(I\) by membership in
+\(\noderef{TwoBiteLiftedNeighborhood}(\omega,x)\), so an element survives the
+filter if and only if it lies in \(I\) and in that lifted neighborhood.
+
+For the second assertion, write the tagged coordinate \(c\) by cases.  If
+\(x=\operatorname{red}(r)\) and \(c=\operatorname{red}(a,b)\), the incidence
+hypothesis says \(a=r\) or \(b=r\).  Since \(x\) is staged-revealed, the
+definition of \(\noderef{TwoBiteProjectionPairTouched}\) gives touchedness of
+\(\operatorname{red}(a,b)\): in the first subcase the first endpoint is
+revealed, and in the second subcase the second endpoint is revealed.  The
+blue case is identical.  If \(x\) and \(c\) have different colors, the
+incidence condition is false by definition, so there is no case to prove.
+
+For the third assertion, suppose first that
+\[
+q\in
+\noderef{TwoBiteBasePairs}
+\bigl((\noderef{TwoBiteX}(\omega,I,x)).\pi_R^\omega\bigr).
+\]
+Unfolding \(\noderef{TwoBiteProjectionPairClosed}\) for the red tag, it is
+enough to exhibit a base vertex whose red projection of \(X\) contains the
+pair \(q\).  The vertex \(x\) itself is such a witness, by the displayed
+membership.  Therefore
+\(\operatorname{red}(q)\) is closed.  The blue assertion is word-for-word the
+same, using the blue branch in
+\(\noderef{TwoBiteProjectionPairClosed}\) and the blue projection of
+\(\noderef{TwoBiteX}(\omega,I,x)\).
+\end{proof}

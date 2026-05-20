@@ -1,0 +1,31 @@
+\begin{lemma}
+Let \(A,L\in\mathbb R\) and \(t\in\mathbb N\).  Suppose \(0\le A\), \(A\le e/50\), and
+\[
+  100L^3\le t.
+\]
+Then
+\[
+  A^t\le \exp\!\left(-(100\log(50/e))L^3\right).
+\]
+\end{lemma}
+\begin{proof}
+Since \(e<50\), the ratio \(50/e\) is larger than \(1\), so
+\(\log(50/e)>0\).  Also
+\[
+  \frac e{50}=\exp(-\log(50/e)).
+\]
+The monotonicity of powers on nonnegative bases gives
+\[
+  A^t\le (e/50)^t.
+\]
+Using the displayed identity and the exponential law for natural powers,
+\[
+  (e/50)^t=\exp(-t\log(50/e)).
+\]
+The hypothesis \(100L^3\le t\), multiplied by the positive number
+\(\log(50/e)\) and then negated, gives
+\[
+  -t\log(50/e)\le -100L^3\log(50/e).
+\]
+Applying monotonicity of the exponential function yields the claimed bound.
+\end{proof}

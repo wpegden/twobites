@@ -1,0 +1,64 @@
+\begin{helper}
+Let \(B\) and \(R\) be the fixed blue and red present supports of sizes
+\(u_B\) and \(u_R\).  Let \(\tau=(P,A,Z)\) be a transcript with
+\[
+B\subseteq P,\qquad R\subseteq P,\qquad B\cap R=\emptyset,
+\]
+\[
+Z\subseteq A,\qquad P\cap A=\emptyset,
+\]
+and
+\[
+L:=\max(0,a-u_R-u_B)\le |Z|.
+\]
+Assume \(0\le p\le1/2\).  Suppose the residual leaf mass \(\nu\) dominates
+the factors left after the mandatory present support \(B\cup R\) and the
+selected absences \(Z\) have been removed:
+\[
+p^{|P|-u_R-u_B}(1-p)^{|A|-|Z|}\le \nu .
+\]
+Then the full cylinder factor satisfies the termwise domination
+\[
+p^{|P|}(1-p)^{|A|}
+\le
+p^{u_R}p^{u_B}
+(1-p)^L\,\nu .
+\]
+\end{helper}
+\begin{proof}
+Write \(q=1-p\).  From \(0\le p\le1/2\) we have \(0\le p\le1\) and
+\(0\le q\le1\).  Since \(B\) and \(R\) are disjoint subsets of \(P\), with
+cardinalities \(u_B\) and \(u_R\), the present part of the cylinder factors
+as
+\[
+p^{|P|}
+=
+p^{u_B}p^{u_R}p^{|P|-u_B-u_R}.
+\]
+Since \(Z\subseteq A\), the absent part factors as
+\[
+q^{|A|}=q^{|Z|}q^{|A|-|Z|}.
+\]
+Multiplying these two identities gives
+\[
+p^{|P|}q^{|A|}
+=
+p^{u_R}p^{u_B}q^{|Z|}
+  \bigl(p^{|P|-u_R-u_B}q^{|A|-|Z|}\bigr).
+\]
+By the residual domination hypothesis, the parenthesized residual factor is
+at most \(\nu\).  All factors are nonnegative, so multiplication by
+\(p^{u_R}p^{u_B}q^{|Z|}\) preserves the inequality.
+
+Finally, \(L\le |Z|\) and \(0\le q\le1\), so \(q^{|Z|}\le q^L\).  Replacing
+the selected-absence factor by the larger common factor \(q^L\) gives
+\[
+p^{|P|}q^{|A|}
+\le
+p^{u_R}p^{u_B}q^L\nu .
+\]
+Substituting back \(q=1-p\) proves the claimed termwise cylinder
+domination.  The assumptions \(0\le p\le1/2\) and the residual domination
+hypothesis are part of this node's statement; they are not consequences of
+the purely combinatorial branch/transcript construction.
+\end{proof}

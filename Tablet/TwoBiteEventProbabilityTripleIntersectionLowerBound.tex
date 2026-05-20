@@ -1,0 +1,26 @@
+\begin{helper}
+Let \(E,F,G\) be events in one two-bite sample space.  If all sample weights
+are nonnegative and the total mass of the whole sample space is at most \(1\),
+then
+\[
+\Pr(E)+\Pr(F)+\Pr(G)-2 \le \Pr(E\cap F\cap G),
+\]
+where \(\Pr\) denotes \(\noderef{TwoBiteEventProbability}\).
+\end{helper}
+\begin{proof}
+Write the probability of an event as the finite sum of its indicator times the
+sample weight.  For each sample \(\omega\), the pointwise indicator inequality
+\[
+1_{E\cap F\cap G}(\omega)
+\ge 1_E(\omega)+1_F(\omega)+1_G(\omega)-2
+\]
+holds after multiplication by the nonnegative weight, except that the constant
+\(-2\) contributes \(-2\) times the sample weight.  Summing over all samples
+therefore gives
+\[
+\Pr(E\cap F\cap G)\ge
+\Pr(E)+\Pr(F)+\Pr(G)-2\Pr(\mathrm{True}).
+\]
+The assumed total-mass bound \(\Pr(\mathrm{True})\le1\) implies
+\(-2\Pr(\mathrm{True})\ge-2\), and hence the displayed lower bound.
+\end{proof}

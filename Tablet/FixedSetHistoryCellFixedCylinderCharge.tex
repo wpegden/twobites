@@ -1,0 +1,54 @@
+\begin{helper}
+Fix a history cell \(C\), a finite terminal coordinate set \(U\), and two
+disjoint fixed subsets \(P,Z\subseteq U\).  Suppose that, inside \(C\), every
+complete terminal assignment \(A\subseteq U\) has conditional probability
+\[
+p^{|A|}(1-p)^{|U|-|A|}.
+\]
+If all coordinates of \(P\) are required to be present and all coordinates of
+\(Z\) are required to be absent, then the conditional probability of this
+fixed cylinder is at most
+\[
+p^{|P|}(1-p)^{|Z|}.
+\]
+\end{helper}
+\begin{proof}
+The event in question is the disjoint union of the complete terminal
+assignment cells indexed by subsets \(A\subseteq U\) satisfying
+\[
+P\subseteq A,\qquad A\cap Z=\emptyset.
+\]
+For such an \(A\), write
+\[
+A=P\cup W,
+\]
+where
+\[
+W\subseteq U\setminus(P\cup Z).
+\]
+This representation is unique because \(P\) and \(Z\) are fixed and
+disjoint.  The assumed complete-assignment product law gives the mass
+\[
+p^{|P|+|W|}(1-p)^{|Z|+|U|-|P|-|Z|-|W|}
+\]
+for the assignment corresponding to \(W\).  Factoring out the fixed
+requirements gives
+\[
+p^{|P|}(1-p)^{|Z|}
+\cdot
+p^{|W|}(1-p)^{|U|-|P|-|Z|-|W|}.
+\]
+Summing over all subsets \(W\subseteq U\setminus(P\cup Z)\), the remaining
+factor is
+\[
+\sum_{W\subseteq U\setminus(P\cup Z)}
+p^{|W|}(1-p)^{|U|-|P|-|Z|-|W|}
+=(p+(1-p))^{|U|-|P|-|Z|}=1.
+\]
+Thus the exact cylinder mass is
+\[
+p^{|P|}(1-p)^{|Z|}.
+\]
+If the conditioning cell has zero mass, the definition of conditional
+probability makes the left side zero, so the same upper bound still holds.
+\end{proof}

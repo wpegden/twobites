@@ -1,0 +1,42 @@
+\begin{helper}
+With
+\[
+L=\log n,\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad
+k=(K:\mathbb R),\quad
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\]
+assume \(n>0\), \(kL\ge0\),
+\[
+\binom nK\le \exp(kL),
+\]
+and
+\[
+2kL+L\le
+\frac{\noderef{RealChooseTwo}(k)^2}{Lm n^{8\eta}}.
+\]
+Then
+\[
+\exp\!\left(
+-\frac{\noderef{RealChooseTwo}(k)^2}{Lm n^{8\eta}}
+\right)\binom nK\le n^{-1}.
+\]
+\end{helper}
+\begin{proof}
+Let
+\[
+A=\frac{\noderef{RealChooseTwo}(k)^2}{Lm n^{8\eta}}.
+\]
+The assumed lower bound says \(2kL+L\le A\), hence
+\[
+kL-A\le -kL-L\le -L,
+\]
+because \(kL\ge0\).  Multiplying the binomial estimate by
+\(\exp(-A)>0\) gives
+\[
+\exp(-A)\binom nK\le\exp(-A)\exp(kL)=\exp(kL-A).
+\]
+By monotonicity of the exponential function, this is at most
+\(\exp(-L)\).  Since \(n>0\) and \(L=\log n\), we have
+\(\exp(-L)=n^{-1}\).  Combining these inequalities proves the claim.
+\end{proof}

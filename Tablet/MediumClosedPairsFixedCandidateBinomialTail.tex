@@ -1,0 +1,46 @@
+\begin{lemma}
+Fix a finite set of \(N\) candidate edges and Bernoulli parameter \(p\ge0\).
+Let \(A>0\), put \(t=\lceil A\rceil\), and suppose the mean
+\(\mu=pN\) satisfies
+\[
+\mu\le \frac{A}{4e}.
+\]
+If a fixed-candidate bad event has probability, or product weight, at most the
+\(t\)-subset union-bound quantity
+\[
+\binom Nt p^t,
+\]
+then that bad event has probability, or product weight, at most
+\[
+\exp(-A/4).
+\]
+\end{lemma}
+\begin{proof}
+The \(t\)-subset union bound gives the assumed upper bound
+\(\binom Nt p^t\).  The standard binomial coefficient estimate gives
+\[
+\binom Nt p^t\le \frac{N^t p^t}{t!}
+  =\frac{\mu^t}{t!}.
+\]
+The exponential-series inequality \(t^t/t!\le e^t\) gives
+\[
+\frac{\mu^t}{t!}\le \left(\frac{e\mu}{t}\right)^t.
+\]
+Since \(t=\lceil A\rceil\), we have \(A\le t\).  Together with
+\(\mu\le A/(4e)\), this implies
+\[
+\frac{e\mu}{t}\le\frac14.
+\]
+Therefore
+\[
+\left(\frac{e\mu}{t}\right)^t\le 4^{-t}.
+\]
+Finally,
+\[
+4^{-t}=\exp(t\log(1/4))
+\le \exp(A\log(1/4))
+\le \exp(-A/4),
+\]
+because \(\log(1/4)\le -1/4\) and \(A\le t\).  Combining the displayed
+inequalities proves the claim.
+\end{proof}

@@ -1,0 +1,56 @@
+\begin{helper}
+Let \(I\subseteq \operatorname{Fin}(n)\), let \(H\) be a history cell, let
+\(T\) be a target event, let \(U\) be the terminal-coordinate set, and let
+\(\omega_0\) be the representative sample for the history cell.  Assume:
+\[
+|I|=k,
+\]
+every \(\omega\in H\) has the same embedding as \(\omega_0\), every
+\(\omega\in H\) satisfies the projection-size event with parameters
+\((k,\ell_R,\ell_B)\), \(T\subseteq H\), every staged-open coordinate of a
+sample in \(H\) lies in \(U\), and for every \(\omega\in T\) the blue present
+staged-open support
+\[
+B(\omega)=
+\{e\in \operatorname{StagedOpen}(\omega,\varepsilon,I):
+  X_e(\omega)=1\text{ and }e\text{ is a blue coordinate}\}
+\]
+has cardinality \(u_B\).  Then there are a natural number \(N_B\) and a
+finite family \(\mathcal B\) of terminal blue support labels such that
+\[
+N_B\le k^2,\qquad |\mathcal B|\le \binom{N_B}{u_B}.
+\]
+For every \(B\in\mathcal B\), \(B\) has cardinality \(u_B\), satisfies
+\(B\subseteq U\), and consists only of blue coordinates.  For every
+\(\omega\in T\), the set \(B(\omega)\) belongs to \(\mathcal B\).
+\end{helper}
+\begin{proof}
+The proof constructs \(\mathcal B\) from a fixed blue projection universe.
+Because the history cell fixes the embedding, the blue projection of each
+vertex of \(I\) is the same in every sample of \(H\) as in the representative
+sample \(\omega_0\).  Let \(I_B\) be this fixed blue projection of \(I\).
+The projection-size hypothesis is the local tablet hypothesis which makes
+this projected universe available uniformly over the cell.
+
+Let \(U_B\) be the set of blue terminal coordinates obtained from projected
+pairs of vertices in \(I_B\).  Since \(|I|=k\), the crude ordered-pair bound
+gives
+\[
+|U_B|\le |I_B|^2\le k^2.
+\]
+Set \(N_B=|U_B|\).  Define \(\mathcal B\) to be the finite family of all
+\(u_B\)-element subsets of \(U_B\) which are also contained in \(U\).  This is
+a subfamily of the \(u_B\)-subsets of an \(N_B\)-element set, hence
+\[
+|\mathcal B|\le \binom{N_B}{u_B}.
+\]
+Every member of \(\mathcal B\) has cardinality \(u_B\), lies in \(U\), and is
+blue because \(U_B\) contains only blue coordinates.
+
+Now fix \(\omega\in T\).  Since \(T\subseteq H\), every staged-open coordinate
+of \(\omega\) lies in \(U\).  The set \(B(\omega)\) is exactly the filter of
+the staged-open set by present blue coordinates, so it is a subset of \(U\).
+The fixed-embedding argument places every such blue coordinate in \(U_B\), and
+the fixed-count hypothesis gives \(|B(\omega)|=u_B\).  Therefore
+\(B(\omega)\in\mathcal B\), proving the label-covering assertion.
+\end{proof}

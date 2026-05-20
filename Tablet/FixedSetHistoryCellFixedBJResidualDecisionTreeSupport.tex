@@ -1,0 +1,114 @@
+\begin{helper}
+Fix a history cell \(H\), a terminal coordinate set \(U\), a nodup terminal
+order \(o\) with \(\operatorname{toFinset}(o)=U\), a blue support label
+\(B\subseteq U\) of size \(u_B\), and a fixed red label \(J\).  Suppose the
+branch/transcript interface supplies finite branch labels \(\beta\), finite
+transcript labels \(\tau=(P_\tau,A_\tau,Z_\tau)\), complete terminal blue
+traces \(\operatorname{blueTrace}(\beta)\), decoded red supports
+\(R_{\beta,J}\), a realized-cell predicate
+\(\mathsf{Realized}(\beta,\tau)\), and a compatibility predicate for
+complete terminal assignments.
+
+Assume the terminal product law for \(H\), \(0\le p\le1/2\), and the
+fixed-\((B,J)\) geometry supplied by the branch/transcript construction:
+for every realized \((\beta,\tau)\),
+\[
+|R_{\beta,J}|=u_R,\qquad R_{\beta,J}\subseteq U,
+\]
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,
+\qquad B\cup R_{\beta,J}\subseteq P_\tau,
+\]
+\[
+Z_\tau\subseteq A_\tau,\qquad
+\max(0,a-u_R-u_B)\le |Z_\tau|,
+\]
+and \(P_\tau,A_\tau\) record the complete terminal blue trace of
+\(\beta\).  Compatibility is forward-correct for the residual cylinder:
+compatible complete assignments contain \(P_\tau\), avoid
+\(A_\tau\setminus Z_\tau\), and agree with the complete blue trace away from
+the selected set.  Also, one complete terminal assignment is compatible with
+at most one realized pair.
+
+Assume in addition the explicit residual partition data for this fixed
+\((B,J)\).  There is a nonnegative residual assignment mass \(\mu(A)\) on
+complete terminal assignments \(A\subseteq U\), with
+\[
+\sum_{A\subseteq U}\mu(A)\le 1,
+\]
+and, for each realized \((\beta,\tau)\), a finite released block
+\(\mathcal R_{\beta,\tau}\subseteq\{A:A\subseteq U\}\) and a block mass
+\(\rho_{\beta,\tau}\) such that
+\[
+\rho_{\beta,\tau}
+  =\sum_{A\in\mathcal R_{\beta,\tau}}\mu(A).
+\]
+Released blocks for distinct realized pairs are disjoint.  Finally, every
+realized pair satisfies the residual domination
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \rho_{\beta,\tau}.
+\]
+
+Then there is a finite residual leaf set \(\Lambda_{B,J}\), a residual leaf
+map \(\iota(\beta,\tau)\in\Lambda_{B,J}\), and nonnegative leaf masses
+\(\nu\) such that
+\[
+\sum_{\lambda\in\Lambda_{B,J}}\nu(\lambda)\le1,
+\]
+the leaf map is injective on realized pairs, and every realized pair
+satisfies
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \nu(\iota(\beta,\tau)).
+\]
+\end{helper}
+\begin{proof}
+Apply the finite released-cylinder packing lemma
+\(\noderef{FixedSetHistoryCellRedReleasedCylinderPacking}\) to the complete
+terminal assignment space \(2^U\), the mass \(\mu\), and the released blocks
+\(\mathcal R_{\beta,\tau}\).  The hypotheses of that node are exactly the
+normalization data listed above: \(\mu\) is nonnegative, the total
+\(\mu\)-mass of \(2^U\) is at most \(1\), each released block is a subset of
+\(2^U\), the block mass is the \(\mu\)-sum over that block, and distinct
+realized blocks are disjoint.  Hence
+\[
+\sum_{\beta}
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    \rho_{\beta,\tau}
+\le 1 .
+\]
+
+Define the residual leaf set to be the finite product of the branch-label
+type and the transcript-label type.  Send \((\beta,\tau)\) to its own pair
+\[
+\iota(\beta,\tau)=(\beta,\tau).
+\]
+Give a leaf \((\beta,\tau)\) mass \(\rho_{\beta,\tau}\) when
+\(\tau\) is an allowed transcript and \((\beta,\tau)\) is realized, and give
+it mass \(0\) otherwise.  Nonnegativity follows because realized
+\(\rho_{\beta,\tau}\) is a sum of nonnegative \(\mu\)-masses, and all
+non-realized leaves receive mass \(0\).
+
+The total leaf mass is exactly the displayed double sum over realized
+allowed pairs, since all other leaves have mass \(0\).  Therefore the
+released-cylinder packing bound gives
+\[
+\sum_{\lambda\in\Lambda_{B,J}}\nu(\lambda)\le1 .
+\]
+If two realized pairs have the same leaf, then the ordered pairs
+\((\beta,\tau)\) are equal, so both the branch label and transcript are
+equal.  Thus the leaf map is injective on realized pairs.
+
+For a realized pair, the mass of its leaf is
+\(\nu(\iota(\beta,\tau))=\rho_{\beta,\tau}\).  The assumed residual
+domination of \(\rho_{\beta,\tau}\) is therefore exactly
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \nu(\iota(\beta,\tau)).
+\]
+This proves the residual leaf certificate.  The selected set \(Z_\tau\) is
+used only through the residual domination hypothesis, so selected blue
+absences and selected red absences are handled uniformly; no red-only
+selected-set assumption is introduced in this packaging step.
+\end{proof}

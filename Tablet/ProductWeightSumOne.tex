@@ -1,0 +1,22 @@
+\begin{helper}
+Let \(\Omega\) be finite and let \(q:\Omega\to\mathbb R\) be nonnegative with
+\(\sum_{a\in\Omega}q(a)=1\).  For every \(r\ge 0\), the product weight
+\[
+w(\omega)=\prod_{i=0}^{r-1}q(\omega_i)
+\]
+on \(\Omega^r\) has total mass
+\[
+\sum_{\omega\in\Omega^r} w(\omega)=1.
+\]
+\end{helper}
+\begin{proof}
+The sum over product outcomes factors coordinate by coordinate.  More
+precisely,
+\[
+\sum_{\omega\in\Omega^r}\prod_{i=0}^{r-1}q(\omega_i)
+=\prod_{i=0}^{r-1}\sum_{a\in\Omega}q(a).
+\]
+Each coordinate factor is \(1\) by the hypothesis on \(q\).  The product of
+\(r\) copies of \(1\), including the empty product when \(r=0\), is therefore
+\(1\).
+\end{proof}

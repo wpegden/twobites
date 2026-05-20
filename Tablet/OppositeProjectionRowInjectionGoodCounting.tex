@@ -1,0 +1,83 @@
+\begin{lemma}
+For any fixed red row map $\rho: \operatorname{Fin}n \to \operatorname{Fin}m$, target set $S \subseteq \operatorname{Fin}m$, and set of original vertices $T \subseteq \operatorname{Fin}n$, let
+\[
+X_{\rm all}
+=\{\phi:\operatorname{Fin}n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m:
+(\phi(v))_1=\rho(v)\text{ for every }v\}
+\]
+and let $X_{\rm good} \subseteq X_{\rm all}$ be the subset for which $(\phi(v))_2 \in S$ for every $v \in T$.
+For each row $i\in\operatorname{Fin}m$, put
+\[
+R_i=\{v:\rho(v)=i\},\qquad q_i=|R_i|,\qquad
+T_i=T\cap R_i,\qquad h_i=|T_i|.
+\]
+Then the cardinality of $X_{\rm good}$ is given by the product over rows of the favorable factors:
+\[
+|X_{\rm good}| = \prod_{i\in\operatorname{Fin}m} (|S|)_{h_i} (m-h_i)_{q_i-h_i}.
+\]
+\end{lemma}
+\begin{proof}
+For each row \(i\), let \(\mathcal G_i\) be the set of injective maps
+\[
+b_i:R_i\hookrightarrow \operatorname{Fin}m
+\]
+such that \(b_i(v)\in S\) for every \(v\in T_i\).  We first identify
+\(X_{\rm good}\) with the product of these rowwise sets.  Given
+\(\phi\in X_{\rm good}\), define \(b_i(v)=(\phi(v))_2\) for \(v\in R_i\).
+The same argument as for the unrestricted row decomposition shows that
+\(b_i\) is injective: if two vertices in the same row have the same blue
+coordinate, then their full pairs under \(\phi\) are equal, so the vertices
+are equal.  Since \(\phi\in X_{\rm good}\), every \(v\in T_i\) has
+\((\phi(v))_2\in S\), so \(b_i\in\mathcal G_i\).
+
+Conversely, given a family \((b_i)_i\) with \(b_i\in\mathcal G_i\), assemble
+\[
+\phi(v)=(\rho(v),b_{\rho(v)}(v)).
+\]
+This is well-defined because \(v\in R_{\rho(v)}\).  It has first coordinate
+\(\rho(v)\) for every \(v\), so it lies in \(X_{\rm all}\).  It is globally
+injective: if \(\phi(v)=\phi(w)\), equality of first coordinates puts both
+vertices in the same row \(i\), and equality of second coordinates plus
+injectivity of \(b_i\) gives \(v=w\).  Finally, if \(v\in T\), then
+\(v\in T_{\rho(v)}\), so \(b_{\rho(v)}(v)\in S\); hence the assembled
+\(\phi\) lies in \(X_{\rm good}\).  These two constructions are inverse
+pointwise.  Therefore
+\[
+|X_{\rm good}|=\prod_{i\in\operatorname{Fin}m}|\mathcal G_i|.
+\]
+
+It remains to compute \(|\mathcal G_i|\) for a fixed row \(i\).  If
+\(h_i>|S|\), then the \(h_i\) vertices of \(T_i\) would have to receive
+distinct blue coordinates inside the \(|S|\)-element set \(S\).  This is
+impossible by injectivity, so \(|\mathcal G_i|=0\).  The factor
+\((|S|)_{h_i}\) is also \(0\), so the claimed row formula holds in this
+case.
+
+Next suppose \(q_i>m\).  Then no injective map from the \(q_i\)-element set
+\(R_i\) into \(\operatorname{Fin}m\) exists, so \(|\mathcal G_i|=0\).  On the
+right hand side, if \(h_i>|S|\), the previous paragraph already gives
+\((|S|)_{h_i}=0\).  Otherwise \(h_i\le |S|\), and since \(h_i\le q_i\) and
+\(q_i>m\), we have \(q_i-h_i>m-h_i\).  Thus
+\((m-h_i)_{q_i-h_i}=0\).  In all subcases the product
+\((|S|)_{h_i}(m-h_i)_{q_i-h_i}\) is \(0\), matching
+\(|\mathcal G_i|\).
+
+We are left with the ordinary case \(h_i\le |S|\) and \(q_i\le m\).  First
+choose the blue coordinates of the \(h_i\) constrained vertices in \(T_i\).
+They must be distinct elements of \(S\), so there are \((|S|)_{h_i}\)
+choices.  After these coordinates are used, the remaining \(q_i-h_i\)
+vertices in \(R_i\setminus T_i\) may use any blue coordinates not already
+used; there are \(m-h_i\) available coordinates and the choices must be
+distinct, giving \((m-h_i)_{q_i-h_i}\) choices.  Multiplying these independent
+stages gives
+\[
+|\mathcal G_i|=(|S|)_{h_i}(m-h_i)_{q_i-h_i}.
+\]
+Combining this row formula for every \(i\) with the product decomposition of
+\(X_{\rm good}\) proves
+\[
+|X_{\rm good}|
+=\prod_{i\in\operatorname{Fin}m} (|S|)_{h_i}(m-h_i)_{q_i-h_i}.
+\]
+\end{proof}

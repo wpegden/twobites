@@ -1,0 +1,43 @@
+\begin{helper}
+For every \(\eta>0\), there is \(n_0\) such that for every \(n>n_0\), if
+\(L=\log n\), then
+\[
+\frac{8\log(2(1+\eta)\sqrt{nL})}
+{(1+\eta)^2\sqrt n\,L^{3/2}}
+\le\frac{\eta^3}{2}.
+\]
+\end{helper}
+\begin{proof}
+Put \(\kappa=1+\eta\) and
+\[
+\delta=\frac{\eta^3\kappa^2}{16}>0.
+\]
+Since \(\log n=o(n^{1/4})\), for all sufficiently large \(n\),
+\[
+2\log n\le n^{1/4}.
+\]
+Since \(n^{1/4}\to\infty\), after increasing the threshold also have
+\[
+1\le \delta n^{1/4}.
+\]
+Then \(n^{1/4}\le \delta\sqrt n\).  Also require \(n\ge1\), \(L\ge1\), and
+\(2\kappa\le n\).  The inequality \(\log n\le n\) gives \(L\le n\), hence
+\(\sqrt{nL}\le n\).  Therefore
+\[
+2(1+\eta)\sqrt{nL}=2\kappa\sqrt{nL}\le n^2,
+\]
+and by monotonicity of \(\log\),
+\[
+\log(2(1+\eta)\sqrt{nL})\le \log(n^2)=2\log n\le n^{1/4}
+\le \delta\sqrt n.
+\]
+Because \(L\ge1\), also \(L^{3/2}\ge1\).  Multiplying the last displayed
+inequality by \(8\) gives
+\[
+8\log(2(1+\eta)\sqrt{nL})
+\le \frac{\eta^3}{2}(1+\eta)^2\sqrt n
+\le \frac{\eta^3}{2}(1+\eta)^2\sqrt n\,L^{3/2}.
+\]
+The denominator in the statement is positive for these \(n\), so division by
+it gives the required threshold.
+\end{proof}

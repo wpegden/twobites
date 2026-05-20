@@ -1,0 +1,55 @@
+\begin{helper}
+Assume the parameter hierarchy.  Let
+\[
+  K=K(n)=\operatorname{TwoBiteNaturalIndependenceScale}(1+\epsilon,n)
+\]
+and let
+\[
+  S=\left\lceil
+    \frac{K n^{1/4-\epsilon}+L_{\mathrm{large}}(\epsilon,n)}
+         {L_{\mathrm{small}}(\epsilon,n)}
+  \right\rceil .
+\]
+Eventually in \(n\),
+\[
+  K\log n+2S\log n
+    \le K\log n+3K n^{1/4-3\epsilon}\log n .
+\]
+Moreover,
+\[
+  \exp\!\left(
+    K\log n+3K n^{1/4-3\epsilon}\log n
+      -n^{3/4-2\epsilon}
+  \right)\longrightarrow 0 .
+\]
+\end{helper}
+\begin{proof}
+The ceiling bound from \noderef{MediumClosedPairsWitnessSizeCeilPackage} gives
+\[
+  S\le K n^{1/4-3\epsilon}+n^{1/4-\epsilon}+1 .
+\]
+By \noderef{ParameterHierarchyBaseThreshold}, eventually
+\[
+  K\ge (1+\epsilon)\sqrt{n\log n}.
+\]
+Together with \(\epsilon<1/16\), this implies, for all sufficiently large
+\(n\),
+\[
+  n^{1/4-\epsilon}+1
+    \le \frac12 K n^{1/4-3\epsilon}.
+\]
+Thus \(S\le \frac32 K n^{1/4-3\epsilon}\).  Since \(\log n\ge 0\)
+eventually, multiplying by \(2\log n\) gives the displayed count-exponent
+bound.
+
+For the exponential envelope, use \noderef{ParameterHierarchyT28Threshold}
+and \noderef{ParameterHierarchyBaseThreshold}.  The first logarithmic term is
+at most \(\frac14 n^{3/4-2\epsilon}\), while the coefficient-three middle
+term is at most \(\frac38 n^{3/4-2\epsilon}\).  Hence the exponent is at most
+\[
+  -\frac38 n^{3/4-2\epsilon}.
+\]
+Because \(3/4-2\epsilon>0\), this upper bound tends to \(-\infty\), and its
+exponential tends to \(0\).  The original exponential is nonnegative and
+bounded above by this vanishing envelope, so it also tends to \(0\).
+\end{proof}

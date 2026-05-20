@@ -1,0 +1,51 @@
+\begin{helper}
+Let \(\eta,\varepsilon_1\in\mathbb R\) and \(n\in\mathbb N\).  Put
+\[
+L=\log n,\quad
+k_R=(1+\eta)\sqrt{nL},\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad k=(K:\mathbb R),
+\]
+\[
+t_1=\frac{\sqrt{nL}}{\log L}.
+\]
+Assume \(0<\eta\), \(0<\varepsilon_1\), \(0<n\), \(0<L\), \(0<\log L\),
+\(0\le k\), \(k_R\le k\), \(0<t_1\),
+\[
+\frac{2k}{t_1}+1\le5(1+\eta)\log L,
+\]
+and
+\[
+\frac{2000(5(1+\eta))^2(\log L)^2L^3}
+{\varepsilon_1(1+\eta)\sqrt{nL}}\le1.
+\]
+Then
+\[
+\noderef{RealChooseTwo}\left(\frac{2k}{t_1}+1\right)200L^3
+\le\frac{\varepsilon_1}{10}k.
+\]
+\end{helper}
+\begin{proof}
+Let \(x=2k/t_1+1\) and \(A=5(1+\eta)\log L\).  Since \(0\le k\) and
+\(0<t_1\), we have \(x\ge0\).  The upper bound in
+\(\noderef{RealChooseTwoQuadraticBounds}\) gives
+\[
+\noderef{RealChooseTwo}(x)\le x^2.
+\]
+The displayed bound on \(x\) then gives \(x^2\le A^2\), so
+\[
+\noderef{RealChooseTwo}(x)200L^3\le A^2\,200L^3.
+\]
+The threshold assumption is equivalent to
+\[
+2000(5(1+\eta))^2(\log L)^2L^3\le\varepsilon_1 k_R.
+\]
+Since \(A^2=(5(1+\eta))^2(\log L)^2\), this implies
+\[
+A^2\,200L^3\le\frac{\varepsilon_1}{10}k_R.
+\]
+Finally \(k_R\le k\) and \(\varepsilon_1>0\), so
+\[
+\frac{\varepsilon_1}{10}k_R\le\frac{\varepsilon_1}{10}k.
+\]
+Combining the inequalities proves the claim.
+\end{proof}

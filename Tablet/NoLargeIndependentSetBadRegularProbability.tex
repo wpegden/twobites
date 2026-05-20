@@ -1,0 +1,119 @@
+\begin{helper}
+Fix \(\varepsilon,\eta,\varepsilon_1,\varepsilon_2,\beta\in\mathbb R\) and
+\(n_0\in\mathbb N\).  Assume
+\[
+0<\varepsilon,\qquad 0<\eta,\qquad \eta<\varepsilon,\qquad
+\beta=\frac12,
+\]
+and \(\noderef{ParameterHierarchy}(\eta,\varepsilon_1,\varepsilon_2,n_0)\).
+Suppose that for every \(\delta>0\) there is \(N\ge n_0\) such that, for all
+\(n>N\), all \(m,p\) with
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and all \(I\subseteq\mathrm{Fin}(n)\) with
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),
+\]
+one has
+\[
+\noderef{TwoBiteEventProbability}\!\left(n,m,p,\,
+\{\,\omega:
+I\text{ is independent in }\noderef{TwoBiteFinalGraph}(\omega)_0
+\text{ and }
+\noderef{TwoBiteRegularityEvent}
+(k=|I|,\eta,\varepsilon_1,\varepsilon_2,\omega)\,\}\right)
+\le
+\delta\binom n{|I|}^{-1}.
+\]
+Then the probability of the event that the desired independence-number bound
+fails while the \(\eta\)-scale regularity event
+\[
+\noderef{TwoBiteRegularityEvent}
+\bigl(k=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),
+\eta,\varepsilon_1,\varepsilon_2,\omega\bigr)
+\]
+holds is negligible under the two-bite law with parameters
+\[
+n,\quad \noderef{TwoBiteNaturalReducedVertexCount}(n),\quad
+\noderef{TwoBiteEdgeProbability}(\beta,n).
+\]
+\end{helper}
+\begin{proof}
+Write
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p_\beta(n)=\noderef{TwoBiteEdgeProbability}(\beta,n),\qquad
+K(n)=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n).
+\]
+Since \(\beta=1/2\), the law with edge parameter \(p_\beta(n)\) is the same
+law as the fixed-set estimate's law with
+\(p=\noderef{TwoBiteEdgeProbability}(1/2,n)\).
+
+Apply \(\noderef{NaturalIndependenceScaleFitsTarget}\) to
+\(0<\eta<\varepsilon\).  There is a threshold \(N_{\mathrm{fit}}\) such that,
+for all \(n\ge N_{\mathrm{fit}}\),
+\[
+(K(n):\mathbb R)<
+\noderef{TwoBiteIndependenceScale}(1+\varepsilon,n)
+=(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}. \tag{1}
+\]
+Increasing the threshold if necessary and using
+\(\noderef{NaturalParameterApproximation}\) together with the eventual
+comparisons in \(\noderef{ParameterHierarchy}\), we may also assume
+\[
+0<K(n)\le n. \tag{2}
+\]
+Indeed, the natural scale is the ceiling of the corresponding real scale,
+which is eventually positive and \(o(n)\); the stated approximation result
+transfers these inequalities to the integer scale.
+
+Fix \(\rho>0\), and set \(\delta=\rho/2\).  Applying the fixed-set estimate
+with this \(\delta\), choose \(N_F\ge n_0\) such that for every \(n>N_F\) and
+every \(K(n)\)-element set \(I\subseteq\mathrm{Fin}(n)\),
+\[
+\Pr\!\left(I\text{ is independent in }\noderef{TwoBiteFinalGraph}_0
+\text{ and }R_n\right)
+\le
+\delta\binom n{K(n)}^{-1}, \tag{3}
+\]
+where \(R_n\) is the regularity event with \(k=K(n)\).  This is exactly the
+event in the fixed-set estimate, because \(|I|=K(n)\).
+
+Let \(B_n\) be the event that
+\(\noderef{IndependenceNumberLess}\) at threshold
+\((1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}\) fails.  Unfolding
+\(\noderef{IndependenceNumberLess}\), every \(\omega\in B_n\) has a finite set
+\(J\subseteq\mathrm{Fin}(n)\) that is independent in the final graph and
+satisfies
+\[
+(1+\varepsilon)\sqrt{(n:\mathbb R)\log(n:\mathbb R)}
+\le (|J|:\mathbb R). \tag{4}
+\]
+For \(n\ge N_{\mathrm{fit}}\), (1) and (4) imply \(K(n)\le |J|\).  With
+\(0<K(n)\) from (2), choose a \(K(n)\)-element subset \(I\subseteq J\).
+Independence is inherited by subsets, so \(I\) is independent in the same
+final graph.  Hence, for all sufficiently large \(n\),
+\[
+B_n\cap R_n
+\subseteq
+\bigcup_{\substack{I\subseteq\mathrm{Fin}(n)\\ |I|=K(n)}}
+\left(\{I\text{ is independent in }\noderef{TwoBiteFinalGraph}_0\}
+\cap R_n\right). \tag{5}
+\]
+
+The number of \(K(n)\)-element subsets of \(\mathrm{Fin}(n)\) is
+\(\binom n{K(n)}\), and this binomial coefficient is positive by (2).  The
+finite union bound applied to (5), followed by (3) for each set \(I\), gives
+\[
+\Pr(B_n\cap R_n)
+\le
+\binom n{K(n)}\,\delta\binom n{K(n)}^{-1}
+=\delta
+<\rho
+\]
+for all sufficiently large \(n\).  Since \(\rho>0\) was arbitrary, the
+probability of \(B_n\cap R_n\) tends to \(0\), which is the asserted
+\(\noderef{NegligibleProbability}\) statement.
+\end{proof}

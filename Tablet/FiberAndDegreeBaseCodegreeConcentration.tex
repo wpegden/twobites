@@ -1,0 +1,140 @@
+\begin{lemma}
+Under the two-bite law with edge probability parameter \(\beta=1/2\) and the integer base size
+\[
+M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\]
+the probability that all distinct red pairs \(r \ne s\) have red base codegree at most \(100\log n\), and simultaneously all distinct blue pairs have blue base codegree at most \(100\log n\), tends to \(1\).
+\end{lemma}
+\begin{proof}
+Let \(M=M(n)\), \(L=\log n\), and
+\[
+p=\noderef{TwoBiteEdgeProbability}(1/2,n)=\frac12\sqrt{L/n}.
+\]
+By \(\noderef{TwoBiteNaturalReducedVertexCount}\), together with
+\(\noderef{TwoBiteReducedVertexCount}\) and \(\noderef{TwoBiteStretch}\),
+\[
+M=\left\lfloor\frac n{L^2}\right\rfloor .
+\]
+After discarding finitely many initial \(n\), we may assume
+\[
+1\le L,\qquad M\le \frac n{L^2},\qquad n\le M^2,\qquad 0\le p\le1.
+\tag{1}
+\]
+The last inequality is also one of the eventual conclusions of
+\(\noderef{TwoBiteNaturalTotalMassOneEventually}\) for \(\beta=1/2\) and
+the rounded base-size function \(m(n)=M(n)\), while the probability bounds
+\(0\le p\le1\) are supplied eventually by
+\(\noderef{OppositeProjectionEdgeProbBounds}\).  These finitely many
+discarded values do not affect the \(\noderef{WithHighProbability}\) limit.
+From \(\noderef{TwoBiteEdgeProbability}\) and \(M\le n/L^2\), for all such
+\(n\),
+\[
+Mp^2
+=M\cdot \frac14\frac{L}{n}
+\le \frac1{4L}.
+\tag{2}
+\]
+Also \(M^2\le n^2=\exp(2L)\).
+
+We next derive the exact distribution of a fixed same-color base codegree
+from the two-bite finite probability space.  Fix distinct red vertices
+\(r,s\in\operatorname{Fin}(M)\).  By \(\noderef{TwoBiteSample}\), an outcome
+is a triple
+\[
+\omega=(G_R,G_B,\pi),
+\]
+where \(G_R\) and \(G_B\) are simple graphs on \(\operatorname{Fin}(M)\) and
+\(\pi\) is an injection into
+\(\operatorname{Fin}(M)\times\operatorname{Fin}(M)\).  The red graph used in
+the codegree count is exactly \(G_R=\noderef{TwoBiteRedGraph}(\omega)\), and
+the blue graph is \(G_B=\noderef{TwoBiteBlueGraph}(\omega)\).
+
+Let \(A\) be any event depending only on \(G_R\), for example the event that
+the common-neighbor count of \(r,s\) has some specified value or lies in a
+tail set.  By \(\noderef{TwoBiteEventProbability}\), its probability is the
+finite sum of \(\noderef{TwoBiteSampleWeight}\) over all triples satisfying
+\(A\); the summands are nonnegative by
+\(\noderef{TwoBiteSampleWeightNonnegative}\) and \(0\le p\le1\).  By
+\(\noderef{TwoBiteSampleWeight}\), each summand factors as
+\[
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,M).
+\tag{3}
+\]
+Since \(A\) depends only on \(G_R\), the sum over \(G_B\) and \(\pi\) factors
+off:
+\[
+\sum_{G_R:A(G_R)} \noderef{GnpGraphWeight}(p,G_R)
+\left(\sum_{G_B}\noderef{GnpGraphWeight}(p,G_B)\right)
+\left(\sum_{\pi}\noderef{UniformInjectionWeight}(n,M)\right).
+\tag{4}
+\]
+The blue graph sum is \(1\) by \(\noderef{GnpGraphWeightSumOne}\).  Because
+\(n\le M^2\), injections from \(\operatorname{Fin}(n)\) to
+\(\operatorname{Fin}(M)\times\operatorname{Fin}(M)\) exist, so
+\(\noderef{UniformInjectionWeight}\) is the reciprocal of their number and
+the injection sum is also \(1\).  Thus (4) reduces to
+\[
+\sum_{G_R:A(G_R)}\noderef{GnpGraphWeight}(p,G_R).
+\tag{5}
+\]
+This proves that the red-graph marginal under the two-bite law is exactly
+the \(G(M,p)\) product law described by \(\noderef{GnpGraphWeight}\).
+The same argument, with the roles of \(G_R\) and \(G_B\) reversed and using
+\(\noderef{GnpGraphWeightSumOne}\) for the red graph sum, proves that the
+blue-graph marginal is the same \(G(M,p)\) product law.
+
+Now fix \(t\in\operatorname{Fin}(M)\).  If \(t=r\) or \(t=s\), then the
+simple-graph loopless property makes one of the two adjacencies
+\((r,t)\) and \((s,t)\) impossible, so such \(t\)'s contribute zero to the
+codegree.  If \(t\notin\{r,s\}\), the unordered pairs \(\{r,t\}\) and
+\(\{s,t\}\) are distinct edge coordinates.  Under the product law
+\(\noderef{GnpGraphWeight}\), their indicators are independent Bernoulli
+\(p\) variables, so the indicator of the event
+\[
+(G_R.Adj\, r\, t)\ \wedge\ (G_R.Adj\, s\, t)
+\]
+is Bernoulli with parameter \(p^2\).  For two different choices
+\(t\ne t'\), with both outside \(\{r,s\}\), the four unordered edge
+coordinates \(\{r,t\},\{s,t\},\{r,t'\},\{s,t'\}\) are all distinct.  Hence
+the corresponding common-neighbor indicators are mutually independent.
+Consequently
+\[
+Y_{r,s}
+=\left|\{t:\,G_R.Adj\,r\,t\ \text{and}\ G_R.Adj\,s\,t\}\right|
+\]
+has the binomial distribution \(\mathrm{Bin}(M-2,p^2)\).  Its mean satisfies
+\[
+\mu_{r,s}=(M-2)p^2\le Mp^2\le \frac1{4L}
+\tag{6}
+\]
+by (2).  The same product-law marginalization applied to
+\(\noderef{TwoBiteBlueGraph}\) gives the identical statement for every
+distinct blue pair \(b\ne c\).
+
+For large upper tails, we use an explicit finite counting argument instead of MGFs. If \(Y\) counts successes among \(m\) independent candidate edges, the event \(Y \ge t\) requires at least \(t\) edges to be present. There are \(\binom{m}{t}\) subsets of size \(t\), and each has probability \(q^t\) of being completely present. The union bound gives
+\[
+\Pr(Y \ge t) \le \binom{m}{t} q^t \le \left(\frac{emq}{t}\right)^t = \left(\frac{e\mu}{t}\right)^t . \tag{7}
+\]
+
+Apply (7) to the binomial variable \(Y_{r,s}\) with threshold
+\(T=\lceil 100L\rceil\).  The event \(Y_{r,s}>100L\) implies
+\(Y_{r,s}\ge T\), and for large \(n\), \(T\ge100L\).  Using (6),
+\[
+\Pr(Y_{r,s}>100L)
+\le \left(\frac{e/(4L)}{100L}\right)^{100L}
+\le \exp(-50L\log L)
+\]
+for all sufficiently large \(n\).  Here the last inequality is a routine
+logarithmic comparison: the logarithm of the middle expression is
+\(100L(\log e-\log 400-2\log L)\), which is at most
+\(-50L\log L\) once \(L\) is large.
+
+There are fewer than \(M^2\le n^2\) ordered red pairs and the same number of
+ordered blue pairs.  Since \(n^2=\exp(2L)\), the union bound gives
+\[
+2M^2\exp(-50L\log L)=o(1).
+\]
+This proves the red and blue base-codegree upper bounds hold with high probability.
+\end{proof}

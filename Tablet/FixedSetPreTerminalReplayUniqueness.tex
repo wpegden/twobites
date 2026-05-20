@@ -1,0 +1,89 @@
+\begin{helper}
+Fix \(I\), a finite set \(R\) of terminal coordinates, and samples
+\(\omega,\omega'\).  If \(R\) is exactly
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\), if
+\(\omega\) and \(\omega'\) have the same injection, and if they have the same
+\(\noderef{TwoBiteEdgeCoordinateValue}\)-truth value on every coordinate of
+\(R\), then \(R\) is also exactly
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega',\varepsilon,I)\).
+\end{helper}
+\begin{proof}
+Write \(R\) for the recorded set in the statement.  By hypothesis,
+\[
+e\in R \quad\Longleftrightarrow\quad
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)
+\]
+for every terminal coordinate \(e\).  We compare the defining predicates for
+\(\omega\) and \(\omega'\).
+
+First, projection containment is the same in the two samples.  It is defined
+only from the injection and the red or blue projection of \(I\), and the
+injections agree by hypothesis.  The fibers over base vertices are also the
+same, so \(F_1\) agrees for every base vertex.  For \(F_2\), fix a base vertex
+\(x\).  The finite list of possible neighbors \(y\) is the same, and the
+\(F_1\)-status of each \(y\) is already the same.  If \(x\) and \(y\) have
+opposite colors, \(\noderef{TwoBiteBaseAdj}\) is false in both samples.  Now
+suppose \(x\) and \(y\) have the same color.  If their projected endpoints are
+equal, then the relevant adjacency is a loop edge in the red graph or in the
+blue graph, respectively.  Both graphs are simple graphs, so loop adjacency is
+false in \(\omega\) and in \(\omega'\).  Hence the two
+\(\noderef{TwoBiteBaseAdj}\)-truth values agree in this endpoint-equal case,
+and no terminal coordinate is needed.
+
+It remains to handle the same-color endpoint-distinct case.  Let \(q\) be the
+increasing ordering of the two projected endpoints.  Whenever this adjacency
+can affect the \(F_2\)-count, the endpoint \(y\) is in \(F_1\) and \(x\) is
+projection-contained.  Therefore
+\(\noderef{FixedSetPreTerminalF2QueriesRecorded}\), applied to the increasing
+coordinate \(q\), puts the tagged coordinate for \(q\) in
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\), hence in
+\(R\).  The truth-table agreement on \(R\) then gives the same value of
+\(\noderef{TwoBiteBaseAdj}(\omega,x,y)\) and
+\(\noderef{TwoBiteBaseAdj}(\omega',x,y)\).  Thus the filtered set counted in
+\(\noderef{TwoBiteStageF2}\) is the same for \(\omega\) and \(\omega'\), and
+\(\noderef{TwoBiteStageF2}\) agrees.  Since
+\(\noderef{TwoBiteStageRevealedVertex}\) is the disjunction of the
+not-projection-contained, \(F_1\), and \(F_2\) alternatives, staged-revealed
+vertices agree in the two samples.
+
+We next prove that the \(X_x(I)\)-sets agree for every staged-revealed base
+vertex \(x\).  Fix \(v\in I\).  Membership of \(v\) in
+\(\noderef{TwoBiteX}(\omega,I,x)\) means that \(v\) is in the lifted
+neighborhood of \(x\).  In the red case this is the red graph edge from the
+red endpoint of \(x\) to \(\noderef{TwoBiteRedProjection}(\omega,v)\); in the
+blue case it is the analogous blue edge.  The projected endpoint is the same
+for \(\omega\) and \(\omega'\) because their injections agree.  If this
+projected endpoint is equal to the endpoint of \(x\), then the lifted
+neighborhood test is again a loop adjacency in the corresponding simple graph,
+so it is false in both samples.  Thus membership agrees in this case without
+using a recorded coordinate.
+
+If the projected endpoint is distinct from the endpoint of \(x\), take the
+increasing ordered coordinate between these two endpoints, with the tag
+determined by their common color.  Since \(x\) is staged-revealed and the
+projected endpoint of \(v\in I\) is projection-contained, the incident branch
+of \(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\) puts
+this tagged coordinate in \(R\).  Agreement on \(R\) gives the same edge value
+in \(\omega\) and \(\omega'\).  Hence membership in \(X_x(I)\) is the same in
+the two samples for every \(v\in I\).  Therefore the projected pair sets
+\((\noderef{TwoBiteX}(\omega,I,x)).\mathrm{image}\) and
+\((\noderef{TwoBiteX}(\omega',I,x)).\mathrm{image}\) coincide in the
+appropriate color.
+
+Now unfold
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega',\varepsilon,I)\).  Its
+outer terminal-coordinate condition is the same fixed terminal universe.  For
+an incident-branch coordinate, the relevant staged-revealed and
+projection-contained predicates for \(\omega'\) agree with those for
+\(\omega\), so the coordinate satisfies the same incident branch for
+\(\omega\), and hence lies in \(R\); conversely every incident-branch
+coordinate for \(\omega\) satisfies the corresponding branch for \(\omega'\).
+For an \(X_x(I)\)-pair coordinate, staged-revealed vertices agree and the
+\(X_x(I)\)-sets just proved equal, so the \(X_x(I)\)-pair branch also holds
+for \(\omega'\) exactly when it holds for \(\omega\).  Thus every terminal
+coordinate belongs to
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega',\varepsilon,I)\) if and
+only if it belongs to
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\), which is
+equivalent to membership in \(R\).
+\end{proof}

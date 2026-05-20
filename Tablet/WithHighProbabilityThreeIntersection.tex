@@ -1,0 +1,22 @@
+\begin{helper}
+For a sequence of two-bite laws, suppose three event sequences \(E_n,F_n,G_n\)
+each hold with high probability and, eventually, all sample weights are
+nonnegative.  Then the triple intersection \(E_n\cap F_n\cap G_n\) also holds
+with high probability.
+\end{helper}
+\begin{proof}
+Let \(a_n,b_n,c_n\) be the three event probabilities.  By hypothesis they all
+converge to \(1\), so \(a_n+b_n+c_n-2\to1\).  For all sufficiently large \(n\),
+the sample weights are nonnegative.  Applying
+\(\noderef{TwoBiteEventProbabilityTripleIntersectionLowerBound}\) and
+\(\noderef{TwoBiteEventProbabilityTotalMassBound}\) gives
+\[
+a_n+b_n+c_n-2\le \Pr(E_n\cap F_n\cap G_n).
+\]
+The same nonnegativity gives monotonicity of the finite weighted sum, so the
+intersection probability is at most the total mass of the whole sample space,
+which is at most \(1\) by
+\(\noderef{TwoBiteEventProbabilityTotalMassBound}\).  The squeeze theorem
+therefore gives convergence of the intersection probability to \(1\), which is
+exactly the asserted high-probability statement.
+\end{proof}

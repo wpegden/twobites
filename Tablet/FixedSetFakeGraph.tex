@@ -1,0 +1,19 @@
+\begin{definition}[Fixed-Set Fake Graph]
+For \(m_{sub}\in\mathbb N\), a finite set
+\(P\subseteq\mathrm{Fin}(m_{sub})\), and a family of finite sets
+\[
+A:\mathrm{Fin}(m_{sub})\to\mathcal P(\mathrm{Fin}(m_{sub})),
+\]
+\(\mathrm{FixedSetFakeGraph}(P,A)\) is the simple graph on
+\(\mathrm{Fin}(m_{sub})\) whose adjacency relation is
+\[
+x\sim y
+\quad\Longleftrightarrow\quad
+\bigl(x\in P,\ y\notin P,\ x\in A(y)\bigr)
+\ \text{or}\
+\bigl(y\in P,\ x\notin P,\ y\in A(x)\bigr).
+\]
+Thus an edge joins a vertex inside \(P\) to a vertex outside \(P\) exactly
+when the \(P\)-vertex lies in the assignment set indexed by the outside
+vertex; no two vertices both inside \(P\) or both outside \(P\) are adjacent.
+\end{definition}

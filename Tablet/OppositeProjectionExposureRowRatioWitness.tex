@@ -1,0 +1,62 @@
+\begin{helper}
+Let \(U_0,V_0,T\subseteq\operatorname{Fin}n\), let
+\(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), and let
+\(\eta:U_0\to\operatorname{Fin}m\).  Put \(S=\eta(U_0)\) and
+\[
+R_i=\{v:\rho(v)=i\}.
+\]
+Let \(X_{\mathrm{all},\eta}\) and \(X_{\mathrm{good},\eta}(T)\) be the
+eta-conditioned global denominator and numerator injection sets from
+\(\noderef{OppositeProjectionExposureRowProductBound}\).  For each row
+\(i\), let \(d_i\) be the number of injective maps \(R_i\to\operatorname{Fin}m\)
+that agree with \(\eta\) on \(U_0\cap R_i\).  Let \(g_i\) be the number of
+such maps that also send every vertex of \(T\cap R_i\) into \(S\).  Assume
+\(T\subseteq V_0\), assume the \(U_0\)-rows are disjoint from the \(V_0\)-rows,
+and assume \(X_{\mathrm{all},\eta}\) is nonempty.  Then
+\[
+|X_{\mathrm{all},\eta}|=\prod_i d_i,\qquad
+|X_{\mathrm{good},\eta}(T)|=\prod_i g_i,
+\]
+every \(d_i\) is nonzero, every row quotient \(g_i/d_i\) is nonnegative,
+\[
+\frac{g_i}{d_i}\le \left(\frac{|S|}{m}\right)^{|T\cap R_i|}
+\quad\text{for every }i,
+\]
+and
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+=\prod_i \frac{g_i}{d_i}.
+\]
+\end{helper}
+\begin{proof}
+The global injection \(\phi\) has first coordinate fixed by \(\rho\).  Thus
+its remaining data are exactly the independent choices of blue coordinates in
+each row \(R_i\).  Within a row the second coordinates must be injective;
+between different rows, injectivity is automatic because the first
+coordinates are different.  This gives the denominator factorization
+\(|X_{\mathrm{all},\eta}|=\prod_i d_i\).  Adding the condition that
+\((\phi(v))_2\in S\) for \(v\in T\) only changes the row \(i\) count by
+replacing \(d_i\) with \(g_i\), so
+\(|X_{\mathrm{good},\eta}(T)|=\prod_i g_i\).
+
+Since \(X_{\mathrm{all},\eta}\) is nonempty, the product \(\prod_i d_i\) is
+nonzero, and therefore every row denominator \(d_i\) is nonzero.  The row
+quotients \(g_i/d_i\) are nonnegative because they are quotients of
+nonnegative finite counts with positive denominators.  Dividing the two
+product formulae and using the nonzero row denominators gives
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+=\prod_i \frac{g_i}{d_i}.
+\]
+
+If \(T\cap R_i=\varnothing\), then \(g_i=d_i\), so \(g_i/d_i=1\).  If
+\(T\cap R_i\ne\varnothing\), row-disjointness implies
+\(U_0\cap R_i=\varnothing\), hence the eta condition imposes no constraint in
+that row.  The ordinary row estimate from
+\(\noderef{OppositeProjectionRowInjectionCounting}\) gives
+\[
+\frac{g_i}{d_i}\le \left(\frac{|S|}{m}\right)^{|T\cap R_i|}.
+\]
+Together these observations give all asserted factorization, nonzero,
+nonnegativity, and row-bound conclusions.
+\end{proof}

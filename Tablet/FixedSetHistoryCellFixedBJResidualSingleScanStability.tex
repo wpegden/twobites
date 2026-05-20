@@ -1,0 +1,109 @@
+\begin{helper}
+Fix one blue support label \(B\) and one red label \(J\).  Let \(U\) be the
+terminal coordinate set, let \(\mathcal P\) be the transcript family, and
+for every realized branch/transcript pair \((\beta,\tau)\) write
+\[
+P_\tau,\qquad A_\tau,\qquad Z_\tau,\qquad F_{\beta,\tau}
+\]
+for the forced-present set, forced-absent set, selected-absence set, and
+fixed present support \(B\cup R_{\beta,J}\).  Assume
+\(F_{\beta,\tau}\subseteq P_\tau\).
+
+Let \(\operatorname{scan}^{\mathrm{full}}\) be the deterministic ordered RISI
+scan on complete terminal truth tables.  Let
+\(\operatorname{scan}_{B,J}\) be one fixed residual-tree scan on residual
+assignments \(A_{\rm res}\subseteq U\).  Assume the delete/reinsert
+invariance of this residual-tree scan: on the residual cylinder attached to
+a realized pair \((\beta,\tau)\),
+\[
+\operatorname{scan}_{B,J}(A_{\rm res})
+ =
+\operatorname{scan}^{\mathrm{full}}
+  \bigl((A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau}\bigr)
+\]
+whenever
+\[
+P_\tau\setminus F_{\beta,\tau}\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset .
+\]
+This is one residual-tree rule after \(B,J\) are fixed: the candidate only
+identifies which fixed support and selected set describe the cylinder being
+checked.  The owner function itself is the single residual-tree scan applied
+to the residual assignment, not a comparison between two candidate-dependent
+compatibility relations.
+
+Assume the reconstructed-scan stability furnished by the RISI reveal-order
+calculation: whenever \(A_{\rm res}\subseteq U\),
+\[
+P_\tau\setminus F_{\beta,\tau}\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset ,
+\]
+then
+\[
+\operatorname{scan}^{\mathrm{full}}
+  \bigl((A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau}\bigr)
+  =(\beta,\tau).
+\]
+Then the single fixed-\((B,J)\) residual scan satisfies the exact stability
+hypothesis needed by
+\(\noderef{FixedSetHistoryCellFixedBJResidualOwnerConstruction}\):
+\[
+\operatorname{scan}_{B,J}(A_{\rm res})=(\beta,\tau)
+\]
+for every residual assignment in the displayed cylinder.
+\end{helper}
+\begin{proof}
+The ordered scan used here is the blue-first/red-second reveal-order scan
+from the paper.  The interface
+\(\noderef{FixedSetHistoryCellRISIRevealOrderScanConstruction}\) records the
+earlier-coordinate dependency sets for the scan and says that the scan output
+is determined by the four tests read along the terminal order.  The
+reconstructed-stability calculation
+\(\noderef{FixedSetHistoryCellRISIResidualScanStability}\) applies this
+interface to the complete terminal truth table
+\[
+(A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau}.
+\]
+For coordinates in \(P_\tau\setminus F_{\beta,\tau}\), the residual cylinder
+puts the coordinate in \(A_{\rm res}\), so the reconstruction is present
+there.  For coordinates in \(F_{\beta,\tau}\), the reconstruction inserts
+the fixed support.  For coordinates in \(A_\tau\setminus Z_\tau\), residual
+avoidance keeps them out of \(A_{\rm res}\).  For coordinates in
+\(Z_\tau\), the reconstruction deletes them before the full scan is run.
+Thus the reconstructed truth table agrees with the realized witness on every
+coordinate that the RISI dependency calculation permits the scan to read.
+
+This is the point that was missing from the raw residual-scan formulation:
+the selected coordinates are not left to influence the owner decision.  They
+are charged outside the residual product tree as the selected
+\((1-p)\)-factors, and the residual tree evaluates the ordered scan after
+deleting \(Z_\tau\) and reinserting the fixed present support.  Hence a
+selected coordinate may be red or blue; in either case it is removed once
+from the residual assignment before the complete-truth-table scan is
+evaluated.  The complete blue trace is still read first by the fixed
+blue-first part of the reveal order, and the red support decoder for \(J\)
+is then evaluated from that trace.
+
+Now fix a realized pair \((\beta,\tau)\) and a residual assignment
+\(A_{\rm res}\) satisfying
+\[
+P_\tau\setminus F_{\beta,\tau}\subseteq A_{\rm res},
+\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset .
+\]
+By the delete/reinsert invariance of the fixed-\((B,J)\) residual tree scan,
+\[
+\operatorname{scan}_{B,J}(A_{\rm res})
+ =
+\operatorname{scan}^{\mathrm{full}}
+  \bigl((A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau}\bigr).
+\]
+The reconstructed-stability result just described gives that the right hand
+side is \((\beta,\tau)\).  Therefore
+\[
+\operatorname{scan}_{B,J}(A_{\rm res})=(\beta,\tau).
+\]
+This conclusion is exactly the cylinder-stability input required by the
+fixed residual-owner construction, and it is a statement about one
+fixed-\((B,J)\) residual tree rather than about candidate-specific raw scans.
+\end{proof}

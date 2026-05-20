@@ -1,0 +1,345 @@
+\begin{lemma}
+Under the hypotheses of \(\noderef{HugeFamilySizeBound}\), and assuming also
+\(\varepsilon_1\ge0\), suppose the sample parameters are the rounded hierarchy
+parameters
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+Then the same-color huge projected-pair sums satisfy
+\[
+\sum_{x\in H_I\cap V_R}\binom{|\pi_R(X_x(I))|}{2}_{\mathbb R}
+\le\varepsilon_1k^2,
+\]
+\[
+\sum_{x\in H_I\cap V_B}\binom{|\pi_B(X_x(I))|}{2}_{\mathbb R}
+\le\varepsilon_1k^2,
+\]
+and their sum is at most \(\varepsilon_1k^2\).
+\end{lemma}
+\begin{proof}
+Let
+\[
+H_I=\{x:\noderef{TwoBiteHugeClass}(\omega,I,x)\}
+\]
+be the full huge filter.  In the Lean statement the two same-color filters are
+the finite filtered-universe sets attached to the predicates
+\[
+\mathsf{hugeRed}(x)\iff
+\noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists r,\ x=\operatorname{inl}(r),
+\]
+and
+\[
+\mathsf{hugeBlue}(x)\iff
+\noderef{TwoBiteHugeClass}(\omega,I,x)\wedge
+  \exists b,\ x=\operatorname{inr}(b).
+\]
+Thus the exact finite filters are
+\[
+H_R=\operatorname{univ}.\operatorname{filter}(\mathsf{hugeRed}),
+\qquad
+H_B=\operatorname{univ}.\operatorname{filter}(\mathsf{hugeBlue}).
+\]
+Equivalently, \(H_R=H_I\cap V_R\) and \(H_B=H_I\cap V_B\).  Membership in
+\(H_R\) gives both hugeness and a representation \(x=\operatorname{inl}(r)\)
+for a unique red base vertex \(r\); membership in \(H_B\) gives
+\(x=\operatorname{inr}(b)\) for a unique blue base vertex \(b\).
+The hypotheses \(m=\noderef{TwoBiteNaturalReducedVertexCount}(n)\) and
+\(p=\noderef{TwoBiteEdgeProbability}(\frac12,n)\) identify the sample
+parameters with the rounded parameters in
+\(\noderef{ParameterHierarchyEventualComparisons}\).  Thus all hierarchy
+comparisons below involving \(2pm\), including \(1\le 2pm\) and the
+\((2k/t_1)\binom{2pm}{2}_{\mathbb R}\) bound, are being applied to the same
+\(m\) and \(p\) that occur in the sample \(\omega\).
+Unfold \(\noderef{TwoBiteProjectedPairSum}\).  The red same-color quantity is
+\[
+S_R=\sum_{x\in H_R}
+  \binom{
+    |(\noderef{TwoBiteX}(\omega,I,x)).\mathrm{image}
+      (\noderef{TwoBiteRedProjection}(\omega))|
+  }{2}_{\mathbb R},
+\]
+and the blue same-color quantity is
+\[
+S_B=\sum_{x\in H_B}
+  \binom{
+    |(\noderef{TwoBiteX}(\omega,I,x)).\mathrm{image}
+      (\noderef{TwoBiteBlueProjection}(\omega))|
+  }{2}_{\mathbb R}.
+\]
+Here and below the shorter notation \(|\pi_R(X_x(I))|\) and
+\(|\pi_B(X_x(I))|\) denotes these exact real cardinalities of finite images.
+Using the exact predicates and projections from the Lean statement,
+\[
+\noderef{TwoBiteProjectedPairSum}(\omega,I,\mathsf{hugeRed},\pi_R)=S_R,
+\qquad
+\noderef{TwoBiteProjectedPairSum}(\omega,I,\mathsf{hugeBlue},\pi_B)=S_B.
+\]
+Unfolding \(\noderef{ClosedPairsBound}\), the three conjuncts in the Lean
+statement are exactly
+\[
+S_R\le\varepsilon_1k^2,\qquad
+S_B\le\varepsilon_1k^2,\qquad
+S_R+S_B\le\varepsilon_1k^2.
+\]
+
+We first record the pointwise projection-size estimate.  Fix \(x\in H_R\).
+Then \(x=\operatorname{inl}(r)\) for a unique red base vertex \(r\).  If
+\(z\in X_x(I)\), then by unfolding \(\noderef{TwoBiteX}\),
+\[
+z\in I\quad\hbox{and}\quad z\in N_{\operatorname{inl}(r)}.
+\]
+The lifted-neighborhood definition used by \(\noderef{TwoBiteX}\) says that
+\[
+z\in N_{\operatorname{inl}(r)}
+\quad\Longleftrightarrow\quad
+G_R.Adj(r,\noderef{TwoBiteRedProjection}(\omega,z)).
+\]
+Let
+\[
+N_R(r)=\{u:\ G_R.Adj(r,u)\}
+\]
+be the finite red base-neighbor set; its cardinality is the red degree count
+appearing in the base-degree clause of \(\noderef{FiberAndDegreeEvent}\).
+Concretely, this is the filtered-universe set
+\[
+\operatorname{univ}.\operatorname{filter}
+  \bigl(u\mapsto G_R.Adj(r,u)\bigr),
+\]
+so its cardinality is
+\[
+\operatorname{GraphDegreeCount}(G_R,r).
+\]
+Thus the red base-degree conjunct of \(\noderef{FiberAndDegreeEvent}\) is
+being applied to exactly the real cardinality \((|N_R(r)|:\mathbb R)\), with
+target \(pm\).
+To see the containment in the finite-image form used by Lean, take
+\[
+u\in(\noderef{TwoBiteX}(\omega,I,x)).\operatorname{image}
+      (\noderef{TwoBiteRedProjection}(\omega)).
+\]
+Then \(u=\noderef{TwoBiteRedProjection}(\omega,z)\) for some \(z\in X_x(I)\).
+The preceding equivalence applied to this \(z\), followed by substitution of
+the displayed equality for \(u\), gives \(u\in N_R(r)\).  Hence
+\[
+(\noderef{TwoBiteX}(\omega,I,x)).\operatorname{image}
+      (\noderef{TwoBiteRedProjection}(\omega))
+\subseteq N_R(r). \tag{1}
+\]
+Taking finite cardinalities in (1), and then casting to \(\mathbb R\), the
+image-cardinality is at most \(|N_R(r)|\).  The red base-degree clause of
+\(\noderef{FiberAndDegreeEvent}\), after unpacking the relative-error
+condition, gives
+\[
+\bigl||N_R(r)|-pm\bigr|\le\varepsilon_2pm.
+\]
+The upper side of this absolute-value bound gives
+\[
+|N_R(r)|-pm\le\varepsilon_2pm,
+\]
+so
+\[
+|N_R(r)|\le pm+\varepsilon_2pm=(1+\varepsilon_2)pm.
+\]
+The conjunct \(0\le\varepsilon_2\le1\) of
+\(\noderef{ParameterHierarchyEventualComparisons}\), together with the rounded
+comparison \(1\le2pm\), gives \(0\le pm\).  Therefore
+\(\varepsilon_2pm\le pm\), and
+\[
+|(\noderef{TwoBiteX}(\omega,I,x)).\operatorname{image}
+      (\noderef{TwoBiteRedProjection}(\omega))|
+\le2pm. \tag{2}
+\]
+
+The blue estimate is the same argument with colors exchanged.  If \(x\in H_B\)
+then \(x=\operatorname{inr}(b)\) for a unique blue base vertex \(b\).  For
+each \(z\in X_x(I)\), unfolding \(\noderef{TwoBiteX}\) and the blue branch of
+the lifted-neighborhood definition gives
+\[
+G_B.Adj(b,\noderef{TwoBiteBlueProjection}(\omega,z)).
+\]
+Let \(N_B(b)=\{u:\ G_B.Adj(b,u)\}\).  Its cardinality is the blue degree count
+appearing in \(\noderef{FiberAndDegreeEvent}\): in Lean it is the cardinality
+of
+\[
+\operatorname{univ}.\operatorname{filter}
+  \bigl(u\mapsto G_B.Adj(b,u)\bigr),
+\]
+namely \(\operatorname{GraphDegreeCount}(G_B,b)\).  Thus the blue
+base-degree conjunct applies to the exact real cardinality
+\((|N_B(b)|:\mathbb R)\), again with target \(pm\).
+Thus an arbitrary element \(u\) of the finite image
+\((\noderef{TwoBiteX}(\omega,I,x)).\operatorname{image}
+      (\noderef{TwoBiteBlueProjection}(\omega))\)
+has the form \(u=\noderef{TwoBiteBlueProjection}(\omega,z)\) with
+\(z\in X_x(I)\), and is a blue base-neighbor of \(b\).  Hence
+\[
+(\noderef{TwoBiteX}(\omega,I,x)).\operatorname{image}
+      (\noderef{TwoBiteBlueProjection}(\omega))
+\subseteq N_B(b).
+\]
+Taking finite cardinalities and casting to \(\mathbb R\), the image size is at
+most \(|N_B(b)|\).  The blue base-degree clause of
+\(\noderef{FiberAndDegreeEvent}\), the same relative-error calculation,
+\(0\le\varepsilon_2\le1\), and \(1\le2pm\) give
+\[
+\bigl||N_B(b)|-pm\bigr|\le\varepsilon_2pm,\qquad
+|N_B(b)|\le(1+\varepsilon_2)pm\le2pm.
+\]
+Together with the image containment, this gives
+\[
+|(\noderef{TwoBiteX}(\omega,I,x)).\operatorname{image}
+      (\noderef{TwoBiteBlueProjection}(\omega))|
+\le2pm. \tag{3}
+\]
+
+Let \(B=2pm\).  The lower-bound conjunct of
+\(\noderef{ParameterHierarchyEventualComparisons}\), evaluated at the present
+\(n>n_0\) with the identified rounded parameters
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+gives
+\[
+1\le2pm=B. \tag{B}
+\]
+For each red or blue
+summand, let
+\[
+a=|\pi_R(X_x(I))|\quad\hbox{or}\quad a=|\pi_B(X_x(I))|.
+\]
+Then \(a\) is the real cast of a natural number \(c\), the corresponding image
+cardinality, so \(a\ge0\), and (2) or (3) gives \(a\le B\).  We now justify
+the binomial comparison for this actual cardinality.  By
+\(\noderef{RealChooseTwo}\),
+\[
+\binom{u}{2}_{\mathbb R}=\frac{u(u-1)}2.
+\]
+For \(0\le u\le v\) with \(1\le u\), the difference
+\[
+\binom{v}{2}_{\mathbb R}-\binom{u}{2}_{\mathbb R}
+  =\frac{(v-u)(u+v-1)}2
+\]
+is nonnegative; hence the function is increasing on \([1,\infty)\).  If
+\(c\ge2\), then \(1\le a\), so this monotonicity and \(a\le B\) give
+\(\binom a2_{\mathbb R}\le\binom B2_{\mathbb R}\).  If \(c=0\), then
+\(a=0\) and \(\binom a2_{\mathbb R}=0\).  If \(c=1\), then \(a=1\) and again
+\(\binom a2_{\mathbb R}=0\).  In these two exceptional cardinality cases,
+\(\binom B2_{\mathbb R}\ge0\), because \(1\le B\) implies
+\[
+\binom B2_{\mathbb R}=\frac{B(B-1)}2\ge0.
+\]
+Thus in all cardinality cases
+\[
+\binom{a}{2}_{\mathbb R}\le \binom{B}{2}_{\mathbb R}. \tag{4}
+\]
+Applying (4) to all red and blue summands yields
+\[
+S_R+S_B
+\le (|H_R|+|H_B|)\binom{2pm}{2}_{\mathbb R}. \tag{5}
+\]
+Indeed, for the red filter, finite-sum monotonicity applies over the exact
+finite domain \(H_R\) with the pointwise comparison (4), giving
+\[
+S_R\le (|H_R|:\mathbb R)\binom{2pm}{2}_{\mathbb R}
+\]
+because the upper summand is the constant
+\(\binom{2pm}{2}_{\mathbb R}\).  The finite sum of that constant over \(H_R\)
+is the real cast of \(|H_R|\) times the constant.  The same argument over
+\(H_B\) gives
+\[
+S_B\le (|H_B|:\mathbb R)\binom{2pm}{2}_{\mathbb R},
+\]
+and adding these two inequalities gives (5).
+The filters \(H_R\) and \(H_B\) are disjoint: if a vertex lay in both, then
+there would be \(r,b\) with
+\(\operatorname{inl}(r)=\operatorname{inr}(b)\), impossible for the two
+constructors of the disjoint sum.  Each filter is also a subfamily of the full
+huge filter \(H_I=\{x:\noderef{TwoBiteHugeClass}(\omega,I,x)\}\).  Therefore
+the finite-cardinality identity for disjoint unions gives
+\[
+|H_R\cup H_B|=|H_R|+|H_B|,
+\]
+and monotonicity of cardinality under the inclusion
+\(H_R\cup H_B\subseteq H_I\) gives
+\[
+|H_R|+|H_B|=|H_R\cup H_B|\le |H_I|. \tag{6}
+\]
+The quantity \(\binom{2pm}{2}_{\mathbb R}\) is nonnegative by (B).
+Multiplying (6), after casting finite cardinalities to real numbers, by this
+nonnegative factor and using (5), we obtain
+\[
+S_R+S_B
+\le |H_I|\binom{2pm}{2}_{\mathbb R}. \tag{7}
+\]
+
+Apply the second conclusion of \(\noderef{HugeFamilySizeBound}\) with the
+same sample \(\omega\), set \(I\), integer \(k\), integer \(n\), parameters
+\(\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), the same
+\(\noderef{ParameterHierarchyEventualComparisons}\) hypothesis, the same
+strict inequality \(n_0<n\), the same equality
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+the same cardinality hypothesis \(|I|=k\), and the same event
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\).  These are exactly
+the hypotheses of \(\noderef{HugeFamilySizeBound}\).  Its full huge filter is
+precisely \(H_I\), and with \(t_1=\noderef{TwoBiteHugeCutoff}(n)\) it gives
+\[
+|H_I|\le\frac{2k}{t_1}. \tag{8}
+\]
+The factor \(\binom{2pm}{2}_{\mathbb R}\) is nonnegative by (B) and the
+definition of \(\noderef{RealChooseTwo}\).  Apply the elementary numerical
+step \(\noderef{HugeSameColorProjectionPairNumerics}\) with
+\[
+H=|H_I|,\qquad t_1=\noderef{TwoBiteHugeCutoff}(n).
+\]
+Its three inputs are exactly (8), the lower bound (B), and the same-color
+huge-projection pair-count comparison from
+\(\noderef{ParameterHierarchyEventualComparisons}\), evaluated at the present
+\(n>n_0\).  It gives
+\[
+|H_I|\binom{2pm}{2}_{\mathbb R}
+\le
+\frac{2k}{t_1}\binom{2pm}{2}_{\mathbb R}
+\le\varepsilon_1k^2. \tag{9}
+\]
+The last displayed inequality is exactly the conjunct
+\[
+\frac{2k}{t_1}\binom{2pm}{2}_{\mathbb R}\le\varepsilon_1k^2
+\]
+from \(\noderef{ParameterHierarchyEventualComparisons}\), with the rounded
+scales \(k=K\), \(m=M\), \(p=\frac12\sqrt{\log n/n}\), and
+\(t_1=\noderef{TwoBiteHugeCutoff}(n)\).  Combining (7) and (9) proves
+\[
+S_R+S_B\le\varepsilon_1k^2. \tag{10}
+\]
+
+It remains only to separate the two individual bounds.  Each summand in
+\(S_R\) and \(S_B\) is nonnegative.  To check this in the form used by Lean,
+let the finite image cardinality be the natural number \(c\), and put
+\(a=(c:\mathbb R)\).  If \(c=0\), then \(a=0\) and
+\(\binom a2_{\mathbb R}=0\).  If \(c=1\), then \(a=1\) and again
+\(\binom a2_{\mathbb R}=0\).  If \(c\ge2\), then \(a\ge1\), so both \(a\)
+and \(a-1\) are nonnegative, and
+\[
+\binom a2_{\mathbb R}=\frac{a(a-1)}2\ge0.
+\]
+This exhaustive natural-cardinality case split proves every summand in the
+two finite sums is nonnegative.  Finite sums of nonnegative real summands are
+nonnegative, so \(0\le S_R\) and \(0\le S_B\).  Using these inequalities and
+(10),
+\[
+S_R\le S_R+S_B\le\varepsilon_1k^2
+\]
+and
+\[
+S_B\le S_R+S_B\le\varepsilon_1k^2.
+\]
+Together with the already proved combined inequality, and after unfolding
+\(\noderef{ClosedPairsBound}\), these are exactly the red, blue, and combined
+closed-pair bounds asserted in the statement.
+\end{proof}

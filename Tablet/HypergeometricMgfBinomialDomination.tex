@@ -1,0 +1,181 @@
+\begin{helper}
+Let \(N,n,m\) be natural numbers with \(n\le N\) and \(m\le N\), and let
+\(M\subseteq \operatorname{Fin}(N)\) have cardinality \(m\).  Put
+\[
+q=\frac{m}{N}
+\]
+using Lean's real-division convention when \(N=0\).  Then, for every
+\(L\in\mathbb R\),
+\[
+( \binom{N}{n})^{-1}
+\sum_{S\in \binom{\operatorname{Fin}(N)}{n}} \exp\!\bigl(L\,|S\cap M|\bigr)
+\le (1-q+q e^L)^n .
+\]
+\end{helper}
+\begin{proof}
+If \(N=0\), then \(n=m=0\).  There is exactly one \(0\)-element subset of
+\(\operatorname{Fin}(0)\), namely the empty set, its intersection with \(M\)
+has cardinality \(0\), and \(\binom 00=1\).  The left hand side is therefore
+\(\exp(0)=1\).  The right hand side is \((1-0+0)^0=1\), so the desired
+inequality holds.
+
+Assume \(N>0\).  Write \(U=\operatorname{Fin}(N)\), identify \(U\) with
+\(\{1,\ldots,N\}\), and let \(v_i=1\) if \(i\in M\) and \(v_i=0\) otherwise.
+Let
+\[
+b=(\underbrace{1,\ldots,1}_{n\text{ times}},
+  \underbrace{0,\ldots,0}_{N-n\text{ times}}).
+\]
+For a permutation \(\pi\in S_N\), the sum
+\(\sum_i b_i v_{\pi(i)}\) counts the marked elements among the first \(n\)
+positions of \(\pi\).  Every \(n\)-element subset \(S\subseteq U\) occurs as
+the first \(n\) positions of exactly \(n!(N-n)!\) permutations.  Since
+\(N!=\binom Nn n!(N-n)!\), the subset average on the left hand side is
+exactly
+\[
+g(b)=\frac{1}{N!}\sum_{\pi\in S_N}
+\exp\!\left(L\sum_{i=1}^N b_i v_{\pi(i)}\right).
+\]
+
+Now draw \(X=(X_1,\ldots,X_n)\) independently and uniformly from \(U\), and
+let \(c_i\) be the number of times \(i\) appears among the \(X_j\).  Then
+each \(c_i\) is a nonnegative integer and \(\sum_i c_i=n\).  If
+\(Z=\sum_{j=1}^n v_{X_j}\), then \(Z=\sum_i c_i v_i\).  Applying an
+independent uniform permutation \(\pi\) to all labels does not change the law
+of the sequence \(X\), so for this fixed count vector \(c\) the symmetrized
+conditional moment generating function is
+\[
+g(c)=\frac{1}{N!}\sum_{\pi\in S_N}
+\exp\!\left(L\sum_{i=1}^N c_i v_{\pi(i)}\right),
+\]
+and the with-replacement moment generating function is the average of
+\(g(c(X))\) over all sequences \(X\).
+
+Fix one count vector \(c\).  Sort it in nonincreasing order and call the
+sorted vector \(x\).  The vector \(b\) is already nonincreasing.  For
+\(1\le r\le N\), the sum of the first \(r\) coordinates of \(b\) is
+\(\min(r,n)\).  The corresponding sum for \(x\) is at least this number.
+Indeed, if \(r\le n\) and \(\sum_{h\le r}x_h<r\), then the sorted
+nonnegative integer condition forces \(x_r=0\); all later coordinates are
+also \(0\), so the total sum of \(x\) is \(<r\le n\), contradicting
+\(\sum_h x_h=n\).  If \(r\ge n\), then no positive coordinate can occur after
+position \(r\), since that would give at least \(r+1>n\) positive integer
+coordinates and hence total sum at least \(r+1\).  Thus the first \(r\)
+coordinates already contain the whole mass \(n\).  Therefore
+\[
+S_r(x):=\sum_{h=1}^r(x_h-b_h)\ge0\qquad(1\le r\le N),
+\]
+and \(S_N(x)=0\).
+
+We now prove the finite majorization-to-convex-hull step.  Suppose first
+that the current sorted vector \(x\) is not equal to \(b\).  Let \(i\) be the
+first index with \(x_i\ne b_i\).  Since all earlier discrepancies are zero,
+\(S_i(x)=x_i-b_i\), and the prefix inequality gives \(x_i>b_i\).  Because
+the total discrepancy is zero, some later index has negative discrepancy;
+let \(j>i\) be the first index with \(x_j<b_j\).  For every
+\(i\le r<j\), no negative discrepancy has yet appeared after the positive
+discrepancy at \(i\), hence \(S_r(x)>0\).  Define
+\[
+\delta=\min\Bigl(x_i-b_i,\ b_j-x_j,\ \min_{i\le r<j}S_r(x)\Bigr).
+\]
+All entries and slacks are integers and each quantity in this minimum is
+positive, so \(\delta\) is a positive integer.  Let \(y\) be obtained from
+\(x\) by replacing \(x_i\) by \(x_i-\delta\), replacing \(x_j\) by
+\(x_j+\delta\), and leaving every other coordinate fixed.  The inequalities
+\(\delta\le x_i-b_i\le x_i\) and \(\delta\le b_j-x_j\) show that \(y\) has
+nonnegative integer entries.  Its total sum is still \(n\).  Its prefix
+slacks are unchanged for \(r<i\), are \(S_r(x)-\delta\) for
+\(i\le r<j\), and are unchanged again for \(r\ge j\); hence all prefix
+slacks remain nonnegative.
+
+The vector \(y\) need not be sorted.  Let \(y^\downarrow\) be its
+nonincreasing rearrangement.  For every \(r\), the first \(r\) entries of
+\(y^\downarrow\) have maximal sum among all \(r\)-coordinate selections from
+\(y\), so their sum is at least the sum of the first \(r\) entries of the
+particular ordering \(y\).  Since those prefix sums of \(y\) dominate the
+prefix sums of \(b\), the sorted vector \(y^\downarrow\) also majorizes
+\(b\), and its total sum is still \(n\).
+
+The same transfer also gives the required convex-hull inclusion.  Since
+\(i<j\), \(b_i\ge b_j\), and from \(x_i>b_i\) and \(x_j<b_j\) we get
+\(x_i>x_j\).  Put \(\theta=\delta/(x_i-x_j)\).  The identity
+\[
+x_i-x_j=(x_i-b_i)+(b_i-b_j)+(b_j-x_j)
+\]
+has nonnegative terms on the right, with the first and last positive; because
+\(\delta\le x_i-b_i\) and \(\delta\le b_j-x_j\), we have
+\(0\le\theta\le1\).  On coordinates \(i,j\),
+\[
+(x_i-\delta,\ x_j+\delta)
+=(1-\theta)(x_i,x_j)+\theta(x_j,x_i),
+\]
+and all other coordinates are unchanged.  Thus \(y\) is a convex combination
+of \(x\) and the transposition of \(x\) swapping \(i\) and \(j\).  If
+\(\rho\) is a permutation sorting \(y\), then
+\[
+y^\downarrow=\rho(y)
+=(1-\theta)\rho(x)+\theta\,\rho((ij)x),
+\]
+so \(y^\downarrow\) is still in the convex hull of permutations of \(x\).
+
+It remains to show that the iteration reaches \(b\).  Use the integer
+measure
+\[
+D(x)=\sum_{h=1}^N |x_h-b_h|.
+\]
+Before resorting, the two affected terms decrease by \(\delta\) each,
+because \(x_i>b_i\), \(x_j<b_j\), and
+\(\delta\le x_i-b_i,\ b_j-x_j\).  Hence \(D(y)=D(x)-2\delta<D(x)\).
+Resorting cannot increase the distance to the already sorted vector \(b\):
+an adjacent inverted pair has values \(a\le d\) but appears in the order
+\((a,d)\), while the corresponding two entries of \(b\) satisfy
+\(b_r\ge b_s\).  The elementary inequality
+\[
+|a-b_s|+|d-b_r|\le |a-b_r|+|d-b_s|
+\]
+for \(a\le d\) and \(b_s\le b_r\) says that swapping the larger value leftward
+does not increase the two-coordinate contribution to \(D\).  Repeating such
+adjacent swaps until the vector is nonincreasing gives
+\(D(y^\downarrow)\le D(y)<D(x)\).  Since \(D\) is a nonnegative integer, the
+process terminates.  A terminal sorted vector that still majorizes \(b\) must
+equal \(b\), because otherwise the first differing index \(i\), the later
+index \(j\), and the positive transfer above would still be available.
+
+Starting from the sorted rearrangement \(x=c^\downarrow\), each step replaces
+the current sorted vector by a new sorted vector lying in the convex hull of
+permutations of the previous one.  Composing these finite convex
+representations, and using that \(c^\downarrow\) is itself a permutation of
+\(c\), gives weights \(w_\sigma\ge0\), indexed by \(\sigma\in S_N\), whose
+sum is \(1\), such that
+\[
+b=\sum_{\sigma\in S_N} w_\sigma\,\sigma(c).
+\]
+
+The function \(g\) is convex in its vector argument: each summand is the
+exponential of a linear function, hence convex, and \(g\) is their finite
+average with nonnegative coefficient \(1/N!\).  It is also symmetric:
+for every permutation \(\sigma\), reindexing the outer sum by
+\(\pi\mapsto \pi\circ\sigma\) gives \(g(\sigma(c))=g(c)\).  Jensen's
+inequality applied to the displayed convex combination gives
+\[
+g(b)\le \sum_{\sigma\in S_N} w_\sigma g(\sigma(c))
+       = \sum_{\sigma\in S_N} w_\sigma g(c)
+       = g(c).
+\]
+This inequality holds for every fixed sequence \(X\), so averaging over all
+with-replacement sequences gives
+\[
+\mathbb E e^{LY_{\mathrm{without}}}\le
+\mathbb E e^{LZ_{\mathrm{with}}}.
+\]
+
+For one with-replacement draw, the probability of landing in \(M\) is
+\(|M|/|U|=m/N=q\), and the \(n\) draws are independent.  The one-draw moment
+generating function is therefore \(1-q+q e^L\), and multiplication over the
+\(n\) independent draws gives
+\[
+\mathbb E e^{LZ}=(1-q+q e^L)^n.
+\]
+Combining this identity with the domination just proved is exactly the
+claimed inequality.
+\end{proof}

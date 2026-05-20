@@ -1,0 +1,30 @@
+\begin{lemma}
+For every two-bite sample \(\omega\), every fixed set \(I\), and every base
+vertex \(x\), the vertex \(x\) lies in one of the four cutoff classes:
+\[
+\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I,x)
+\quad\text{or}\quad
+\noderef{TwoBiteMediumClass}(\omega,\varepsilon,I,x)
+\quad\text{or}\quad
+\noderef{TwoBiteLargeClass}(\omega,\varepsilon,I,x)
+\quad\text{or}\quad
+\noderef{TwoBiteHugeClass}(\omega,I,x).
+\]
+\end{lemma}
+\begin{proof}
+Let
+\[
+c=\bigl|\noderef{TwoBiteX}(\omega,I,x)\bigr|.
+\]
+Since \(\noderef{TwoBiteX}(\omega,I,x)\) is a filtered subset of \(I\), we
+have \(0\le c\) and \(c\le |I|\).  Compare \(c\) successively with the huge,
+large, and small cutoffs.  If
+\(c>\noderef{TwoBiteHugeCutoff}(n)\), then \(x\) is huge.  Otherwise
+\(c\le\noderef{TwoBiteHugeCutoff}(n)\); if
+\(c>\noderef{TwoBiteLargeCutoff}(\varepsilon,n)\), then \(x\) is large.
+Otherwise \(c\le\noderef{TwoBiteLargeCutoff}(\varepsilon,n)\); if
+\(c>\noderef{TwoBiteSmallCutoff}(\varepsilon,n)\), then \(x\) is medium.
+In the remaining case
+\(0\le c\le\noderef{TwoBiteSmallCutoff}(\varepsilon,n)\), so \(x\) is small.
+These are exactly the four defining alternatives.
+\end{proof}

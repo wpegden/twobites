@@ -1,0 +1,193 @@
+\begin{helper}
+Let \(I\subseteq[n]\) have
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Assume the fiber-degree event
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\), the eventual
+comparison package
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\), and the rounded
+sample-parameter identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\frac12\sqrt{\frac{\log n}{n}}.
+\]
+If a base vertex \(x\) is huge for \(I\), then \(x\) is
+\(\noderef{TwoBiteStageRevealedVertex}(\omega,\varepsilon,I,x)\).
+\end{helper}
+\begin{proof}
+Write \(L=\log n\),
+\[
+t_1=\noderef{TwoBiteHugeCutoff}(n),\qquad
+t_2=\noderef{TwoBiteLargeCutoff}(\varepsilon,n).
+\]
+The hugeness assumption is the conjunction defining
+\(\noderef{TwoBiteHugeClass}(\omega,I,x)\).  Its first projection gives
+\[
+t_1<|\noderef{TwoBiteX}(\omega,I,x)|, \tag{H1}
+\]
+and its second projection says
+\[
+|\noderef{TwoBiteX}(\omega,I,x)|\le |I|. \tag{H2}
+\]
+The second inequality is also consistent with the definition of
+\(\noderef{TwoBiteX}\), which is the filter of \(I\) consisting of vertices
+lying in the lifted neighborhood of \(x\).
+
+First suppose \(x\notin\pi_R(I)\cup\pi_B(I)\), equivalently
+\(\neg\noderef{TwoBiteProjectionContains}(\omega,I,x)\).  Then the first
+disjunct in the definition of
+\(\noderef{TwoBiteStageRevealedVertex}\) holds, so \(x\) is staged-revealed.
+
+It remains to consider the projection-contained case.  We prove the
+contrapositive of the paper's inclusion
+\[
+(\pi_R(I)\cup\pi_B(I))\cap H_I\subseteq F_2.
+\]
+Assume
+\[
+\noderef{TwoBiteProjectionContains}(\omega,I,x)
+\quad\text{and}\quad
+\neg\noderef{TwoBiteStageF2}(\omega,\varepsilon,I,x).
+\tag{P}
+\]
+Unfolding \(\noderef{TwoBiteStageF2}\), the statement
+\(\noderef{TwoBiteStageF2}(\omega,\varepsilon,I,x)\) is the conjunction of
+\(\noderef{TwoBiteProjectionContains}(\omega,I,x)\) and the strict real
+inequality
+\[
+\frac{t_2}{L}<
+\left|
+\{y:\noderef{TwoBiteStageF1}(\omega,I,y)
+      \text{ and }\noderef{TwoBiteBaseAdj}(\omega,x,y)\}
+\right|.
+\]
+The first conjunct is already true by (P).  Hence, if the displayed strict
+inequality also held, the two conjuncts would prove
+\(\noderef{TwoBiteStageF2}(\omega,\varepsilon,I,x)\), contradicting (P).
+Therefore the strict inequality is false, and totality of the real order gives
+the weak bound on the same-color \(F_1\)-neighbor count:
+\[
+\left|
+\{y:\noderef{TwoBiteStageF1}(\omega,I,y)
+      \text{ and }\noderef{TwoBiteBaseAdj}(\omega,x,y)\}
+\right|
+\le \frac{t_2}{L}. \tag{N}
+\]
+
+We next split the finite set
+\[
+X_x(I)=\noderef{TwoBiteX}(\omega,I,x)
+\]
+according to the same-color projection of its elements.  If \(x=\mathrm{red}
+(r)\), define the same-color projection of \(u\in I\) to be
+\(\pi_R^\omega(u)\); if \(x=\mathrm{blue}(b)\), define it to be
+\(\pi_B^\omega(u)\).  In either color case, membership
+\(u\in X_x(I)\) unfolds to two facts: \(u\in I\), and the same-color projected
+base vertex \(y\) is adjacent to \(x\) in the corresponding base graph.  Thus
+\(\noderef{TwoBiteBaseAdj}(\omega,x,y)\) holds.  Since \(u\in I\) projects to
+\(y\), the definition of \(\noderef{TwoBiteProjectionContains}\) also gives
+\[
+\noderef{TwoBiteProjectionContains}(\omega,I,y). \tag{C}
+\]
+Let \(A\) be the part of \(X_x(I)\) for which this same-color projected base
+vertex \(y\) lies in \(\noderef{TwoBiteStageF1}(\omega,I,\cdot)\), and let
+\(B\) be the complementary part.  These are complementary filters of the same
+finite set, hence they are disjoint, cover \(X_x(I)\), and satisfy
+\[
+|X_x(I)|=|A|+|B|. \tag{D}
+\]
+
+For \(A\), every \(u\in A\) lies in the fiber over a base vertex \(y\) with
+\[
+\noderef{TwoBiteStageF1}(\omega,I,y)
+\quad\text{and}\quad
+\noderef{TwoBiteBaseAdj}(\omega,x,y).
+\]
+The number of such base vertices is bounded by (N).  For each such \(y\), the
+appropriate red or blue fiber-size conjunct of
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\) gives
+\[
+\noderef{WithinRelativeError}
+  \left(\varepsilon_2,L^2,|F(y)|\right).
+\]
+Using \(0\le\varepsilon_2\) from
+\(\noderef{ParameterHierarchyEventualComparisons}\) and \(L^2\ge0\), this
+relative-error inequality implies the uniform upper bound
+\[
+|F(y)|\le (1+\varepsilon_2)L^2
+\]
+for every same-color fiber, in both the red and blue cases.  The finite
+fiber-counting estimate
+\[
+|A|\le
+\sum_{\substack{y:\ \noderef{TwoBiteStageF1}(\omega,I,y)\\
+        \noderef{TwoBiteBaseAdj}(\omega,x,y)}} |F(y)|
+\]
+then gives
+\[
+|A|\le (1+\varepsilon_2)L^2\,\frac{t_2}{L}. \tag{A}
+\]
+
+For \(B\), the same-color projected base vertex \(y\) is still adjacent to
+\(x\), but it is not in \(\noderef{TwoBiteStageF1}(\omega,I,\cdot)\).  The
+base-degree conjunct of
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\), using the red graph
+when \(x\) is red and the blue graph when \(x\) is blue, gives the same-color
+degree bound
+\[
+|\{y:\noderef{TwoBiteBaseAdj}(\omega,x,y)\}|\le (1+\varepsilon_2)pm.
+\tag{G}
+\]
+Now fix a base vertex \(y\) that contributes at least one element to \(B\).
+By (C), \(y\) is projection-contained.  Since \(y\notin
+\noderef{TwoBiteStageF1}(\omega,I,\cdot)\), unfolding
+\(\noderef{TwoBiteStageF1}\) shows that the strict inequality
+\[
+L<|F(y)\cap I|
+\]
+cannot hold; otherwise it would combine with projection-containedness to put
+\(y\) in \(F_1\).  Hence
+\[
+|F(y)\cap I|\le L.
+\]
+Every element of \(B\) lies in \(F(y)\cap I\) for one of the same-color
+neighbors \(y\) of \(x\).  Summing the preceding bound over all such neighbors
+and then using (G) gives
+\[
+|B|\le L(1+\varepsilon_2)pm. \tag{B}
+\]
+
+Adding the bounds for \(A\) and \(B\), and using the disjoint decomposition
+(D), gives
+\[
+|X_x(I)|
+\le
+(1+\varepsilon_2)L^2\,\frac{t_2}{L}
+{}+
+L(1+\varepsilon_2)pm. \tag{T}
+\]
+The rounded sample-parameter identities identify the actual \(m\) and \(p\)
+in (T) with the \(m\) and \(p\) used in
+\(\noderef{ParameterHierarchyEventualComparisons}\); the active scale
+hypothesis similarly identifies \(|I|\) with the rounded
+\(\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)\), the scale used
+when the hierarchy package is instantiated at this \(n\).  The exact
+comparison conjunct of that package says
+\[
+(1+\varepsilon_2)L^2\,\frac{t_2}{L}
+{}+
+L(1+\varepsilon_2)pm
+<t_1. \tag{H}
+\]
+Combining (T) and (H) gives \(|X_x(I)|<t_1\), contradicting the huge lower
+bound (H1).  Therefore the assumptions in (P) are inconsistent, so a
+projection-contained huge vertex must lie in
+\(F_2\).
+
+In the projection-contained case, the \(F_2\) disjunct of
+\(\noderef{TwoBiteStageRevealedVertex}\) holds.  Together with the
+outside-projection case above, this proves the staged-revealed conclusion for
+every huge vertex.
+\end{proof}

@@ -1,0 +1,57 @@
+\begin{lemma}
+Let \(0<\varepsilon\leq 1\), let \(0\leq p\leq 1\), and let \(m\) be a
+natural number such that
+\[
+  \frac{100}{\varepsilon}\leq p\,m .
+\]
+Put \(t=\log(1+\varepsilon/2)\).  Then \(t>0\), and the exponential envelope
+appearing on the right-hand side of the Bernoulli MGF bound satisfies
+\[
+\begin{aligned}
+m\Big(&\exp\{-t(1+\varepsilon)pm
+      +(m-1)p(\exp(t)-1)\}\\
+&+\exp\{t(1-\varepsilon)pm
+      +(m-1)p(\exp(-t)-1)\}\Big)
+\leq
+m\Big(\exp\{-(\varepsilon^2/100)pm\}
+     +\exp\{-(\varepsilon^2/100)pm\}\Big).
+\end{aligned}
+\]
+\end{lemma}
+\begin{proof}
+Set \(M=m\), \(q=pM\), \(c=\varepsilon^2/100\), and
+\(t=\log(1+\varepsilon/2)\).  Since \(\varepsilon>0\), we have \(t>0\).
+Also \(\exp(t)-1=\varepsilon/2\) and
+\(\exp(-t)-1=-\varepsilon/(\varepsilon+2)\).
+
+For the upper-tail exponent, use \(m-1\leq m\) and
+\(\exp(t)-1\geq0\).  The exponent is at most
+\[
+\bigl(-(1+\varepsilon)t+\varepsilon/2\bigr)q.
+\]
+The standard inequality
+\[
+\frac{2x}{x+2}\leq \log(1+x)\qquad (x\geq0)
+\]
+with \(x=\varepsilon/2\) gives
+\[
+(1+\varepsilon)t-\varepsilon/2\geq \varepsilon^2/100
+\]
+for \(0<\varepsilon\leq1\).  Hence the upper exponent is at most \(-cq\).
+
+For the lower-tail exponent, the assumption \(100/\varepsilon\leq q\) and
+\(p\leq1\) imply \(p\leq(\varepsilon/100)q\), so
+\[
+(m-1)p=q-p\geq(1-\varepsilon/100)q.
+\]
+Since \(\exp(-t)-1\leq0\), the lower exponent is at most
+\[
+\left(\frac{\varepsilon}{2}(1-\varepsilon)
+  -(1-\varepsilon/100)\frac{\varepsilon}{\varepsilon+2}\right)q.
+\]
+For \(0<\varepsilon\leq1\), the coefficient in parentheses is at most
+\(-\varepsilon^2/100=-c\).  Thus the lower exponent is also at most \(-cq\).
+Monotonicity of the exponential function gives the two displayed exponential
+bounds, and multiplying their sum by the nonnegative factor \(m\) gives the
+claim.
+\end{proof}

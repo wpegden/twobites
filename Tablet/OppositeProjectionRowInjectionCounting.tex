@@ -1,0 +1,84 @@
+\begin{lemma}
+For any fixed red row map $\rho$, consider the set of admissible injections $\text{Fin } n \hookrightarrow \text{Fin } m \times \text{Fin } m$ whose red-coordinate map is $\rho$. If this set is nonempty, then for any fixed set $T$ of original vertices and any fixed target set $S$ of blue coordinates, the fraction of such injections that assign all vertices in $T$ to blue coordinates in $S$ is bounded by $(|S|/m)^{|T|}$.
+\end{lemma}
+\begin{proof}
+Let
+\[
+X_{\rm all}
+=\{\phi:\operatorname{Fin}n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m:
+(\phi(v))_1=\rho(v)\text{ for every }v\}
+\]
+and let \(X_{\rm good}\subseteq X_{\rm all}\) be the subset for which
+\((\phi(v))_2\in S\) for every \(v\in T\).  By hypothesis
+\(X_{\rm all}\) is nonempty.  For each row \(i\in\operatorname{Fin}m\), put
+\[
+R_i=\{v:\rho(v)=i\},\qquad q_i=|R_i|,\qquad
+T_i=T\cap R_i,\qquad h_i=|T_i|.
+\]
+Nonemptiness of \(X_{\rm all}\) implies \(q_i\le m\) for every \(i\): in an
+admissible injection, the \(q_i\) vertices of \(R_i\) all have first
+coordinate \(i\), so injectivity forces their second coordinates to be
+distinct elements of \(\operatorname{Fin}m\).
+
+An admissible injection is equivalently, for each row \(i\), a choice of
+distinct blue coordinates for the vertices in \(R_i\).  The row choices are
+independent across different rows because pairs with different first
+coordinate are automatically distinct.  Thus the number of all row choices
+in row \(i\) is the falling factorial
+\[
+(m)_{q_i}=m(m-1)\cdots(m-q_i+1),
+\]
+and \(|X_{\rm all}|\) is the product of these row counts.
+
+Fix a row \(i\).  We prove that the fraction of row choices sending every
+vertex of \(T_i\) into \(S\) is at most \((|S|/m)^{h_i}\).  First suppose
+\(h_i>|S|\).  The \(h_i\) vertices in \(T_i\) must receive distinct blue
+coordinates, since the full map is injective and all of them have the same
+red coordinate \(i\).  They cannot all receive values in the set \(S\), which
+has only \(|S|\) elements.  Hence the favorable row count is \(0\), the row
+ratio is \(0\), and the desired row bound follows from nonnegativity of
+\((|S|/m)^{h_i}\).
+
+It remains to handle the case \(h_i\le |S|\).  First choose the blue
+coordinates of the \(h_i\) constrained vertices in \(T_i\).  These must be
+distinct elements of \(S\), giving \((|S|)_{h_i}\) choices.  After those
+choices are made, the remaining \(q_i-h_i\) vertices in \(R_i\setminus T_i\)
+may use any blue coordinates not already used, giving
+\((m-h_i)_{q_i-h_i}\) choices.  Therefore the favorable row ratio is
+\[
+\frac{(|S|)_{h_i}(m-h_i)_{q_i-h_i}}{(m)_{q_i}}.
+\]
+Since \(h_i\le q_i\le m\), the denominator factors as
+\[
+(m)_{q_i}=(m)_{h_i}(m-h_i)_{q_i-h_i},
+\]
+so the row ratio is
+\[
+\frac{(|S|)_{h_i}}{(m)_{h_i}}
+=\prod_{\ell=0}^{h_i-1}\frac{|S|-\ell}{m-\ell}.
+\]
+Because \(S\subseteq\operatorname{Fin}m\), we have \(|S|\le m\), and by the
+current case \(h_i\le |S|\).  Applying
+\(\noderef{OppositeProjectionFallingFactorialBound}\) with
+\((S,m,h)=(|S|,m,h_i)\) gives
+\[
+\prod_{\ell=0}^{h_i-1}\frac{|S|-\ell}{m-\ell}
+\le (|S|/m)^{h_i}.
+\]
+This proves the same row bound in the second case.
+
+All row ratios are nonnegative, so multiplying the rowwise inequalities gives
+\[
+\frac{|X_{\rm good}|}{|X_{\rm all}|}
+\le \prod_i (|S|/m)^{h_i}
+=(|S|/m)^{\sum_i h_i}.
+\]
+Finally, the sets \(T_i=T\cap R_i\) are pairwise disjoint and their union is
+\(T\), since every vertex \(v\in T\) has exactly one row \(\rho(v)\).  Hence
+\(\sum_i h_i=|T|\), and the last display is exactly
+\[
+\frac{|X_{\rm good}|}{|X_{\rm all}|}
+\le (|S|/m)^{|T|}.
+\]
+\end{proof}

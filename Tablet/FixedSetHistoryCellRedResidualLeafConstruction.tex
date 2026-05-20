@@ -1,0 +1,265 @@
+\begin{helper}
+Fix a history cell \(H\), a finite terminal coordinate set \(U\), one blue
+support label \(B\), and one red support label \(J\).  Let \(\mathcal T\) be
+the finite branch-label type, let \(\mathcal P\) be the finite transcript
+family, and write
+\[
+\tau=(P_\tau,A_\tau,Z_\tau).
+\]
+For each branch label \(\beta\), let
+\(\operatorname{blueTrace}(\beta)\subseteq U\) be the complete terminal blue
+truth table, let \(R_{\beta,J}\subseteq U\) be the red support decoded from
+\(J\) after the branch is fixed, and let
+\[
+O_\beta\subseteq U
+\]
+be the branch-indexed set of terminal coordinates that are still
+staged-open candidates after the fixed blue trace has been exposed.  Let
+\(\mathsf{Realized}(\beta,\tau)\) mean that the fixed \(B,J\)
+branch/transcript cell is nonempty.
+
+Assume the complete terminal product law over \(H\): each complete terminal
+assignment \(A\subseteq U\) has conditional mass
+\[
+p^{|A|}(1-p)^{|U|-|A|}.
+\]
+Assume \(0\le p\le1/2\).  Assume \(B\) is a blue \(u_B\)-subset of \(U\).
+For every realized pair \((\beta,\tau)\), assume
+\[
+|R_{\beta,J}|=u_R,\qquad R_{\beta,J}\subseteq U,
+\]
+that \(R_{\beta,J}\) and \(Z_\tau\) are red-only, and that
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad
+Z_\tau\subseteq A_\tau.
+\]
+Assume also that on blue terminal coordinates, \(P_\tau\) and \(A_\tau\)
+record the complete branch trace:
+\[
+e\in\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in P_\tau,
+\qquad
+e\notin\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in A_\tau .
+\]
+Assume branch labels are functional from this complete terminal blue trace:
+if two labels have the same truth table on every blue coordinate of \(U\),
+then the two labels are equal.  Consequently, by
+\(\noderef{FixedSetHistoryCellRedSupportDeterminedByBlueTrace}\), for fixed
+\(J\) the decoded red support \(R_{\beta,J}\) is determined by the same
+blue-trace data.
+
+Assume the fixed-support exhaustion facts for the selected absence scan.  For
+every realized \((\beta,\tau)\),
+\[
+O_\beta\subseteq U,\qquad
+B\cup R_{\beta,J}\subseteq O_\beta,\qquad
+Z_\tau\subseteq O_\beta,
+\]
+and every open candidate forced present by the cell is one of the fixed
+support coordinates:
+\[
+e\in O_\beta,\ e\in P_\tau
+  \quad\Longrightarrow\quad
+e\in B\cup R_{\beta,J}.
+\]
+For each selected split \(e\in Z_\tau\), let
+\(\mathsf{Sibling}(A,\beta,\tau,e)\) mean that \(A\subseteq U\) is a
+complete terminal assignment in the corresponding selected present sibling.
+To formalize the mass conservation of the residual tree without explicitly
+constructing its exposure order, we assume a coverage and partition hypothesis.
+For any realized cell \((\beta,\tau)\), let its \emph{enlarged undivided cylinder} be
+the set of complete assignments \(A\subseteq U\) that match the blue trace
+\(\operatorname{blueTrace}(\beta)\) on all blue coordinates outside \(Z_\tau\), contain all forced present coordinates
+\(P_\tau\), and are disjoint from \(A_\tau\setminus Z_\tau\).
+Assume that this enlarged undivided cylinder is exactly partitioned by the union of the
+compatible assignments for \((\beta,\tau)\) and the selected present siblings
+for all \(e\in Z_\tau\).
+Furthermore, assume that for any two distinct realized cells \((\beta,\tau)\)
+and \((\beta',\tau')\), their enlarged undivided cylinders are disjoint.
+Because the present sibling assignments are pruned, we also assume that
+if \(\mathsf{Sibling}(A,\beta,\tau,e)\), then \(A\) is not compatible with
+any realized cell \((\beta',\tau')\).
+
+Finally assume that compatibility with a complete terminal assignment is
+exactly the cylinder condition for \(P_\tau,A_\tau\) together with this blue
+truth table, and that the branch choice and prefix scan are functional from
+the assignment: if \(A\subseteq U\) is compatible with a realized cell, then
+the chosen branch is \(\beta\) and the scan output is \(\tau\).
+
+Then, for this fixed pair \(B,J\), there is a single finite residual leaf
+type \(\Lambda\), a nonnegative leaf mass \(\nu:\Lambda\to\mathbb R\), and
+an assignment
+\[
+\iota(\beta,\tau)\in\Lambda
+\]
+for every formal branch/transcript pair such that
+\[
+\sum_{\lambda\in\Lambda}\nu(\lambda)\le1,
+\]
+the assignment is injective on realized cells, and for every realized
+\((\beta,\tau)\),
+\[
+p^{|P_\tau|}(1-p)^{|A_\tau|}
+\le
+p^{u_R}p^{u_B}
+(1-p)^{|Z_\tau|}\,\nu(\iota(\beta,\tau)).
+\]
+All absent blue-coordinate factors from the complete branch trace remain
+inside the residual leaf mass \(\nu\); they are not divided out
+branch-by-branch.
+\end{helper}
+\begin{proof}
+Put
+\[
+q=1-p.
+\]
+From \(0\le p\le1/2\) we have \(1/2\le q\le1\).  The construction is made
+once for the fixed support labels \(B,J\).  The residual tree is therefore a
+single tree for the whole fixed-\((B,J)\) summation, not a separate tree for
+each realized cell.
+
+First note what the coverage and partition hypothesis implies about the
+probability mass.  For a realized cell \((\beta,\tau)\), its enlarged
+undivided cylinder \(C'_{\beta,\tau}\) requires the presence of \(P_\tau\)
+and the absence of \(A_\tau\setminus Z_\tau\), but places no constraint on
+the selected residual coordinates \(Z_\tau\).  It still fixes the complete
+blue trace of \(\beta\): since \(Z_\tau\) is red-only, releasing \(Z_\tau\)
+does not release any blue absent coordinate.  The probability mass of this
+cylinder under the complete terminal product law is
+\[
+P(C'_{\beta,\tau})
+ = p^{|P_\tau|}(1-p)^{|A_\tau|-|Z_\tau|}
+ = p^{|P_\tau|}q^{|A_\tau|-|Z_\tau|}.
+\]
+The partition hypothesis states that \(C'_{\beta,\tau}\) is exactly the
+disjoint union of the compatible assignments for \((\beta,\tau)\) and the
+pruned present siblings \(\mathsf{Sibling}(A,\beta,\tau,e)\) for
+\(e\in Z_\tau\).  Furthermore, the enlarged undivided cylinders
+\(C'_{\beta,\tau}\) are mutually disjoint across all realized \(\beta\) and
+\(\tau\).  For a fixed \(\beta\), the deterministic prefix scan gives
+different released cylinders for different transcript outputs.  Across
+different branches, the released cylinders are disjoint because they require
+different complete blue traces, and releasing \(Z_\tau\) has not released any
+blue coordinate.
+
+Let \(E=\bigcup_{\beta,\tau}C'_{\beta,\tau}\) be the disjoint union of these
+enlarged undivided cylinders.  Every assignment in \(C'_{\beta,\tau}\) has
+its complete blue trace matching \(\beta\), forces the blue support \(B\)
+present, and forces the decoded red support \(R_{\beta,J}\) present.
+Therefore
+\[
+E \subseteq \bigcup_{\beta} \Bigl( \{\text{blue trace is } \beta\} \cap \{B \text{ is present}\} \cap \{R_{\beta,J} \text{ is present}\} \Bigr).
+\]
+Because the decoded red support \(R_{\beta,J}\) depends only on the blue
+trace, once the branch trace is fixed the event that \(R_{\beta,J}\) is
+present involves only red terminal coordinates and has probability
+\(p^{u_R}\).  It is independent of the blue trace and of the event that the
+blue support \(B\) is present.  Since the branch blue traces are mutually
+exclusive, the total probability is bounded by
+\[
+P(E)
+\le \sum_{\beta}
+  P(\text{blue trace is } \beta \text{ and } B \text{ is present})\,p^{u_R}
+= P(B \text{ is present})\,p^{u_R}
+= p^{u_B}p^{u_R}.
+\]
+
+A residual leaf is defined algebraically as one realized terminal block of
+this process, together with a distinguished dummy leaf used for non-realized
+formal pairs.  The block records the branch label, the transcript output, the
+decoded red support, the selected residual absence set, and the remaining
+forced present and forced absent terminal values after only the factors from
+\(B\), \(R_{\beta,J}\), and \(Z_\tau\) have been removed.  In particular, the
+absent blue coordinates in the complete trace are still part of the residual
+block.  Because \(\mathcal T\) and \(\mathcal P\) are finite, the set of
+realized residual blocks, with the dummy leaf adjoined, is finite.  Let
+\(\Lambda\) be this finite leaf set.
+
+Define \(\nu(\lambda)\) for a realized block
+\(\lambda=\iota(\beta,\tau)\) by
+\[
+\nu(\iota(\beta,\tau)) = \begin{cases} 0 & \text{if } p=0 \text{ and } u_R+u_B>0, \\
+p^{|P_\tau|-u_R-u_B} q^{|A_\tau|-|Z_\tau|} & \text{otherwise}. \end{cases}
+\]
+Since \(Z_\tau\subseteq A_\tau\), the exponent
+\(|A_\tau|-|Z_\tau|\) is nonnegative.  For the dummy leaf, set the mass to
+\(0\).  Nonnegativity is immediate from \(0\le p\) and \(0\le q\).
+Except in the trivial \(p=0\) zero-weight case,
+\[
+\nu(\iota(\beta,\tau))
+= p^{-u_R-u_B} P(C'_{\beta,\tau}).
+\]
+The complete-blue absent factors are included in \(P(C'_{\beta,\tau})\) and
+therefore in \(\nu\); no factor \(q^{-|A_{\beta,\text{blue}}|}\) is ever
+introduced.  Summing over the disjoint released cylinders gives
+\[
+\sum_{\beta,\tau}\nu(\iota(\beta,\tau))
+= p^{-u_R-u_B}P(E)
+\le 1.
+\]
+
+We next define \(\iota\).  If \((\beta,\tau)\) is realized, let
+\(\iota(\beta,\tau)\) be the residual block determined by that cell.  This
+is well-defined even when the cell contains many compatible complete
+assignments: the forward compatibility clause says that every compatible
+assignment contains \(P_\tau\), avoids \(A_\tau\), and has the blue truth
+table \(\operatorname{blueTrace}(\beta)\); the converse clause says that
+these cylinder conditions are exactly the compatible assignments for the
+realized cell.  Hence the residual block depends only on the data
+\((\beta,\tau)\), not on a chosen assignment inside the cylinder.  If
+\((\beta,\tau)\) is not realized, set \(\iota(\beta,\tau)\) to the dummy
+leaf.
+
+The map \(\iota\) is injective on realized cells.  Suppose
+\[
+\iota(\beta,\tau)=\iota(\beta',\tau')
+\]
+with both cells realized.  Equality of residual blocks gives the same
+remaining forced terminal values and also records the removed data
+\(B\), \(R_{\beta,J}\), \(Z_\tau\) and
+\(R_{\beta',J}\), \(Z_{\tau'}\).  Reinsert the fixed present support values
+and the selected absent values into the common residual block.  This
+produces a complete terminal assignment compatible with both realized cells.
+By the functional branch/scan hypothesis, equivalently by
+\(\noderef{FixedSetHistoryCellRedFunctionalScanDisjointness}\), the same
+complete assignment has one branch label and one scan output.  Therefore
+\[
+\beta=\beta'\qquad\text{and}\qquad \tau=\tau'.
+\]
+
+It remains to check the displayed domination.  Fix a realized cell
+\((\beta,\tau)\).  The cell geometry gives
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad
+Z_\tau\subseteq A_\tau,\qquad P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+|B|=u_B,\qquad |R_{\beta,J}|=u_R.
+\]
+The blue support \(B\) and red support \(R_{\beta,J}\) are disjoint by their
+colors.  The selected set \(Z_\tau\) is disjoint from \(B\cup R_{\beta,J}\)
+because \(Z_\tau\subseteq A_\tau\), the supports are contained in
+\(P_\tau\), and \(P_\tau\cap A_\tau=\emptyset\).  Hence the full cylinder
+factor splits into the removed factors and the residual block factor:
+\[
+p^{|P_\tau|}q^{|A_\tau|}
+=
+p^{u_R}p^{u_B}q^{|Z_\tau|}\,
+  \nu(\iota(\beta,\tau)).
+\]
+The absent blue factors in \(A_\tau\) are contained in
+\(\nu(\iota(\beta,\tau))\), as required by the normalization argument above.
+The equality is interpreted with the zero convention already discussed when
+\(p=0\) and support factors are present.
+Substituting \(q=1-p\) gives the claimed inequality.  The complete terminal product law from
+\(\noderef{FixedSetHistoryCellTerminalProductPartition}\) identifies these
+path products with the terminal Bernoulli cylinder masses; the support
+geometry comes from
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\); and the
+functional disjointness used for injectivity is
+\(\noderef{FixedSetHistoryCellRedFunctionalScanDisjointness}\).  Thus the
+common fixed-\((B,J)\) residual leaf system is well-defined, normalized,
+injective on realized cells, and satisfies the termwise domination.
+\end{proof}

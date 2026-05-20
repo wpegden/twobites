@@ -1,0 +1,36 @@
+\begin{helper}
+Let \(C\) be a history cell and let \(T\) be an event.  For each sample, let
+\(u_R(\omega)\) and \(u_B(\omega)\) be the numbers of present red and blue
+staged-open terminal coordinates of the \(k\)-set \(I\).  Assume
+\(|I|=k\), \(0\le p\le1\), and that for every ordered count pair
+\((u_R,u_B)\),
+\[
+\Pr(T\cap\{u_R(\omega)=u_R,\ u_B(\omega)=u_B\}\mid C)\le M
+\]
+with \(M\ge0\).  Then
+\[
+\Pr(T\mid C)\le \max(1,k^4)M.
+\]
+\end{helper}
+\begin{proof}
+The count events
+\[
+\{u_R(\omega)=r,\ u_B(\omega)=b\}
+\]
+are pairwise disjoint as \((r,b)\) varies, and their union contains every
+sample in \(T\).  Conditional probability is computed from nonnegative sample
+weights, so finite subadditivity gives an upper bound by the sum of the
+conditional probabilities over all possible count pairs.
+
+It remains to count the possible pairs.  Each present red staged-open
+terminal coordinate is one projected unordered pair from the \(k\)-element set
+\(I\), and similarly for blue.  Therefore each of \(u_R(\omega)\) and
+\(u_B(\omega)\) has at most \(\binom{k}{2}+1\) possible values.  If \(k=0\),
+there is only the count pair \((0,0)\), and the factor \(\max(1,k^4)\) is
+\(1\).  If \(k>0\), then \(\binom{k}{2}+1\le k^2\): it is immediate for
+\(k=1\), and for \(k\ge2\) follows from
+\(\binom{k}{2}+1\le \binom{k}{2}+k\le k^2\).  Hence there are at most
+\(k^4\) ordered count pairs when \(k>0\), and at most \(\max(1,k^4)\) in all
+cases.  Summing the uniform bound \(M\) over these possible pairs proves the
+claim.
+\end{proof}

@@ -1,0 +1,75 @@
+\begin{lemma}
+Fix \(n\), \(\varepsilon\), and a finite base-vertex family split as
+\(B_R\cup B_B\).  Put
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and
+\[
+A=\frac{K\,n^{1/4-\varepsilon}}{6(\log n)^2}.
+\]
+Assume \(n>0\), \(\log n>0\), \(0<\varepsilon<1\), and
+\[
+|B_R|+|B_B|
+\le \frac32 K n^{1/4-3\varepsilon}.
+\]
+Assume also the rounded-scale lower bound
+\[
+(1+\varepsilon)\sqrt{n\log n}\le K,
+\]
+the one-step mean estimate
+\[
+pK\le (1+\varepsilon)\log n,
+\]
+and the two analytic absorptions
+\[
+36e(1+\varepsilon)(\log n)^3\le n^{2\varepsilon},
+\qquad
+24(\log n)^2\le (1+\varepsilon)\sqrt{\log n}\,n^\varepsilon.
+\]
+Then \(A>0\), \(p\ge0\),
+\[
+p(|B_R|+|B_B|)K\le \frac{A}{4e},
+\]
+and
+\[
+n^{3/4-2\varepsilon}\le \frac A4.
+\]
+\end{lemma}
+\begin{proof}
+The positivity of \(A\) follows from \(K\ge(1+\varepsilon)\sqrt{n\log n}>0\),
+\(n^{1/4-\varepsilon}>0\), and \(\log n>0\).  The definition of
+\(\noderef{TwoBiteEdgeProbability}\) gives \(p\ge0\).
+
+For the mean bound, the size hypothesis gives
+\[
+p(|B_R|+|B_B|)K
+\le \frac32\,pK\,K\,n^{1/4-3\varepsilon}.
+\]
+Using \(pK\le(1+\varepsilon)\log n\), it is enough to absorb
+\[
+36e(1+\varepsilon)(\log n)^3
+\]
+into \(n^{2\varepsilon}\).  The stated absorption gives exactly this, and
+\[
+n^{1/4-3\varepsilon}n^{2\varepsilon}=n^{1/4-\varepsilon},
+\]
+so the result is \(p(|B_R|+|B_B|)K\le A/(4e)\).
+
+For the lower threshold, multiply
+\[
+24(\log n)^2\le (1+\varepsilon)\sqrt{\log n}\,n^\varepsilon
+\]
+by \(n^{3/4-2\varepsilon}\).  Since
+\[
+\sqrt n\,n^{1/4-\varepsilon}=n^{3/4-\varepsilon}
+=n^\varepsilon n^{3/4-2\varepsilon},
+\]
+and \(K\ge(1+\varepsilon)\sqrt{n\log n}\), this gives
+\[
+24(\log n)^2 n^{3/4-2\varepsilon}
+\le K n^{1/4-\varepsilon}.
+\]
+Dividing by \(24(\log n)^2\) gives \(n^{3/4-2\varepsilon}\le A/4\).
+\end{proof}

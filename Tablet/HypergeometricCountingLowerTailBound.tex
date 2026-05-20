@@ -1,0 +1,60 @@
+\begin{helper}
+Let \(N,n,m\) be natural numbers with \(n\le N\) and \(m\le N\).  Let
+\(M\subseteq \operatorname{Fin}(N)\) have cardinality \(m\), and let \(Y\)
+count the number of marked elements in a uniformly chosen \(n\)-subset.  Put
+\[
+q=\frac{m}{N},\qquad \mu=nq.
+\]
+Here \(q=0\) when \(N=0\), matching the real-division convention.
+For every \(0<\delta<1\), the proportion of \(n\)-subsets \(S\) with
+\[
+|S\cap M|<(1-\delta)\mu
+\]
+is at most
+\[
+\exp\!\left(-\bigl(\delta+(1-\delta)\log(1-\delta)\bigr)\mu\right).
+\]
+\end{helper}
+\begin{proof}
+Let \(L=\log(1-\delta)\).  Since \(0<\delta<1\), we have
+\(0<1-\delta<1\), hence \(L<0\) and \(e^L=1-\delta\).  Write
+\(a=(1-\delta)\mu\), and let \(E\) be the set of \(n\)-subsets with
+\(|S\cap M|<a\).
+
+For every \(S\in E\), the inequality \(L<0\) reverses the comparison and gives
+\[
+L a < L|S\cap M|.
+\]
+After exponentiating and summing over \(E\),
+\[
+|E|e^{La}
+\le \sum_{S\in E} e^{L|S\cap M|}
+\le \sum_{S\in \binom{\operatorname{Fin}(N)}{n}} e^{L|S\cap M|}.
+\]
+Dividing by \(\binom Nn\) and by \(e^{La}>0\) gives
+\[
+\frac{|E|}{\binom Nn}
+\le
+\left(\binom{N}{n}^{-1}
+\sum_{S\in \binom{\operatorname{Fin}(N)}{n}} e^{L|S\cap M|}\right)
+e^{-La}.
+\]
+By \(\noderef{HypergeometricMgfComparison}\), the parenthesized moment
+generating function is at most
+\[
+\exp\bigl(\mu(e^L-1)\bigr).
+\]
+Therefore
+\[
+\frac{|E|}{\binom Nn}
+\le
+\exp\bigl(\mu(e^L-1)-La\bigr).
+\]
+Substituting \(e^L=1-\delta\), \(L=\log(1-\delta)\), and
+\(a=(1-\delta)\mu\), the exponent becomes
+\[
+-\delta\mu-(1-\delta)\mu\log(1-\delta)
+=-\bigl(\delta+(1-\delta)\log(1-\delta)\bigr)\mu,
+\]
+which is the claimed bound.
+\end{proof}

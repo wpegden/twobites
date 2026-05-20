@@ -1,0 +1,21 @@
+\begin{lemma}
+Fix \(n,m,p\), a blue graph \(G_B\), a map \(\rho:[n]\to[m]\), a finite set \(U_0\subseteq [n]\), and an event \(T\) in the two-bite sample space.  Let \(H\) be the cell in which the sampled blue graph is \(G_B\) and the second coordinate map satisfies \(\omega_v^{(2)}=\rho(v)\) for every \(v\in[n]\).  Let \(B\ge 0\).  Suppose that for every exposure map \(\eta:U_0\to [m]\), the probability mass of \(T\) inside the refined cell
+\[
+  H,\qquad
+  \omega_u^{(1)}=\eta(u)\quad\hbox{for every }u\in U_0
+\]
+is at most \(B\) times the probability mass of that refined cell.  If \(0\le p\le 1\), then the conditional probability of \(T\) given \(H\) is at most \(B\).
+\end{lemma}
+\begin{proof}
+For each map \(\eta:U_0\to [m]\), let \(C_\eta\) be the event \(H\) together with the first-coordinate exposure \(\omega_u^{(1)}=\eta(u)\) for every \(u\in U_0\).  The events \(C_\eta\) refine \(H\): each \(C_\eta\) implies \(H\), every sample in \(H\) belongs to the cell indexed by its actual first-coordinate map on \(U_0\), and two distinct maps \(\eta\ne\eta'\) give disjoint cells because a single first-coordinate exposure function cannot be equal to both maps.
+
+The hypothesis says precisely that, for every branch \(\eta\),
+\[
+  \mathbb P(T\cap H\cap C_\eta)\le B\,\mathbb P(C_\eta).
+\]
+Applying \(\noderef{FixedSetHistoryCellBranchAveraging}\) to the history event \(H\), the fixed-count event again \(H\), the target event \(T\), and the branch family \(C_\eta\), gives
+\[
+  \mathbb P(T\cap H\mid H)\le B.
+\]
+Since intersecting the target with \(H\) is redundant after conditioning on \(H\), this is exactly \(\mathbb P(T\mid H)\le B\).
+\end{proof}

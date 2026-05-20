@@ -1,0 +1,52 @@
+\begin{lemma}
+Fix \(n,m,p\), an event \(E\) in the two-bite sample space, and a
+nonnegative constant \(C\).  Assume all two-bite sample weights are
+nonnegative.  Suppose that for every red base graph \(G_R\) and every red row
+map \(\rho\), the conditional probability of \(E\) given the cell
+\[
+\omega_1=G_R,\qquad v\mapsto \pi_R(v)=\rho(v)
+\]
+is at most \(C\).  Then the unconditional probability of \(E\) is at most
+\(C\).
+\end{lemma}
+\begin{proof}
+The cells indexed by pairs \((G_R,\rho)\) form a finite partition of the
+two-bite sample space: every sample has exactly one red base graph and exactly
+one red-coordinate map.  Let \(C_{G_R,\rho}\) denote such a cell and let
+\(\mu\) be the two-bite weight.  Then
+\[
+\Pr(E)=\sum_{G_R,\rho}\mu(E\cap C_{G_R,\rho}).
+\]
+
+For a fixed cell, there are two cases.  If \(\mu(C_{G_R,\rho})=0\), then
+\(\mu(E\cap C_{G_R,\rho})=0\) as well: the event \(E\cap C_{G_R,\rho}\) is a
+subset of \(C_{G_R,\rho}\), and all summands in the finite weighted sum are
+nonnegative, so a subset of a zero-mass cell also has zero mass.  This is
+exactly the zero-mass convention in
+\(\noderef{TwoBiteConditionalProbability}\): the conditional probability on
+that cell is defined to be \(0\), and the cell contributes nothing to the
+unconditional sum.
+
+If \(\mu(C_{G_R,\rho})\ne0\), then the conditional probability is
+\[
+\frac{\mu(E\cap C_{G_R,\rho})}{\mu(C_{G_R,\rho})}.
+\]
+Nonnegativity of weights gives \(\mu(C_{G_R,\rho})>0\), so multiplying by the
+cell mass preserves the inequality.
+The hypothesis says this ratio is at most \(C\), hence
+\[
+\mu(E\cap C_{G_R,\rho})\le C\,\mu(C_{G_R,\rho}).
+\]
+Summing over all cells gives
+\[
+\Pr(E)\le C\sum_{G_R,\rho}\mu(C_{G_R,\rho}).
+\]
+The cells partition the whole sample space, whose total two-bite mass is at
+most \(1\) by \(\noderef{TwoBiteEventProbabilityTotalMassBound}\).  Since
+\(C\ge0\), multiplying the inequality
+\(\sum_{G_R,\rho}\mu(C_{G_R,\rho})\le1\) by \(C\) gives
+\[
+C\sum_{G_R,\rho}\mu(C_{G_R,\rho})\le C.
+\]
+Thus \(\Pr(E)\le C\), as claimed.
+\end{proof}

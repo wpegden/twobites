@@ -1,0 +1,84 @@
+\begin{helper}
+For the natural reduced-vertex count and \(\beta=1/2\), injections into the
+two-coordinate reduced space exist eventually, and the total
+\(\noderef{TwoBiteEventProbability}\) mass of the whole two-bite sample space
+is then exactly \(1\).
+\[
+\forall^{\mathrm{eventually}} n,\qquad
+n\le m(n)^2
+\quad\text{and}\quad
+\noderef{TwoBiteEventProbability}
+  \bigl(n,m(n),\noderef{TwoBiteEdgeProbability}(\beta,n),\mathrm{True}\bigr)=1.
+\]
+\end{helper}
+\begin{proof}
+Write \(L=\log n\) and
+\[
+M=m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)
+  =\left\lfloor \frac{n}{L^2}\right\rfloor
+\]
+for all \(n\), using the hypothesis on \(m\).  The equality
+\(\beta=1/2\) only identifies the edge parameter; the normalization of the
+whole sample space works for any real value of that parameter.
+
+First prove eventual injection support.  Since \(L\to\infty\) and
+\(L^4=o(n)\), for all sufficiently large \(n\) we have \(L>0\),
+\[
+\frac{n}{L^2}\ge2,\qquad 4L^4\le n .
+\]
+For \(x\ge2\), \(\lfloor x\rfloor\ge x-1\ge x/2\).  Applying this to
+\(x=n/L^2\) gives
+\[
+M\ge \frac{n}{2L^2}.
+\]
+Therefore
+\[
+M^2\ge \frac{n^2}{4L^4}\ge n,
+\]
+where the last inequality is exactly \(4L^4\le n\).  Hence
+\[
+n\le M^2=|\operatorname{Fin}M\times\operatorname{Fin}M|.
+\]
+For finite types, an embedding \(\operatorname{Fin} n\hookrightarrow
+\operatorname{Fin}M\times\operatorname{Fin}M\) exists whenever the target
+cardinality is at least the source cardinality.  Equivalently, the type
+\(\operatorname{Fin} n\hookrightarrow\operatorname{Fin}M\times\operatorname{Fin}M\)
+has positive cardinality.
+
+Now expand the total mass.  Let
+\[
+C_n=\operatorname{Fin} n\hookrightarrow(\operatorname{Fin}M\times
+\operatorname{Fin}M)
+\]
+and set \(p=\noderef{TwoBiteEdgeProbability}(\beta,n)\).  Unfolding
+\(\noderef{TwoBiteEventProbability}\) and
+\(\noderef{TwoBiteSampleWeight}\), the total mass of the event
+\(\mathrm{True}\) is
+\[
+\sum_{G_R,G_B,\pi}
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,M).
+\]
+This finite sum factors as the product of the red graph total mass, the blue
+graph total mass, and the injection-coordinate total mass.  The two graph
+factors are each \(1\) by \(\noderef{GnpGraphWeightSumOne}\).
+
+Because \(C_n\) has positive cardinality, the reciprocal branch in
+\(\noderef{UniformInjectionWeight}\) applies:
+\[
+\noderef{UniformInjectionWeight}(n,M)=|C_n|^{-1}.
+\]
+Thus the injection-coordinate sum is
+\[
+\sum_{\pi\in C_n}|C_n|^{-1}
+  = |C_n|\cdot |C_n|^{-1}=1.
+\]
+Multiplying the three factors gives total mass
+\[
+1\cdot1\cdot1=1.
+\]
+The construction holds for all sufficiently large \(n\), so both the
+injection-support inequality and the exact normalization statement hold
+eventually.
+\end{proof}

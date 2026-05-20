@@ -1,0 +1,96 @@
+\begin{helper}
+\label{helper:OppositeProjectionRowInjectionLawBridge}
+Let \(n,m\in\mathbb N\), \(p\in\mathbb R\), let \(G_R\) be a simple graph on
+\(\operatorname{Fin}m\), let \(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\),
+let \(S\subseteq\operatorname{Fin}m\), and let
+\(T\subseteq\operatorname{Fin}n\).  For a two-bite sample
+\(\omega=(G'_R,G_B,\phi)\), define
+\[
+C=\{\omega:G'_R=G_R\text{ and }(\phi(v))_1=\rho(v)\text{ for every }v\},
+\]
+and
+\[
+E=\{\omega:(\phi(v))_2\in S\text{ for every }v\in T\}.
+\]
+Define
+\[
+X_{\rm all}
+=\{\phi:\operatorname{Fin}n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m:
+(\phi(v))_1=\rho(v)\text{ for every }v\},
+\]
+and
+\[
+X_{\rm good}
+=\{\phi\in X_{\rm all}:(\phi(v))_2\in S\text{ for every }v\in T\}.
+\]
+Then
+\[
+\operatorname{TwoBiteEventProbability}_{n,m,p}(C)
+=\operatorname{GnpGraphWeight}_p(G_R)\,
+  \operatorname{UniformInjectionWeight}(n,m)\,|X_{\rm all}|,
+\]
+and
+\[
+\operatorname{TwoBiteEventProbability}_{n,m,p}(E\cap C)
+=\operatorname{GnpGraphWeight}_p(G_R)\,
+  \operatorname{UniformInjectionWeight}(n,m)\,|X_{\rm good}|.
+\]
+\end{helper}
+\begin{proof}
+A two-bite sample has the form \(\omega=(G'_R,G_B,\phi)\), and by
+\(\noderef{TwoBiteSampleWeight}\) its weight is
+\[
+\operatorname{GnpGraphWeight}_p(G'_R)\,
+\operatorname{GnpGraphWeight}_p(G_B)\,
+\operatorname{UniformInjectionWeight}(n,m).
+\]
+Expand \(\noderef{TwoBiteEventProbability}\) for the conditioning event
+\(C\).  The event \(C\) forces \(G'_R=G_R\) and forces
+\(\phi\in X_{\rm all}\), while it imposes no condition on the independent
+blue graph \(G_B\).  Therefore
+\[
+\operatorname{TwoBiteEventProbability}_{n,m,p}(C)
+=\sum_{G_B}\sum_{\phi\in X_{\rm all}}
+  \operatorname{GnpGraphWeight}_p(G_R)\,
+  \operatorname{GnpGraphWeight}_p(G_B)\,
+  \operatorname{UniformInjectionWeight}(n,m).
+\]
+The factors \(\operatorname{GnpGraphWeight}_p(G_R)\) and
+\(\operatorname{UniformInjectionWeight}(n,m)\) do not depend on \(G_B\) or
+\(\phi\), and the inner sum has one identical term for each element of
+\(X_{\rm all}\).  Hence the last display equals
+\[
+\operatorname{GnpGraphWeight}_p(G_R)\,
+\operatorname{UniformInjectionWeight}(n,m)\,|X_{\rm all}|
+\sum_{G_B}\operatorname{GnpGraphWeight}_p(G_B).
+\]
+By \(\noderef{GnpGraphWeightSumOne}\), the sum over all blue graph weights is
+\(1\).  This proves
+\[
+\operatorname{TwoBiteEventProbability}_{n,m,p}(C)
+=\operatorname{GnpGraphWeight}_p(G_R)\,
+  \operatorname{UniformInjectionWeight}(n,m)\,|X_{\rm all}|.
+\]
+
+The proof for \(E\cap C\) is the same with the injection sum restricted to
+\(X_{\rm good}\).  Indeed, \(E\cap C\) forces \(G'_R=G_R\), forces the first
+coordinate condition \((\phi(v))_1=\rho(v)\) for every \(v\), and also forces
+\((\phi(v))_2\in S\) for every \(v\in T\).  These are exactly the conditions
+defining \(X_{\rm good}\), and again there is no restriction on \(G_B\).  Thus
+\[
+\operatorname{TwoBiteEventProbability}_{n,m,p}(E\cap C)
+=\sum_{G_B}\sum_{\phi\in X_{\rm good}}
+  \operatorname{GnpGraphWeight}_p(G_R)\,
+  \operatorname{GnpGraphWeight}_p(G_B)\,
+  \operatorname{UniformInjectionWeight}(n,m).
+\]
+Factoring the constant red-graph and injection weights gives
+\[
+\operatorname{GnpGraphWeight}_p(G_R)\,
+\operatorname{UniformInjectionWeight}(n,m)\,|X_{\rm good}|
+\sum_{G_B}\operatorname{GnpGraphWeight}_p(G_B),
+\]
+and \(\noderef{GnpGraphWeightSumOne}\) again turns the blue-graph sum into
+\(1\).  This proves the second displayed identity.
+\end{proof}

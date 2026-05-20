@@ -1,0 +1,56 @@
+\begin{helper}
+Assume the parameter hierarchy.  Eventually in \(n\), let
+\[
+  K=K(n) \quad\text{and}\quad
+  S=\left\lceil
+    \frac{K n^{1/4-\epsilon}+L_{\mathrm{large}}(\epsilon,n)}
+         {L_{\mathrm{small}}(\epsilon,n)}
+  \right\rceil .
+\]
+For every ambient size \(m\), every deterministic candidate index consisting
+of a \(K\)-set \(I\subseteq[n]\) and an \(S\)-tuple of base vertices, and every
+embedding cell \(\pi\), let \(\operatorname{coverB}\) be the image of the
+\(S\)-tuple.  Let \(B_R\) and \(B_B\) be the red and blue centers in
+\(\operatorname{coverB}\), and let \(P_R\) and \(P_B\) be the two coordinate
+projections of \(\pi(I)\).  Then
+\[
+  |B_R|+|B_B|
+    \le \frac32 K n^{1/4-3\epsilon},
+  \qquad |P_R|\le K,\qquad |P_B|\le K .
+\]
+\end{helper}
+\begin{proof}
+By \noderef{ParameterHierarchyBaseThreshold}, eventually
+\[
+  K\ge (1+\epsilon)\sqrt{n\log n}.
+\]
+Taking \(n\) still larger if necessary, we also have \(\log n\ge 1\) and
+\(8\le n^{1/4-2\epsilon}\); this is valid since \(\epsilon<1/16\).  These
+inequalities imply
+\[
+  n^{1/4-\epsilon}+1
+    \le \frac12 K n^{1/4-3\epsilon}.
+\]
+Indeed \(n^{1/4-\epsilon}=n^{1/4-3\epsilon}n^{2\epsilon}\), while
+\(8n^{2\epsilon}\le K\); similarly \(8\le K n^{1/4-3\epsilon}\).
+
+\noderef{MediumClosedPairsWitnessSizeCeilPackage} gives
+\[
+  S\le K n^{1/4-3\epsilon}+n^{1/4-\epsilon}+1,
+\]
+so the preceding absorption gives
+\[
+  S\le \frac32 K n^{1/4-3\epsilon}.
+\]
+The cover \(\operatorname{coverB}\) is the image of a function from
+\(\operatorname{Fin}(S)\), hence \(|\operatorname{coverB}|\le S\).
+The red and blue center images are disjoint subsets of
+\(\operatorname{coverB}\), and their cardinalities are exactly
+\(|B_R|\) and \(|B_B|\), so
+\[
+  |B_R|+|B_B|\le |\operatorname{coverB}|\le S.
+\]
+Combining this with the bound on \(S\) proves the required center-size
+estimate.  Finally, \(P_R\) and \(P_B\) are images of the same \(K\)-element
+set \(I\), so each has cardinality at most \(K\).
+\end{proof}

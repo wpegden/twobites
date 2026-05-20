@@ -1,0 +1,33 @@
+\begin{lemma}
+For every real \(\eta>0\) with \(1/2\le \eta\), there is an integer \(k_0\)
+such that, for every integer \(k\ge k_0\), there is an integer \(N\) satisfying
+\[
+\noderef{RamseyWitness}(N,k)
+\qquad\text{and}\qquad
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le (N:\mathbb R).
+\]
+\end{lemma}
+\begin{proof}
+Choose \(k_0=2\).  Fix \(k\ge k_0\), and set \(N=0\).  We prove
+\(\noderef{RamseyWitness}(0,k)\) using the empty graph on \(\mathrm{Fin}(0)\).
+
+There is no copy of a triangle in a graph on \(\mathrm{Fin}(0)\), because such
+a triangle would require three vertices of the empty type.  Thus the empty
+graph is \(3\)-clique-free.  If \(I\) is any finite subset of \(\mathrm{Fin}(0)\),
+then \(I=\varnothing\), so \(|I|=0\).  Since \(k\ge2\), no finite subset of
+\(\mathrm{Fin}(0)\) has cardinality \(k\).  Therefore the independent-set
+exclusion required in \(\noderef{RamseyWitness}(0,k)\) is vacuous.
+
+It remains to check the numerical lower bound.  From \(k\ge2\) we have
+\(\log(k)>0\), so
+\[
+\noderef{RamseyScale}(k)=\frac{k^2}{\log(k)}\ge0.
+\]
+The assumption \(1/2\le\eta\) gives \(1/2-\eta\le0\).  Multiplying the
+nonnegative number \(\noderef{RamseyScale}(k)\) by the nonpositive coefficient
+\(1/2-\eta\) gives
+\[
+\left(\frac12-\eta\right)\noderef{RamseyScale}(k)\le0=(N:\mathbb R).
+\]
+Thus \(N=0\) satisfies both required conclusions for every \(k\ge2\).
+\end{proof}

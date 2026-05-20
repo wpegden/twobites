@@ -1,0 +1,54 @@
+\begin{helper}[Fixed Embedding Graph Event Probability]
+Fix \(n,m\in\mathbb N\), \(p\in\mathbb R\), an embedding
+\(\pi:\mathrm{Fin}(n)\hookrightarrow \mathrm{Fin}(m)\times\mathrm{Fin}(m)\),
+and a predicate \(K\) on ordered pairs of red and blue graphs on
+\(\mathrm{Fin}(m)\).  Then
+\[
+\noderef{TwoBiteEventProbability}(n,m,p)
+  \{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi
+    \text{ and } K(\omega_R,\omega_B)\}
+=
+\noderef{UniformInjectionWeight}(n,m)
+\sum_{(G_R,G_B):K(G_R,G_B)}
+\noderef{GnpGraphWeight}(p,G_R)\noderef{GnpGraphWeight}(p,G_B).
+\]
+\end{helper}
+\begin{proof}
+Unfold \(\noderef{TwoBiteEventProbability}\) and
+\(\noderef{TwoBiteEmbedding}\).  A sample is a triple
+\((G_R,G_B,\rho)\), and its weight is
+\[
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,m).
+\]
+The event in question is the conjunction of \(\rho=\pi\) with the graph-pair
+predicate \(K(G_R,G_B)\).
+
+Rewrite the finite sum over samples as an iterated sum over \(G_R\), \(G_B\),
+and \(\rho\).  For fixed \(G_R\) and \(G_B\), the inner sum over embeddings is
+\[
+\sum_\rho
+\mathbf 1_{\rho=\pi\ \wedge\ K(G_R,G_B)}
+\noderef{GnpGraphWeight}(p,G_R)
+\noderef{GnpGraphWeight}(p,G_B)
+\noderef{UniformInjectionWeight}(n,m).
+\]
+If \(K(G_R,G_B)\) is false this inner sum is \(0\).  If \(K(G_R,G_B)\) is
+true, exactly the single embedding \(\rho=\pi\) contributes, so the inner sum
+is
+\[
+\noderef{GnpGraphWeight}(p,G_R)
+\noderef{GnpGraphWeight}(p,G_B)
+\noderef{UniformInjectionWeight}(n,m).
+\]
+Thus the full sum is
+\[
+\sum_{(G_R,G_B):K(G_R,G_B)}
+\noderef{GnpGraphWeight}(p,G_R)
+\noderef{GnpGraphWeight}(p,G_B)
+\noderef{UniformInjectionWeight}(n,m),
+\]
+and the uniform injection factor is constant in the graph-pair sum, giving the
+claimed identity.
+\end{proof}

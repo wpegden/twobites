@@ -1,0 +1,16 @@
+\begin{helper}
+Let \(U_B\) be a finite blue coordinate set and let \(B\subseteq U_B\) have
+cardinality \(u_B\).  If \(\mathcal S\) is any finite family of subsets
+\(S\subseteq U_B\) with \(B\subseteq S\), then for \(0\le p\le 1\),
+\[
+\sum_{S\in\mathcal S}p^{|S|}(1-p)^{|U_B|-|S|}
+\le p^{u_B}.
+\]
+\end{helper}
+\begin{proof}
+All summands are nonnegative because \(0\le p\le 1\).  Therefore the sum over
+\(\mathcal S\) is at most the sum over all subsets \(S\subseteq U_B\) with
+\(B\subseteq S\).  Applying the finite product-cylinder identity
+\(\noderef{FinsetPowersetCylinderMass}\) with present set \(B\) and empty
+absent set gives this full sum as \(p^{|B|}=p^{u_B}\).
+\end{proof}

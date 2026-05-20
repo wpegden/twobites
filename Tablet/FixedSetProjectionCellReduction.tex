@@ -1,0 +1,160 @@
+\begin{helper}
+Fix \(I\subseteq \mathrm{Fin}(n)\), and write \(k=|I|\).  Assume
+\(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\),
+\(n_0<n\),
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and
+\[
+|I|=k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Let \(\eta,\delta\in\mathbb R\).  Suppose that, for every pair
+\(\ell_R,\ell_B\) with \(\ell_R\ell_B\ge k\), the projection-size cell
+\[
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)
+\]
+has probability at most
+\[
+\exp\!\left(
+\left(\eta-\frac{2-(\ell_R:\mathbb R)/(k:\mathbb R)
+-(\ell_B:\mathbb R)/(k:\mathbb R)}{2}\right)
+(k:\mathbb R)\log(n:\mathbb R)\right),
+\]
+where the displayed quotients and products are interpreted after casting the
+natural numbers to real numbers.  Also suppose that the corresponding double
+sum
+\[
+\sum_{\ell_R=0}^{k}\sum_{\ell_B=0}^{k}
+\begin{cases}
+0,&\ell_R\ell_B<k,\\
+\exp\!\left(
+\left(\eta-\frac{2-(\ell_R:\mathbb R)/(k:\mathbb R)
+-(\ell_B:\mathbb R)/(k:\mathbb R)}{2}\right)(k:\mathbb R)\log(n:\mathbb R)
+\right)
+\min\!\left(1,
+\exp\!\left(-p\bigl(
+\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)
+-\varepsilon^3 k^2\bigr)\right)\right),
+&\ell_R\ell_B\ge k
+\end{cases}
+\]
+is at most \(\delta(\binom nk)^{-1}\).  Then
+\[
+\noderef{TwoBiteEventProbability}\!\left(n,m,p,\,
+\{\omega:
+I\text{ is independent in }\noderef{TwoBiteFinalGraph}(\omega)
+\text{ and }
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,\omega)
+\}\right)
+\le \delta(\binom nk)^{-1}.
+\]
+\end{helper}
+\begin{proof}
+Let
+\[
+\mathcal B(\omega)\Longleftrightarrow
+I\text{ is independent in }\noderef{TwoBiteFinalGraph}(\omega)
+\]
+and let
+\[
+\mathcal R(\omega)\Longleftrightarrow
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,\omega).
+\]
+For \(0\le \ell_R,\ell_B\le k\), put
+\[
+\mathcal S_{\ell_R,\ell_B}(\omega)\Longleftrightarrow
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega).
+\]
+Unfolding \(\noderef{TwoBiteProjectionSizeEvent}\), the cell
+\(\mathcal S_{\ell_R,\ell_B}\) asserts three equalities:
+\[
+|I|=k,\qquad |I.\mathrm{image}(\pi_R^\omega)|=\ell_R,\qquad
+|I.\mathrm{image}(\pi_B^\omega)|=\ell_B.
+\]
+The first equality holds globally by hypothesis.  For every sample
+\(\omega\), the two projection-image cardinalities are uniquely determined,
+and each is at most \(|I|=k\).  Hence exactly one pair
+\((\ell_R,\ell_B)\in\{0,\ldots,k\}^2\) satisfies
+\(\mathcal S_{\ell_R,\ell_B}(\omega)\).  Thus these cells are a finite
+disjoint partition of the full sample space.
+
+Since \(\noderef{TwoBiteEventProbability}\) is, by definition, the finite sum
+of the sample weights over the satisfying samples, finite additivity over this
+disjoint partition gives
+\[
+\Pr(\mathcal B\cap\mathcal R)
+=
+\sum_{\ell_R=0}^{k}\sum_{\ell_B=0}^{k}
+\Pr(\mathcal B\cap\mathcal R\cap\mathcal S_{\ell_R,\ell_B}). \tag{1}
+\]
+
+Fix a cell.  If \(\ell_R\ell_B<k\), then the cell is empty.  Indeed, under
+\(\mathcal S_{\ell_R,\ell_B}\) the embedded image of \(I\) lies in the
+rectangle
+\[
+I.\mathrm{image}(\pi_R^\omega)\times I.\mathrm{image}(\pi_B^\omega),
+\]
+whose cardinality is \(\ell_R\ell_B\).  The embedding is injective on \(I\),
+so this rectangle must contain the \(k\) distinct embedded points of \(I\),
+which is impossible when \(\ell_R\ell_B<k\).  Therefore the corresponding
+summand in (1) is \(0\), matching the zero branch of the displayed sum.
+
+Now suppose \(\ell_R\ell_B\ge k\).  If
+\(\Pr(\mathcal S_{\ell_R,\ell_B})=0\), then
+\(\Pr(\mathcal B\cap\mathcal R\cap\mathcal S_{\ell_R,\ell_B})=0\), because
+the numerator event is a subset of the cell; this is again bounded by the
+nonnegative displayed cell contribution.  Otherwise, by unfolding
+\(\noderef{TwoBiteConditionalProbability}\),
+\[
+\Pr(\mathcal B\cap\mathcal R\cap\mathcal S_{\ell_R,\ell_B})
+=
+\Pr(\mathcal S_{\ell_R,\ell_B})\,
+\Pr(\mathcal B\cap\mathcal R\mid \mathcal S_{\ell_R,\ell_B}). \tag{2}
+\]
+The conditional probability factor is at most \(1\).  Also, unfolding
+\(\noderef{ParameterHierarchy}\) gives
+\[
+0\le\varepsilon_1,\qquad \varepsilon_1\le1,\qquad
+\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0).
+\]
+Thus \(\noderef{FixedSetConditionalIndependenceBound}\), applied to the fixed
+set \(I\), this cell \((\ell_R,\ell_B)\), and the present parameter
+hypotheses, gives
+\[
+\Pr(\mathcal B\cap\mathcal R\mid \mathcal S_{\ell_R,\ell_B})
+\le
+\exp\!\left(-p\bigl(
+\noderef{ProjectionOpenPairFunction}(\ell_R,\ell_B,k,p,n)
+-\varepsilon^3k^2\bigr)\right).
+\]
+Combining this with the trivial \(1\)-bound gives the minimum appearing in the
+cell summand.
+
+The assumed projection-size cell probability bound gives
+\[
+\Pr(\mathcal S_{\ell_R,\ell_B})
+\le
+\exp\!\left(
+\left(\eta-\frac{2-(\ell_R:\mathbb R)/(k:\mathbb R)
+-(\ell_B:\mathbb R)/(k:\mathbb R)}{2}\right)(k:\mathbb R)\log(n:\mathbb R)
+\right).
+\]
+Multiplying this inequality by the conditional bound from the previous
+paragraph and using (2), each nonempty cell contributes at most the nonzero
+branch of the displayed double sum.  Together with the empty-cell case,
+substitution into (1) gives
+\[
+\Pr(\mathcal B\cap\mathcal R)
+\le
+\sum_{\ell_R=0}^{k}\sum_{\ell_B=0}^{k}(\text{displayed cell summand}).
+\]
+The final assumed double-sum bound is exactly
+\[
+\sum_{\ell_R=0}^{k}\sum_{\ell_B=0}^{k}(\text{displayed cell summand})
+\le \delta(\binom nk)^{-1}.
+\]
+Transitivity of the two inequalities proves the claimed probability bound.
+\end{proof}

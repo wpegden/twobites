@@ -1,0 +1,51 @@
+\begin{definition}[Fixed-Set Product Model Variable]
+Fix \(n,M\in\mathbb N\), \(I\subseteq \mathrm{Fin}(n)\),
+\(\varepsilon,p_0\in\mathbb R\), an embedding
+\[
+\pi:\mathrm{Fin}(n)\hookrightarrow \mathrm{Fin}(M)\times\mathrm{Fin}(M),
+\]
+and a product assignment
+\[
+v:\mathrm{Fin}(2M)\to
+  \mathcal P(\mathrm{Fin}(M))\times\mathcal P(\mathrm{Fin}(M)).
+\]
+For \(P\subseteq\mathrm{Fin}(M)\) and a map
+\(w:\mathrm{Fin}(M)\to\mathcal P(\mathrm{Fin}(M))\), use the graph
+\(\noderef{FixedSetFakeGraph}(P,w)\).
+
+Let
+\[
+P_R=\{\pi(u)_1:u\in I\},\qquad P_B=\{\pi(u)_2:u\in I\}.
+\]
+Construct a two-bite sample \(\omega(v)\) whose red graph is
+\[
+\noderef{FixedSetFakeGraph}\bigl(P_R,\; i\mapsto (v_i)_1\bigr),
+\]
+whose blue graph is
+\[
+\noderef{FixedSetFakeGraph}\bigl(P_B,\; i\mapsto (v_{M+i})_2\bigr),
+\]
+and whose embedding is \(\pi\).  Inside this sample form
+\[
+P_I=(P_R\text{ in the red copy})\cup(P_B\text{ in the blue copy}),
+\]
+\[
+S_I^{\mathrm{ext}}
+=\{x:\noderef{TwoBiteSmallClass}(\omega(v),\varepsilon,I,x)\}\setminus P_I,
+\]
+\[
+E_{\mathrm{ext}}(v)=
+\bigcup_{x\in S_I^{\mathrm{ext}}}
+  \noderef{TwoBiteFinalPairs}(\noderef{TwoBiteX}(\omega(v),I,x)).
+\]
+The product variable
+\(\noderef{FixedSetProductModelVar}(I,\varepsilon,p_0,\pi,v)\) is the number
+of pairs \(e=(u,w)\in E_{\mathrm{ext}}(v)\) satisfying
+\[
+\noderef{TwoBiteRedProjection}(\omega(v),u)
+  \ne\noderef{TwoBiteRedProjection}(\omega(v),w),
+\qquad
+\noderef{TwoBiteBlueProjection}(\omega(v),u)
+  \ne\noderef{TwoBiteBlueProjection}(\omega(v),w).
+\]
+\end{definition}

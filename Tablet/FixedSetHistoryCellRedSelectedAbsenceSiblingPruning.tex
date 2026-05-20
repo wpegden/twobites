@@ -1,0 +1,94 @@
+\begin{helper}
+Fix a terminal coordinate set \(U\), a blue support label \(B\), and a red
+label \(J\).  Let \(\mathcal T\) be the finite branch-label type, let
+\(\mathcal P\) be the finite transcript family, and write
+\(\tau=(P_\tau,A_\tau,Z_\tau)\).  For each branch \(\beta\), let
+\(\operatorname{blueTrace}(\beta)\) be its complete terminal blue truth
+table, let \(R_{\beta,J}\) be the red support decoded from \(J\), and let
+\(O_\beta\) be the terminal open-candidate set after the complete blue trace
+has been exposed.
+
+Assume branch labels are functional from the complete terminal blue truth
+table.  Assume that every complete terminal assignment compatible with a
+realized cell has blue truth table \(\operatorname{blueTrace}(\beta)\), and
+that the branch choice and prefix transcript are functions of that complete
+assignment.  For every realized cell assume
+\[
+R_{\beta,J}\subseteq U,\qquad
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad
+P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+Z_\tau\subseteq A_\tau,\qquad Z_\tau\subseteq O_\beta .
+\]
+Let
+\[
+\mathsf{Sibling}(A,\beta,\tau,e)
+\]
+mean that \(A\subseteq U\) is a complete terminal assignment in the present
+sibling at the selected-absence split \(e\in Z_\tau\): it agrees with the
+fixed prefix and the complete blue trace of \(\beta\), but has \(e\) present.
+Assume precisely that this sibling predicate implies
+\[
+e\in A
+\]
+and that \(A\)'s blue truth table is \(\operatorname{blueTrace}(\beta)\).
+Assume the fixed-support exhaustion statement: whenever \(A\) is compatible
+with a realized fixed-\((B,J)\) cell and an open candidate in that branch is
+present in \(A\), that candidate lies in the labelled support
+\[
+B\cup R_{\beta,J}.
+\]
+
+Then the whole present sibling is pruned.  Namely, if \((\beta,\tau)\) is a
+realized cell, \(e\in Z_\tau\), and
+\(\mathsf{Sibling}(A,\beta,\tau,e)\), then \(A\) is compatible with no
+realized fixed-\((B,J)\) branch/transcript cell:
+\[
+\neg\,\mathsf{Comp}(A,\beta',\tau')
+\]
+for every realized \((\beta',\tau')\).
+\end{helper}
+\begin{proof}
+Fix \(A,\beta,\tau,e\) with \((\beta,\tau)\) realized,
+\(e\in Z_\tau\), and
+\(\mathsf{Sibling}(A,\beta,\tau,e)\).  Suppose for contradiction that
+\(A\) is also compatible with a realized cell \((\beta',\tau')\).
+
+The sibling condition says that \(A\) has the same complete terminal blue
+truth table as \(\beta\).  Compatibility with \((\beta',\tau')\) says that
+the same assignment \(A\) has blue truth table
+\(\operatorname{blueTrace}(\beta')\).  Since branch labels are functional
+from this complete blue truth table, \(\beta=\beta'\).  This is exactly the
+blue-trace uniqueness supplied by
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\), and it is the
+same functionality used by
+\(\noderef{FixedSetHistoryCellRedSupportDeterminedByBlueTrace}\) to keep the
+fixed-\(J\) red support from becoming a second independent branch choice.
+
+Now view the alleged compatible cell as a cell with the same branch
+\(\beta\).  Because \(e\in Z_\tau\) and
+\(Z_\tau\subseteq O_\beta\), the coordinate \(e\) is an open candidate for
+this branch.  The sibling condition says \(e\) is present in \(A\).  The
+fixed-support exhaustion hypothesis applied to the compatible realized cell
+therefore gives
+\[
+e\in B\cup R_{\beta,J}.
+\]
+But the original realized cell has
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad
+Z_\tau\subseteq A_\tau,\qquad
+P_\tau\cap A_\tau=\emptyset .
+\]
+Since \(e\in Z_\tau\), the last two inclusions place \(e\) in
+\(A_\tau\).  The support conclusion places \(e\) in \(P_\tau\).  This
+contradicts \(P_\tau\cap A_\tau=\emptyset\).
+
+The contradiction was obtained for an arbitrary realized
+\((\beta',\tau')\).  Hence every complete assignment in the present sibling
+at the selected split is incompatible with every realized fixed-\((B,J)\)
+cell.  This is a cylinder-level pruning statement: it excludes the entire
+present sibling determined by the fixed prefix, not merely the assignment
+obtained by flipping one previously chosen compatible terminal assignment.
+\end{proof}

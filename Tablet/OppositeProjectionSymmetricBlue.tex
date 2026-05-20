@@ -1,0 +1,154 @@
+\begin{lemma}
+Under the hypotheses of the opposite-projection collision bound, the probability that the size bound holds but the blue estimate fails is $o(1)$. Hence the conditional blue estimate holds with high probability.
+\end{lemma}
+\begin{proof}
+Write \(M=\noderef{TwoBiteNaturalReducedVertexCount}(n)\),
+\(p=\noderef{TwoBiteEdgeProbability}(1/2,n)\), and \(L=\log n\).  Fix a
+blue ordered pair \(b\ne c\).  Let \(E_{b,c}\) be the event that the size
+bound holds and this ordered pair violates the claimed blue projected
+intersection estimate.
+
+We average over blue conditioning cells using
+\(\noderef{OppositeProjectionBlueConditioning}\).  For all sufficiently large
+\(n\), \(0\le p\le1\): indeed \(L\ge0\) eventually, so \(p\ge0\), and
+\(\sqrt{L/n}\to0\), so \(p\le1\) eventually.  Therefore
+\(\noderef{TwoBiteSampleWeightNonnegative}\) gives nonnegative sample
+weights.  It is enough to prove, uniformly for every blue base graph \(G_B\)
+and every blue row map \(\rho:\operatorname{Fin}n\to\operatorname{Fin}M\),
+that
+\[
+\operatorname{TwoBiteConditionalProbability}
+  (E_{b,c}\mid \omega.2.1=G_B,\ \pi_B=\rho)
+\le \exp(-cL^3)
+\]
+for a constant \(c>0\).  The helper then multiplies these conditional bounds
+by the masses of the finite blue cells, sums over the cells, handles
+zero-mass cells by the conditional-probability zero convention, and uses the
+total mass bound to obtain
+\[
+\operatorname{TwoBiteEventProbability}(E_{b,c})\le \exp(-cL^3).
+\]
+
+Fix such a blue cell with nonzero mass.  In this cell the blue base graph and
+blue row map are fixed, so the lifted blue neighborhoods of \(b\) and \(c\)
+are fixed subsets of original vertices.  Put
+\[
+U=N_b,\qquad V=N_c,\qquad U_0=U\setminus V,\qquad V_0=V\setminus U.
+\]
+Zero-mass cells need not be considered further, since they contribute
+nothing to the average in \(\noderef{OppositeProjectionBlueConditioning}\).
+
+On the size event,
+\[
+|U_0|\le |U|\le 2pn,\qquad |V_0|\le |V|\le 2pn.
+\]
+The fixed-exposure tail estimate needed for the remaining red coordinates is
+packaged in \(\noderef{OppositeProjectionBlueExposureTailBound}\).  That
+helper expands the eta-conditioned finite sample weights, handles zero-mass
+conditioning cells, and proves directly by rowwise injection counting that if
+\(T\subseteq V_0\) is fixed and \(S\) is a fixed set of red coordinates, then
+the conditional probability that every vertex of \(T\) lands in \(S\) is at
+most \((|S|/M)^{|T|}\).
+
+Now expose all red coordinates of \(U_0\).  Let \(\eta\) denote a possible
+full exposure of these coordinates, and write
+\[
+S(\eta)=\pi_R(U_0),\qquad |S(\eta)|\le |U_0|.
+\]
+The rows used by \(U_0\) and \(V_0\) are disjoint: \(U_0\) lies over blue
+rows adjacent to \(b\) but not \(c\), while \(V_0\) lies over blue
+rows adjacent to \(c\) but not \(b\).  The sets are also disjoint by definition of
+the set differences.  Thus the hypotheses of
+\(\noderef{OppositeProjectionBlueExposureTailBound}\) hold for every exposure
+cell \(\eta\).
+
+For a fixed exposure \(\eta\), define
+\[
+W_\eta=|\{v\in V_0:\pi_R(v)\in S(\eta)\}|.
+\]
+The exposure-tail helper first handles the zero-mass exposure cells using the
+zero convention in \(\noderef{TwoBiteConditionalProbability}\).  In every
+nonzero cell it expands the finite sample weights, cancels the row factors
+fixed by the \(U_0\)-exposure, and performs the color-swapped rowwise
+injection count on the rows meeting \(V_0\).  Consequently, for every \(t\),
+\[
+\Pr(W_\eta\ge t\mid G_B,\rho,\eta)
+\le \binom{|V_0|}{t}\left(\frac{|S(\eta)|}{M}\right)^t
+\le \binom{|V_0|}{t}\left(\frac{|U_0|}{M}\right)^t .
+\]
+Average this inequality over all possible exposures \(\eta\).  The exposure
+events form a finite partition of the already conditioned cell; each has
+nonnegative mass, and zero-mass exposure events contribute \(0\).  Since the
+right hand side is uniform in \(\eta\), the same bound holds before exposure:
+\[
+\Pr(W\ge t\mid G_B,\rho)
+\le \binom{|V_0|}{t}\left(\frac{|U_0|}{M}\right)^t
+\le \left(\frac{e|U_0||V_0|}{Mt}\right)^t.
+\]
+The last inequality is the standard estimate
+\(\binom bt\le(eb/t)^t\), and the event is empty when \(t>|V_0|\).
+
+The intersection-containment node
+\(\noderef{OppositeProjectionIntersectionContainment}\) gives
+\[
+|\pi_R(U)\cap\pi_R(V)|
+\le |U\cap V|+W.
+\]
+Indeed, the only projected intersection points not already coming from
+\(U\cap V\) are witnessed by a vertex of \(V_0\) whose red coordinate lies in
+\(\pi_R(U_0)\), and these witnesses are counted by \(W\).
+
+Now estimate the parameter in the tail bound.  Since
+\[
+p=\noderef{TwoBiteEdgeProbability}(1/2,n)
+=\frac12\sqrt{\frac{L}{n}},
+\]
+and \(L\ge0\) for all sufficiently large \(n\), we have
+\[
+p^2n=\frac14\frac{L}{n}\,n=\frac{L}{4}.
+\]
+Also
+\[
+M=\left\lfloor\frac{n}{L^2}\right\rfloor .
+\]
+Because \(n/L^2\to\infty\), for all sufficiently large \(n\) we have
+\(n/L^2\ge2\), and then
+\[
+M=\left\lfloor\frac{n}{L^2}\right\rfloor
+\ge \frac12\frac{n}{L^2}.
+\]
+Indeed, for \(x\ge2\), \(\lfloor x\rfloor\ge x-1\ge x/2\).  Combining this
+with the size bounds gives, for all sufficiently large \(n\),
+\[
+\frac{|U_0||V_0|}{M}
+\le \frac{(2pn)^2}{M}
+=\frac{4p^2n^2}{M}
+\le \frac{Ln}{M}
+\le 2L^3.
+\]
+Take \(t=\lceil100L^3\rceil\).  Then \(t\ge100L^3\), so
+\[
+\frac{e|U_0||V_0|}{Mt}
+\le \frac{2eL^3}{100L^3}
+=\frac e{50}.
+\]
+Since \(e/50<1\), the tail estimate gives
+\[
+\left(\frac{e|U_0||V_0|}{Mt}\right)^t
+\le \left(\frac e{50}\right)^t
+\le \left(\frac e{50}\right)^{100L^3}
+=\exp(-cL^3),
+\]
+where \(c=100\log(50/e)>0\).  If \(t>|V_0|\), the tail event is empty, so the
+same upper bound holds trivially.  Thus a fixed blue pair fails with
+probability at most \(\exp(-cL^3)\), uniformly over the conditioning data.
+
+There are at most \(M^2\le n^2=\exp(2L)\) ordered blue pairs for all large
+\(n\).  The union bound gives
+\[
+M^2\exp(-cL^3)\to0
+\]
+by \(\noderef{OppositeProjectionAsymptoticBound}\).  Therefore, with high
+probability, no blue pair violates the desired projected intersection estimate
+while the size bound holds.
+\end{proof}

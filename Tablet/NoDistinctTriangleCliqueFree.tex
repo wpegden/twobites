@@ -1,0 +1,37 @@
+\begin{helper}
+Let \(G\) be a simple graph on a type \(\alpha\).  If there are no vertices
+\(u,v,w\in\alpha\) such that
+\[
+u\ne v,\qquad u\ne w,\qquad v\ne w
+\]
+and
+\[
+G.\mathrm{Adj}(u,v),\qquad
+G.\mathrm{Adj}(u,w),\qquad
+G.\mathrm{Adj}(v,w),
+\]
+then \(G.\mathrm{CliqueFree}(3)\).
+\end{helper}
+\begin{proof}
+By the Mathlib definition of \(G.\mathrm{CliqueFree}(3)\), it is enough to
+show that there is no copy of the complete graph on \(\mathrm{Fin}(3)\) inside
+\(G\).  Suppose, for contradiction, that such a copy \(f\) exists.
+
+Let
+\[
+u=f(0),\qquad v=f(1),\qquad w=f(2),
+\]
+where \(0,1,2\) are the three distinct elements of \(\mathrm{Fin}(3)\).  Since
+a graph copy is injective on vertices, \(u\ne v\), \(u\ne w\), and \(v\ne w\).
+Since the source graph is complete, the three source pairs \((0,1)\),
+\((0,2)\), and \((1,2)\) are adjacent.  A graph copy maps adjacent source
+vertices to adjacent target vertices, so
+\[
+G.\mathrm{Adj}(u,v),\qquad
+G.\mathrm{Adj}(u,w),\qquad
+G.\mathrm{Adj}(v,w).
+\]
+These vertices form exactly the forbidden distinct adjacent triple, contrary
+to the hypothesis.  Therefore no such copy of the complete graph on
+\(\mathrm{Fin}(3)\) exists, and hence \(G.\mathrm{CliqueFree}(3)\).
+\end{proof}

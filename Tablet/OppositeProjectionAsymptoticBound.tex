@@ -1,0 +1,22 @@
+\begin{lemma}
+Let \(M(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\), and let
+\(L=\log n\).  For any constant \(c>0\),
+\[
+M(n)^2\exp(-cL^3)\to0
+\]
+as \(n\to\infty\).
+\end{lemma}
+\begin{proof}
+For all sufficiently large \(n\), the reduced vertex count satisfies
+\(M(n)\le n\).  Since \(n=\exp(L)\), we have
+\[
+M(n)^2\exp(-cL^3)\le n^2\exp(-cL^3)=\exp(2L-cL^3).
+\]
+Because \(c>0\), the cubic term dominates the linear term:
+\[
+2L-cL^3\to-\infty .
+\]
+The exponential tends to \(0\) along exponents tending to \(-\infty\), so
+\(\exp(2L-cL^3)\to0\).  The squeeze estimate above proves the claimed
+convergence.
+\end{proof}

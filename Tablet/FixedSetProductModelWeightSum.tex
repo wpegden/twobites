@@ -1,0 +1,41 @@
+\begin{helper}[Product Weights Sum to One]
+Fix $m_{sub} \in \mathbb{N}$, a probability $p_{sub} \in \mathbb{R}$ with $0 \le p_{sub} \le 1$, and subsets $P_R, P_B \subseteq \mathrm{Fin}(m_{sub})$.
+Let $q = \noderef{FixedSetProductModelMassFn}(p_{sub}, P_R, P_B)$.
+Then the product weights over $\mathrm{Fin}(2m_{sub})$ sum to $1$:
+\[
+\sum_{v \in (\mathcal{P}(\mathrm{Fin}(m_{sub})) \times \mathcal{P}(\mathrm{Fin}(m_{sub})))^{\mathrm{Fin}(2m_{sub})}} \prod_{i=0}^{2m_{sub}-1} q(v_i) = 1.
+\]
+\end{helper}
+\begin{proof}
+Because \(0\le p_{sub}\le1\), \(\noderef{FixedSetProductModelMass}\)
+applies to \(P_R\) and \(P_B\).  In particular
+\[
+\sum_{a\in
+\mathcal P(\mathrm{Fin}(m_{sub}))\times
+\mathcal P(\mathrm{Fin}(m_{sub}))} q(a)=1.
+\]
+Let \(J=\mathrm{Fin}(2m_{sub})\).  For a finite set of coordinates
+\(T\subseteq J\), put
+\[
+S(T)=\sum_{v:T\to
+\mathcal P(\mathrm{Fin}(m_{sub}))\times
+\mathcal P(\mathrm{Fin}(m_{sub}))}
+  \prod_{i\in T}q(v_i).
+\]
+We prove by induction on \(T\) that
+\[
+S(T)=\prod_{i\in T}\sum_a q(a).
+\]
+For \(T=\emptyset\), both sides are the empty product \(1\).  If
+\(T=T'\cup\{j\}\) with \(j\notin T'\), then a function on \(T\) is uniquely a
+function on \(T'\) together with the value \(a=v_j\).  Finite Fubini therefore
+gives
+\[
+S(T)
+=\sum_{v:T'}\sum_a q(a)\prod_{i\in T'}q(v_i)
+=\left(\sum_a q(a)\right)S(T').
+\]
+The induction hypothesis gives the claimed product formula.  Taking
+\(T=J\) and substituting \(\sum_a q(a)=1\), every coordinate factor is \(1\),
+so the total product weight sum is \(1\).
+\end{proof}

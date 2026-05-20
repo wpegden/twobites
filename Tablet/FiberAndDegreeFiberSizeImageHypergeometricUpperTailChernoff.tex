@@ -1,0 +1,23 @@
+\begin{helper}[Injection image upper Chernoff bound for one fiber]
+Let \(K\subseteq [m]\times [m]\) have cardinality \(m\), and suppose
+\(n\le m^2\) and \(m>0\).  For every \(\delta>0\), the number of injections
+\(\phi:[n]\hookrightarrow [m]\times[m]\) whose image meets \(K\) in more than
+\((1+\delta)n/m\) points is at most
+\[
+  \exp\!\left(-\bigl((1+\delta)\log(1+\delta)-\delta\bigr)\frac{n}{m}\right)
+  \cdot \#\{\phi:[n]\hookrightarrow [m]\times[m]\}.
+\]
+\end{helper}
+\begin{proof}
+Encode \([m]\times[m]\) as a set of size \(m^2\).  Under this encoding the
+marked set \(K\) remains a set of cardinality \(m\), and the image of an
+injection is an \(n\)-subset of the \(m^2\)-element population.  The fiber-count
+condition is exactly the upper-tail condition for the intersection of that
+\(n\)-subset with the marked set.  The image-counting equivalence
+\(\noderef{FinProductTailCountEquiv}\) converts the number of injections with
+this image property into the corresponding number of \(n\)-subsets, with the
+uniform multiplicity supplied by \(\noderef{UniformInjectionImage}\).  Applying
+\(\noderef{HypergeometricCountingUpperChernoffBound}\) with
+\(N=m^2\), marked-set size \(m\), and mean \(n/m\) gives the displayed
+exponential bound after multiplying by the total number of injections.
+\end{proof}

@@ -1,0 +1,51 @@
+\begin{helper}
+Let \(n,m\) be natural numbers, let \(U_0,V_0,T\subseteq \operatorname{Fin} n\),
+let \(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), and let
+\(\eta:U_0\to\operatorname{Fin}m\).  Put
+\[
+S=\operatorname{im}(\eta),\qquad R_i=\{v:\rho(v)=i\}.
+\]
+Let \(X_{\mathrm{all},\eta}\) be the set of injections
+\(\phi:\operatorname{Fin}n\hookrightarrow\operatorname{Fin}m\times
+\operatorname{Fin}m\) whose first coordinate is \(\rho\) and whose second
+coordinate on \(U_0\) is \(\eta\).  Let \(X_{\mathrm{good},\eta}(T)\) be
+the subset of \(X_{\mathrm{all},\eta}\) for which every \(v\in T\) has
+second coordinate in \(S\).  For each row \(i\), let \(d_i\) be the number
+of injective maps \(f:R_i\to\operatorname{Fin}m\) satisfying
+\(f(u)=\eta(u)\) for every \(u\in U_0\cap R_i\), and let \(g_i\) be the
+number of such row maps which also send every \(v\in T\cap R_i\) into
+\(S\).  Then
+\[
+|X_{\mathrm{all},\eta}|=\prod_i d_i,\qquad
+|X_{\mathrm{good},\eta}(T)|=\prod_i g_i.
+\]
+\end{helper}
+\begin{proof}
+Given \(\phi\in X_{\mathrm{all},\eta}\), define for each row \(i\) the
+second-coordinate row map \(f_i:R_i\to\operatorname{Fin}m\) by
+\(f_i(v)=(\phi(v))_2\).  This map is injective: if \(v,w\in R_i\) and
+\(f_i(v)=f_i(w)\), then the first coordinates of \(\phi(v)\) and
+\(\phi(w)\) are both \(i\), while the second coordinates are equal, so
+\(\phi(v)=\phi(w)\), and injectivity of \(\phi\) gives \(v=w\).  The eta
+condition on \(\phi\) says exactly that \(f_i(u)=\eta(u)\) for every
+\(u\in U_0\cap R_i\).  Thus each global injection gives one admissible row
+map in every row.
+
+Conversely, from a tuple of admissible row maps \((f_i)_i\), define
+\(\phi(v)=(\rho(v),f_{\rho(v)}(v))\).  If \(\phi(v)=\phi(w)\), equality of
+the first coordinates puts \(v\) and \(w\) in the same row, and equality of
+the second coordinates plus rowwise injectivity gives \(v=w\).  The first
+coordinate is \(\rho\) by construction, and the row eta conditions give the
+required second coordinate on \(U_0\).  These two constructions are inverse
+to each other, so \(X_{\mathrm{all},\eta}\) is in bijection with the
+cartesian product of the row sets counted by the \(d_i\).  Counting this
+finite product gives \(|X_{\mathrm{all},\eta}|=\prod_i d_i\).
+
+The same bijection restricts to the good subset.  For \(v\in R_i\), the
+condition \((\phi(v))_2\in S\) is exactly \(f_i(v)\in S\).  Therefore the
+global condition that every \(v\in T\) is sent into \(S\) is equivalent to
+the family of row conditions that every \(v\in T\cap R_i\) is sent into
+\(S\).  The restricted cartesian product is therefore counted by the
+\(g_i\), giving
+\(|X_{\mathrm{good},\eta}(T)|=\prod_i g_i\).
+\end{proof}

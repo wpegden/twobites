@@ -1,0 +1,64 @@
+\begin{helper}
+Fix \(I\), a finite set \(R\) of terminal coordinates, and samples
+\(\omega,\omega'\).  If \(R\) is exactly
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\), if
+\(\omega\) and \(\omega'\) have the same injection, and if they have the same
+\(\noderef{TwoBiteEdgeCoordinateValue}\)-truth value on every coordinate of
+\(R\), then
+\(\noderef{TwoBiteStageRevealedVertex}(\omega,\varepsilon,I,x)\) holds if and
+only if \(\noderef{TwoBiteStageRevealedVertex}(\omega',\varepsilon,I,x)\)
+holds for every base vertex \(x\), and
+\(\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,e)\) holds if
+and only if
+\(\noderef{TwoBiteProjectionPairTouched}(\omega',\varepsilon,I,e)\) holds for
+every terminal coordinate \(e\).
+\end{helper}
+\begin{proof}
+First apply \noderef{FixedSetPreTerminalReplayUniqueness} to the stated
+hypotheses.  This confirms that the same set \(R\) is the pre-terminal
+recorded set for \(\omega'\) as well as for \(\omega\).  The staged-revealed
+conclusion, however, follows from the replay comparison before the terminal
+recorded set is unfolded, so we spell out that comparison.
+
+Projection containment agrees for \(\omega\) and \(\omega'\), because it is
+computed only from the injection and the projected image of \(I\), and the
+injections are equal.  The base fibers are also determined by the injection,
+so \(F_1\) agrees for every base vertex.  To compare \(F_2\), fix vertices
+\(x,y\).  If \(x\) and \(y\) have opposite colors, then
+\(\noderef{TwoBiteBaseAdj}\) is false in both samples.  In the same-color
+case, first separate the possibility that the two projected endpoints are
+equal.  Then the red-red or blue-blue adjacency asked for by
+\(\noderef{TwoBiteBaseAdj}\) is a loop adjacency in a simple graph, so it is
+false in \(\omega\) and false in \(\omega'\).  Hence the adjacency predicates
+agree in this endpoint-equal case, and there is no increasing terminal
+coordinate to record.
+
+Now assume the same-color projected endpoints are distinct.  Choose the
+increasing ordered coordinate \(q\) between the two endpoints.  Whenever
+\(y\) is in \(F_1\) and \(x\) is projection-contained,
+\(\noderef{FixedSetPreTerminalF2QueriesRecorded}\) shows that the tagged
+coordinate \(q\) lies in
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\), hence in
+\(R\).  The truth-table agreement on \(R\) gives the same graph-edge value in
+\(\omega\) and \(\omega'\).  Therefore, for each fixed \(x\), the set of
+\(y\)'s counted in \(\noderef{TwoBiteStageF2}\) is the same for the two
+samples.  Thus \(\noderef{TwoBiteStageF2}\) agrees for every \(x\).
+
+The definition of \(\noderef{TwoBiteStageRevealedVertex}\) is the disjunction
+of three predicates: not projection-contained, \(F_1\), and \(F_2\).  All
+three predicates have just been shown to agree between \(\omega\) and
+\(\omega'\), so
+\[
+\noderef{TwoBiteStageRevealedVertex}(\omega,\varepsilon,I,x)
+\Longleftrightarrow
+\noderef{TwoBiteStageRevealedVertex}(\omega',\varepsilon,I,x)
+\]
+for every base vertex \(x\).
+
+Finally unfold \(\noderef{TwoBiteProjectionPairTouched}\).  For a red tagged
+coordinate \(q\), touched means that the red copy of \(q_1\) or the red copy
+of \(q_2\) is staged-revealed.  For a blue tagged coordinate it is the
+analogous statement with blue endpoints.  Since staged-revealed truth values
+agree for every base vertex, each of these endpoint disjunctions agrees.
+Therefore touched projection pairs agree for every terminal coordinate.
+\end{proof}

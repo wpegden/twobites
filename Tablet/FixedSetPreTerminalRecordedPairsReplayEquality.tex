@@ -1,0 +1,50 @@
+\begin{helper}
+For the canonical pre-terminal replay transcript family over \(I\), the
+recorded coordinate set attached to each representative is exactly
+\(\noderef{TwoBitePreTerminalRecordedPairs}\) for that representative.  More
+precisely, there is a finite transcript family with cells \(C_i\), recorded
+sets \(R_i\), and representatives \(\omega_i\), satisfying the covering,
+disjointness, representative-membership, cylinder, and event-containment
+properties of \(\noderef{FixedSetPreTerminalReplayTranscriptConstruction}\),
+and also
+\[
+e\in \noderef{TwoBitePreTerminalRecordedPairs}(\omega_i,\varepsilon,I)
+\quad\Longleftrightarrow\quad
+e\in R_i
+\]
+for every transcript index \(i\) and every terminal coordinate \(e\).
+\end{helper}
+\begin{proof}
+Construct the transcript family by the deterministic pre-terminal replay of
+\(\noderef{FixedSetPreTerminalReplayTranscriptConstruction}\).  Its first
+five conclusions are exactly the construction conclusions from that node:
+the cells cover the projection-size event, are pairwise disjoint, contain
+their representatives, are described by common injection and common truth
+table on \(R_i\), and remain inside the projection-size event.
+
+It remains to identify the recorded set of a representative.  Fix a
+representative \(\omega_i\).  The replay inserts a terminal coordinate into
+\(R_i\) exactly when one of the pre-terminal queries reads that coordinate.
+During the \(F_2\)-pass, the same-color query from a projection-contained
+endpoint to an \(F_1\)-endpoint is a pre-terminal recorded coordinate by
+\(\noderef{FixedSetPreTerminalF2QueriesRecorded}\).  After the staged-revealed
+set is known, every incident query from a staged-revealed endpoint to a
+projection-contained endpoint is precisely the incident branch in
+\(\noderef{TwoBitePreTerminalRecordedPairs}\).  Finally, each later query of
+a pair inside \(X_x(I)\) for a staged-revealed base vertex \(x\) is precisely
+the \(X_x(I)\)-pair branch in
+\(\noderef{TwoBitePreTerminalRecordedPairs}\), with the red projection in the
+red-tagged case and the blue projection in the blue-tagged case.
+
+Conversely, every coordinate satisfying one of the two branches of
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega_i,\varepsilon,I)\) is
+queried by this deterministic replay.  If it satisfies the incident branch,
+the endpoint that is staged-revealed has already entered the replay's staged
+set, so the ordered incident-coordinate scan reads that terminal coordinate.
+If it satisfies the \(X_x(I)\)-pair branch, then the replay's final
+\(X_x(I)\)-pair scan for the staged-revealed vertex \(x\) reads it.  The
+outer terminal-coordinate condition is exactly the replay's restriction to
+valid red- and blue-tagged terminal coordinates.  Hence \(R_i\) and
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega_i,\varepsilon,I)\) have
+the same elements.
+\end{proof}

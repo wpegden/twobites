@@ -1,0 +1,49 @@
+\begin{helper}
+For every \(n\) and every finite set \(X\subseteq \mathrm{Fin}(n)\),
+\[
+\left|\noderef{TwoBiteFinalPairs}(X)\right|
+\le \frac{|X|^2}{2}.
+\]
+Here \(\noderef{TwoBiteFinalPairs}(X)\) is the rank-oriented set of final
+vertex pairs from \(X\).
+\end{helper}
+\begin{proof}
+Let
+\[
+A=\noderef{TwoBiteFinalPairs}(X)
+\]
+and let
+\[
+\tau(A)=\{(v,u):(u,v)\in A\}
+\]
+be the swapped copy of \(A\).  By the definition of
+\(\noderef{TwoBiteFinalPairs}\), an element \((u,v)\in A\) has
+\(u,v\in X\) and \(u.val<v.val\).
+
+The sets \(A\) and \(\tau(A)\) are disjoint.  If
+\((x,y)\in A\cap\tau(A)\), then \((x,y)=(v,u)\) for some \((u,v)\in A\).
+Membership of \((x,y)\) in \(A\) gives \(x.val<y.val\).  Membership of
+\((u,v)\) in \(A\) gives \(u.val<v.val\), which after
+\((x,y)=(v,u)\) says \(y.val<x.val\).  This is impossible.
+
+Both \(A\) and \(\tau(A)\) lie in \(X\times X\): this is direct for \(A\),
+and for \(\tau(A)\) it follows by swapping the two endpoints of a pair whose
+endpoints already lie in \(X\).  Hence
+\[
+A\cup\tau(A)\subseteq X\times X.
+\]
+The swap map is injective, so \(|\tau(A)|=|A|\).  Since \(A\) and
+\(\tau(A)\) are disjoint,
+\[
+|A\cup\tau(A)|=|A|+|\tau(A)|=2|A|.
+\]
+Taking cardinalities in the subset \(A\cup\tau(A)\subseteq X\times X\) gives
+\[
+2|A|\le |X\times X|=|X|^2.
+\]
+Dividing by \(2\) over \(\mathbb R\) yields
+\[
+|A|\le\frac{|X|^2}{2},
+\]
+which is the claimed estimate for \(\noderef{TwoBiteFinalPairs}(X)\).
+\end{proof}

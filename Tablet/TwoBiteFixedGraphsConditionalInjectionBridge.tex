@@ -1,0 +1,8 @@
+\begin{helper}[TwoBiteFixedGraphsConditionalInjectionBridge]
+\label{helper:TwoBiteFixedGraphsConditionalInjectionBridge}
+For fixed base graphs \(G_R\) and \(G_B\) on \(\operatorname{Fin}(m)\), and any predicate \(P\) on injections, the \(\noderef{TwoBiteEventProbability}\) of the condition \(G_R'=G_R \land G_B'=G_B\) and the joint condition \(P(\phi) \land G_R'=G_R \land G_B'=G_B\) can be factored exactly as the product of the red graph weight, the blue graph weight, the uniform injection weight, and the number of valid injections.
+\end{helper}
+
+\begin{proof}
+This follows directly from expanding the sum in the definition of \(\noderef{TwoBiteEventProbability}\) and factoring out the independent graph weights because they are fixed by the condition. The injection part then reduces to counting the injections satisfying \(P\) or all injections, scaled by the uniform weight.
+\end{proof}

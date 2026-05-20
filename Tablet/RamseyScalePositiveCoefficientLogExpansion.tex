@@ -1,0 +1,28 @@
+\begin{helper}
+For every fixed real number \(c>0\), eventually in \(k\),
+\[
+\frac{\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)}{\log k}
+=2+\frac{\log c}{\log k}-\frac{\log\log k}{\log k}.
+\]
+\end{helper}
+\begin{proof}
+Fix \(c>0\).  For all sufficiently large \(k\), we have \(k>1\), so
+\(k>0\) and \(\log k>0\).  Hence \(k\ne0\), \(\log k\ne0\), and
+\[
+\noderef{RamseyScale}(k)=\frac{k^2}{\log k}
+\]
+is nonzero.  The logarithm laws for nonzero real arguments give
+\[
+\begin{aligned}
+\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)
+&=\log c+\log\left(\frac{k^2}{\log k}\right)\\
+&=\log c+\log(k^2)-\log(\log k)\\
+&=\log c+2\log k-\log\log k.
+\end{aligned}
+\]
+Dividing by \(\log k\ne0\) and simplifying yields
+\[
+\frac{\log\bigl(c\,\noderef{RamseyScale}(k)\bigr)}{\log k}
+=2+\frac{\log c}{\log k}-\frac{\log\log k}{\log k}.
+\]
+\end{proof}

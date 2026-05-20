@@ -1,0 +1,50 @@
+\begin{helper}
+Let \(U_0,V_0,T\subseteq\operatorname{Fin}n\), let
+\(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), and let
+\(\eta:U_0\to\operatorname{Fin}m\).  Put \(S=\eta(U_0)\).  Let
+\(X_{\mathrm{all},\eta}\) be the finite set of injections
+\(\phi:\operatorname{Fin}n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m\) such that
+\((\phi(v))_1=\rho(v)\) for every \(v\) and
+\((\phi(u))_2=\eta(u)\) for every \(u\in U_0\).  Let
+\(X_{\mathrm{good},\eta}(T)\subseteq X_{\mathrm{all},\eta}\) be the subset
+where \((\phi(v))_2\in S\) for every \(v\in T\).  Assume \(T\subseteq V_0\),
+assume
+\[
+u\in U_0,\ v\in V_0\quad\Longrightarrow\quad \rho(u)\ne\rho(v),
+\]
+and assume \(X_{\mathrm{all},\eta}\) is nonempty.  For each row
+\(i\in\operatorname{Fin}m\), put
+\[
+R_i=\{v:\rho(v)=i\}.
+\]
+Then
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+\le
+\prod_i
+\left(\frac{|S|}{m}\right)^{|T\cap R_i|}.
+\]
+\end{helper}
+\begin{proof}
+Factor the eta-conditioned denominator and numerator over red rows.  In row
+\(i\), the denominator row count \(d_i\) counts injective blue-coordinate
+assignments on \(R_i\) agreeing with \(\eta\) on \(U_0\cap R_i\), and the
+numerator row count \(g_i\) additionally requires the vertices of
+\(T\cap R_i\) to land in \(S\).  The nonemptiness of
+\(X_{\mathrm{all},\eta}\) implies \(\prod_i d_i\ne0\), hence every
+\(d_i\ne0\).
+
+If \(T\cap R_i=\varnothing\), then \(g_i=d_i\), so the row ratio is \(1\).
+If \(T\cap R_i\ne\varnothing\), choose \(v\in T\cap R_i\).  Since
+\(T\subseteq V_0\), this vertex lies in \(V_0\).  The row-disjointness
+hypothesis then implies \(U_0\cap R_i=\varnothing\), so the \(\eta\)-condition
+is absent in this row.  The row ratio is therefore the ordinary row-injection
+ratio bounded by \(\noderef{OppositeProjectionRowInjectionCounting}\), namely
+\[
+\frac{g_i}{d_i}\le
+\left(\frac{|S|}{m}\right)^{|T\cap R_i|}.
+\]
+Multiplying these row inequalities over \(i\) gives the stated product
+bound.
+\end{proof}

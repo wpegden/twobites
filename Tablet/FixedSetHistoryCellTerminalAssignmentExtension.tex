@@ -1,0 +1,49 @@
+\begin{helper}
+Let \(R\) and \(U\) be finite sets of tagged red and blue edge coordinates.
+Assume that every coordinate in \(R\) and every coordinate in \(U\) belongs
+to \(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\), so each is a tagged
+increasing non-loop base-edge coordinate, and assume \(U\cap R=\emptyset\).
+Then every terminal truth table \(A\subseteq U\) extends any base sample
+\(\omega_0\) to a genuine two-bite sample \(\omega_A\) with the same
+embedding as \(\omega_0\), the same recorded coordinate values as
+\(\omega_0\) on \(R\), and terminal coordinate values
+\[
+\noderef{TwoBiteEdgeCoordinateValue}(\omega_A,e)
+  \quad\Longleftrightarrow\quad e\in A
+\]
+for every \(e\in U\).
+\end{helper}
+\begin{proof}
+Unpack \(\noderef{TwoBiteSample}\): a sample is a red simple graph, a blue
+simple graph, and an embedding.  Keep the embedding of \(\omega_0\) fixed.
+It remains to define new red and blue simple graphs.
+
+For each color separately, start with the corresponding graph of
+\(\omega_0\).  For an unordered non-loop base edge whose tagged increasing
+coordinate lies in \(U\), set its adjacency value to be the truth value
+prescribed by \(A\).  For every other unordered base edge, keep the adjacency
+value from \(\omega_0\).  This defines a symmetric loopless adjacency
+relation: loops are always false, and for distinct endpoints the construction
+first replaces the ordered pair by its unique increasing representative
+before reading whether the tagged coordinate lies in \(U\) and \(A\).  Hence
+the value assigned to \((x,y)\) is the same as the value assigned to
+\((y,x)\).
+
+The hypothesis \(U\subseteq\noderef{TwoBiteTerminalCoordinateUniverse}(m)\)
+is exactly the orientation and loop hygiene needed in the previous paragraph:
+no terminal coordinate asks us to set a loop, and no unordered base edge
+appears twice with opposite orientations.  The same canonical-coordinate
+hypothesis for \(R\), together with \(U\cap R=\emptyset\), says that no
+recorded coordinate has the same tagged canonical representative as a
+terminal coordinate being changed.  Therefore every recorded coordinate keeps
+the value it had in \(\omega_0\).
+
+For a terminal coordinate \(e\in U\), the new graph was defined precisely by
+the membership test \(e\in A\), so
+\(\noderef{TwoBiteEdgeCoordinateValue}(\omega_A,e)\) holds exactly when
+\(e\in A\).  For a recorded coordinate \(c\in R\), the previous paragraph
+shows that the graph adjacency read by
+\(\noderef{TwoBiteEdgeCoordinateValue}\) is unchanged from \(\omega_0\).
+Together with the unchanged embedding, these are the three required
+properties of the extension sample.
+\end{proof}

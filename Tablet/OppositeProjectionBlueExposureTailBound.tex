@@ -1,0 +1,154 @@
+\begin{lemma}
+Let \(U_0,V_0\subseteq\operatorname{Fin}n\) be fixed disjoint sets of
+original vertices.  Fix a blue base graph \(G_B\), a blue row map
+\(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), and an exposure
+\(\eta:U_0\to\operatorname{Fin}m\).  Assume the blue rows used by \(U_0\) and
+\(V_0\) are disjoint:
+\[
+u\in U_0,\ v\in V_0 \quad\Longrightarrow\quad \rho(u)\ne\rho(v).
+\]
+Put \(S(\eta)=\eta(U_0)\).  Conditional on \(G_B\), on the full blue row map
+\(\rho\), and on the red-coordinate exposure \(\eta\) on \(U_0\), the
+probability that at least \(t\) vertices of \(V_0\) have red coordinate in
+\(S(\eta)\) is at most
+\[
+\binom{|V_0|}{t}\left(\frac{|S(\eta)|}{m}\right)^t .
+\]
+\end{lemma}
+\begin{proof}
+Let
+\[
+C_0=\{\omega:\omega.2.1=G_B\text{ and }(\pi_B^\omega(v))=\rho(v)
+\text{ for every }v\},
+\]
+where \(\pi_B^\omega(v)\) denotes the second coordinate of the injection in
+the sample \(\omega\).  Let
+\[
+H_\eta=\{\omega:(\pi_R^\omega(u))=\eta(u)\text{ for every }u\in U_0\},
+\qquad C_\eta=C_0\cap H_\eta .
+\]
+If \(\operatorname{TwoBiteEventProbability}(C_\eta)=0\), then the conditional
+probability in \(\noderef{TwoBiteConditionalProbability}\) is defined to be
+\(0\), and the desired inequality is immediate.
+
+Assume now that \(C_\eta\) has nonzero mass.  Expand the conditional
+probability over the finite two-bite sample space.  In the conditioning cell
+\(C_0\), the blue graph and the blue row map are fixed.  By
+\(\noderef{TwoBiteSampleWeight}\), all remaining sample weights factor into a
+common factor depending on \(G_B\), a red-graph weight, and the uniform
+injection weight.  The sum over red graphs is independent of the injection
+coordinates, and \(\noderef{GnpGraphWeightSumOne}\) makes this red-graph
+sum equal to \(1\).  Thus, after the common blue-graph and
+uniform-injection factors are canceled, only the finite count of compatible
+injections remains.  Those injection counts split over the blue rows.
+
+Now pass from sample weights to injection counts.  Let \(D_\eta\) be the set
+of injections \(\phi:\operatorname{Fin}n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m\) satisfying
+\[
+(\phi(v))_2=\rho(v)\quad\text{for every }v,
+\qquad
+(\phi(u))_1=\eta(u)\quad\text{for every }u\in U_0.
+\]
+For a fixed set \(T\subseteq V_0\), let \(D_\eta(T)\subseteq D_\eta\) be the
+subset satisfying \((\phi(v))_1\in S(\eta)\) for every \(v\in T\).  Since the
+conditioning mass is nonzero, the weighted denominator for \(C_\eta\) is
+nonzero; after the common blue-graph, red-graph-sum, and uniform-injection
+factors are canceled, this implies \(|D_\eta|>0\).  Therefore conditional
+probabilities for events depending only on the injection are ratios
+\[
+\Pr(D_\eta(T)\mid C_\eta)=\frac{|D_\eta(T)|}{|D_\eta|}.
+\]
+
+Decompose these two finite sets by blue rows.  For each row
+\(i\in\operatorname{Fin}m\), put
+\[
+R_i=\{v:\rho(v)=i\},\qquad A_i=U_0\cap R_i,\qquad
+B_i=T\cap R_i.
+\]
+The denominator row factor \(d_i\) is the number of injective red-coordinate
+assignments on \(R_i\) that agree with \(\eta\) on \(A_i\).  The numerator
+row factor \(d_i(T)\) imposes in addition that the vertices of \(B_i\) land
+in \(S(\eta)\).  The global counts factor as
+\[
+|D_\eta|=\prod_i d_i,\qquad |D_\eta(T)|=\prod_i d_i(T),
+\]
+because choices in different blue rows are independent and pairs with
+different second coordinate are automatically distinct.
+
+If \(B_i=\varnothing\), then the extra \(T\)-condition imposes nothing in row
+\(i\), so \(d_i(T)=d_i\).  If \(B_i\ne\varnothing\), then row-disjointness
+implies \(A_i=\varnothing\): a row containing a vertex of \(T\subseteq V_0\)
+cannot contain a vertex of \(U_0\).  Thus the exposure \(\eta\) imposes no
+condition in this row.  We now count this row directly.
+
+Write
+\[
+q_i=|R_i|,\qquad h_i=|B_i|,\qquad s=|S(\eta)|.
+\]
+The denominator row count is the number of injective red-coordinate
+assignments on the \(q_i\) vertices of \(R_i\), namely the falling factorial
+\((m)_{q_i}=m(m-1)\cdots(m-q_i+1)\).  Since the present conditioning cell has
+nonzero denominator, each row factor \(d_i\) is nonzero; hence in the present
+row \(q_i\le m\).  If \(h_i>s\), then the numerator row count is \(0\), since
+the \(h_i\) distinct vertices in \(B_i\) would have to receive distinct
+red coordinates inside the \(s\)-element set \(S(\eta)\).  In that case the
+desired row bound is immediate.
+
+It remains to consider \(h_i\le s\).  First choose injectively the
+red coordinates of the \(h_i\) constrained vertices from \(S(\eta)\), and
+then choose injectively the remaining \(q_i-h_i\) red coordinates from the
+unused coordinates.  This gives
+\[
+d_i(T)=(s)_{h_i}(m-h_i)_{q_i-h_i},
+\qquad
+d_i=(m)_{q_i}=(m)_{h_i}(m-h_i)_{q_i-h_i}.
+\]
+The common factor \((m-h_i)_{q_i-h_i}\) cancels, so
+\[
+\frac{d_i(T)}{d_i}
+=\frac{(s)_{h_i}}{(m)_{h_i}}
+=\prod_{\ell=0}^{h_i-1}\frac{s-\ell}{m-\ell}.
+\]
+For \(0\le\ell<h_i\le s\le m\), we have
+\[
+\frac{s-\ell}{m-\ell}\le \frac{s}{m},
+\]
+because after multiplying by the positive denominators this is equivalent
+to \(m(s-\ell)\le s(m-\ell)\), i.e. \(\ell s\le \ell m\).  Multiplying these
+\(h_i\) factor bounds gives the row estimate
+\[
+\frac{d_i(T)}{d_i}\le
+\left(\frac{|S(\eta)|}{m}\right)^{|B_i|}.
+\]
+All denominator factors \(d_i\) are nonzero in the present nonzero cell; if
+some \(d_i=0\), then \(|D_\eta|=0\), contrary to \(|D_\eta|>0\).
+Multiplying the row ratios and using that the sets \(B_i=T\cap R_i\)
+partition \(T\), we get
+\[
+\frac{|D_\eta(T)|}{|D_\eta|}
+\le
+\prod_i\left(\frac{|S(\eta)|}{m}\right)^{|B_i|}
+=
+\left(\frac{|S(\eta)|}{m}\right)^{|T|}.
+\]
+Equivalently,
+\[
+\Pr(\forall v\in T,\ \pi_R^\omega(v)\in S(\eta)\mid C_\eta)
+\le \left(\frac{|S(\eta)|}{m}\right)^{|T|}.
+\]
+
+Let
+\[
+W_\eta=|\{v\in V_0:\pi_R^\omega(v)\in S(\eta)\}|.
+\]
+If \(W_\eta\ge t\), then there is a \(t\)-element subset
+\(T\subseteq V_0\) such that every \(v\in T\) has red coordinate in
+\(S(\eta)\).  Taking the finite union over all such \(T\) gives
+\[
+\Pr(W_\eta\ge t\mid G_B,\rho,\eta)
+\le \binom{|V_0|}{t}\left(\frac{|S(\eta)|}{m}\right)^t.
+\]
+The same estimate is trivial when \(t>|V_0|\), since there are no
+\(t\)-element subsets of \(V_0\).  This proves the claimed bound.
+\end{proof}

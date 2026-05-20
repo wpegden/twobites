@@ -1,0 +1,65 @@
+\begin{helper}
+For a fixed set \(I\subseteq V(G)\) of size \(k\), its image \(\pi(I)\) under a uniformly random injection \(\pi : V(G) \hookrightarrow V_R \times V_B\) is uniformly distributed over all \(k\)-subsets of \(V_R \times V_B\). That is, for any property \(P\) of subsets of \(V_R \times V_B\), the number of injections satisfying \(P(\pi(I))\) multiplied by \(\binom{m^2}{k}\) equals the number of \(k\)-subsets satisfying \(P\) multiplied by the total number of injections.
+\end{helper}
+\begin{proof}
+Let \(U=\operatorname{Fin}m\times\operatorname{Fin}m\), so
+\(|U|=m^2\), and let
+\[
+\Omega=\{\pi:\operatorname{Fin}n\hookrightarrow U\}.
+\]
+Since \(|I|=k\), the restriction of any \(\pi\in\Omega\) to \(I\) is
+injective, and therefore \(|\pi(I)|=k\).  Thus the map
+\[
+\Phi:\Omega\to\{S\subseteq U:|S|=k\},\qquad \Phi(\pi)=\pi(I),
+\]
+is well defined.
+
+First handle the degenerate cases.  If \(\Omega=\varnothing\), then the set
+of injections satisfying \(P(\pi(I))\) is empty, so the left hand side is
+\(0\), and the right hand side is also \(0\) because it is multiplied by
+\(|\Omega|\).  If there is no \(k\)-subset of \(U\), then no injection can
+exist either: an injection would give the \(k\)-element subset \(\pi(I)\) of
+\(U\).  Hence both sides are again \(0\).
+
+Assume now that injections and \(k\)-subsets exist.  For each \(k\)-subset
+\(S\subseteq U\), define the fiber
+\[
+F_S=\{\pi\in\Omega:\pi(I)=S\}.
+\]
+We show that \(|F_S|\) is independent of \(S\).  Let \(S,T\subseteq U\) be
+two \(k\)-subsets.  Choose a bijection \(\alpha:S\to T\).  Since
+\(|U\setminus S|=|U|-k=|U\setminus T|\), choose a bijection
+\(\beta:U\setminus S\to U\setminus T\).  For \(\pi\in F_S\), define
+\(\pi'\) by
+\[
+\pi'(v)=
+\begin{cases}
+\alpha(\pi(v)), & v\in I,\\
+\beta(\pi(v)), & v\notin I.
+\end{cases}
+\]
+This is well defined because if \(v\notin I\), then \(\pi(v)\notin S\):
+otherwise \(\pi(v)=\pi(u)\) for some \(u\in I\), contradicting injectivity.
+The map \(\pi'\) is injective, its image on \(I\) is exactly \(T\), and the
+inverse construction uses \(\alpha^{-1}\) and \(\beta^{-1}\).  Hence
+\(F_S\) and \(F_T\) are in bijection.  Let their common cardinality be \(r\).
+
+The fibers \(F_S\) partition all injections, because every injection has a
+unique image \(\pi(I)\).  Therefore
+\[
+|\Omega|=\binom{m^2}{k}\,r.
+\]
+They also partition the injections satisfying \(P(\pi(I))\), but only the
+fibers with \(P(S)\) contribute.  Hence
+\[
+|\{\pi\in\Omega:P(\pi(I))\}|
+=|\{S\subseteq U:|S|=k\text{ and }P(S)\}|\,r.
+\]
+Multiplying this last identity by \(\binom{m^2}{k}\) and substituting
+\(|\Omega|=\binom{m^2}{k}r\) gives exactly
+\[
+|\{\pi:P(\pi(I))\}|\,\binom{m^2}{k}
+=|\{S:|S|=k\text{ and }P(S)\}|\,|\Omega|.
+\]
+This is the desired summation identity for the arbitrary property \(P\).
+\end{proof}

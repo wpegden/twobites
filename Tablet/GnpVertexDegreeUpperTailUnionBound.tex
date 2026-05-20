@@ -1,0 +1,61 @@
+\begin{helper}[GnpVertexDegreeUpperTailUnionBound]
+Let \(m\in\mathbb N\), \(0\le p\le 1\), \(\epsilon,t\in\mathbb R\) with
+\(0\le t\), and \(r\in\operatorname{Fin}(m)\).  Put
+\[
+I_r=\{\,e=\{a,b\}: a,b\in\operatorname{Fin}(m),\ a<b,\ a=r
+\text{ or } b=r\,\}.
+\]
+Under the \(\noderef{GnpGraphWeight}\) product graph weight, the degree at
+\(r\) obeys the two Markov--MGF bounds
+\[
+\sum_G
+\begin{cases}
+\noderef{GnpGraphWeight}(p,G),
+&(1+\epsilon)p\,m\le \noderef{GraphDegreeCount}(G,r),\\
+0,&\text{otherwise}
+\end{cases}
+\le
+\exp\!\bigl(-t(1+\epsilon)p\,m\bigr)
+\bigl(1-p+p\exp(t)\bigr)^{|I_r|}
+\]
+and
+\[
+\sum_G
+\begin{cases}
+\noderef{GnpGraphWeight}(p,G),
+&\noderef{GraphDegreeCount}(G,r)\le (1-\epsilon)p\,m,\\
+0,&\text{otherwise}
+\end{cases}
+\le
+\exp\!\bigl(t(1-\epsilon)p\,m\bigr)
+\bigl(1-p+p\exp(-t)\bigr)^{|I_r|}.
+\]
+\end{helper}
+\begin{proof}
+For each graph \(G\), the map that sends a neighbor \(w\) of \(r\) to the
+ordered edge \((r,w)\) when \(r<w\), and to \((w,r)\) when \(w<r\), is a
+bijection from the neighbors counted by \(\noderef{GraphDegreeCount}\) to the
+present incident edge coordinates in \(I_r\).  Hence
+\[
+\exp\!\bigl(u\,\noderef{GraphDegreeCount}(G,r)\bigr)
+=
+\prod_{e\in I_r}
+\begin{cases}
+\exp(u),&e\text{ is present in }G,\\
+1,&e\text{ is absent in }G.
+\end{cases}
+\]
+Summing this identity against \(\noderef{GnpGraphWeight}(p,G)\) and applying
+\(\noderef{GnpVertexIncidentEdgeGeneratingFunction}\) with \(z=\exp(u)\)
+gives
+\[
+\sum_G \exp\!\bigl(u\,\noderef{GraphDegreeCount}(G,r)\bigr)
+\noderef{GnpGraphWeight}(p,G)
+=
+\bigl(1-p+p\exp(u)\bigr)^{|I_r|}.
+\]
+Apply \(\noderef{GnpVertexDegreeMarkovTailBounds}\) with
+\(A=(1+\epsilon)p\,m\) and use the displayed identity with \(u=t\) for the
+upper tail.  Apply the same Markov bound with \(A=(1-\epsilon)p\,m\) and use
+the displayed identity with \(u=-t\) for the lower tail.
+\end{proof}

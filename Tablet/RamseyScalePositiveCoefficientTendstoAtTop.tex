@@ -1,0 +1,35 @@
+\begin{helper}
+For every fixed real number \(c>0\),
+\[
+c\,\noderef{RamseyScale}(k)\to\infty
+\]
+as \(k\to\infty\).
+\end{helper}
+\begin{proof}
+Fix \(c>0\).  By the definition of \(\noderef{RamseyScale}\),
+\[
+c\,\noderef{RamseyScale}(k)=c\,\frac{k^2}{\log k}.
+\]
+We prove convergence to \(+\infty\) from the order characterization of
+tending to infinity.  Let \(B\in\mathbb R\) be arbitrary.  Choose \(K_1\) so
+large that \(k\ge K_1\) implies \(k>1\).  Then \(\log k>0\).  Also, by the
+standard logarithmic estimate \(\log x\le x\) for \(x>0\), the same range has
+\(\log k\le k\).  Since both denominators are positive,
+\[
+\frac{k^2}{\log k}\ge \frac{k^2}{k}=k .
+\]
+If \(B\le0\), then for all \(k\ge K_1\),
+\[
+c\,\frac{k^2}{\log k}>0\ge B.
+\]
+If \(B>0\), choose \(K_2\) so large that \(cK_2\ge B\), and set
+\(K=\max\{K_1,K_2\}\).  For every \(k\ge K\),
+\[
+c\,\frac{k^2}{\log k}\ge ck\ge cK_2\ge B.
+\]
+Thus for every real lower bound \(B\), the values
+\(c\,\noderef{RamseyScale}(k)\) are eventually at least \(B\).  This is exactly
+\[
+c\,\noderef{RamseyScale}(k)\to\infty .
+\]
+\end{proof}

@@ -1,0 +1,25 @@
+\begin{helper}
+For every \(\eta>0\) and \(\varepsilon_1>0\), there is \(n_0\) such that
+for every \(n>n_0\), if \(L=\log n\), then
+\[
+\frac{2\log L}{(1+\eta)L^4}\le\varepsilon_1.
+\]
+\end{helper}
+\begin{proof}
+Since \(L=\log n\to\infty\), choose \(n_0\) so that for every \(n>n_0\),
+\[
+L\ge 1,\qquad L\ge \frac{2}{(1+\eta)\varepsilon_1}.
+\]
+For \(L\ge1\), the elementary inequality \(\log L\le L\) gives
+\[
+\frac{2\log L}{(1+\eta)L^4}
+\le \frac{2L}{(1+\eta)L^4}
+=\frac{2}{(1+\eta)L^3}
+\le\frac{2}{(1+\eta)L}.
+\]
+The second threshold condition says
+\[
+\frac{2}{(1+\eta)L}\le\varepsilon_1.
+\]
+Combining the inequalities proves the claim.
+\end{proof}

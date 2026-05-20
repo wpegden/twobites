@@ -1,0 +1,30 @@
+\begin{lemma}
+For any natural numbers \(S,h,q,m\) with \(h\le q\le m\) and \(h\le S\),
+we have the ratio equality
+\[
+\frac{(S)_h (m-h)_{q-h}}{(m)_q} = \prod_{\ell=0}^{h-1} \frac{S-\ell}{m-\ell}
+\]
+\end{lemma}
+\begin{proof}
+Since \(h\le q\le m\), the falling factorial in the denominator factors as
+\[
+(m)_q=(m)_h(m-h)_{q-h}.
+\]
+After substituting this factorization, the common nonzero factor
+\((m-h)_{q-h}\) cancels.  The remaining quotient is
+\[
+\frac{(S)_h}{(m)_h}.
+\]
+The hypotheses \(h\le S\) and \(h\le m\) allow the falling factorials
+\((S)_h\) and \((m)_h\) to be expanded without truncation:
+\[
+(S)_h=\prod_{\ell=0}^{h-1}(S-\ell),\qquad
+(m)_h=\prod_{\ell=0}^{h-1}(m-\ell).
+\]
+Dividing the two products term by term gives
+\[
+\frac{(S)_h}{(m)_h}
+=\prod_{\ell=0}^{h-1}\frac{S-\ell}{m-\ell},
+\]
+which is the claimed equality.
+\end{proof}

@@ -1,0 +1,104 @@
+\begin{helper}
+Let \(U_0,V_0,T\subseteq\operatorname{Fin}n\), let
+\(\rho:\operatorname{Fin}n\to\operatorname{Fin}m\), and let
+\(\eta:U_0\to\operatorname{Fin}m\).  Put
+\[
+S=\eta(U_0).
+\]
+Let \(X_{\mathrm{all},\eta}\) be the finite set of injections
+\(\phi:\operatorname{Fin}n\hookrightarrow
+\operatorname{Fin}m\times\operatorname{Fin}m\) such that
+\[
+(\phi(v))_1=\rho(v)\quad\text{for every }v\in\operatorname{Fin}n
+\]
+and
+\[
+(\phi(u))_2=\eta(u)\quad\text{for every }u\in U_0.
+\]
+Let \(X_{\mathrm{good},\eta}(T)\subseteq X_{\mathrm{all},\eta}\) be the
+subset of such injections for which \((\phi(v))_2\in S\) for every
+\(v\in T\).  Assume \(T\subseteq V_0\), and assume that the rows occupied by
+\(U_0\) are disjoint from the rows occupied by \(V_0\):
+\[
+u\in U_0,\ v\in V_0\quad\Longrightarrow\quad \rho(u)\ne\rho(v).
+\]
+Then
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+\le
+\left(\frac{|S|}{m}\right)^{|T|}.
+\]
+\end{helper}
+\begin{proof}
+First handle the degenerate denominator case.  If
+\(|X_{\mathrm{all},\eta}|=0\), then
+\(X_{\mathrm{good},\eta}(T)\subseteq X_{\mathrm{all},\eta}\), so
+\(|X_{\mathrm{good},\eta}(T)|=0\).  In the Lean statement the quotient is a
+real-field quotient, hence division by zero is interpreted as \(0\).  Thus
+the left side is \(0/0=0\).  The right side is nonnegative: \(|S|\) and
+\(m\) are natural numbers, their coercions to \(\mathbb R\) are
+nonnegative, and when \(m=0\) the quotient \(|S|/m\) is again \(0\) in the
+same real-field convention.  Therefore the desired inequality holds in this
+case.
+
+Assume from now on that \(|X_{\mathrm{all},\eta}|\ne 0\).  Partition
+\(\operatorname{Fin}n\) by the red rows of \(\rho\).  For
+\(i\in\operatorname{Fin}m\), write
+\[
+R_i=\{v:\rho(v)=i\},\qquad A_i=U_0\cap R_i,\qquad B_i=T\cap R_i .
+\]
+Let \(d_i\) be the number of injective blue-coordinate assignments on
+\(R_i\) that agree with \(\eta\) on \(A_i\), and let \(g_i\) be the number
+of such assignments that also send every vertex of \(B_i\) into \(S\).
+The finite row decomposition gives
+\[
+|X_{\mathrm{all},\eta}|=\prod_i d_i,\qquad
+|X_{\mathrm{good},\eta}(T)|=\prod_i g_i.
+\]
+Indeed, after the first coordinate is fixed to be \(\rho\), vertices in
+different red rows have different first coordinates, so their second
+coordinates can be chosen independently; injectivity only has to be enforced
+inside each row.
+
+The assumption \(|X_{\mathrm{all},\eta}|\ne0\) implies that every row
+denominator is nonzero.  If some \(d_i=0\), then the product
+\(\prod_i d_i\) would be \(0\), contradicting the displayed factorization
+and the nonzero denominator assumption.  Hence each ratio \(g_i/d_i\) is an
+ordinary ratio of finite nonzero row counts, and
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+=\prod_i \frac{g_i}{d_i}.
+\]
+
+We now bound each row ratio.  If \(B_i=\varnothing\), the additional
+\(T\)-condition imposes no restriction in row \(i\), so \(g_i=d_i\).  Since
+\(d_i\ne0\), the row ratio is \(1\), which equals
+\((|S|/m)^0=(|S|/m)^{|B_i|}\).
+
+If \(B_i\ne\varnothing\), choose \(v\in B_i\).  Then \(v\in T\), and
+\(T\subseteq V_0\), so \(v\in V_0\).  If \(u\in A_i\), then
+\(u\in U_0\) and \(\rho(u)=i=\rho(v)\), contradicting the row-disjointness
+hypothesis.  Therefore \(A_i=\varnothing\).  In this row the exposure
+\(\eta\) imposes no condition, so \(d_i\) is the ordinary denominator for
+injective assignments on \(R_i\), and \(g_i\) is the ordinary numerator for
+forcing all vertices of \(B_i\) into \(S\).  Since \(d_i\ne0\), the rowwise
+estimate proved in \(\noderef{OppositeProjectionRowInjectionCounting}\)
+applies to this row and gives
+\[
+\frac{g_i}{d_i}\le \left(\frac{|S|}{m}\right)^{|B_i|}.
+\]
+
+The factors \(g_i/d_i\) are nonnegative, and the rowwise upper bounds are
+nonnegative, so multiplying the row inequalities over all
+\(i\in\operatorname{Fin}m\) gives
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+\le
+\prod_i \left(\frac{|S|}{m}\right)^{|B_i|}
+=
+\left(\frac{|S|}{m}\right)^{\sum_i |B_i|}.
+\]
+Finally, the sets \(B_i=T\cap R_i\) partition \(T\), since every
+\(v\in T\) has exactly one red row \(\rho(v)\).  Hence
+\(\sum_i |B_i|=|T|\), and the last display is exactly the required bound.
+\end{proof}

@@ -1,0 +1,76 @@
+\begin{helper}
+Fix one pair of support labels \(B,J\) and the terminal coordinate set
+\(U\).  Let \(\mathcal P\) be the transcript family.  For a realized
+branch/transcript pair \((\beta,\tau)\), write
+\[
+P_\tau,\qquad A_\tau,\qquad Z_\tau,\qquad F_{\beta,\tau}
+\]
+for the forced-present set, forced-absent set, selected absent set, and
+fixed present support.  Assume the fixed realized geometry
+\[
+F_{\beta,\tau}\subseteq P_\tau,\qquad
+P_\tau,A_\tau\subseteq U,\qquad
+P_\tau\cap A_\tau=\emptyset,\qquad
+Z_\tau\subseteq A_\tau .
+\]
+Assume also the prefix-scan interface used by
+\(\noderef{FixedSetHistoryCellRedPrefixScanInvariant}\): each test at a
+coordinate depends only on the earlier prefix, compatible complete
+assignments determine their blue branch and transcript unless a
+selected-present sibling is active, selected-present siblings lie in
+\(Z_\tau\), and an active selected-present sibling in a realized compatible
+cell rules out compatibility with every realized cell.
+
+Finally assume the first-mismatch certificate for the fixed residual
+scan.  Namely, if one residual assignment \(A_{\rm res}\subseteq U\) lies
+in the residual cylinders of two realized pairs \((\beta,\tau)\) and
+\((\beta',\tau')\), the two reconstructed complete assignments
+\[
+A^\ast=(A_{\rm res}\setminus Z_\tau)\cup F_{\beta,\tau},
+\qquad
+A^{\ast\prime}=(A_{\rm res}\setminus Z_{\tau'})
+  \cup F_{\beta',\tau'}
+\]
+are compatible with their respective realized cells, and
+\((\beta,\tau)\ne(\beta',\tau')\), then a selected-present sibling is
+active in at least one of the two reconstructed compatible assignments.
+
+Under these hypotheses, the same residual assignment has a unique realized
+owner.  More explicitly, suppose
+\[
+P_\tau\setminus F_{\beta,\tau}\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_\tau\setminus Z_\tau)=\emptyset ,
+\]
+and
+\[
+P_{\tau'}\setminus F_{\beta',\tau'}\subseteq A_{\rm res},\qquad
+A_{\rm res}\cap(A_{\tau'}\setminus Z_{\tau'})=\emptyset .
+\]
+If \(A^\ast\) is compatible with \((\beta,\tau)\) and
+\(A^{\ast\prime}\) is compatible with \((\beta',\tau')\), then
+\(\beta=\beta'\) and \(\tau=\tau'\).
+\end{helper}
+\begin{proof}
+Apply \(\noderef{FixedSetHistoryCellRedPrefixScanInvariant}\) to the fixed
+prefix-scan interface.  Its first conclusion is the pruning clause: if a
+selected-present sibling is active in a realized compatible complete
+assignment, then no realized cell is compatible with that same complete
+assignment.  Its second conclusion is the branch/transcript determinism for
+compatible complete assignments.  Only the pruning clause is needed for
+this node.
+
+Assume for contradiction that the two owners are different, so either
+\(\beta\ne\beta'\) or \(\tau\ne\tau'\).  The first-mismatch certificate
+applies to the two residual-cylinder memberships and to the two
+compatibility certificates.  It produces an active selected-present sibling
+in one of the two reconstructed assignments.
+
+If the sibling occurs in \(A^\ast\), the pruning clause applied to the
+realized cell \((\beta,\tau)\) says that \(A^\ast\) is compatible with no
+realized cell, contradicting the assumed compatibility of \(A^\ast\) with
+\((\beta,\tau)\).  If the sibling occurs in \(A^{\ast\prime}\), the same
+argument contradicts compatibility of \(A^{\ast\prime}\) with
+\((\beta',\tau')\).  Both alternatives are impossible.  Hence the assumed
+owner mismatch is impossible, and therefore \(\beta=\beta'\) and
+\(\tau=\tau'\).
+\end{proof}

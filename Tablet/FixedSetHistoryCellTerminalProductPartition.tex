@@ -1,0 +1,46 @@
+\begin{helper}
+Fix a history cell \(C\) and a finite terminal coordinate set \(U\).  Suppose
+that for every terminal subset \(A\subseteq U\), the conditional probability
+inside \(C\) of the complete terminal assignment
+\[
+\{\omega:\forall e\in U,\ X_e(\omega)=1 \Longleftrightarrow e\in A\}
+\]
+is
+\[
+p^{|A|}(1-p)^{|U|-|A|}.
+\]
+Let \(E\) be any event whose truth on \(C\) is determined only by the terminal
+present set
+\[
+T(\omega)=\{e\in U:X_e(\omega)=1\}.
+\]
+If \(W\) is the family of terminal subsets for which \(E\) holds, then
+\[
+\Pr(E\mid C)
+\le
+\sum_{\substack{A\subseteq U\\ W(A)}}
+p^{|A|}(1-p)^{|U|-|A|}.
+\]
+\end{helper}
+\begin{proof}
+For every sample in \(C\), the set \(T(\omega)\) is a subset of \(U\).  The
+complete-assignment events
+\[
+C_A=\{\omega:\forall e\in U,\ X_e(\omega)=1 \Longleftrightarrow e\in A\},
+\qquad A\subseteq U,
+\]
+are pairwise disjoint and their union contains \(C\): each \(\omega\in C\)
+belongs to exactly \(C_{T(\omega)}\).  Since \(E\) is determined on \(C\) by
+\(T(\omega)\), the event \(E\cap C\) is contained in the disjoint union of
+the cells \(C_A\) with \(W(A)\).  Finite additivity for the nonnegative
+sample weights gives
+\[
+\Pr(E\cap C)\le \sum_{A\subseteq U,\ W(A)}\Pr(C_A\cap C).
+\]
+Dividing by \(\Pr(C)\) is exactly conditional probability; if
+\(\Pr(C)=0\), both sides of the conditional-probability definition are
+zero or nonnegative and the inequality is immediate.  Otherwise the assumed
+product law gives the displayed weight
+\(p^{|A|}(1-p)^{|U|-|A|}\) for each \(C_A\).  Substitution gives the claimed
+sum bound.
+\end{proof}

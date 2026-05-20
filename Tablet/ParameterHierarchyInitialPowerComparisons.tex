@@ -1,0 +1,57 @@
+\begin{helper}
+Fix \(\eta,\varepsilon_1\) and \(n\).  Use the usual notation
+\[
+L=\log n,\quad
+k_R=(1+\eta)\sqrt{nL},\quad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\quad k=(K:\mathbb R),
+\]
+\[
+m_R=\frac n{L^2},\quad
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\quad m=(M:\mathbb R),
+\qquad
+p=\frac12\sqrt{\frac Ln},\qquad
+t_1=\frac{\sqrt{nL}}{\log L}.
+\]
+Assume \(\varepsilon_1>0\), assume the base-threshold conclusions
+\[
+0<m,\quad 0\le p\le\frac12,\quad 1\le2pm,\quad
+k_R\le k<k_R+1,\quad m\le m_R<m+1,
+\]
+together with \(K\le n\), \(k<2k_R\), \(\log L>0\), and
+\[
+\frac{2k}{t_1}+1\le5(1+\eta)\log L.
+\]
+If also
+\[
+n^{4\eta}\le\frac{\varepsilon_1}{2}k_R
+\qquad\text{and}\qquad
+2L^2\le\frac{\varepsilon_1}{8}k_R,
+\]
+then the base positivity and rounding conclusions hold, and moreover
+\[
+n^{4\eta}k\le\frac{\varepsilon_1}{2}k^2,\qquad
+2kL^2\le\frac{\varepsilon_1}{8}k^2.
+\]
+\end{helper}
+\begin{proof}
+The base positivity and rounding conclusions are copied directly from the
+base-threshold hypotheses.  Since \(K\) is a natural number, \(k=(K:\mathbb R)\)
+is nonnegative.  Multiplying
+\[
+n^{4\eta}\le\frac{\varepsilon_1}{2}k_R
+\]
+by this nonnegative \(k\) gives
+\[
+n^{4\eta}k\le\frac{\varepsilon_1}{2}k_Rk.
+\]
+Because \(\varepsilon_1>0\) and \(k_R\le k\), the right side is at most
+\((\varepsilon_1/2)k^2\).  This proves the first power comparison.  The second
+is identical: multiply
+\[
+2L^2\le\frac{\varepsilon_1}{8}k_R
+\]
+by the nonnegative \(k\), then use \(k_R\le k\) and \(\varepsilon_1>0\) to get
+\[
+2kL^2\le\frac{\varepsilon_1}{8}k^2.
+\]
+\end{proof}

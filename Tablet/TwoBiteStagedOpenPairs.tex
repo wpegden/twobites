@@ -1,0 +1,20 @@
+\begin{definition}
+For a sample \(\omega\), parameter \(\varepsilon\), and finite vertex set
+\(I\), the staged open projected pairs are
+\[
+\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)
+=
+\{e\in\noderef{TwoBiteProjectionPairSet}(\omega,I):
+\neg\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e)
+\text{ and }
+\neg\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,e)
+\text{ and }
+e\notin\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\}.
+\]
+Thus the definition is exactly the projected-pair set filtered by the terminal
+exclusions known before the current terminal coordinate is tested:
+same-color \(C^+(I)\)-closedness, staged touchedness, and membership in the
+pre-terminal recorded set.  Opposite-color witnesses whose vertex is not
+pre-terminal revealed are not removed here; those surviving witnesses are the
+exceptional choices counted later.
+\end{definition}

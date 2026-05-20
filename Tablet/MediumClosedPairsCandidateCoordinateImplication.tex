@@ -1,0 +1,68 @@
+\begin{helper}
+Fix a candidate index consisting of a \(K\)-set \(I\subseteq \mathrm{Fin}(n)\)
+and an \(S\)-tuple of base vertices, where
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Let the covering set of base vertices be the image of this tuple, and split
+that covering set into red centers \(B_R\) and blue centers \(B_B\).  For a
+fixed embedding cell \(\pi\), let \(P_R\) and \(P_B\) be the red and blue
+coordinate images of \(I\) under \(\pi\).  Consider the concrete candidate
+event used in \(\noderef{MediumClosedPairsDeterministicWitnessCandidatePackage}\):
+there is a witness set \(B\) contained in the covering set, with the stated
+medium-class, size, and cutoff bounds, and whose normalized red/blue edge
+count is larger than
+\[
+\frac{K n^{1/4-\varepsilon}}{6(\log n)^2}.
+\]
+If a sample \(\omega\) in this candidate has
+\(\noderef{TwoBiteEmbedding}(\omega)=\pi\), then at least
+\[
+\left\lceil \frac{K n^{1/4-\varepsilon}}{6(\log n)^2}\right\rceil
+\]
+coordinates are present in the normalized coordinate set built from
+\(B_R,B_B,P_R,P_B\), namely the coordinate set used by
+\(\noderef{MediumClosedPairsCandidateCellTail}\).
+\end{helper}
+\begin{proof}
+Unpack the candidate witness \(B\).  Its normalized-coordinate lower bound
+says that the number of normalized red witness edges plus the number of
+normalized blue witness edges is strictly larger than
+\[
+A=\frac{K n^{1/4-\varepsilon}}{6(\log n)^2}.
+\]
+By the defining property of the natural ceiling, this implies
+\[
+\lceil A\rceil
+\le |\mathrm{RedEdges}(B)|+|\mathrm{BlueEdges}(B)|.
+\]
+
+It remains to compare these witness edge sets with the fixed coordinate set
+formed from the covering tuple and the embedding cell.  Since the witness
+set \(B\) is contained in the covering set, every red center from \(B\) lies
+in \(B_R\), and every blue center from \(B\) lies in \(B_B\).  Since
+\(\noderef{TwoBiteEmbedding}(\omega)=\pi\), the red and blue projections
+\(\noderef{TwoBiteRedProjection}(\omega)\) and
+\(\noderef{TwoBiteBlueProjection}(\omega)\) agree on \(I\) with the first and
+second coordinates of \(\pi\), so the witness projection vertices lie in
+\(P_R\) and \(P_B\).
+
+Each ordered witness edge is an actual red or blue graph edge.  Hence its
+endpoints are distinct, so after applying the same normalization map it
+belongs to the corresponding diagonal-free red or blue raw coordinate set.
+The definitions of \(\noderef{TwoBiteEdgeCoordinateValue}\),
+\(\noderef{TwoBiteRedGraph}\), and \(\noderef{TwoBiteBlueGraph}\) show that
+the normalized coordinate is present in \(\omega\); if normalization swaps
+the two endpoints, symmetry of simple-graph adjacency supplies the same
+edge in the reversed order.
+
+Tagging red normalized edges by the left summand and blue normalized edges by
+the right summand gives disjoint finite subsets of the present-coordinate
+filter.  Their cardinalities are exactly the original red and blue normalized
+edge counts.  Therefore the present-coordinate filter has cardinality at
+least
+\[
+|\mathrm{RedEdges}(B)|+|\mathrm{BlueEdges}(B)|,
+\]
+and chaining this with the ceiling inequality proves the claimed threshold.
+\end{proof}

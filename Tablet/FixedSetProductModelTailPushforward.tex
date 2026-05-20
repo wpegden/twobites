@@ -1,0 +1,177 @@
+\begin{helper}[Product Model Pushforward Identity]
+Fix \(n\in\mathbb N\), \(I\subseteq\mathrm{Fin}(n)\), parameters \(\varepsilon\in\mathbb R\).
+Let \(M\in\mathbb N\) and \(p_0\in\mathbb R\) with \(0\le p_0\le1\).
+Let \(\pi:\mathrm{Fin}(n)\hookrightarrow\mathrm{Fin}(M)\times\mathrm{Fin}(M)\) be an embedding.
+Let
+\[
+P_R=\{\pi(u)_1:u\in I\},\qquad P_B=\{\pi(u)_2:u\in I\},
+\]
+\[
+q=\noderef{FixedSetProductModelMassFn}(p_0,P_R,P_B),
+\qquad
+Z_{\mathrm{prod}}=\noderef{FixedSetProductModelVar}(I,\varepsilon,p_0,\pi).
+\]
+Let \(Z_I\) be the sample-based quantity defined identically as in \(\noderef{FixedSetProductModelTail}\).
+Then for any predicate \(H\), the conditional distribution on the cell \(\mathcal C_\pi = \{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\}\) pushes forward to the product distribution:
+\[
+\begin{aligned}
+&\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\mathcal C_\pi\cap \{\omega:H(Z_I(\omega))\}\bigr)\\
+&\quad=
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)
+ \sum_{\{v:H(Z_{\mathrm{prod}}(v))\}}\prod_iq(v_i).
+\end{aligned}
+\]
+\end{helper}
+\begin{proof}
+By the hypotheses \(0\le p_0\le1\),
+\(\noderef{TwoBiteSampleWeightNonnegative}\) gives nonnegativity of every
+two-bite sample weight, and \(\noderef{FixedSetProductModelMass}\) gives
+\[
+q(a)\ge0\quad\text{for every }a,\qquad \sum_a q(a)=1.
+\]
+Thus all sample sums and all product-assignment sums below are finite sums of
+nonnegative weights.
+
+Let \(\mathcal C_\pi=\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\}\).
+If \(\mathcal C_\pi\) has zero probability, then
+\(\mathcal C_\pi\cap\{\omega:H(Z_I(\omega))\}\subseteq\mathcal C_\pi\), so
+the left side is \(0\) by nonnegativity.  The right side is the same zero cell
+mass multiplied by a nonnegative product sum, hence is also \(0\).
+
+Assume now that the cell mass is positive.  On \(\mathcal C_\pi\), the
+embedding is fixed, so for every \(u\in I\) the red and blue projections are
+\(\pi(u)_1\in P_R\) and \(\pi(u)_2\in P_B\).  Unfolding
+\(\noderef{TwoBiteEventProbability}\), a sample in the cell has weight
+\[
+\noderef{GnpGraphWeight}(p_0,G_R)\,
+\noderef{GnpGraphWeight}(p_0,G_B)\,
+\noderef{UniformInjectionWeight}(n,M),
+\]
+and the injection factor is constant across the cell.
+
+Partition the red graph edge variables into three classes:
+\[
+\{r_1,r_2\}\subseteq P_R,\qquad
+\{x_1,x_2\}\subseteq \mathrm{Fin}(M)\setminus P_R,\qquad
+\{x,r\}\text{ with }x\notin P_R,\ r\in P_R.
+\]
+The first two classes are ignored by \(Z_I\), because
+\(\noderef{TwoBiteX}(\omega,I,\operatorname{inl}x)\) tests adjacency only
+between \(x\) and red projections of vertices in \(I\), and those projections
+all lie in \(P_R\).  Summing over each ignored red edge gives the factor
+\[
+(1-p_0)+p_0=1.
+\]
+The surviving red incident data are the subsets
+\[
+A_R(x)=\{r\in P_R:\{x,r\}\text{ is a red edge}\}
+\qquad(x\notin P_R),
+\]
+with total red weight
+\[
+\prod_{x\notin P_R}
+p_0^{|A_R(x)|}(1-p_0)^{|P_R|-|A_R(x)|}.
+\]
+The blue graph has the identical partition with \(P_B\).  Its surviving data
+are
+\[
+A_B(y)=\{b\in P_B:\{y,b\}\text{ is a blue edge}\}
+\qquad(y\notin P_B),
+\]
+with weight
+\[
+\prod_{y\notin P_B}
+p_0^{|A_B(y)|}(1-p_0)^{|P_B|-|A_B(y)|}.
+\]
+
+Let \(\mathcal D\) be the finite set of all such incident-data families
+\[
+D=\bigl((A_R(x))_{x\notin P_R},(A_B(y))_{y\notin P_B}\bigr).
+\]
+Grouping samples in \(\mathcal C_\pi\) by \(D\), and summing out the ignored
+red and blue graph edges, gives the cell mass contribution
+\[
+\noderef{UniformInjectionWeight}(n,M)
+\prod_{x\notin P_R}
+p_0^{|A_R(x)|}(1-p_0)^{|P_R|-|A_R(x)|}
+\prod_{y\notin P_B}
+p_0^{|A_B(y)|}(1-p_0)^{|P_B|-|A_B(y)|}
+\]
+for the data \(D\).
+
+Now group product assignments by the same data.  A product assignment has
+\(2M\) coordinates, each a pair \((R,B)\).  For a red coordinate
+\(x\notin P_R\), set \(R=A_R(x)\); the second component \(B\) is redundant.
+For this fixed \(R\subseteq P_R\),
+\[
+\sum_{B\subseteq P_B}q(R,B)
+=p_0^{|R|}(1-p_0)^{|P_R|-|R|},
+\]
+using the definition of \(q\), the support condition in
+\(\noderef{FixedSetProductModelMassFn}\), and the normalization supplied by
+\(\noderef{FixedSetProductModelMass}\) in the \(P_B\)-component.  If
+\(x\in P_R\), then \(\noderef{FixedSetFakeGraph}\) does not read the red
+coordinate indexed by \(x\), and the whole pair \((R,B)\) sums to \(1\) by
+\(\noderef{FixedSetProductModelMass}\).  Symmetrically, for a blue coordinate
+\(y\notin P_B\) the second component is fixed as \(B=A_B(y)\), the first
+component sums out, and the contribution is
+\[
+p_0^{|B|}(1-p_0)^{|P_B|-|B|};
+\]
+if \(y\in P_B\), the whole blue coordinate has total \(q\)-mass \(1\).
+
+Thus the finite map from product assignments to \(\mathcal D\), obtained by
+remembering only first components at red outside coordinates and second
+components at blue outside coordinates, has fiber mass exactly equal to the
+red and blue incident-data weight displayed above, without the constant
+injection factor.  This is the required finite reindexing: both the cell
+sample sum and the product-assignment sum are sums over the same finite data
+set \(\mathcal D\), with the same data weight after the cell's constant
+injection factor is pulled out.
+
+These data weights have total mass \(1\).  On the graph side, summing over
+all possible incident subsets \(A_R(x)\subseteq P_R\) for a fixed outside red
+vertex \(x\) gives
+\[
+\sum_{A\subseteq P_R}p_0^{|A|}(1-p_0)^{|P_R|-|A|}
+=(p_0+1-p_0)^{|P_R|}=1,
+\]
+and similarly for every outside blue vertex.  On the product side, the same
+normalization is exactly the coordinate normalization from
+\(\noderef{FixedSetProductModelMass}\).  Hence the mass of the full cell
+\(\mathcal C_\pi\) is the fixed injection factor times \(1\), and the
+contribution of a data value \(D\) to the cell is
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)\,\nu(D),
+\]
+where \(\nu(D)\) is the corresponding product fiber mass.
+
+For data \(D\), the sample graph and the product fake graph have the same
+adjacencies from outside \(P_R\) into \(P_R\) and from outside \(P_B\) into
+\(P_B\).  The definitions of \(\noderef{TwoBiteSmallClass}\),
+\(\noderef{TwoBiteX}\), \(\noderef{TwoBiteFinalPairs}\), and
+\(\noderef{FixedSetProductModelVar}\) use only these adjacencies and the fixed
+embedding \(\pi\).  Hence all samples and product assignments with the same
+data \(D\) have a common value \(Z(D)\), with
+\[
+Z_I(\omega)=Z(D)=Z_{\mathrm{prod}}(v).
+\]
+Grouping both sides of the desired identity by \(D\) gives
+\[
+\sum_{D\in\mathcal D,\ H(Z(D))}
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)\,\nu(D)
+=
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)
+\sum_{D\in\mathcal D,\ H(Z(D))}\nu(D),
+\]
+where \(\nu(D)\) is the product fiber mass of \(D\).  This is exactly
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\mathcal C_\pi\cap \{\omega:H(Z_I(\omega))\}\bigr)
+=
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)
+ \sum_{\{v:H(Z_{\mathrm{prod}}(v))\}}\prod_iq(v_i),
+\]
+which proves the pushforward identity.
+\end{proof}

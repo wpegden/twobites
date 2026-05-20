@@ -1,0 +1,24 @@
+\begin{helper}
+For every two-bite sample \(\omega\), the red part of
+\(\noderef{TwoBiteFinalGraph}\) contains no triangle.
+\end{helper}
+\begin{proof}
+Write \(G_R\) for the final red graph and \(\widetilde G_R\) for the red
+overlay graph.  Suppose, for contradiction, that \(u,v,w\) span a triangle in
+\(G_R\).  Since a final red edge is, by definition, an overlay red edge that was
+not red-deleted, the three pairs \(uv,uw,vw\) are edges of \(\widetilde G_R\).
+
+By \(\noderef{TwoBiteRedTriangleLatestEdge}\), applied to the three red overlay
+edges \(uv,uw,vw\), one of the three red projected pairs is strictly latest in
+the pair-rank order used by \(\noderef{TwoBiteFinalGraph}\).
+
+If the largest rank is that of \(\{r_u,r_v\}\), then the red deletion predicate
+for the directed edge \(uv\) holds with witness \(w\): the three overlay red
+edges are \(uv,uw,vw\), and the two other projected-pair ranks are strictly
+smaller than the rank of \(uv\).  Hence the undirected final-red deletion
+predicate for \(uv\) holds, contradicting that \(uv\) remains an edge of
+\(G_R\).  The cases in which the largest projected pair is \(\{r_u,r_w\}\) or
+\(\{r_v,r_w\}\) are identical after permuting the names of the triangle
+vertices.  In every case one of the three assumed final red edges is selected
+by the red triangle deletion rule, a contradiction.
+\end{proof}

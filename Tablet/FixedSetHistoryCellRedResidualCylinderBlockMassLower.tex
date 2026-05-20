@@ -1,0 +1,97 @@
+\begin{helper}
+Fix a terminal coordinate set \(U\), fixed blue and red present supports
+\(B,R\subseteq U\) with \(|B|=u_B\), \(|R|=u_R\), and \(B\cap R=\emptyset\).
+Let \(\tau=(P_\tau,A_\tau,Z_\tau)\) be a realized transcript for one fixed
+\((B,J,\beta)\), and assume the RedBranch geometry
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,\qquad
+B\cup R\subseteq P_\tau,\qquad Z_\tau\subseteq A_\tau .
+\]
+Let \(\mathcal R_{\beta,\tau}\) be the released residual block for this
+fixed realized pair.  Assume \(0\le p\le 1/2\), and assign complete residual
+terminal assignments \(A\subseteq U\) the product mass
+\[
+\mu(A)=p^{|A|}(1-p)^{|U|-|A|}.
+\]
+Assume the RISI scan-stability conclusion for this fixed pair: every
+residual assignment \(A\subseteq U\) satisfying
+\[
+P_\tau\setminus(B\cup R)\subseteq A,\qquad
+A\cap(A_\tau\setminus Z_\tau)=\emptyset
+\]
+reconstructs to the same branch label \(\beta\) and the same transcript
+\(\tau\).  Assume also that the released block is complete for this scan
+output: every residual assignment with output \((\beta,\tau)\) belongs to
+\(\mathcal R_{\beta,\tau}\).  If
+\[
+\rho_{\beta,\tau}
+  =\sum_{A\in\mathcal R_{\beta,\tau}}\mu(A),
+\]
+then
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \rho_{\beta,\tau}.
+\]
+\end{helper}
+\begin{proof}
+Let
+\[
+P^\circ=P_\tau\setminus(B\cup R),\qquad
+A^\circ=A_\tau\setminus Z_\tau .
+\]
+The displayed RedBranch geometry gives \(P^\circ,A^\circ\subseteq U\).
+Since \(P_\tau\cap A_\tau=\emptyset\), the smaller sets
+\(P^\circ\) and \(A^\circ\) are disjoint.  Because \(B\cup R\subseteq
+P_\tau\), \(B\cap R=\emptyset\), \(|B|=u_B\), and \(|R|=u_R\),
+\[
+|P^\circ|=|P_\tau|-u_R-u_B .
+\]
+Similarly, \(Z_\tau\subseteq A_\tau\) gives
+\[
+|A^\circ|=|A_\tau|-|Z_\tau|.
+\]
+
+Consider the residual cylinder
+\[
+\mathcal C_{\beta,\tau}
+  =\{A\subseteq U:P^\circ\subseteq A,\ A\cap A^\circ=\emptyset\}.
+\]
+For each \(A\in\mathcal C_{\beta,\tau}\), the RISI scan-stability hypothesis
+is precisely the fixed-\((B,J,\beta,\tau)\) consequence supplied by
+\(\noderef{FixedSetHistoryCellRISIResidualScanStability}\): after the fixed
+present support \(B\cup R\) is reinserted and the selected absences
+\(Z_\tau\) are released, the reconstructed terminal truth table agrees with
+the realized witness on every dependency set read by the reveal order, so the
+same branch and transcript are returned.  The released-block completeness
+hypothesis then puts this \(A\) in \(\mathcal R_{\beta,\tau}\).  Hence
+\[
+\mathcal C_{\beta,\tau}\subseteq\mathcal R_{\beta,\tau}.
+\]
+This is the point at which selected-sibling pruning is accounted for: a
+residual assignment in the displayed cylinder is not discarded merely because
+some selected coordinate was released; if its scan output is
+\((\beta,\tau)\), completeness keeps it inside the corresponding released
+block.
+
+By the finite cylinder-mass identity
+\(\noderef{FinsetPowersetCylinderMass}\), applied to the disjoint present
+set \(P^\circ\) and absent set \(A^\circ\),
+\[
+\sum_{A\in\mathcal C_{\beta,\tau}}\mu(A)
+  =p^{|P^\circ|}(1-p)^{|A^\circ|}
+  =
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}.
+\]
+The equality of the absent exponent is the same selected-absence factor split
+recorded in \(\noderef{FixedSetHistoryCellSelectedAbsencePowSplit}\).  Since
+\(0\le p\le1/2\), both \(p\) and \(1-p\) are nonnegative, so every
+\(\mu(A)\) is nonnegative.  Therefore monotonicity of finite sums under the
+inclusion \(\mathcal C_{\beta,\tau}\subseteq\mathcal R_{\beta,\tau}\) gives
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  =\sum_{A\in\mathcal C_{\beta,\tau}}\mu(A)
+  \le
+  \sum_{A\in\mathcal R_{\beta,\tau}}\mu(A)
+  =\rho_{\beta,\tau}.
+\]
+\end{proof}

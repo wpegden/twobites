@@ -1,0 +1,218 @@
+\begin{helper}
+Fix a projection-size history cell \(C_h\) with recorded coordinate set
+\(R_h\) and terminal coordinate set \(U_h\).  Let \(\omega^\ast\in C_h\) be
+a completed sample used only to encode the already exposed first-color
+realization.  The same-color terminal values of \(\omega^\ast\) are ignored.
+Assume
+\[
+0\le\varepsilon_1,\qquad
+\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0),\qquad n>n_0,
+\]
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and
+\[
+|I|=k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+Assume also that the history package identifies the recorded and terminal
+coordinates:
+\[
+e\in R_h
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)
+\qquad(\omega\in C_h),
+\tag{H1}
+\]
+and
+\[
+e\in U_h
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)
+\hbox{ and }e\notin R_h.
+\tag{H2}
+\]
+Finally, assume that every staged-open coordinate in every completion of the
+history belongs to \(U_h\).
+
+There are two finite candidate sets \(E_R^\ast,E_B^\ast\subseteq U_h\).  The
+red candidate set is defined by the exposed blue realization:
+\[
+e\in E_R^\ast
+\]
+if and only if \(e=\operatorname{red}(q)\in U_h\) and there is a blue base
+vertex \(b\) which is large, medium, or small for \(I\) in \(\omega^\ast\)
+such that
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^{\omega^\ast}
+(\noderef{TwoBiteX}(\omega^\ast,I,\operatorname{blue}(b)))\bigr).
+\]
+The blue candidate set is defined symmetrically from the exposed red
+realization:
+\[
+e\in E_B^\ast
+\]
+if and only if \(e=\operatorname{blue}(q)\in U_h\) and there is a red base
+vertex \(r\) which is large, medium, or small for \(I\) in \(\omega^\ast\)
+such that
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_B^{\omega^\ast}
+(\noderef{TwoBiteX}(\omega^\ast,I,\operatorname{red}(r)))\bigr).
+\]
+
+If a completion \(\omega\in C_h\) has the same injection and the same
+recorded values as \(\omega^\ast\), agrees with \(\omega^\ast\) on all blue
+terminal coordinates, and satisfies
+\[
+\noderef{TwoBiteRegularityEvent}(k,\varepsilon,\varepsilon_1,\varepsilon_2,
+\omega),
+\]
+then
+\[
+\noderef{ClosedPairsBound}(|E_R^\ast|,3\varepsilon_1,k).
+\]
+Moreover, if \(I\) is independent in the shadow of
+\(\noderef{TwoBiteFinalGraph}(\omega)\), then every present red
+staged-open coordinate of \(\omega\) belongs to \(E_R^\ast\).  The symmetric
+statement holds with the colors interchanged: if \(\omega\) agrees with
+\(\omega^\ast\) on the red terminal coordinates and is regular, then
+\[
+\noderef{ClosedPairsBound}(|E_B^\ast|,3\varepsilon_1,k),
+\]
+and every present blue staged-open coordinate required to be deleted for the
+independence of \(I\) belongs to \(E_B^\ast\).
+\end{helper}
+\begin{proof}
+We define \(E_R^\ast\) and \(E_B^\ast\) by the two displayed membership
+rules.  They are finite because both are filters of the finite terminal set
+\(U_h\).  The red rule uses only the injection of \(\omega^\ast\), the blue
+edge values of \(\omega^\ast\), and the terminal set \(U_h\): the set
+\(\noderef{TwoBiteX}(\omega^\ast,I,\operatorname{blue}(b))\) asks only
+which vertices of \(I\) are blue-neighbors of \(b\), and the projection
+\(\pi_R^{\omega^\ast}\) asks only for the fixed injection.  No red terminal
+edge value is queried.  This last assertion is exactly the blue side of
+\(\noderef{FixedSetOppositeColorTerminalCoverage}\): any blue base-edge
+coordinate needed for such a neighborhood is either in \(R_h\), where the
+history has already fixed it, or in the full unrecorded terminal set \(U_h\),
+where it is one of the blue first-color values.  Thus once the blue terminal
+realization has been exposed, \(E_R^\ast\) is fixed before any red terminal
+Bernoulli variables are sampled.  The blue statement is identical after
+swapping the two colors.
+
+We prove the red bound and containment; the blue proof is symmetric.  Let
+\(\omega\in C_h\) be a completion with the same injection and recorded table
+as \(\omega^\ast\), with the same blue values on \(U_h\), and satisfying the
+regularity event.  Apply
+\(\noderef{FixedSetOppositeColorTerminalCoverage}\) with the data
+\[
+I,\ R_h,\ U_h,\ \omega,\ \omega^\ast .
+\]
+Its hypotheses are all present.  The common-injection assumption is one of
+the hypotheses of the present continuation.  Agreement on \(R_h\) is the
+recorded-table hypothesis.  The exact pre-terminal recorded-set hypotheses
+for both \(\omega\) and \(\omega^\ast\) follow from (H1), since both samples
+lie in \(C_h\).  The full-terminal-universe hypothesis is (H2).  Finally,
+the first-color terminal hypothesis says precisely that the two samples agree
+on every blue coordinate in \(U_h\).  The blue side of the child theorem
+therefore gives, for every blue base vertex \(b\),
+\[
+\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b))
+=
+\noderef{TwoBiteX}(\omega^\ast,I,\operatorname{blue}(b)), \tag{1}
+\]
+the equivalence of the large, medium, and small classifications of
+\(\operatorname{blue}(b)\) in the two samples, and the projected-pair
+equivalence
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega
+(\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b)))\bigr)
+\Longleftrightarrow
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^{\omega^\ast}
+(\noderef{TwoBiteX}(\omega^\ast,I,\operatorname{blue}(b)))\bigr).
+\tag{2}
+\]
+Consequently the displayed red-exceptional predicate defining \(E_R^\ast\)
+is exactly the red-exceptional predicate one would define from \(\omega\),
+except that it is restricted to \(U_h\).
+
+It remains to count this predicate.  Split \(E_R^\ast\) according to whether
+the chosen blue witness is large, medium, or small.  If a coordinate
+\(\operatorname{red}(q)\in E_R^\ast\) is certified by a witness in one of
+these three classes, choose one such witness \(b\) and one class label.  The
+defining membership of \(E_R^\ast\) gives the projected-pair condition in
+\(\omega^\ast\).  By (2) the same \(q\) satisfies the corresponding
+projected-pair condition in \(\omega\).  By the classification equivalences
+from the coverage child, the same \(b\) lies in the same large, medium, or
+small class for \(\omega\).  Therefore, for that class, the final pair of
+vertices of \(I\) producing \(q\) belongs to
+\[
+\noderef{TwoBiteClosedPairsInClass}(\omega,I,\mathcal A).
+\tag{3}
+\]
+The map from red tagged coordinates to final unordered pairs has
+multiplicity at most one, because the red projection of a fixed unordered
+final pair determines a unique increasing base pair in
+\(\noderef{TwoBiteBasePairs}\).  Hence the number of red candidate
+coordinates certified by class \(\mathcal A\) is at most the number of
+closed pairs in that class.
+
+For the large class, \(\noderef{LargeClosedPairsBound}\), together with the
+eventual hierarchy, \(n>n_0\), the rounded parameter identities, the scale
+identity for \(I\), and the fiber-degree part of regularity, gives a
+\(\noderef{ClosedPairsBound}(-,\varepsilon_1,k)\) bound.  For the medium and
+small classes, the medium and small closed-pair conjuncts of
+\(\noderef{TwoBiteRegularityEvent}\) give the same
+\(\varepsilon_1k^2\) bound.  Summing the three class contributions gives
+\[
+|E_R^\ast|\le
+\varepsilon_1k^2+\varepsilon_1k^2+\varepsilon_1k^2
+=3\varepsilon_1k^2,
+\]
+which is
+\(\noderef{ClosedPairsBound}(|E_R^\ast|,3\varepsilon_1,k)\).
+This proves the promised size bound uniformly for every regular completion
+with the same exposed blue realization.  Notice that the bound is for the
+fixed set \(E_R^\ast\), not for a set chosen after red terminal values are
+known.
+
+Now assume in addition that \(I\) is independent in the final shadow graph of
+\(\omega\), and let \(e=\operatorname{red}(q)\) be a present red
+staged-open coordinate of \(\omega\).  By the history hypothesis on staged
+open coordinates, \(e\in U_h\).  Apply
+\(\noderef{FixedSetExceptionalWitnessClassification}\) to the completed
+regular sample \(\omega\).  Its hypotheses are exactly the scalar
+hypotheses above, the regularity of \(\omega\), and the independence of
+\(I\).  The child theorem says that this present staged-open red coordinate
+has a non-huge opposite-color blue witness: there is a blue vertex \(b\) that
+is large, medium, or small for \(I\) in \(\omega\), and
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega
+(\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b)))\bigr).
+\tag{4}
+\]
+Using (2), the projected-pair condition in (4) transfers to
+\(\omega^\ast\); using the classification equivalences from the coverage
+child, the same \(b\) is large, medium, or small for
+\(\omega^\ast\).  Thus \(b\) certifies the displayed membership condition
+for \(E_R^\ast\).  Since \(e\in U_h\), the defining equivalence of
+\(E_R^\ast\) gives \(e\in E_R^\ast\).
+
+The blue case repeats the argument with the colors interchanged.  Agreement
+on the red terminal coordinates fixes all red neighborhoods and red
+large/medium/small classifications before blue terminal values are exposed;
+this is the red side of
+\(\noderef{FixedSetOppositeColorTerminalCoverage}\), using (H1), (H2), the
+common injection, and recorded agreement in exactly the same way.  The same
+three class bounds give
+\(\noderef{ClosedPairsBound}(|E_B^\ast|,3\varepsilon_1,k)\); and
+\(\noderef{FixedSetExceptionalWitnessClassification}\), transferred through
+the common injection and red first-color agreement, puts every present blue
+staged-open coordinate needed for final independence into \(E_B^\ast\).
+\end{proof}

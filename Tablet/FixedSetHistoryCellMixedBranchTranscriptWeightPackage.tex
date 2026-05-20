@@ -1,0 +1,217 @@
+\begin{helper}
+Fix a history event \(H\), a target event \(T\), a terminal coordinate set
+\(U\), a nodup terminal order \(o\) with \(\operatorname{toFinset}(o)=U\),
+a finite blue-label family \({\mathcal B}\), branch labels
+\(\beta\), red labels \(J\), transcripts
+\(\tau=(P_\tau,A_\tau,Z_\tau)\), blue traces \(S_\beta\), red supports
+\(R_{\beta,J}\), and cell events \(G_{B,J,\beta,\tau}\).  Assume
+\[
+0\le p\le 1/2,
+\]
+and assume the complete terminal product law conditioned on \(H\): for every
+assignment \(A\subseteq U\),
+\[
+\Pr(\forall e\in U,\ X_e\leftrightarrow e\in A\mid H)
+=p^{|A|}(1-p)^{|U|-|A|}.
+\]
+Assume each \(B\in{\mathcal B}\) is a blue \(u_B\)-set contained in \(U\),
+and assume branch functionality: equality of the complete blue trace on all
+blue coordinates of \(U\) forces equality of branch labels.
+
+For every nonempty cell, assume the branch/transcript geometry supplied by
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\):
+\[
+|R_{\beta,J}|=u_R,\qquad R_{\beta,J}\subseteq U,
+\]
+\[
+R_{\beta,J}\hbox{ is red},\qquad
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad
+Z_\tau\subseteq A_\tau,\qquad
+L:=\max(0,a-u_R-u_B)\le |Z_\tau|,
+\]
+and \(P_\tau,A_\tau\) encode the complete blue terminal trace: for every
+blue coordinate \(e\in U\),
+\[
+e\in S_\beta\Longleftrightarrow e\in P_\tau,\qquad
+e\notin S_\beta\Longleftrightarrow e\in A_\tau.
+\]
+the sample in the cell agrees with \(S_\beta\) on all blue terminal
+coordinates, all coordinates of \(P_\tau\) are present, and all coordinates
+of \(A_\tau\) are absent.  The selected absence set \(Z_\tau\) may contain
+both red and blue coordinates.
+
+In addition, assume the paper-specific combinatorial support interface
+exposed by the branch/transcript construction.  There is a realized-cell
+predicate \(\operatorname{Realized}(B,J,\beta,\tau)\) and an
+assignment-compatibility predicate
+\(\operatorname{Compat}(A;B,J,\beta,\tau)\).  The interface also includes an
+explicit realized-geometry certificate: whenever
+\(\operatorname{Realized}(B,J,\beta,\tau)\) holds, all the displayed
+red-support, transcript-subset, disjointness, blue-trace, selected-absence,
+and lower-bound properties above hold for that formal pair.  The
+compatibility predicate implies the usual span equations: compatible
+assignments contain \(P_\tau\), avoid \(A_\tau\setminus Z_\tau\), and agree
+with \(S_\beta\) on every unselected blue coordinate.  Functional scan
+disjointness says that one terminal assignment cannot be compatible with two
+distinct realized pairs \((\beta,\tau)\).  Non-realized formal pairs have no
+cell samples.
+No one-cell released-reconstruction clause is assumed.  Instead, for every
+fixed \((B,J)\), assume the residual leaf certificate supplied by the
+lower-level reveal-order construction.  Thus there is a finite leaf set
+\(\Lambda_{B,J}\), a leaf assignment
+\[
+\iota_{B,J}(\beta,\tau)\in\Lambda_{B,J},
+\]
+and a leaf mass \(\nu_{B,J}:\Lambda_{B,J}\to\mathbb R\) such that
+\[
+0\le \nu_{B,J}(\lambda),\qquad
+\sum_{\lambda\in\Lambda_{B,J}}\nu_{B,J}(\lambda)\le1.
+\]
+The leaf assignment is injective on realized cells for this fixed pair:
+if \(\tau,\tau'\) are allowed transcripts, both
+\((B,J,\beta,\tau)\) and \((B,J,\beta',\tau')\) are realized, and
+\[
+\iota_{B,J}(\beta,\tau)=\iota_{B,J}(\beta',\tau'),
+\]
+then \(\beta=\beta'\) and \(\tau=\tau'\).  Finally, every realized pair
+satisfies the residual domination
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+\le \nu_{B,J}(\iota_{B,J}(\beta,\tau)).
+\]
+These are leaf-level scan data, not cell-indexed residual masses.
+
+Then there are weights \(w_{B,J,\beta,\tau}\) such that
+\[
+0\le w_{B,J,\beta,\tau},
+\qquad
+w_{B,J,\beta,\tau}\le p^{|P_\tau|}(1-p)^{|A_\tau|},
+\]
+\[
+\Pr(T\cap H\cap G_{B,J,\beta,\tau})
+\le \Pr(H)\,w_{B,J,\beta,\tau},
+\]
+and, for every fixed \(B\in{\mathcal B}\) and \(J\),
+\[
+\sum_{\beta,\tau} w_{B,J,\beta,\tau}
+\le p^{u_R}p^{u_B}(1-p)^L .
+\]
+\end{helper}
+\begin{proof}
+Write \(q=1-p\).  From \(0\le p\le1/2\), we have \(0\le q\le1\).  For a
+formal pair \((B,J,\beta,\tau)\), define \(w_{B,J,\beta,\tau}=0\) if
+\(\tau\) is not an allowed transcript or if
+\(\operatorname{Realized}(B,J,\beta,\tau)\) fails.  For realized allowed
+pairs, define \(w_{B,J,\beta,\tau}\) to be the terminal cylinder mass of the
+cell block.
+
+Nonnegativity follows immediately from the nonnegativity of the product-law
+summands.  For a realized cell, the geometry gives
+\[
+P_\tau,A_\tau\subseteq U,\qquad P_\tau\cap A_\tau=\emptyset .
+\]
+Applying \(\noderef{FixedSetHistoryCellFixedCylinderCharge}\) to the present
+set \(P_\tau\), the absent set \(A_\tau\), and the complete product law on
+\(U\) gives
+\[
+w_{B,J,\beta,\tau}\le p^{|P_\tau|}q^{|A_\tau|}.
+\]
+For a non-realized pair the weight is \(0\), so the same inequality holds.
+
+The event bound is also pointwise.  If
+\(\omega\in T\cap H\cap G_{B,J,\beta,\tau}\), then the non-realized
+exclusion makes \((B,J,\beta,\tau)\) realized.  The cell geometry says that
+\(\omega\) satisfies all present and absent constraints of the terminal
+cylinder defining \(w_{B,J,\beta,\tau}\).  Hence the conditional probability
+of \(T\cap G_{B,J,\beta,\tau}\) given \(H\) is at most this cell weight.  To
+convert this conditional bound into an unconditional event bound, use
+\(\noderef{TwoBiteSampleWeightNonnegative}\), which gives nonnegative sample
+weights from \(0\le p\le1/2\), hence \(p\le1\).  If \(\Pr(H)=0\), monotonicity
+and nonnegativity give
+\(\Pr(T\cap H\cap G_{B,J,\beta,\tau})=0\).  If \(\Pr(H)>0\), the definition
+of conditional probability gives the same inequality after multiplying by
+\(\Pr(H)\).  This is exactly the zero-history-mass split packaged in
+\(\noderef{TwoBiteConditionalIntersectionBound}\), applied with cell bound
+\(\Pr(H)\) and conditional bound \(w_{B,J,\beta,\tau}\).  Since
+\(w_{B,J,\beta,\tau}\ge0\), the resulting \( \min(1,w_{B,J,\beta,\tau})\)
+factor is at most \(w_{B,J,\beta,\tau}\), and therefore
+\[
+\Pr(T\cap H\cap G_{B,J,\beta,\tau})
+\le \Pr(H)\,w_{B,J,\beta,\tau}.
+\]
+
+Fix \(B\in{\mathcal B}\) and \(J\).  The zero rule from
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\) removes all
+non-realized formal pairs from both the probability and weight sums, so it
+remains to sum over realized \((\beta,\tau)\).  This zero rule is used only
+for removing empty formal cells; the geometry for the remaining realized
+pairs comes from the separate realized-geometry certificate exported by the
+same node.
+
+For a realized pair, that realized-geometry certificate from
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\) gives
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad |B|=u_B,\qquad
+|R_{\beta,J}|=u_R,
+\]
+with \(B\) blue-only and \(R_{\beta,J}\) red-only, hence disjoint.  It also
+gives
+\[
+Z_\tau\subseteq A_\tau,\qquad P_\tau\cap A_\tau=\emptyset,\qquad
+L\le |Z_\tau|.
+\]
+
+For this fixed \(B,J\), choose the residual leaf certificate assumed in the
+statement.  Its nonnegativity and normalized total mass give a genuine
+leaf-level subprobability; its injectivity says that no realized
+branch/transcript pair is counted through the same residual leaf twice; and
+its termwise domination is exactly
+\[
+p^{|P_\tau|-u_R-u_B}q^{|A_\tau|-|Z_\tau|}
+\le \nu_{B,J}(\iota_{B,J}(\beta,\tau)).
+\]
+The certificate is explicitly allowed to charge selected blue absences:
+\(Z_\tau\) is only required to be a subset of \(A_\tau\), and its factors are
+removed once from the same terminal cylinder.
+
+Applying
+\(\noderef{FixedSetHistoryCellFixedBJResidualProductTreePacking}\) to this
+same residual leaf certificate gives residual masses \(\nu_{\beta,\tau}\)
+satisfying
+\[
+\sum_{\beta,\tau}\nu_{\beta,\tau}\le1
+\]
+and, for every realized pair,
+\[
+p^{|P_\tau|}q^{|A_\tau|}
+\le
+p^{u_R}p^{u_B}q^L\,\nu_{\beta,\tau}.
+\]
+
+Combining the helper's termwise inequality with the cylinder estimate already
+proved,
+\[
+w_{B,J,\beta,\tau}\le p^{|P_\tau|}q^{|A_\tau|},
+\]
+gives
+\[
+w_{B,J,\beta,\tau}
+\le p^{u_R}p^{u_B}q^L\,\nu_{\beta,\tau}
+\]
+for every realized pair.  Non-realized formal pairs have weight \(0\), so the
+same domination holds after setting their residual mass to \(0\).
+
+Summing and using nonnegativity of the fixed factor gives
+\[
+\sum_{\beta,\tau} w_{B,J,\beta,\tau}
+\le
+p^{u_R}p^{u_B}q^L
+  \sum_{\beta,\tau}\nu_{\beta,\tau}
+\le
+p^{u_R}p^{u_B}q^L .
+\]
+Substituting \(q=1-p\) gives the claimed bound.
+\end{proof}

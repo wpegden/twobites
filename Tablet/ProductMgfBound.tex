@@ -1,0 +1,69 @@
+\begin{helper}
+Let \(\Omega\) be finite and let \(q:\Omega\to\mathbb R\) be nonnegative with
+\(\sum_a q(a)=1\).  Let \(Z:\Omega^r\to\mathbb R\), and suppose that changing
+one coordinate of an outcome while keeping all other coordinates fixed changes
+\(Z\) by at most \(c\), where \(c>0\).  With
+\[
+w(\omega)=\prod_{i=0}^{r-1}q(\omega_i),
+\qquad
+\mu=\sum_{\omega\in\Omega^r}w(\omega)Z(\omega),
+\]
+one has, for every \(\lambda\ge0\),
+\[
+\sum_{\omega\in\Omega^r} w(\omega)e^{\lambda(Z(\omega)-\mu)}
+\le
+\exp\!\left(\frac{r\lambda^2c^2}{8}\right).
+\]
+\end{helper}
+\begin{proof}
+We prove the statement by induction on the number \(r\) of coordinates.  When
+\(r=0\), there is only one product outcome.  The expectation is the value of
+\(Z\) at that outcome, so \(Z-\mu=0\), the left side is \(1\), and the right
+side is also \(1\).
+
+For the induction step, write an outcome as \((x,\eta)\), where \(x\in\Omega\)
+is the first coordinate and \(\eta\in\Omega^n\) is the tail.  Let
+\[
+\mu_x=\sum_{\eta\in\Omega^n}
+\left(\prod_{i=0}^{n-1}q(\eta_i)\right)Z(x,\eta).
+\]
+The product mass splits as \(q(x)\prod_i q(\eta_i)\), and the total
+expectation splits as \(\mu=\sum_x q(x)\mu_x\).
+
+For each fixed \(x\), the tail function \(\eta\mapsto Z(x,\eta)\) still has
+coordinate oscillation at most \(c\).  The induction hypothesis therefore gives
+\[
+\sum_{\eta}
+\left(\prod_i q(\eta_i)\right)
+e^{\lambda(Z(x,\eta)-\mu_x)}
+\le
+\exp\!\left(\frac{n\lambda^2c^2}{8}\right).
+\]
+It remains to control the first-coordinate averages \(\mu_x-\mu\).  If
+\(x,y\in\Omega\), then
+\[
+|\mu_x-\mu_y|
+\le
+\sum_\eta\left(\prod_i q(\eta_i)\right)|Z(x,\eta)-Z(y,\eta)|
+\le c,
+\]
+using the coordinate oscillation hypothesis in the first coordinate and
+\noderef{ProductWeightSumOne}.  Hence the values \(\mu_x-\mu\) lie in an
+interval of length at most \(c\), and their \(q\)-weighted mean is \(0\).
+Applying \noderef{ProductHoeffdingMgFStep} gives
+\[
+\sum_x q(x)e^{\lambda(\mu_x-\mu)}
+\le
+\exp\!\left(\frac{\lambda^2c^2}{8}\right).
+\]
+Multiplying the tail estimate by this first-coordinate estimate yields
+\[
+\sum_{x,\eta}q(x)\prod_i q(\eta_i)e^{\lambda(Z(x,\eta)-\mu)}
+\le
+\exp\!\left(\frac{n\lambda^2c^2}{8}\right)
+\exp\!\left(\frac{\lambda^2c^2}{8}\right)
+=
+\exp\!\left(\frac{(n+1)\lambda^2c^2}{8}\right).
+\]
+This is the induction step.
+\end{proof}

@@ -1,0 +1,121 @@
+\begin{helper}[FiberAndDegreeMixedLiftedIntersectionUniformBound]
+\label{helper:FiberAndDegreeMixedLiftedIntersectionUniformBound}
+Let \(m=\noderef{TwoBiteNaturalReducedVertexCount}(n)\) and
+\[
+p=\noderef{TwoBiteEdgeProbability}(1/2,n).
+\]
+Assume \(n\le m^2\) and \(\log n\ge1\).  For fixed base graphs \(G_R\) and
+\(G_B\) on \(\operatorname{Fin}(m)\), suppose that for every
+\(r,b\in\operatorname{Fin}(m)\),
+\[
+|\{u:G_R.Adj(r,u)\}|\le2pm
+\quad\text{and}\quad
+|\{v:G_B.Adj(b,v)\}|\le2pm .
+\]
+Then the \(\noderef{TwoBiteConditionalProbability}\), conditioned on
+\(\omega.1=G_R\) and \(\omega.2.1=G_B\), of the event that some mixed lifted
+intersection has size greater than \(100(\log n)^3\) is at most
+\[
+m^2\exp(-2(\log n)^3).
+\]
+\end{helper}
+
+\begin{proof}
+Write \(L=\log n\), \(N=m^2\), and \(T=100L^3\).  Since \(L\ge1\), we have
+\(T>0\).  We first identify the conditional distribution after fixing the
+two base graphs.  By \(\noderef{TwoBiteSample}\), a sample is a triple
+\[
+\omega=(G_R',G_B',\phi),
+\]
+where \(\phi\) is an injection from the \(n\) final vertices into
+\(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\).  The conditioning event
+in \(\noderef{TwoBiteConditionalProbability}\) is exactly
+\[
+G_R'=G_R,\qquad G_B'=G_B.
+\]
+By \(\noderef{TwoBiteSampleWeight}\), the weight of such a triple factors as
+the red graph weight, the blue graph weight, and
+\(\noderef{UniformInjectionWeight}(n,m)\).  Inside this conditioning cell the
+two graph weights are constant and cancel between numerator and denominator.
+The assumption \(n\le m^2\) makes the injection space nonempty, so
+\(\noderef{UniformInjectionWeight}\) is the reciprocal of the number of
+injections.  Thus, conditional on \(G_R\) and \(G_B\), the injection is
+uniform over all injections.  Equivalently, its image is a uniform
+\(n\)-element subset sampled without replacement from the \(N=m^2\) product
+cells: every \(n\)-set of cells has exactly \(n!\) orderings by the final
+vertices, so all image sets have the same total conditional weight.
+
+Fix \(r,b\in\operatorname{Fin}(m)\).  By
+\(\noderef{TwoBiteLiftedNeighborhood}\), a final vertex lies in
+\[
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(b))
+\]
+exactly when its injected cell lies in the marked rectangle
+\[
+K_{r,b}=N_{G_R}(r)\times N_{G_B}(b).
+\]
+The degree hypothesis for this same pair \((r,b)\) gives
+\[
+|K_{r,b}|
+=|N_{G_R}(r)|\,|N_{G_B}(b)|
+\le (2pm)(2pm)=4p^2m^2.
+\tag{1}
+\]
+Choose any bijection between the \(m^2\) product cells and
+\(\operatorname{Fin}(N)\).  Under this bijection the count of sampled cells
+in \(K_{r,b}\) is a hypergeometric count with population \(N=m^2\), sample
+size \(n\), and marked set size \(|K_{r,b}|\).  Its mean satisfies
+\[
+\mu_{r,b}=n\frac{|K_{r,b}|}{m^2}\le 4p^2n.
+\tag{2}
+\]
+
+Now use the specialized parameter value.  Since
+\(p=\noderef{TwoBiteEdgeProbability}(1/2,n)\), the definition of
+\(\noderef{TwoBiteEdgeProbability}\) gives
+\[
+p=\frac12\sqrt{\frac Ln}.
+\]
+Because \(L\ge1\), \(n>0\) and \(L/n\ge0\), so squaring this identity is
+legitimate and yields
+\[
+4p^2n=L.
+\tag{3}
+\]
+Combining (2) and (3), \(\mu_{r,b}\le L\).
+
+Instantiate \(\noderef{FiberAndDegreeMixedLiftedIntersectionHypergeometricBound}\)
+with population \(N=m^2\), sample size \(n\), marked set \(K_{r,b}\),
+threshold \(T=100L^3\), and exponential parameter \(L_{\mathrm{param}}=1\).
+It gives
+\[
+\Pr(Y_{r,b}\ge T\mid G_R,G_B)
+\le \exp(\mu_{r,b}(e-1)-T).
+\tag{4}
+\]
+Using \(\mu_{r,b}\le L\), \(e-1<2\), and \(L\ge1\),
+\[
+\mu_{r,b}(e-1)-T
+\le 2L-100L^3
+\le -2L^3.
+\tag{5}
+\]
+Thus, for this fixed pair,
+\[
+\Pr(Y_{r,b}>100L^3\mid G_R,G_B)
+\le \exp(-2L^3),
+\tag{6}
+\]
+because the event \(Y_{r,b}>100L^3\) is contained in
+\(Y_{r,b}\ge T\).
+
+There are exactly \(m^2\) choices of the mixed pair \((r,b)\).  Applying the
+union bound to (6) over all such choices gives
+\[
+\Pr(\exists r,b:\,Y_{r,b}>100L^3\mid G_R,G_B)
+\le m^2\exp(-2L^3),
+\]
+which is the asserted conditional bound.
+\end{proof}

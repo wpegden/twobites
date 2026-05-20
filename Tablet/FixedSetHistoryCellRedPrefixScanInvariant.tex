@@ -1,0 +1,113 @@
+\begin{helper}
+Let \(U\) be a finite terminal coordinate set.  For each coordinate \(e\),
+let \(\operatorname{Past}(e)\subseteq U\).  Let the scan tests be the four
+predicates
+\[
+\operatorname{StagedOpen}(A,e),\qquad
+\operatorname{Touched}(A,e),\qquad
+\operatorname{SameColorClosed}(A,e),\qquad
+\operatorname{PreTerminalRecorded}(A,e)
+\]
+on terminal assignments \(A\) and coordinates \(e\), and assume prefix
+safety: if \(A,A'\subseteq U\) agree on \(\operatorname{Past}(e)\), then
+all four tests have the same value at \(e\) for \(A\) and \(A'\).
+
+Let branch labels \(\beta\) carry complete blue traces \(S_\beta\).  Assume
+branch labels are functional from these traces: if two labels have the same
+membership on every blue coordinate of \(U\), then they are equal.  Let a
+transcript \(\tau\) have forced-present, forced-absent, and selected sets
+\[
+P_\tau,\qquad A_\tau,\qquad Z_\tau .
+\]
+For each branch label let \(F_\beta\) be the fixed present support and
+\(O_\beta\) the open-candidate set.  Let
+\(\operatorname{Realized}(\beta,\tau)\) be the realized-cell predicate, let
+\(\operatorname{Compatible}(A,\beta,\tau)\) be terminal-assignment
+compatibility, let
+\(\operatorname{Sibling}(A,\beta,\tau,e)\) be the selected-present sibling
+predicate, and let
+\(\operatorname{branchOfAssignment}(A)\) and
+\(\operatorname{scanTranscript}(A)\) be the branch and transcript returned
+by the deterministic scan on \(A\).
+
+Assume the following exact interface conditions.
+\begin{itemize}
+\item If \(A\subseteq U\) is compatible with a realized
+\((\beta,\tau)\), and \(A\)'s blue terminal truth table agrees with
+\(S_\beta\), then
+\(\operatorname{branchOfAssignment}(A)=\beta\).
+\item If \(A\subseteq U\) is compatible with a realized
+\((\beta,\tau)\), and no selected-present sibling is active for
+\((A,\beta,\tau)\), then
+\(\operatorname{scanTranscript}(A)=\tau\).
+\item Every active sibling \(\operatorname{Sibling}(A,\beta,\tau,e)\)
+has \(e\in Z_\tau\).
+\item Every realized \((\beta,\tau)\) satisfies
+\[
+F_\beta\subseteq P_\tau,\qquad
+P_\tau\cap A_\tau=\emptyset,\qquad
+Z_\tau\subseteq A_\tau,\qquad
+Z_\tau\subseteq O_\beta .
+\]
+\item If \(A\subseteq U\) is compatible with a realized
+\((\beta,\tau)\), then \(A\)'s complete blue terminal truth table is
+\(S_\beta\).
+\item If \(\operatorname{Sibling}(A,\beta,\tau,e)\) holds for a realized
+pair with \(e\in Z_\tau\), then \(e\in A\) and \(A\)'s complete blue
+terminal truth table is \(S_\beta\).
+\item Fixed-support exhaustion holds: if \(A\subseteq U\) is compatible
+with a realized \((\beta,\tau)\), \(e\in O_\beta\), and \(e\in A\), then
+\(e\in F_\beta\).
+\end{itemize}
+
+Then two scan consequences hold.  First, if \((\beta,\tau)\) is realized,
+\(e\in Z_\tau\), and \(\operatorname{Sibling}(A,\beta,\tau,e)\) holds, then
+\(A\) is compatible with no realized pair.  Second, if \(A\subseteq U\) is
+compatible with a realized \((\beta,\tau)\), then
+\[
+\beta=\operatorname{branchOfAssignment}(A),
+\qquad
+\operatorname{scanTranscript}(A)=\tau .
+\]
+\end{helper}
+\begin{proof}
+Fix a realized pair \((\beta,\tau)\), a selected coordinate \(e\in Z_\tau\),
+and an active sibling \(A\).  Suppose, toward contradiction, that \(A\) is
+compatible with another realized pair \((\beta',\tau')\).  The sibling
+hypothesis says that \(e\in A\) and that the complete blue terminal truth
+table of \(A\) is \(S_\beta\).  Compatibility with
+\((\beta',\tau')\) says that the same truth table is \(S_{\beta'}\).  Since
+branch labels are functional from complete blue traces, \(\beta'=\beta\).
+
+The original realized geometry gives \(e\in O_\beta\) from
+\(e\in Z_\tau\).  Rewriting \(\beta'=\beta\), fixed-support exhaustion for
+the alleged compatible realized pair \((\beta',\tau')\) gives
+\(e\in F_\beta\).  The geometry of the original realized pair gives
+\[
+F_\beta\subseteq P_\tau,\qquad Z_\tau\subseteq A_\tau .
+\]
+Thus \(e\in P_\tau\) and \(e\in A_\tau\), contradicting
+\(P_\tau\cap A_\tau=\emptyset\).  Hence a selected-present sibling is
+compatible with no realized pair.
+
+Now let \(A\subseteq U\) be compatible with a realized \((\beta,\tau)\).  If
+some selected-present sibling for \((A,\beta,\tau)\) were active, then its
+coordinate would lie in \(Z_\tau\), and the pruning result just proved,
+applied to the same realized pair, would say that \(A\) is not compatible
+with \((\beta,\tau)\), a contradiction.  Therefore no selected-present
+sibling is active.
+
+Compatibility supplies the complete blue trace condition for \(A\), so the
+branch-selection hypothesis gives
+\(\beta=\operatorname{branchOfAssignment}(A)\).  Since no sibling is active,
+the scan-output hypothesis gives
+\(\operatorname{scanTranscript}(A)=\tau\).  These are the required
+functional scan conclusions.
+
+This node intentionally stops at the one-way pruning and functional-scan
+consequences.  The prefix-safety hypothesis is the application-level
+condition used to justify the branch-output and scan-output hypotheses when
+the deterministic scan is instantiated in the surrounding
+branch/transcript construction; it does not by itself assert a converse
+residual-cylinder completeness statement.
+\end{proof}

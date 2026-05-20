@@ -1,0 +1,47 @@
+\begin{helper}
+Let \(\alpha,\beta\) be types with decidable equality, let \(I\) be a finite
+set of elements of \(\alpha\), let \(\pi:\alpha\to\beta\), and let
+\(B\in\mathbb R\).  Suppose that for every \(a\in I\),
+\[
+\left|\{b\in I:\pi(a)=\pi(b)\}\right|\le B .
+\]
+Then the number of ordered pairs in \(I\times I\) with equal projection is
+bounded by
+\[
+\left|\{(a,b)\in I\times I:\pi(a)=\pi(b)\}\right|
+   \le |I|\,B .
+\]
+\end{helper}
+\begin{proof}
+For each \(a\in I\), put
+\[
+F_a=\{b\in I:\pi(a)=\pi(b)\}
+\]
+and let
+\[
+E_a=\{a\}\times F_a
+  =\{(a,b):b\in I,\ \pi(a)=\pi(b)\}.
+\]
+The sets \(E_a\), as \(a\) ranges over \(I\), are pairwise disjoint: if
+\((x,y)\in E_a\cap E_{a'}\), then the first coordinate is both \(a\) and
+\(a'\), hence \(a=a'\).  Their union is exactly
+\[
+E=\{(a,b)\in I\times I:\pi(a)=\pi(b)\},
+\]
+because an ordered pair in \(E\) belongs to the unique summand indexed by its
+first coordinate.
+
+The map \(b\mapsto(a,b)\) is injective from \(F_a\) to \(E_a\), and its image
+is all of \(E_a\), so \(|E_a|=|F_a|\).  By finite additivity over the
+pairwise-disjoint union,
+\[
+|E|=\sum_{a\in I}|E_a|
+    =\sum_{a\in I}|F_a|.
+\]
+The hypothesis gives \(|F_a|\le B\) for each \(a\in I\).  Summing these
+inequalities yields
+\[
+|E|\le\sum_{a\in I}B=|I|\,B,
+\]
+which is the desired bound.
+\end{proof}

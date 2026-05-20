@@ -1,0 +1,88 @@
+\begin{helper}
+Under the two-bite law, the probability of the projection-size event \(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B)\) is at most
+\[
+\frac{\binom{m}{\ell_R}\binom{m}{\ell_B}\binom{\ell_R\ell_B}{k}}{\binom{m^2}{k}}.
+\]
+\end{helper}
+\begin{proof}
+Let \(U=\operatorname{Fin}m\times\operatorname{Fin}m\), and let
+\(\Omega=\{\pi:\operatorname{Fin}n\hookrightarrow U\}\).  For an injection
+\(\pi\), put \(S_\pi=\pi(I)\).  Since \(|I|=k\), injectivity gives
+\(|S_\pi|=k\).  The event
+\(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B)\) depends only on
+\(\pi\): by the definitions of the red and blue projections,
+\[
+\pi_R(I)=\operatorname{fst}(S_\pi),\qquad
+\pi_B(I)=\operatorname{snd}(S_\pi).
+\]
+Thus the event is exactly the injection-only property
+\[
+P(S_\pi):\quad
+|S_\pi|=k,\quad |\operatorname{fst}(S_\pi)|=\ell_R,\quad
+|\operatorname{snd}(S_\pi)|=\ell_B.
+\]
+
+By \(\noderef{TwoBiteEventProbabilityInjectionOnly}\), the two-bite
+probability of this event is
+\[
+N_{\rm inj}\cdot \noderef{UniformInjectionWeight}(n,m),
+\]
+where \(N_{\rm inj}\) is the number of injections \(\pi\in\Omega\) for which
+the above property holds.
+
+We first dispose of zero cases.  If \(\binom{m^2}{k}=0\), then there is no
+\(k\)-subset of \(U\).  Since every injection would produce the
+\(k\)-element subset \(S_\pi\), there are no relevant injections; the
+probability is \(0\).  In the Lean real-number statement, division by this
+zero denominator is interpreted as \(0\), so the displayed bound also has
+right hand side \(0\).  If \(|\Omega|=0\) while \(\binom{m^2}{k}>0\), then
+\(\noderef{UniformInjectionWeight}(n,m)=0\), so the probability is \(0\),
+whereas the right hand side is nonnegative.  The inequality follows in both
+zero cases.
+
+Assume from now on that \(|\Omega|>0\) and \(\binom{m^2}{k}>0\).  Then
+\[
+\noderef{UniformInjectionWeight}(n,m)=\frac1{|\Omega|},
+\]
+so the probability is \(N_{\rm inj}/|\Omega|\).
+
+Apply \(\noderef{UniformInjectionImage}\) to the property
+\[
+Q(S):\quad |\operatorname{fst}(S)|=\ell_R
+\text{ and }|\operatorname{snd}(S)|=\ell_B.
+\]
+For every injection \(\pi\), the set \(S_\pi\) already has size \(k\), so
+\(Q(S_\pi)\) is equivalent to
+\(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B)\).  Therefore
+\[
+N_{\rm inj}\binom{m^2}{k}
+=N_{\rm sub}|\Omega|,
+\]
+where \(N_{\rm sub}\) is the number of \(k\)-subsets
+\(S\subseteq U\) with
+\[
+|\operatorname{fst}(S)|=\ell_R,\qquad
+|\operatorname{snd}(S)|=\ell_B.
+\]
+Because both denominators are positive, we may divide by
+\(|\Omega|\binom{m^2}{k}\) and obtain
+\[
+\frac{N_{\rm inj}}{|\Omega|}
+=\frac{N_{\rm sub}}{\binom{m^2}{k}}.
+\]
+
+Finally, \(\noderef{ProjectionSubsetCountBound}\) gives
+\[
+N_{\rm sub}\le
+\binom{m}{\ell_R}\binom{m}{\ell_B}\binom{\ell_R\ell_B}{k}.
+\]
+Dividing by the positive \(\binom{m^2}{k}\) yields
+\[
+\operatorname{TwoBiteEventProbability}
+(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B))
+\le
+\frac{\binom{m}{\ell_R}\binom{m}{\ell_B}\binom{\ell_R\ell_B}{k}}
+{\binom{m^2}{k}},
+\]
+as required.
+\end{proof}

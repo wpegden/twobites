@@ -1,0 +1,149 @@
+\begin{helper}
+Fix a finite terminal coordinate set \(U\), a number \(p\) with
+\(0\le p\le 1/2\), and a fixed blue set \(B\subseteq U\) with
+\(|B|=u_B\).  Let \(\mathcal B\) be a finite branch-label set with traces
+\(\operatorname{blueTrace}(\beta)\), let \(\mathcal T\) be a finite set of
+transcripts \(\tau=(P_\tau,A_\tau,Z_\tau)\), let \(J\) be a fixed red label,
+and let \(R_{\beta,J}\) be the red support attached to \((\beta,J)\).  Suppose
+there is a realized-cell predicate \(\operatorname{Realized}(\beta,\tau)\).
+
+Assume the following reduced hypotheses.  The set \(B\) is blue.  Branch labels
+are functional from their complete blue terminal traces: if two labels have
+the same truth value of \(\operatorname{blueTrace}\) on every blue coordinate
+of \(U\), then the labels are equal.  For every realized \((\beta,\tau)\) with
+\(\tau\in\mathcal T\), the realized-cell geometry gives
+\[
+|R_{\beta,J}|=u_R,\quad R_{\beta,J}\subseteq U,\quad
+R_{\beta,J}\text{ red},\quad Z_\tau\text{ red},\quad
+P_\tau,A_\tau\subseteq U,\quad P_\tau\cap A_\tau=\emptyset,
+\]
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,\qquad Z_\tau\subseteq A_\tau,
+\]
+and for every blue \(e\in U\),
+\[
+e\in\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in P_\tau,
+\qquad
+e\notin\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in A_\tau .
+\]
+
+Let
+\[
+L=\{(\beta,\tau):\tau\in\mathcal T,
+      \operatorname{Realized}(\beta,\tau)\}.
+\]
+For \(\ell=(\beta,\tau)\in L\), let \(C_\ell\) be the set of
+\(A\subseteq U\) such that
+\[
+P_\tau\subseteq A,\qquad
+A\cap(A_\tau\setminus Z_\tau)=\emptyset,\qquad
+\forall\text{ blue }e\in U\setminus Z_\tau,
+  e\in\operatorname{blueTrace}(\beta)\Longleftrightarrow e\in A .
+\]
+Then the complete-assignment product mass of the released union is bounded by
+the fixed support factor:
+\[
+\sum_{A\in\bigcup_{\ell\in L}C_\ell}p^{|A|}(1-p)^{|U|-|A|}
+\le p^{u_R}p^{u_B}.
+\]
+\end{helper}
+\begin{proof}
+Write \(q=1-p\).  The complete-assignment weight of
+\(A\subseteq U\) is \(p^{|A|}q^{|U|-|A|}\).  Since \(0\le p\le 1/2\), both
+\(p\) and \(q\) are nonnegative; therefore every product weight below is
+nonnegative, and enlarging a family of assignments can only increase the
+corresponding sum.  Split the terminal coordinates into the disjoint blue and
+red parts
+\[
+U_B=\{e\in U:e\text{ is blue}\},\qquad
+U_R=\{e\in U:e\text{ is red}\}.
+\]
+For an assignment \(A\), write \(A_B=A\cap U_B\) and \(A_R=A\cap U_R\).  Since
+the two coordinate classes are disjoint and cover \(U\), the product weight
+factors as
+\[
+p^{|A|}q^{|U|-|A|}
+=\bigl(p^{|A_B|}q^{|U_B|-|A_B|}\bigr)
+ \bigl(p^{|A_R|}q^{|U_R|-|A_R|}\bigr).
+\]
+
+Consider \(A\in C_\ell\) for a realized leaf \(\ell=(\beta,\tau)\).  The
+condition \(P_\tau\subseteq A\), together with
+\[
+B\cup R_{\beta,J}\subseteq P_\tau,
+\]
+implies \(B\subseteq A_B\) and \(R_{\beta,J}\subseteq A_R\).  The support
+sets are disjoint because \(B\) is blue and \(R_{\beta,J}\) is red, with
+\(|B|=u_B\) and \(|R_{\beta,J}|=u_R\).
+
+The released set \(Z_\tau\) is red, so every blue coordinate of \(U\) lies
+outside \(Z_\tau\).  Hence the released-cylinder trace condition says, for
+every blue \(e\in U\),
+\[
+e\in A_B\Longleftrightarrow e\in\operatorname{blueTrace}(\beta).
+\]
+Thus \(A_B\) is the complete blue trace of \(\beta\) on \(U\).  If the same
+assignment \(A\) is represented by another realized leaf
+\((\beta',\tau')\), the same argument gives equality of the two complete blue
+traces on every blue terminal coordinate.  Branch functionality then gives
+\(\beta=\beta'\).  Applying
+\(\noderef{FixedSetHistoryCellRedSupportDeterminedByBlueTrace}\) with this
+blue-trace equality shows
+\[
+R_{\beta,J}=R_{\beta',J}.
+\]
+More generally, if \(A\in C_{\beta,\tau}\) and \(A'\in C_{\beta',\tau'}\) have
+the same blue part \(A_B=A'_B=S\), then both
+\(\operatorname{blueTrace}(\beta)\) and
+\(\operatorname{blueTrace}(\beta')\) agree with \(S\) on every blue terminal
+coordinate.  The same branch-functionality and noderef argument gives
+\(\beta=\beta'\) and \(R_{\beta,J}=R_{\beta',J}\).  Therefore a fixed blue
+trace \(S\subseteq U_B\) determines at most one branch label and one red
+support \(R_S\) relevant to the released union.
+
+Now decompose the union mass by complete blue trace.  For a fixed blue trace
+\(S\subseteq U_B\), all assignments in the corresponding trace class have
+blue part \(A_B=S\).  If this trace class contributes to the released union,
+then \(B\subseteq S\); otherwise its contribution is zero.  Its blue factor is
+\[
+p^{|S|}q^{|U_B|-|S|}.
+\]
+For such a contributing trace \(S\), the previous paragraph gives a
+trace-determined red support \(R_S\subseteq U_R\) of size \(u_R\), and every
+released assignment in the trace class has \(R_S\subseteq A_R\).  Hence the
+red part of the released class is contained in the larger family of all
+\(T\subseteq U_R\) with \(R_S\subseteq T\).  Summing over this larger family,
+the free red coordinates in \(U_R\setminus R_S\) contribute independent
+factors \(p+q=1\), so
+\[
+\sum_{\substack{T\subseteq U_R\\ R_S\subseteq T}}
+  p^{|T|}q^{|U_R|-|T|}
+=p^{|R_S|}=p^{u_R}.
+\]
+Therefore the total released mass in the trace class \(S\) is at most
+\[
+p^{|S|}q^{|U_B|-|S|}\,p^{u_R}.
+\]
+
+Summing this bound over all contributing blue traces and then enlarging to
+all traces \(S\subseteq U_B\) with \(B\subseteq S\) gives
+\[
+\sum_{A\in\bigcup_{\ell\in L}C_\ell}p^{|A|}q^{|U|-|A|}
+\le
+p^{u_R}
+\sum_{\substack{S\subseteq U_B\\ B\subseteq S}}
+  p^{|S|}q^{|U_B|-|S|}.
+\]
+The set \(B\) is contained in \(U_B\) and has size \(u_B\).  Summing over the
+free blue coordinates in \(U_B\setminus B\) gives
+\[
+\sum_{\substack{S\subseteq U_B\\ B\subseteq S}}
+  p^{|S|}q^{|U_B|-|S|}
+=p^{|B|}=p^{u_B}.
+\]
+Combining the last two displays yields the desired bound
+\[
+\sum_{A\in\bigcup_{\ell\in L}C_\ell}p^{|A|}(1-p)^{|U|-|A|}
+\le p^{u_R}p^{u_B}.
+\]
+\end{proof}

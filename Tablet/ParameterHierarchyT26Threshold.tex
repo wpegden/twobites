@@ -1,0 +1,40 @@
+\begin{helper}
+For every \(\eta>0\) and every \(\varepsilon_1>0\), there is \(n_0\)
+such that for every \(n>n_0\), if \(L=\log n\), then
+\[
+\frac{2}{L}\le\frac{\varepsilon_1}{2}
+\]
+and
+\[
+\frac{1}{(1+\eta)n^{1/4}\sqrt L}\le\frac{\varepsilon_1}{2}.
+\]
+\end{helper}
+\begin{proof}
+Since \(\log n\to\infty\), enlarge \(n_0\) so that
+\[
+L=\log n\ge \frac{4}{\varepsilon_1}
+\]
+for all \(n>n_0\).  Multiplying by the positive number
+\(\varepsilon_1/2\) gives
+\[
+\frac{\varepsilon_1}{2}L\ge 2,
+\]
+and hence \(2/L\le \varepsilon_1/2\).
+
+Also enlarge \(n_0\) so that \(L\ge 1\), \(n\ge 1\), and
+\[
+n^{1/4}\ge \frac{2}{\varepsilon_1}.
+\]
+The last condition is possible because \(n^{1/4}\to\infty\).  Since
+\(\eta>0\), we have \(1+\eta\ge1\), and \(L\ge1\) gives
+\(\sqrt L\ge1\).  Therefore
+\[
+(1+\eta)n^{1/4}\sqrt L\ge n^{1/4}\ge \frac{2}{\varepsilon_1}.
+\]
+Taking reciprocals of positive quantities yields
+\[
+\frac{1}{(1+\eta)n^{1/4}\sqrt L}
+  \le \left(\frac{2}{\varepsilon_1}\right)^{-1}
+  =\frac{\varepsilon_1}{2}.
+\]
+\end{proof}

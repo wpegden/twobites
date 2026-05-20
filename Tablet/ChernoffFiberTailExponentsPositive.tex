@@ -1,0 +1,28 @@
+\begin{helper}[Positive fiber Chernoff exponents]
+For every \(0<\delta\le 1/2\), both Chernoff exponents
+\[
+  (1+\delta)\log(1+\delta)-\delta
+  \qquad\text{and}\qquad
+  \delta+(1-\delta)\log(1-\delta)
+\]
+are strictly positive.
+\end{helper}
+\begin{proof}
+For the upper-tail exponent, the standard inequality
+\(\log(1+\delta)>2\delta/(\delta+2)\) for \(\delta>0\) gives
+\[
+(1+\delta)\log(1+\delta)-\delta
+>
+(1+\delta)\frac{2\delta}{\delta+2}-\delta
+=\frac{\delta^2}{\delta+2}>0 .
+\]
+For the lower-tail exponent, apply the strict inequality
+\(\log x<x-1\) to \(x=(1-\delta)^{-1}\), which is positive and not equal to
+\(1\).  Since \(\log((1-\delta)^{-1})=-\log(1-\delta)\), this gives
+\[
+-\log(1-\delta)<(1-\delta)^{-1}-1.
+\]
+Multiplying by \(1-\delta>0\) yields
+\(-(1-\delta)\log(1-\delta)<\delta\), equivalently
+\(\delta+(1-\delta)\log(1-\delta)>0\).
+\end{proof}

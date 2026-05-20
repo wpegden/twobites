@@ -1,0 +1,26 @@
+\begin{helper}
+For every \(\varepsilon_1>0\), there is \(n_0\) such that for every
+\(n>n_0\), if \(L=\log n\), then
+\[
+\frac1{\sqrt L}\le \frac{\varepsilon_1}{2}.
+\]
+\end{helper}
+\begin{proof}
+Since \(\log n\to\infty\), we may choose \(n_0\) so that
+\[
+\log n\ge \left(\frac2{\varepsilon_1}\right)^2
+\]
+for every \(n>n_0\).  Put \(L=\log n\).  The right hand side is
+nonnegative, so \(L\ge0\).  Therefore the monotonicity characterization of
+the square root gives
+\[
+\frac2{\varepsilon_1}\le \sqrt L.
+\]
+Both sides are positive.  Taking reciprocals reverses the inequality and
+gives
+\[
+\frac1{\sqrt L}\le \left(\frac2{\varepsilon_1}\right)^{-1}
+=\frac{\varepsilon_1}{2},
+\]
+as required.
+\end{proof}

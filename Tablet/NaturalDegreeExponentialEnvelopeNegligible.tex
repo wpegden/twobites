@@ -1,0 +1,39 @@
+\begin{lemma}
+For every \(\varepsilon>0\), put
+\[
+M_n=\operatorname{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p_n=\operatorname{TwoBiteEdgeProbability}(1/2,n),\qquad
+c_\varepsilon=\varepsilon^2/100 .
+\]
+Then
+\[
+M_n\bigl(\exp(-c_\varepsilon p_nM_n)+
+          \exp(-c_\varepsilon p_nM_n)\bigr)\to 0
+\]
+as \(n\to\infty\).
+\end{lemma}
+\begin{proof}
+The definitions of \(p_n\) and \(M_n\) are
+\noderef{TwoBiteEdgeProbability} and
+\noderef{TwoBiteNaturalReducedVertexCount}.  By
+\noderef{NaturalDegreeMassDominatesLogCube}, applied with
+\(A=c_\varepsilon^{-1}\), eventually
+\[
+(\log n)^3\leq c_\varepsilon p_nM_n .
+\]
+Therefore each exponential term is at most \(\exp(-(\log n)^3)\).  Also
+\(M_n\leq n\) eventually, since \(M_n\) is the floor of \(n/(\log n)^2\);
+this uses \noderef{TwoBiteReducedVertexCount} and \noderef{TwoBiteStretch}.
+Thus eventually
+\[
+M_n\bigl(\exp(-c_\varepsilon p_nM_n)+
+          \exp(-c_\varepsilon p_nM_n)\bigr)
+ \leq
+2n\exp(-(\log n)^3)
+=
+\exp(\log 2+\log n-(\log n)^3).
+\]
+The exponent \(\log 2+y-y^3\) tends to \(-\infty\) as \(y\to\infty\), and
+\(y=\log n\to\infty\).  Hence the right-hand side tends to \(0\), and the
+squeeze theorem gives the claimed convergence.
+\end{proof}

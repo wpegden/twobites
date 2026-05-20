@@ -1,0 +1,25 @@
+\begin{helper}
+For every two-bite sample \(\omega\), the blue part of
+\(\noderef{TwoBiteFinalGraph}\) contains no triangle.
+\end{helper}
+\begin{proof}
+Let \(G_B\) be the final blue graph and \(\widetilde G_B\) the blue overlay
+graph.  Suppose, for contradiction, that \(u,v,w\) span a triangle in \(G_B\).
+Then all three edges are blue overlay edges that survived the blue deletion
+predicate.
+
+Write \(b_x\) for the blue projection of \(x\).  Since each blue overlay edge
+\(xy\) comes from blue base adjacency \(b_xb_y\), and the blue base graph is
+simple and loopless, the three projected vertices \(b_u,b_v,b_w\) are pairwise
+distinct.  Applying \(\noderef{FinPairRankLatestOfDistinct}\) to these three
+blue projections, one of the three projected blue pairs has pair-rank strictly
+larger than the other two.
+
+If the largest rank is that of \(uv\), then the blue deletion predicate for
+the directed edge \(uv\) holds with witness \(w\), using the three blue overlay
+edges and the strict inequalities asserting that the other two projected-pair
+ranks are smaller.  Therefore \(uv\) is blue-deleted, contradicting that it is
+an edge of \(G_B\).  The same argument with the vertex names permuted handles
+the possibilities that \(uw\) or \(vw\) has the largest blue projected-pair
+rank.  Hence no blue triangle remains.
+\end{proof}

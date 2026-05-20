@@ -1,0 +1,268 @@
+\begin{lemma}
+Assume \(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\),
+\(\eta>0\), and
+\[
+\eta\le
+\frac{\varepsilon(1-\varepsilon-22\varepsilon^2)}{320(1+\varepsilon)}.
+\]
+For all sufficiently large \(n\), with
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+the following holds uniformly for \(0\le\ell_R,\ell_B\le K\).  Let
+\[
+x_R=\ell_R/K,\qquad x_B=\ell_B/K.
+\]
+If
+\[
+1-\varepsilon/2<x_R+x_B<1+\varepsilon/2,\qquad x_B\le x_R,
+\]
+then \(pn<K-\ell_B\), and
+\[
+\begin{aligned}
+&\left(\eta+\left(\frac12+\eta\right)-\frac{2-x_R-x_B}{2}\right)K\log n\\
+&\quad
+-p\left(
+\binom{\ell_R}{2}_{\mathbb R}+\binom{\ell_B}{2}_{\mathbb R}
+-\binom{K-\ell_R}{2}_{\mathbb R}
+-\binom{pn}{2}_{\mathbb R}
+-\binom{K-\ell_B-pn}{2}_{\mathbb R}
+-\varepsilon^3K^2\right)\\
+&\le
+\frac{\varepsilon(-1+\varepsilon+22\varepsilon^2)}{16(1+\varepsilon)}
+K\log n+3\eta K\log n.
+\end{aligned}
+\]
+\end{lemma}
+\begin{proof}
+Since \(x_B\le x_R\) and \(x_R+x_B<1+\varepsilon/2\),
+\[
+x_B<\frac12+\frac{\varepsilon}{4}. \tag{1}
+\]
+For the rest of the proof write
+\[
+L=\log n,\qquad S=\sqrt{nL}.
+\]
+After increasing the threshold, \(L>0\) and \(S>0\).  The rounded comparison in
+\(\noderef{ParameterHierarchyEventualComparisons}\) gives a number
+\(\theta\) with
+\[
+0\le\theta<1,\qquad K=(1+\varepsilon)S+\theta. \tag{2}
+\]
+The definition
+\[
+p=\frac12\sqrt{\frac{\log n}{n}}
+\]
+then gives
+\[
+p=\frac{L}{2S},\qquad pn=\frac S2. \tag{3}
+\]
+Hence, with \(q=pn/K\),
+\[
+q=\frac{S}{2K}\le \frac{1}{2(1+\varepsilon)}.
+\]
+Since
+\[
+\frac12-\frac{\varepsilon}{4}-\frac{1}{2(1+\varepsilon)}
+=\frac{\varepsilon(1-\varepsilon)}{4(1+\varepsilon)}>0,
+\]
+we have \(q<1/2-\varepsilon/4\).  From (1),
+\(1-x_B>1/2-\varepsilon/4\), so \(q<1-x_B\).  Multiplying by the positive
+quantity \(K\) gives
+\[
+K-\ell_B=(1-x_B)K>pn.
+\]
+
+Now expand the real binomials.  Since \(\ell_R=x_RK\),
+\[
+\begin{aligned}
+\binom{\ell_R}{2}_{\mathbb R}
+-\binom{K-\ell_R}{2}_{\mathbb R}
+&=\frac{x_RK(x_RK-1)}2
+-\frac{(1-x_R)K((1-x_R)K-1)}2\\
+&=\frac{x_R^2K^2-x_RK-(1-x_R)^2K^2+(1-x_R)K}{2}\\
+&=\frac{(2x_R-1)(K^2-K)}{2}. \tag{4}
+\end{aligned}
+\]
+For the blue expression, write \(q=pn/K\).  Then
+\[
+\begin{aligned}
+&\binom{\ell_B}{2}_{\mathbb R}
+-\binom{pn}{2}_{\mathbb R}
+-\binom{K-\ell_B-pn}{2}_{\mathbb R}\\
+&=
+\frac{K^2}{2}\left(x_B^2-q^2-(1-x_B-q)^2\right)
++\frac{K}{2}\left(-x_B+q+1-x_B-q\right)\\
+&=
+\frac{K^2}{2}\left(2x_B-1+2q-2x_Bq-2q^2\right)
++\frac{K}{2}(1-2x_B). \tag{5}
+\end{aligned}
+\]
+Adding (4) and (5), subtracting \(\varepsilon^3K^2\), and writing
+\[
+t=x_R+x_B-1,\qquad q=\frac{pn}{K},
+\]
+gives the exact identity
+\[
+\begin{aligned}
+&\binom{\ell_R}{2}_{\mathbb R}+\binom{\ell_B}{2}_{\mathbb R}
+-\binom{K-\ell_R}{2}_{\mathbb R}
+-\binom{pn}{2}_{\mathbb R}
+-\binom{K-\ell_B-pn}{2}_{\mathbb R}
+-\varepsilon^3K^2\\
+&\qquad =
+K^2\bigl(t+q(1-x_B)-q^2-\varepsilon^3\bigr)
++K(1-x_R-x_B). \tag{6}
+\end{aligned}
+\]
+Put
+\[
+\alpha=\frac{1+\varepsilon}{2},
+\qquad
+q_0=\frac{1}{2(1+\varepsilon)},
+\qquad
+r=\frac{pK}{L}.
+\]
+Equations (2) and (3) give the two exact rounding formulae
+\[
+r=\frac{pK}{L}
+=\frac{L}{2S}\cdot\frac{(1+\varepsilon)S+\theta}{L}
+=\alpha+\frac{\theta}{2S},
+\]
+and
+\[
+0\le q_0-q
+=\frac{1}{2(1+\varepsilon)}
+-\frac{S}{2((1+\varepsilon)S+\theta)}
+=\frac{\theta}{2(1+\varepsilon)K}.
+\]
+Since \(S\to\infty\), \(K\to\infty\), and \(L>0\), we may increase \(N\) so
+that
+\[
+\frac{1}{2S}\le\frac{\eta}{16},\qquad
+\frac{1}{2(1+\varepsilon)K}\le\frac{\eta}{16},\qquad
+\frac{p}{L}=\frac{1}{2S}\le\frac{\eta}{16}. \tag{7}
+\]
+The estimates in (7), together with \(0\le\theta<1\), imply uniformly in the
+present range
+\[
+|r-\alpha|\le\frac{\eta}{16},\qquad
+|q-q_0|\le\frac{\eta}{16},\qquad
+0\le q\le1,\qquad
+p\le\frac{\eta}{16}\log n,
+\tag{8}
+\]
+and \(K\log n\ge0\).  Let
+\[
+D=t+q(1-x_B)-q^2-\varepsilon^3,\qquad
+D_0=t+q_0(1-x_B)-q_0^2-\varepsilon^3.
+\]
+Because \(|t|\le1\), \(0\le q\le1\), \(0\le x_B\le1\), and
+\(0<\varepsilon<1\), we have \(|D|\le4\).  Also,
+\[
+|D-D_0|
+\le |q-q_0|(1-x_B)+|q^2-q_0^2|
+\le 3|q-q_0|,
+\]
+because \(0\le x_B,q,q_0\le1\).  Using (6), the exponent on the
+left side of the lemma is
+\[
+\left(2\eta+\frac{t}{2}-rD\right)K\log n
+-pK(1-x_R-x_B).
+\]
+Since
+\[
+-rD\le -\alpha D_0
++|r-\alpha|\,|D|
++\alpha |D-D_0|,
+\]
+and since \(\alpha<1\) and \(|1-x_R-x_B|\le1\), (8) gives the explicit
+uniform bound
+\[
+\left(C_0+3\eta\right)K\log n, \tag{9}
+\]
+where
+\[
+C_0=\frac{t}{2}-\alpha\bigl(t+q_0(1-x_B)-q_0^2-\varepsilon^3\bigr).
+\]
+Indeed, the non-limiting errors in (9) are bounded by
+\[
+2\eta+\frac{4\eta}{16}+\frac{3\eta}{16}+\frac{\eta}{16}
+\le 3\eta,
+\]
+where \(2\eta\) is the explicit projection/binomial error and the three
+fractions come respectively from \(r\), the corrected \(q-q^2\) term, and the
+linear \(K\)-term in (6).
+
+It remains to compare \(C_0\) with the advertised negative constant.  Let
+\(d=x_R-x_B\ge0\).  Since \(t=x_R+x_B-1\), we have
+\[
+x_B=\frac{1+t-d}{2}.
+\]
+Substituting the values of \(\alpha\) and \(q_0\) gives
+\[
+\begin{aligned}
+C_0
+&=\frac t2-\frac{1+\varepsilon}{2}t
+-\frac{1+\varepsilon}{2}\cdot\frac{1}{2(1+\varepsilon)}(1-x_B)
++\frac{1+\varepsilon}{2}\cdot\frac{1}{4(1+\varepsilon)^2}
++\frac{1+\varepsilon}{2}\varepsilon^3\\
+&=-\frac{\varepsilon t}{2}-\frac{1-x_B}{4}
++\frac{1}{8(1+\varepsilon)}
++\frac{(1+\varepsilon)\varepsilon^3}{2}.
+\end{aligned}
+\]
+Now substitute \(x_B=(1+t-d)/2\).  This gives the exact expression
+\[
+C_0
+=-\frac{\varepsilon}{8(1+\varepsilon)}
+-\frac d8+\left(\frac18-\frac{\varepsilon}{2}\right)t
++\frac{(1+\varepsilon)\varepsilon^3}{2}. \tag{10}
+\]
+The middle-regime hypothesis gives \(t<\varepsilon/2\), and
+\(0<\varepsilon<1/16\) makes \(1/8-\varepsilon/2>0\).  Therefore, using
+\(d\ge0\),
+\[
+C_0\le
+-\frac{\varepsilon}{8(1+\varepsilon)}
++\frac{\varepsilon}{16}
++\frac{(1+\varepsilon)\varepsilon^3}{2}
+\le
+\frac{\varepsilon(-1+\varepsilon+22\varepsilon^2)}
+     {16(1+\varepsilon)}. \tag{11}
+\]
+For the last inequality, move the left side to the right side.  The difference
+is
+\[
+\frac{\varepsilon^3(7-8\varepsilon-4\varepsilon^2)}
+     {8(1+\varepsilon)},
+\]
+because, over the common denominator \(16(1+\varepsilon)\),
+\[
+\begin{aligned}
+&\varepsilon(-1+\varepsilon+22\varepsilon^2)
+-\left(-2\varepsilon+\varepsilon(1+\varepsilon)
+  +8(1+\varepsilon)^2\varepsilon^3\right)\\
+&\qquad =
+14\varepsilon^3-16\varepsilon^4-8\varepsilon^5
+=2\varepsilon^3(7-8\varepsilon-4\varepsilon^2).
+\end{aligned}
+\]
+The denominator is positive since \(1+\varepsilon>0\).  Also
+\(\varepsilon^3>0\), and the hierarchy bound \(\varepsilon<1/16\) gives
+\[
+8\varepsilon<\frac12,\qquad
+4\varepsilon^2<\frac1{64},
+\]
+so
+\[
+7-8\varepsilon-4\varepsilon^2
+>
+7-\frac12-\frac1{64}
+=\frac{415}{64}>0.
+\]
+Thus the displayed difference is nonnegative.  Combining (11) with (9)
+proves the desired inequality.
+\end{proof}

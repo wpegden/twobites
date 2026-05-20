@@ -1,0 +1,20 @@
+\begin{lemma}
+Fix a side, either red or blue, a base vertex \(x\in \operatorname{Fin}(m)\),
+and an event depending only on the corresponding fiber cardinality.  Its
+two-bite probability equals the number of injections whose first-coordinate
+row count (on the red side) or second-coordinate column count (on the blue
+side) satisfies the event, multiplied by
+\(\noderef{UniformInjectionWeight}(n,m)\).
+\end{lemma}
+\begin{proof}
+By \(\noderef{RedFiber}\) and \(\noderef{TwoBiteRedProjection}\), the red
+fiber count is exactly the number of domain vertices whose injection coordinate
+has first component \(x\).  By \(\noderef{BlueFiber}\) and
+\(\noderef{TwoBiteBlueProjection}\), the blue fiber count is exactly the number
+of domain vertices whose injection coordinate has second component \(x\).
+Thus each displayed event depends only on the injection coordinate of the
+two-bite sample.  Applying \(\noderef{TwoBiteEventProbabilityInjectionOnly}\)
+to that injection-only event factors out the two graph sums and leaves exactly
+the count of satisfying injections times
+\(\noderef{UniformInjectionWeight}(n,m)\).
+\end{proof}

@@ -1,0 +1,284 @@
+\begin{helper}
+Fix \(I\subseteq[n]\), the integers \(k,\ell_R,\ell_B\), and the parameters
+\(m,p,\varepsilon,\varepsilon_1,\varepsilon_2\), with \(0<p<1\).  Let
+\[
+S=\{\omega:
+\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)\}.
+\]
+There is a finite partition \(S=\dot\bigcup_{h\in H}C_h\) into exposure
+histories with the following properties.  For each history \(h\), there are a
+recorded coordinate set \(R_h\), a terminal candidate coordinate set \(U_h\),
+a terminal order \(L_h\) listing \(U_h\), and a representative
+\(\omega_h\in C_h\), such that \(C_h\) is exactly the cylinder fixing the
+injection of \(\omega_h\) and the truth table on \(R_h\).  For every
+\(\omega\in C_h\), the recorded set is exactly the pre-terminal recorded
+set:
+\[
+e\in R_h
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\tag{0}
+\]
+Every coordinate in \(R_h\) is represented in canonical increasing endpoint
+order.
+
+The terminal set is the full unrecorded terminal coordinate universe:
+\[
+e\in U_h
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)
+\hbox{ and }e\notin R_h.
+\tag{1}
+\]
+Thus every coordinate in \(U_h\) is outside \(R_h\), is a distinct non-loop
+red or blue base-edge coordinate, and is represented with increasing endpoint
+order.  Since \(R_h\) has the same canonical orientation, no element of
+\(U_h\) can be indirectly fixed by a reversed coordinate in \(R_h\).  The set
+\(U_h\) may be larger than the final staged-open set.
+For every \(\omega\in C_h\),
+\[
+e\in\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)
+\quad\Longrightarrow\quad
+e\in U_h.
+\tag{2}
+\]
+The set \(\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\) is not
+claimed to be fixed on \(C_h\); it is an adaptive subset of \(U_h\).
+
+Conditional on \(C_h\), the coordinates in \(U_h\) have product
+Bernoulli-\(p\) law.  Equivalently, for every subset \(A\subseteq U_h\),
+\[
+\Pr(\text{exactly the coordinates in }A\text{ are present on }U_h\mid C_h)
+=p^{|A|}(1-p)^{|U_h|-|A|}.
+\tag{3}
+\]
+The terminal order is prefix safe: when a coordinate is reached, whether it is
+pre-terminal recorded, staged-open, touched, or \(C^+(I)\) same-color closed
+is determined by the history and the earlier terminal-coordinate values, not
+by its own Bernoulli value or by later coordinates.
+
+Moreover, for every \(B\ge0\), any upper bound \(B\) for
+\[
+\Pr(I\text{ is independent in }\noderef{TwoBiteFinalGraph}
+       \text{ and }
+       \noderef{TwoBiteRegularityEvent}
+       (k,\varepsilon,\varepsilon_1,\varepsilon_2)
+       \mid C_h)
+\]
+which is uniform over all histories \(h\) also holds after conditioning only
+on \(S\).
+\end{helper}
+\begin{proof}
+Apply \(\noderef{FixedSetExposureHistoryCylinder}\) to the fixed data
+\(I,k,\ell_R,\ell_B,m,p,\varepsilon\).  It gives a finite type \(H\), a
+history predicate \(C_h\), recorded sets \(R_h\), terminal sets \(U_h\),
+orders \(L_h\), and representatives \(\omega_h\).  In the Lean statement of
+the present node we take
+\[
+\mathrm{hist}(h,\omega)\quad\text{to mean}\quad \omega\in C_h,
+\]
+and we use the same \(R_h,U_h,L_h,\omega_h\) as the witnesses for the
+history \(h\).
+
+The history-cylinder child supplies the exact partition data needed for the
+first two conjuncts:
+\[
+\omega\in S \Longleftrightarrow \exists h\in H,\ \omega\in C_h,
+\tag{4}
+\]
+and
+\[
+h\ne h'\Longrightarrow C_h\cap C_{h'}=\varnothing. \tag{5}
+\]
+For each \(h\), it also supplies
+\[
+\omega_h\in C_h, \tag{6}
+\]
+the exact cylinder identity
+\[
+\omega\in C_h
+\Longleftrightarrow
+\omega\hbox{ has the same injection as }\omega_h
+\hbox{ and agrees with }\omega_h\hbox{ on }R_h, \tag{7}
+\]
+the exact recorded-set identity
+\[
+\omega\in C_h
+\Longrightarrow
+\bigl(e\in R_h\Longleftrightarrow
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\bigr),
+\tag{7a}
+\]
+the recorded-coordinate hygiene
+\[
+e\in R_h\Longrightarrow e\hbox{ is written with increasing endpoints},
+\tag{7'}
+\]
+the order facts
+\[
+L_h.\mathrm{Nodup}
+\quad\text{and}\quad
+L_h.\mathrm{toFinset}=U_h, \tag{8}
+\]
+the terminal-universe identity
+\[
+e\in U_h
+\Longleftrightarrow
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)
+\hbox{ and }e\notin R_h, \tag{9}
+\]
+the disjointness of terminal and recorded coordinates
+\[
+e\in U_h\Longrightarrow e\notin R_h, \tag{10}
+\]
+and the increasing non-loop coordinate hygiene
+\[
+e\in U_h\Longrightarrow
+\begin{cases}
+a<b,& e=\operatorname{red}(a,b),\\
+a<b,& e=\operatorname{blue}(a,b).
+\end{cases}
+\tag{11}
+\]
+It further gives the staged-open containment
+\[
+\omega\in C_h,\quad
+e\in\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)
+\Longrightarrow e\in U_h, \tag{12}
+\]
+and the prefix-safety clause: if \(L_h=P,e,Q\), then agreement on the
+injection, on \(R_h\), and on \(P\) preserves, at the current coordinate
+\(e\), the truth values of pre-terminal recordedness, staged-openness,
+touchedness, and \(C^+(I)\) same-color closedness.  Thus all non-product
+structural conjuncts of the present statement are copied directly from
+\(\noderef{FixedSetExposureHistoryCylinder}\).
+
+Now fix one history \(h\).  Apply
+\(\noderef{FixedSetCylinderProductLaw}\) with the history event \(C_h\), the
+recorded set \(R_h\), the product coordinate set \(U_h\), and the
+representative \(\omega_h\).  In the notation of the Lean statement of that
+child, this is the instantiation
+\[
+\mathrm{hist}:=C_h,\qquad
+\mathrm{recorded}:=R_h,\qquad
+\mathrm{product}:=U_h,\qquad
+\omega_0:=\omega_h .
+\]
+Its hypotheses are exactly available.  The inequalities \(0<p\) and \(p<1\)
+are the two standing Bernoulli-range assumptions of the present node.  The
+representative condition (6) gives \(C_h(\omega_h)\).  The equivalence (7) is
+the child theorem's required cylinder description: a sample is in \(C_h\)
+precisely when it has the representative injection and agrees with
+\(\omega_h\) on all recorded coordinates \(R_h\).  The terminal-recorded
+disjointness (10) gives the hypothesis
+\[
+\forall e\in U_h,\ e\notin R_h,
+\]
+the recorded-coordinate hygiene (7') gives the product law's
+canonical-recorded-coordinate hypothesis, and the increasing non-loop
+coordinate hygiene (11) gives the final coordinate-shape hypothesis of
+\(\noderef{FixedSetCylinderProductLaw}\).  Hence, for every
+\(A\subseteq U_h\),
+\[
+\noderef{TwoBiteConditionalProbability}
+\left(
+\{\omega:\forall e\in U_h,\,
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,e)
+\Longleftrightarrow e\in A\}
+\mid C_h
+\right)
+=p^{|A|}(1-p)^{|U_h|-|A|}. \tag{13}
+\]
+This is exactly the product-law conjunct in the Lean statement.  The phrase
+``\(e\) is present'' in (13) is interpreted through
+\(\noderef{TwoBiteEdgeCoordinateValue}\): for a red tagged coordinate it is
+membership of the corresponding edge in \(\noderef{TwoBiteRedGraph}\), and
+for a blue tagged coordinate it is membership in
+\(\noderef{TwoBiteBlueGraph}\).
+
+The product law is deliberately a law on the fixed set \(U_h\), not a claim
+that \(\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I)\) is fixed on
+the cell.  The only relation between the adaptive staged-open set and the
+product set is the one-way containment (12), valid separately for each
+\(\omega\in C_h\).  During the terminal reveal the coordinates of \(U_h\) are scanned
+in the order \(L_h\).  If \(L_h=P,e,Q\), prefix safety says that after
+conditioning on \(C_h\) and on the already exposed prefix values \(P\), the
+pre-terminal recorded predicate and the three predicates deciding the paper's
+terminal step for \(e\)--staged-open, touched, and same-color closed--are
+already determined.  The Bernoulli value of \(e\) itself has not been used,
+and no value from the suffix \(Q\) has been used.  Therefore the sequential
+RISI argument may decide whether the current coordinate is eligible using only
+the prefix information and then charge the fresh \(p\) or \(1-p\) factor for
+the current coordinate from (13).  This is the needed adaptive replacement for the false fixed
+staged-open-set assertion.
+
+It remains to prove the finite averaging transfer.  Let
+\[
+\mathcal E(\omega)=
+\bigl(I\text{ is independent in }\noderef{TwoBiteFinalGraph}(\omega)\bigr)
+\land
+\noderef{TwoBiteRegularityEvent}
+      (k,\varepsilon,\varepsilon_1,\varepsilon_2,\omega).
+\]
+The regularity event is part of the numerator event \(\mathcal E\) only.  It
+is not part of any conditioning event in this node: the final denominator is
+the projection-size event \(S\), and the cell denominators are the history
+events \(C_h\).
+
+Assume \(B\ge0\) and that for every \(h\)
+\[
+\noderef{TwoBiteConditionalProbability}(n,m,p;\mathcal E\mid C_h)\le B.
+\tag{14}
+\]
+If \(\Pr(S)=0\), then by the definition of
+\(\noderef{TwoBiteConditionalProbability}\) the conditional probability
+\(\Pr(\mathcal E\mid S)\) is \(0\), and the desired bound follows from
+\(B\ge0\).  Hence assume \(\Pr(S)>0\).
+
+The finite cover (4) and disjointness (5) imply that the events
+\(\mathcal E\cap C_h\) are pairwise disjoint and have union
+\(\mathcal E\cap S\): cover (4) places every sample of \(S\) in at least one
+history cell, disjointness (5) makes that cell unique, and intersecting with
+\(\mathcal E\) preserves both the union and the disjointness.  Since
+\(\noderef{TwoBiteEventProbability}\) is a finite sum of nonnegative sample
+weights,
+\[
+\Pr(\mathcal E\cap S)=\sum_{h\in H}\Pr(\mathcal E\cap C_h),
+\qquad
+\Pr(S)=\sum_{h\in H}\Pr(C_h). \tag{15}
+\]
+For an individual history \(h\), there are two cases.  If \(\Pr(C_h)=0\),
+then \(\mathcal E\cap C_h\subseteq C_h\) and nonnegativity of the finite
+sample-weight sum give
+\[
+\Pr(\mathcal E\cap C_h)=0\le B\Pr(C_h). \tag{16}
+\]
+If \(\Pr(C_h)>0\), then the nonzero branch of conditional probability and
+(14) give
+\[
+\frac{\Pr(\mathcal E\cap C_h)}{\Pr(C_h)}
+=\Pr(\mathcal E\mid C_h)\le B.
+\]
+Multiplying by the positive number \(\Pr(C_h)\) gives
+\[
+\Pr(\mathcal E\cap C_h)\le B\Pr(C_h). \tag{17}
+\]
+Thus (16) or (17) holds for every history \(h\).  Summing over the finite
+history type, using \(\texttt{Finset.sum\_le\_sum}\) on the pointwise
+inequalities, and then using (15),
+\[
+\Pr(\mathcal E\cap S)
+\le
+B\sum_{h\in H}\Pr(C_h)
+=B\Pr(S).
+\]
+Dividing by the positive number \(\Pr(S)\) yields
+\[
+\Pr(\mathcal E\mid S)
+=\frac{\Pr(\mathcal E\cap S)}{\Pr(S)}
+\le B.
+\]
+This proves the RISI transfer from history-uniform bounds to conditioning
+only on \(\noderef{TwoBiteProjectionSizeEvent}\), with regularity kept
+solely in the numerator.
+\end{proof}

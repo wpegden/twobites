@@ -1,0 +1,31 @@
+\begin{helper}
+Fix a set \(I\) and a sample \(\omega\).  In the red case, for every
+\(r,s\in[m]\) and every ordered pair \(q\), if
+\(q=(r,s)\) or \(q=(s,r)\), if \(q_1<q_2\), if
+\(\noderef{TwoBiteStageF1}(\omega,I,\operatorname{red}(s))\), and if
+\(\noderef{TwoBiteProjectionContains}(\omega,I,\operatorname{red}(r))\), then
+\(\operatorname{red}(q)\in
+\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\).  The blue
+case is identical: for every \(b,c\in[m]\) and ordered pair \(q\), if
+\(q=(b,c)\) or \(q=(c,b)\), if \(q_1<q_2\), if
+\(\noderef{TwoBiteStageF1}(\omega,I,\operatorname{blue}(c))\), and if
+\(\noderef{TwoBiteProjectionContains}(\omega,I,\operatorname{blue}(b))\), then
+\(\operatorname{blue}(q)\in
+\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\).
+\end{helper}
+\begin{proof}
+Consider the red case.  Since \(s\in F_1\),
+\(\noderef{TwoBiteStageRevealedVertex}(\omega,\varepsilon,I,\operatorname{red}(s))\)
+holds by the \(F_1\)-branch in the definition of staged-revealed vertices.
+Together with projection containment of \(\operatorname{red}(r)\), this is
+exactly the incident-coordinate branch in the definition of
+\(\noderef{TwoBitePreTerminalRecordedPairs}\), after putting the unordered
+pair \(\{r,s\}\) into increasing order \(q\).  The hypothesis
+\(q_1<q_2\) supplies membership of the tagged coordinate in
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\), so the outer terminal
+filter is also satisfied.
+
+The blue case is word-for-word the same, using the blue \(F_1\)-branch and
+the blue incident-coordinate branch of
+\(\noderef{TwoBitePreTerminalRecordedPairs}\).
+\end{proof}

@@ -1,0 +1,245 @@
+\begin{lemma}
+Assume \(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,
+n_0)\), \(\beta=\frac12\), \(n>n_0\),
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+Then
+\[
+\Pr\bigl(\noderef{FiberAndDegreeEvent}\ \text{holds and }
+\noderef{TwoBiteSmallClosedPairsEvent}\ \text{fails}\bigr)\le \frac1n.
+\]
+\end{lemma}
+\begin{proof}
+Let
+\[
+\mathbb P_\beta(E)=
+\noderef{TwoBiteEventProbability}
+  \bigl(n,M,\noderef{TwoBiteEdgeProbability}(\beta,n),E\bigr)
+\]
+be the parent probability law after rewriting the Lean parameters by the
+rounded equalities \(m=M\) and \(k=K\) from the statement.  For every event
+\(E\), the hypothesis \(\beta=\frac12\) gives the pointwise equality
+\[
+\mathbb P_\beta(E)=
+\noderef{TwoBiteEventProbability}
+  \bigl(n,M,\noderef{TwoBiteEdgeProbability}(\tfrac12,n),E\bigr).
+\]
+The statement also names
+\[
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+so this is the same finite sample law as
+\[
+\mathbb P(E)=
+\noderef{TwoBiteEventProbability}(n,M,p,E).
+\]
+Thus it is enough to prove the desired estimate under \(\mathbb P\); rewriting
+the edge parameter by \(\beta=\frac12\), and then replacing \(M,K\) by the
+Lean parameters \(m,k\), gives the Lean statement exactly.
+
+Write
+\[
+\mathcal D(\omega):=\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)
+\]
+and
+\[
+\mathcal S(\omega):=
+\noderef{TwoBiteSmallClosedPairsEvent}
+  (k=K,\varepsilon,\varepsilon_1)(\omega).
+\]
+Unfolding \(\noderef{TwoBiteSmallClosedPairsEvent}\), and then
+\(\noderef{ClosedPairsBound}\), gives
+\[
+\mathcal S(\omega)\quad\Longleftrightarrow\quad
+\forall I\subseteq\mathrm{Fin}(n),\ |I|=K\Longrightarrow
+\left|\noderef{TwoBiteClosedPairsInClass}
+  \bigl(\omega,I,\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I)\bigr)
+\right|\le\varepsilon_1K^2. \tag{1}
+\]
+Equivalently, the \(I\)-instance of \(\mathcal S\) fails exactly when
+\[
+\neg\noderef{ClosedPairsBound}\!\left(
+\left|\noderef{TwoBiteClosedPairsInClass}
+  \bigl(\omega,I,\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I)\bigr)
+\right|,
+\varepsilon_1,K\right)
+\]
+holds.  Since the sample space and the collection of finsets of
+\(\mathrm{Fin}(n)\) are finite, the negation of the universal statement in
+(1) is the ordinary finite existential: \(\mathcal S(\omega)\) fails iff
+there is a finset \(I\subseteq\mathrm{Fin}(n)\) with \(|I|=K\) for which this
+same \(\noderef{ClosedPairsBound}\) predicate fails.
+
+Let
+\[
+\mathcal I_K=\{I\subseteq\mathrm{Fin}(n): |I|=K\}.
+\]
+Equivalently,
+\[
+\mathcal S^c
+=\left\{\omega:\exists I\in\mathcal I_K,\ 
+\neg\noderef{ClosedPairsBound}\!\left(
+\left|\noderef{TwoBiteClosedPairsInClass}
+  \bigl(\omega,I,\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I)\bigr)
+\right|,
+\varepsilon_1,K\right)\right\}. \tag{1a}
+\]
+For \(I\in\mathcal I_K\), define the fixed-set bad event
+\[
+E_I=\left\{\omega:\mathcal D(\omega)\ \text{and }
+\neg\noderef{ClosedPairsBound}\!\left(
+\left|\noderef{TwoBiteClosedPairsInClass}
+  \bigl(\omega,I,\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I)\bigr)
+\right|,
+\varepsilon_1,K\right)\right\}.
+\]
+Then
+\[
+\mathcal D\cap\mathcal S^c
+=\bigcup_{\substack{I\subseteq\mathrm{Fin}(n)\\ |I|=K}} E_I. \tag{2}
+\]
+Indeed, if \(\omega\in\mathcal D\cap\mathcal S^c\), then \(\mathcal D\) holds
+and the negation of the universal quantifier in (1) gives a finset
+\(I\subseteq\mathrm{Fin}(n)\) with \(|I|=K\) for which the
+\(\noderef{ClosedPairsBound}\) predicate fails.  Hence
+\(\omega\in E_I\).  Conversely, if \(\omega\in E_I\) for some such \(I\), then
+\(\mathcal D\) holds and the \(I\)-instance of \(\mathcal S\) fails, so
+\(\omega\in\mathcal D\cap\mathcal S^c\).  The event \(\mathcal D\) is thus
+retained inside every fixed-set event.
+
+If \(K>n\), then there is no finset \(I\subseteq\mathrm{Fin}(n)\) with
+\(|I|=K\), since every finset of \(\mathrm{Fin}(n)\) has cardinality at most
+\(|\mathrm{Fin}(n)|=n\).  Thus \(\mathcal I_K=\varnothing\).  The universal
+condition defining \(\mathcal S\) has no \(K\)-set instance to fail, so
+\(\mathcal S^c=\varnothing\), equivalently the union in (2) is empty.  Hence
+for every sample \(\omega\) the indicator of
+\(\mathcal D\cap\mathcal S^c\) is \(0\).  The finite sum defining its
+probability therefore has no contributing samples, and
+\[
+\mathbb P(\mathcal D\cap\mathcal S^c)=0\le(n:\mathbb R)^{-1}.
+\]
+The last inequality uses \(n>n_0\) and \(n_0\in\mathbb N\), so \(n\ge1\) and
+the reciprocal of \(n\) is nonnegative.
+This proves the result in that case.  Hence assume \(K\le n\) from now on.
+The \(K\)-subsets of \(\mathrm{Fin}(n)\) are the elements of
+\(\mathrm{powersetCard}(K,\mathrm{Fin}(n))\), so
+\[
+|\mathcal I_K|=\texttt{Nat.choose}(n,K)=\binom{n}{K}. \tag{3}
+\]
+
+Fix \(I\in\mathcal I_K\).  The last conjunct of
+\(\noderef{ParameterHierarchy}(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\)
+is precisely
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\).  Apply
+\(\noderef{SmallClosedPairsFixedSetTail}\) with this package, with the
+inequality \(n>n_0\), and with the exact rounded parameter equalities
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+as well as the hypothesis \(|I|=K\).  The child theorem is stated for the law
+\[
+\noderef{TwoBiteEventProbability}(n,M,p,\cdot),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+which is the same law \(\mathbb P\) obtained from the parent law after using
+\(\beta=\frac12\).  The rounded equalities \(m=M\) and \(k=K\) are exactly the
+equalities needed to match the child theorem's \(m\)- and \(k\)-parameters;
+there is no additional change of probability space.  Its event is exactly
+\(E_I\): both events require
+\(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\), and both require the
+negation of
+\[
+\noderef{ClosedPairsBound}\!\left(
+\left|\noderef{TwoBiteClosedPairsInClass}
+  \bigl(\omega,I,\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I)\bigr)
+\right|,
+\varepsilon_1,K\right)
+\]
+for the same fixed \(I\), the same small class, and the same bound
+\(\varepsilon_1K^2\).  Therefore
+\[
+\mathbb P(E_I)\le
+\exp\!\left(
+-\frac{\binom{K}{2}_{\mathbb R}^2}
+ {(\log n)M n^{8\varepsilon}}
+\right). \tag{4}
+\]
+Here the \(K\) in \(\binom{K}{2}_{\mathbb R}\) is the real coercion of the
+natural number \(K\), and \(M\) in the denominator is the real coercion of the
+natural number \(M\), exactly as in the Lean statement of
+\(\noderef{SmallClosedPairsFixedSetTail}\).
+
+Apply the finite union bound to the union (2).  No disjointness is assumed.
+Indeed, by unfolding \(\noderef{TwoBiteEventProbability}\), the probability
+of an event \(A\) is the finite sum
+\[
+\mathbb P(A)=
+\sum_{\omega}
+\mathbf 1_A(\omega)\,\noderef{TwoBiteSampleWeight}(\omega).
+\]
+The weights \(\noderef{TwoBiteSampleWeight}(\omega)\) are nonnegative: by
+\(\noderef{TwoBiteSampleWeight}\) they are products of the two
+\(G(M,p)\)-graph weights and the uniform injection weight, all of which are
+probability weights.  For each sample \(\omega\),
+\[
+\mathbf 1_{\bigcup_{I\in\mathcal I_K}E_I}(\omega)
+\le \sum_{I\in\mathcal I_K}\mathbf 1_{E_I}(\omega),
+\]
+because if the left side is \(1\), then \(\omega\) lies in at least one of the
+events \(E_I\), while if the left side is \(0\) the inequality is immediate.
+Multiplying this pointwise inequality by the nonnegative sample weight and
+summing over the finite sample space gives
+\[
+\mathbb P\!\left(\bigcup_{I\in\mathcal I_K}E_I\right)
+\le \sum_{I\in\mathcal I_K}\mathbb P(E_I).
+\]
+Using (4) for every \(I\in\mathcal I_K\) and then using the count (3) gives
+\[
+\mathbb P(\mathcal D\cap\mathcal S^{c})
+\le
+\sum_{I\in\mathcal I_K}\mathbb P(E_I)
+\le
+\sum_{I\in\mathcal I_K}
+\exp\!\left(
+-\frac{\binom{K}{2}_{\mathbb R}^2}
+ {(\log n)M n^{8\varepsilon}}
+\right)
+=
+\exp\!\left(
+-\frac{\binom{K}{2}_{\mathbb R}^2}
+ {(\log n)M n^{8\varepsilon}}
+\right)\binom{n}{K}. \tag{5}
+\]
+The McDiarmid-union conjunct of
+\(\noderef{ParameterHierarchyEventualComparisons}\), instantiated at this
+same \(n>n_0\), uses the rounded definitions
+\[
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\]
+and is precisely the inequality
+\[
+\exp\!\left(
+-\frac{\binom{K}{2}_{\mathbb R}^2}
+ {(\log n)M n^{8\varepsilon}}
+\right)
+\binom{n}{K}\le (n:\mathbb R)^{-1}. \tag{6}
+\]
+Combining (5) and (6) proves
+\[
+\mathbb P(\mathcal D\cap\mathcal S^{c})\le(n:\mathbb R)^{-1}.
+\]
+Finally, replacing \(\mathbb P\) by the parent law
+\(\mathbb P_\beta\) is justified by \(\beta=\frac12\), as observed at the
+start.  This is the claimed probability bound.
+\end{proof}

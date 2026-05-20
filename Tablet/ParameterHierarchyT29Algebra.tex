@@ -1,0 +1,37 @@
+\begin{helper}
+Let \(L=\log n\).  Assume \(\eta>0\), \(n>0\), \(L>0\), and
+\[
+(1+\eta)\sqrt{nL}\le k.
+\]
+If
+\[
+\exp\!\left(-\frac{\eta(1+\eta)}4\sqrt n\,\sqrt L\,L\right)\le\varepsilon_1,
+\]
+then
+\[
+\exp\!\left(-\frac\eta4 kL\right)\le\varepsilon_1.
+\]
+\end{helper}
+\begin{proof}
+Since \(\eta/4\ge0\) and \(L\ge0\), multiplying the lower bound on \(k\) by
+\((\eta/4)L\) gives
+\[
+\frac\eta4(1+\eta)\sqrt{nL}\,L\le \frac\eta4 kL.
+\]
+Because \(n>0\) and \(L>0\), we have
+\[
+\sqrt{nL}\,L=\sqrt n\,\sqrt L\,L.
+\]
+Thus
+\[
+\frac{\eta(1+\eta)}4\sqrt n\,\sqrt L\,L\le \frac\eta4 kL.
+\]
+Negating reverses the inequality, and the exponential function is increasing,
+so
+\[
+\exp\!\left(-\frac\eta4 kL\right)
+\le
+\exp\!\left(-\frac{\eta(1+\eta)}4\sqrt n\,\sqrt L\,L\right)
+\le\varepsilon_1.
+\]
+\end{proof}

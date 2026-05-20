@@ -1,0 +1,638 @@
+\begin{lemma}
+For every input \(\varepsilon>0\), there is a strictly smaller positive
+parameter \(\varepsilon'< \varepsilon\), fixed constants
+\(\varepsilon_1,\varepsilon_2\), and a threshold \(n_0=n_0(\varepsilon_2)\)
+satisfying the hierarchy
+\(\noderef{ParameterHierarchy}\).
+\end{lemma}
+\begin{proof}
+Fix an input \(\varepsilon>0\).  Choose
+\[
+ \varepsilon'=\min\{\varepsilon/2,1/32\}.
+\]
+Then
+\[
+0<\varepsilon'< \varepsilon,\qquad
+\varepsilon'\le\varepsilon,\qquad
+\varepsilon'<\frac1{16};
+\]
+indeed \(\varepsilon/2>0\) and \(1/32>0\), while
+\(\varepsilon'\le\varepsilon/2<\varepsilon\) and
+\(\varepsilon'\le1/32<1/16\).  This gives the two strict upper bounds on the
+first parameter required in
+\(\noderef{ParameterHierarchy}\).
+
+Next choose
+\[
+\varepsilon_1=
+\frac12\min\left\{
+\varepsilon',
+\left(\frac{(\varepsilon')^3}{32}\right)^2,
+\frac{(\varepsilon')^3}{40}
+\right\}.
+\]
+This is positive and satisfies
+\[
+0<\varepsilon_1<\varepsilon'
+\]
+and
+\[
+8\sqrt{\varepsilon_1}+10\varepsilon_1\le \frac{(\varepsilon')^3}{2}.
+\]
+Indeed, the second entry in the minimum gives
+\(8\sqrt{\varepsilon_1}\le(\varepsilon')^3/4\), and the third gives
+\(10\varepsilon_1\le(\varepsilon')^3/4\).  Their sum is then at most
+\((\varepsilon')^3/2\).  Then choose
+\[
+\varepsilon_2=\frac12\min\left\{
+\varepsilon_1,\frac{\varepsilon_1}{30},1\right\}.
+\]
+This gives
+\[
+0<\varepsilon_2<\varepsilon_1
+\]
+and
+\[
+3\varepsilon_2\le \frac{\varepsilon_1}{10}.
+\]
+It also gives \(0\le\varepsilon_2\le1\), one of the eventual-comparison
+conjuncts.
+
+It remains only to choose the threshold.  Write \(\eta=\varepsilon'\).  For
+each integer \(n\), put
+\[
+L=\log n,\qquad
+k_R=(1+\eta)\sqrt{nL},\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\qquad
+k=(K:\mathbb R),
+\]
+\[
+m_R=\noderef{TwoBiteReducedVertexCount}(n)=\frac{n}{L^2},\qquad
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+m=(M:\mathbb R),
+\]
+and
+\[
+p=\frac12\sqrt{\frac{L}{n}},\qquad
+t_1=\frac{\sqrt{nL}}{\log L},\qquad
+t_2=n^{1/4+\eta},\qquad
+t_3=n^{2\eta}.
+\]
+All comparisons below are for an arbitrary \(n\) larger than the threshold
+eventually chosen.  First choose \(N_{\mathrm{pos}}\) such that for all
+\(n>N_{\mathrm{pos}}\),
+\[
+n>1,\qquad L>1,\qquad \log L>0,\qquad k_R>2,\qquad m_R>2,
+\qquad p>0,\qquad t_1,t_2,t_3>0,
+\]
+and also
+\[
+\sqrt{L/n}\le1,\qquad \frac{k_R+1}{n}\le1,\qquad
+\frac{\sqrt n}{2L^{3/2}}\ge1.
+\]
+These are finite requirements: \(L=\log n\to\infty\),
+\(\log L\to\infty\), \(k_R=(1+\eta)\sqrt{nL}\to\infty\),
+\(m_R=n/L^2\to\infty\), while
+\[
+\sqrt{L/n}\to0,\qquad
+\frac{k_R+1}{n}
+= (1+\eta)\sqrt{\frac Ln}+\frac1n\to0,\qquad
+\frac{\sqrt n}{2L^{3/2}}\to\infty.
+\]
+The inequalities \(n>1\), \(L>1\), and \(\log L>0\) make
+\(m_R\ge0\), \(k_R\ge0\), \(p\ge0\), and \(t_1,t_2,t_3>0\).  The displayed
+bound \(\sqrt{L/n}\le1\) gives \(p\le1/2\).
+The floor and ceiling inequalities from
+\(\noderef{NaturalParameterApproximation}\), applied with
+\(\kappa=1+\eta\) to the nonnegative real scales \(m_R\) and \(k_R\), give
+exactly the rounding conjuncts required by
+\(\noderef{ParameterHierarchyEventualComparisons}\):
+\[
+k_R\le k<k_R+1,\qquad
+m\le m_R<m+1.
+\]
+The extra \(N_{\mathrm{pos}}\) condition \((k_R+1)/n\le1\) now gives
+\(k<n\), hence \(K\le n\) as a natural number.
+The auxiliary estimates used later follow from these same rounding bounds.
+Since \(k_R>2\), the ceiling inequality gives
+\[
+k<k_R+1\le \frac32k_R<2k_R.
+\]
+Since \(m_R>2\), the floor inequality \(m_R<m+1\) gives
+\[
+m>m_R-1\ge \frac12m_R,
+\]
+and the other floor inequality gives \(m\le m_R\).  Thus we may also use
+\[
+k\le2k_R,\qquad m_R/2\le m\le m_R,\qquad 0<m.
+\tag{R}
+\]
+Then (R) gives \(m\ge m_R/2\), and therefore
+\[
+2pm\ge 2p\cdot\frac{m_R}{2}=pm_R
+=\frac12\sqrt{\frac Ln}\cdot\frac{n}{L^2}
+=\frac{\sqrt n}{2L^{3/2}}\ge1. \tag{P}
+\]
+This proves the lower-bound conjunct \(1\le2pm\) in
+\(\noderef{ParameterHierarchyEventualComparisons}\).
+Since \(K\le n\), the elementary finite-set bound gives
+\[
+\binom{n}{K}
+=\texttt{Nat.choose}(n,K)
+\le n^K=\exp(kL).
+\tag{B}
+\]
+Finally, by \(\noderef{RealChooseTwo}\), if
+\[
+C=\binom{k}{2}_{\mathbb R}=\frac{k(k-1)}2,
+\]
+then \(k>2\) gives
+\[
+\frac{k^2}{4}\le C\le \frac{k^2}{2}.
+\tag{C}
+\]
+
+Every remaining threshold below is finite by the elementary growth rule
+\[
+\frac{(\log n)^a(\log\log n)^b}{n^c}\to0
+\quad(c>0)
+\]
+and its reciprocal form \(n^c/((\log n)^a(\log\log n)^b)\to\infty\).  The
+proof nevertheless records the concrete ratio used for each conjunct, so the
+threshold for that conjunct is obtained by requiring that displayed ratio to
+be at most the indicated fixed constant.
+
+We now choose one finite threshold for each remaining conjunct in
+\(\noderef{ParameterHierarchyEventualComparisons}\).  For
+\[
+n^{4\eta}k\le \frac{\varepsilon_1}{2}k^2,
+\]
+divide by \(k^2>0\).  By \(k\ge k_R\), the ratio is at most
+\[
+\frac{n^{4\eta}}{k_R}
+=\frac{1}{1+\eta}\frac{n^{-1/2+4\eta}}{\sqrt L}\to0,
+\]
+because \(\eta<1/16\).  Choose \(N_1\) making it at most
+\(\varepsilon_1/2\).
+
+For
+\[
+2kL^2\le \frac{\varepsilon_1}{8}k^2,
+\]
+the ratio is \(2L^2/k\le2L^2/k_R\), and
+\[
+\frac{2L^2}{k_R}=\frac{2}{1+\eta}\frac{L^{3/2}}{\sqrt n}\to0.
+\]
+Choose \(N_2\) making the ratio at most \(\varepsilon_1/8\).
+
+For the three-term \(\noderef{RealChooseTwo}\) inequality, since \(L>1\),
+\[
+\frac{1}{\sqrt L}-\frac{1}{2L}\ge \frac{1}{2\sqrt L}.
+\]
+Thus
+\[
+\frac{C}{2L}+2kL^2+\frac{C}{\sqrt L}\le \frac{2C}{\sqrt L}
+\]
+follows from \(2kL^2\le C/(2\sqrt L)\).  Using \(C\ge k^2/4\), it is enough to
+require \(16L^{5/2}\le k\).  Since \(k\ge k_R\) and
+\[
+\frac{16L^{5/2}}{k_R}
+=\frac{16}{1+\eta}\frac{L^2}{\sqrt n}\to0,
+\]
+choose \(N_3\) making this true.
+
+For the McDiarmid/union-bound inequality
+\[
+\exp\!\left(-\frac{C^2}{Lm n^{8\eta}}\right)\binom{n}{K}\le \frac1n,
+\]
+use \(C\ge k^2/4\), \(k\ge k_R\), and \(m\le m_R=n/L^2\).  Then the exponent
+magnitude is at least
+\[
+\frac{k^4}{16Lm n^{8\eta}}
+\ge
+\frac{k_R^4}{16L(n/L^2)n^{8\eta}}
+=\frac{(1+\eta)^4}{16}n^{1-8\eta}L^3.
+\]
+By (B), the logarithm of \(\texttt{Nat.choose}(n,K)\) is at most \(kL\).
+The target margin in the exponent is \(2kL+L\).  Using \(k\le2k_R\), and
+increasing the present threshold so that \(L\le(1+\eta)\sqrt n\,L^{3/2}\), we
+have
+\[
+2kL+L\le4k_RL+L\le5(1+\eta)\sqrt n\,L^{3/2}.
+\]
+The explicit ratio of the exponent lower bound to this required margin is
+\[
+\frac{\frac{(1+\eta)^4}{16}n^{1-8\eta}L^3}
+     {5(1+\eta)\sqrt n\,L^{3/2}}
+=\frac{(1+\eta)^3}{80}n^{1/2-8\eta}L^{3/2}\to\infty
+\]
+because \(\eta<1/16\).  Choose \(N_4\) so that the exponent magnitude is at
+least \(2kL+L\).  Then the product is at most
+\(\exp(-(2kL+L))\exp(kL)\le \exp(-L)=1/n\).
+
+For
+\[
+\frac{2}{\sqrt L}C\le \frac{\varepsilon_1}{2}k^2,
+\]
+use \(C\le k^2/2\).  The left side is at most \(k^2/\sqrt L\), so it is enough
+to have \(1/\sqrt L\le\varepsilon_1/2\).  Choose \(N_5\) with this property.
+
+For
+\[
+4\log k\le \frac{\eta^3}{2}pk^2,
+\]
+we have \(k\ge k_R\), \(k\le2k_R\), and
+\[
+pk_R^2=\frac{(1+\eta)^2}{2}\sqrt n\,L^{3/2}.
+\]
+Also \(\log k\le\log(2(1+\eta)\sqrt{nL})\) by \(k\le2k_R\).  Hence
+\[
+\frac{4\log k}{pk^2}
+\le
+\frac{4\log(2(1+\eta)\sqrt{nL})}{p k_R^2}\to0.
+\]
+Choose \(N_6\) making this ratio at most \(\eta^3/2\).
+
+For
+\[
+t_1k\le\varepsilon_1k^2,
+\]
+divide by \(k^2\) and use \(k\ge k_R\):
+\[
+\frac{t_1}{k}\le\frac{t_1}{k_R}
+=\frac{1}{(1+\eta)\log L}\to0.
+\]
+Choose \(N_7\) making this at most \(\varepsilon_1\).
+
+For the huge-family overlap comparison, set \(H=100L^3\).  First record a
+common bound for all the huge-projection finite comparisons.  Include in
+\(N_{7a}\) the finite requirement \(\log L\ge1\).  Then by \(k\le2k_R\),
+\(\eta<1\), and \(t_1=\sqrt{nL}/\log L\),
+\[
+\frac{2k}{t_1}
+\le \frac{4(1+\eta)\sqrt{nL}}{\sqrt{nL}/\log L}
+=4(1+\eta)\log L
+\le8\log L.
+\]
+Therefore
+\[
+\frac{2k}{t_1}+1\le 9\log L,
+\qquad
+\binom{2k/t_1+1}{2}_{\mathbb R}
+\le \frac{(9\log L)^2}{2}
+=\frac{81}{2}(\log L)^2.
+\tag{H}
+\]
+It is enough for the overlap conjunct to prove
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}H\le\frac12 k.
+\]
+By (H), the left side is at most \(4050L^3(\log L)^2\).  Since
+\(k\ge k_R=(1+\eta)\sqrt{nL}\), the ratio of this explicit upper bound to
+\(\frac12 k_R\) is
+\[
+\frac{4050L^3(\log L)^2}{\frac12(1+\eta)\sqrt{nL}}
+=\frac{8100}{1+\eta}\frac{L^{5/2}(\log L)^2}{\sqrt n}\to0.
+\]
+Choose \(N_{7a}\) making this ratio at most \(1\).  Then the displayed
+overlap inequality holds for all \(n>N_{7a}\).
+
+For the huge same-color projection-size comparison,
+\[
+\frac{2k}{t_1}\,2pm\le \frac{\varepsilon_1}{10}k,
+\]
+divide by \(k>0\).  Using \(m\le m_R=n/L^2\) and
+\(p=\frac12\sqrt{L/n}\), the ratio of the left side to \(k\) is
+\[
+\frac{4pm}{t_1}
+\le
+\frac{4\cdot\frac12\sqrt{L/n}\cdot n/L^2}{\sqrt{nL}/\log L}
+=\frac{2\log L}{L^2},
+\]
+which tends to \(0\).  Choose \(N_{7b}\) making this ratio at most
+\(\varepsilon_1/10\).
+
+For the huge same-color projected-pair comparison,
+\[
+\frac{2k}{t_1}\binom{2pm}{2}_{\mathbb R}\le \varepsilon_1k^2,
+\]
+use \(m\le m_R=n/L^2\) and \(p=\frac12\sqrt{L/n}\).  Then
+\[
+2pm\le \sqrt{\frac{n}{L^3}},
+\qquad
+\binom{2pm}{2}_{\mathbb R}\le \frac{n}{2L^3}
+\]
+for all \(n>N_{\mathrm{pos}}\), because \(2pm\ge0\) and
+\(\binom{x}{2}_{\mathbb R}\le x^2/2\) for \(x\ge0\).  Together with
+\(2k/t_1\le8\log L\), the left side is at most
+\[
+8\log L\cdot \frac{n}{2L^3}=\frac{4n\log L}{L^3}.
+\]
+Since \(k^2\ge k_R^2=(1+\eta)^2nL\), the ratio of this upper bound to
+\(k_R^2\) is
+\[
+\frac{4n\log L/L^3}{(1+\eta)^2nL}
+=\frac{4}{(1+\eta)^2}\frac{\log L}{L^4}\to0.
+\]
+Choose \(N_{7e}\) making this ratio at most \(\varepsilon_1\).
+
+For the projected-overlap size correction, (H) gives the explicit upper bound
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}200L^3
+\le 8100L^3(\log L)^2.
+\]
+The ratio of this upper bound to \((\varepsilon_1/10)k_R\) is
+\[
+\frac{8100L^3(\log L)^2}
+     {(\varepsilon_1/10)(1+\eta)\sqrt{nL}}
+=\frac{81000}{\varepsilon_1(1+\eta)}
+  \frac{L^{5/2}(\log L)^2}{\sqrt n}\to0.
+\]
+Choose \(N_{7c}\) making this ratio at most \(1\).  Then
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}200L^3
+  \le \frac{\varepsilon_1}{10}k
+\]
+for all \(n>N_{7c}\).
+For the projected-pair multiplicity correction,
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}\binom{200L^3}{2}_{\mathbb R}
+  \le \frac{\varepsilon_1}{10}k^2,
+\]
+use (H) and, for \(200L^3\ge0\),
+\[
+\binom{200L^3}{2}_{\mathbb R}
+\le \frac{(200L^3)^2}{2}=20000L^6.
+\]
+Thus the left side is at most \(810000L^6(\log L)^2\).  The ratio of this
+bound to \((\varepsilon_1/10)k_R^2\) is
+\[
+\frac{810000L^6(\log L)^2}
+     {(\varepsilon_1/10)(1+\eta)^2nL}
+=\frac{8100000}{\varepsilon_1(1+\eta)^2}
+  \frac{L^5(\log L)^2}{n}\to0.
+\]
+Choose \(N_{7d}\) making this ratio at most \(1\), which proves the displayed
+inequality.
+
+We also impose the relative huge-error comparisons used when the \(o(k)\)
+losses in the huge opposite-color argument are converted into
+deficit-relative errors.  First,
+\[
+2pm\le\frac{\varepsilon_2}{100}t_1
+\]
+follows because, using \(m\le m_R=n/L^2\),
+\[
+\frac{2pm}{t_1}
+\le
+\frac{\sqrt{L/n}\cdot n/L^2}{\sqrt{nL}/\log L}
+=\frac{\log L}{L^2}\to0.
+\]
+Choose \(N_{7f}\) making this ratio at most \(\varepsilon_2/100\).
+
+Next, by \(2k/t_1+1\le9\log L\),
+\[
+\frac{(2k/t_1+1)100L^3}{t_1}
+\le
+\frac{900L^3\log L}{\sqrt{nL}/\log L}
+=900\frac{L^{5/2}(\log L)^2}{\sqrt n}\to0,
+\]
+and the same estimate with \(100L^3\) replaced by \(200L^3\) differs only by a
+factor \(2\).  Choose \(N_{7g}\) making both ratios at most
+\(\varepsilon_2/100\).
+
+Finally,
+\[
+\frac{(2k/t_1+1)400L^5}{t_1}
+\le
+\frac{3600L^5\log L}{\sqrt{nL}/\log L}
+=3600\frac{L^{9/2}(\log L)^2}{\sqrt n}\to0.
+\]
+Choose \(N_{7h}\) making this ratio at most \(\varepsilon_2/100\).
+These three threshold choices prove the four new relative comparison conjuncts.
+
+Finally,
+\[
+3\varepsilon_2\le\frac{\varepsilon_1}{10}
+\]
+was one of the two explicit requirements in the initial choice of
+\(\varepsilon_2\).  Also \(0<\varepsilon_2<\varepsilon_1<\eta<1\), so
+\(0\le\varepsilon_2\le1\).  These two \(\varepsilon_2\)-conjuncts therefore
+hold for every \(n\), independently of the threshold.
+
+For
+\[
+t_2n^{1/4-\eta}\le\varepsilon_1k,
+\]
+the left side is \(n^{1/2}\), and
+\[
+\frac{n^{1/2}}{k}\le \frac{n^{1/2}}{k_R}
+=\frac{1}{(1+\eta)\sqrt L}\to0.
+\]
+Choose \(N_8\) making this at most \(\varepsilon_1\).
+
+For the cutoff comparison
+\[
+\noderef{TwoBiteLargeCutoff}(\eta,n)<\noderef{TwoBiteHugeCutoff}(n),
+\]
+that is, \(t_2<t_1\), compute
+\[
+\frac{t_2}{t_1}
+=\frac{n^{1/4+\eta}}{\sqrt{nL}/\log L}
+=n^{-1/4+\eta}L^{-1/2}\log L.
+\]
+Since \(\eta<1/16<1/4\), this ratio tends to \(0\).  Choose \(N_9\) so that
+the ratio is \(<1\) for all \(n>N_9\).  Then
+\[
+\noderef{TwoBiteLargeCutoff}(\eta,n)=t_2
+<t_1=\noderef{TwoBiteHugeCutoff}(n).
+\]
+
+For the two-term cutoff comparison
+\[
+(1+\varepsilon_2)L^2\frac{t_2}{L}
+  +L(1+\varepsilon_2)pm<t_1,
+\]
+we do not use only the simpler inequality \(t_2<t_1\).  Instead, use
+\(0\le\varepsilon_2\le1\), so \(1+\varepsilon_2\le2\), and estimate the two
+ratios to \(t_1\) separately.  The first ratio is
+\[
+\frac{(1+\varepsilon_2)Lt_2}{t_1}
+\le
+2\frac{L\,n^{1/4+\eta}}{\sqrt{nL}/\log L}
+=2n^{-1/4+\eta}L^{1/2}\log L\to0,
+\]
+because \(\eta<1/16<1/4\).  The second ratio, using \(m\le m_R=n/L^2\), is
+\[
+\frac{(1+\varepsilon_2)Lpm}{t_1}
+\le
+2\frac{L\cdot\frac12\sqrt{L/n}\cdot n/L^2}
+        {\sqrt{nL}/\log L}
+=\frac{\log L}{L}\to0.
+\]
+Choose \(N_{9a}\) making each displayed ratio strictly less than \(1/2\).
+Then the two summands have total size strictly less than \(t_1\), which is
+exactly this conjunct of
+\(\noderef{ParameterHierarchyEventualComparisons}\).
+
+For the monotonicity-size comparison used in the large-huge count,
+\[
+100\left(n^{1/4}+\frac12\right)L^3
+\le \noderef{TwoBiteLargeCutoff}(\eta,n)=t_2,
+\]
+divide by \(t_2=n^{1/4+\eta}\):
+\[
+\frac{100(n^{1/4}+\frac12)L^3}{t_2}
+=100\left(1+\frac{1}{2n^{1/4}}\right)L^3n^{-\eta}\to0.
+\]
+Choose \(N_{10}\) making this ratio at most \(1\).  Then for all
+\(n>N_{10}\),
+\[
+100\left(n^{1/4}+\frac12\right)L^3\le t_2
+=\noderef{TwoBiteLargeCutoff}(\eta,n).
+\]
+
+For the large-huge count comparison,
+\[
+k<n^{1/4}t_2-\binom{n^{1/4}}{2}_{\mathbb R}100L^3,
+\]
+the main term is \(n^{1/4}t_2=n^{1/2+\eta}\).  Since
+\(\binom{x}{2}_{\mathbb R}\le x^2/2\) for \(x=n^{1/4}\ge1\), the subtracted
+term is at most \(50n^{1/2}L^3\).  The two ratios
+\[
+\frac{50n^{1/2}L^3}{n^{1/2+\eta}}=50L^3n^{-\eta},
+\qquad
+\frac{k}{n^{1/2+\eta}}\le 2(1+\eta)\sqrt L\,n^{-\eta}
+\]
+both tend to \(0\).  Choose \(N_{11}\) so that the first ratio is at most \(1/4\)
+and the second is at most \(1/4\).  Then the right side is at least
+\((3/4)n^{1/2+\eta}\), while \(k\le(1/4)n^{1/2+\eta}\), proving the strict
+inequality.
+
+For
+\[
+t_3^2k\le \frac{\varepsilon_1}{2}k^2,
+\]
+we have \(t_3^2=n^{4\eta}\), so the same estimate as for \(N_1\) applies.
+Choose \(N_{12}\) making \(t_3^2/k\le\varepsilon_1/2\).
+
+For
+\[
+k\left(\frac{2k}{L}+n^{1/4}\right)\le\varepsilon_1k^2,
+\]
+divide by \(k^2\):
+\[
+\frac{2}{L}+\frac{n^{1/4}}{k}
+\le
+\frac2L+\frac{n^{1/4}}{k_R}
+=\frac2L+\frac{1}{(1+\eta)n^{1/4}\sqrt L}\to0.
+\]
+Choose \(N_{13}\) making this at most \(\varepsilon_1\).
+
+For
+\[
+8\sqrt{\varepsilon_1}\,pk^2+10\varepsilon_1pk^2+4\log k
+  \le \eta^3pk^2,
+\]
+the parameter choice gives
+\[
+8\sqrt{\varepsilon_1}+10\varepsilon_1\le\frac{\eta^3}{2},
+\]
+and the threshold \(N_6\) gives \(4\log k\le(\eta^3/2)pk^2\).  Therefore this
+conjunct holds for all \(n>N_6\); set \(N_{14}=N_6\).
+
+For the medium exponential comparison,
+\[
+\exp\!\left(kL+2kn^{1/4-3\eta}L-n^{3/4-2\eta}\right)\le\varepsilon_1,
+\]
+let
+\[
+E(n)=kL+2kn^{1/4-3\eta}L-n^{3/4-2\eta}.
+\]
+Using \(k\le2k_R\), the first positive term has ratio at most
+\[
+\frac{2k_RL}{n^{3/4-2\eta}}
+=2(1+\eta)L^{3/2}n^{-1/4+2\eta}\to0,
+\]
+and the second has ratio at most
+\[
+\frac{4k_Rn^{1/4-3\eta}L}{n^{3/4-2\eta}}
+=4(1+\eta)L^{3/2}n^{-\eta}\to0.
+\]
+Choose \(N_{15}\) so that the sum of these ratios is at most \(1/2\), giving
+\[
+E(n)\le-\frac12 n^{3/4-2\eta}.
+\]
+Increase \(N_{15}\), if necessary, so that
+\(\exp(-\frac12 n^{3/4-2\eta})\le\varepsilon_1\).
+
+For the final exponential comparison,
+\[
+\exp\!\left(-\frac{\eta}{4}kL\right)\le\varepsilon_1,
+\]
+we have \(kL\ge k_RL=(1+\eta)\sqrt n\,L^{3/2}\to\infty\).  Choose \(N_{16}\)
+so that \((\eta/4)kL\ge\log(1/\varepsilon_1)\).
+
+There are finitely many thresholds
+\[
+N_{\mathrm{pos}},N_1,\ldots,N_{16},
+N_{7a},N_{7b},N_{7c},N_{7d},N_{7e},N_{7f},N_{7g},N_{7h},N_{9a}.
+\]
+Choose \(n_0\) to be an integer at least
+\[
+\max\{\varepsilon_2^{-2},N_{\mathrm{pos}},N_1,\ldots,N_{16},
+N_{7a},N_{7b},N_{7c},N_{7d},N_{7e},N_{7f},N_{7g},N_{7h},N_{9a}\}.
+\]
+Then \(n_0\) satisfies the lower bound in
+\(\noderef{ParameterHierarchy}\), and for every \(n>n_0\) every conjunct of
+\(\noderef{ParameterHierarchyEventualComparisons}(\eta,\varepsilon_1,
+\varepsilon_2,n_0)\) holds by the corresponding threshold above.
+The correspondence between conjuncts and thresholds is as follows.  The
+rounding, \(0<m\), \(0\le p\le1/2\), \(K\le n\), and \(1\le2pm\) assertions
+are supplied by \(N_{\mathrm{pos}}\), (R), and (P).  The small-pair, fiber,
+expectation-absorption, McDiarmid-union, terminal-small-pair, logarithmic, and
+huge-threshold size conjunct \(t_1k\le\varepsilon_1k^2\) are supplied
+respectively by \(N_1,N_2,N_3,N_4,N_5,N_6,N_7\).  The huge-overlap count
+\[
+\binom{2k/t_1+1}{2}_{\mathbb R}100L^3\le\frac12k
+\]
+is supplied by \(N_{7a}\).  The same-color huge size and projected-pair
+estimates are supplied by \(N_{7b}\) and \(N_{7e}\); the projected-overlap
+size and multiplicity corrections by \(N_{7c}\) and \(N_{7d}\).  The four
+relative-error comparisons with \(\varepsilon_2/100\), namely those with
+left sides \(2pm\), \((2k/t_1+1)100L^3\), \((2k/t_1+1)200L^3\), and
+\((2k/t_1+1)400L^5\), are supplied by \(N_{7f},N_{7g},N_{7h}\), while the two
+pure \(\varepsilon_2\)-conjuncts were built into the initial choice of
+\(\varepsilon_2\).  Finally,
+\[
+N_8,N_9,N_{9a},N_{10},N_{11},N_{12},N_{13},N_{14},N_{15},N_{16}
+\]
+supply, in order, the large-cutoff scale estimate, the large-versus-huge
+cutoff, the two-term cutoff comparison with \((1+\varepsilon_2)\), the
+large-cutoff lower bound, the large-huge count comparison, the \(t_3^2k\)
+estimate, the projected-overlap loss estimate, the combined coefficient
+inequality, and the two exponential comparisons.  This lists every displayed
+conjunct in the current
+\(\noderef{ParameterHierarchyEventualComparisons}\) package.
+
+It remains to assemble the fixed hierarchy inequalities.  The choices
+give
+\[
+0<\varepsilon_2<\varepsilon_1<\eta=\varepsilon'<1,\qquad
+\varepsilon'<\frac1{16},
+\]
+\[
+3\varepsilon_2\le\frac{\varepsilon_1}{10},\qquad
+8\sqrt{\varepsilon_1}+10\varepsilon_1\le\frac{(\varepsilon')^3}{2}.
+\]
+Together with \(n_0\ge\varepsilon_2^{-2}\) and the just-proved eventual
+comparisons, this is exactly
+\[
+\noderef{ParameterHierarchy}(\varepsilon',\varepsilon_1,\varepsilon_2,n_0).
+\]
+The initial choice of \(\varepsilon'\) also gives
+\[
+0<\varepsilon',\qquad \varepsilon'<\varepsilon,\qquad \varepsilon'\le\varepsilon,
+\]
+so the existential conclusion follows.
+\end{proof}

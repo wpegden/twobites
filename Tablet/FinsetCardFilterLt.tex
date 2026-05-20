@@ -1,0 +1,7 @@
+\begin{helper}[Cardinality of Filtered Product]
+For any finite set $s$ of a linear order, the number of pairs $(x, y) \in s \times s$ with $x < y$ is $\binom{|s|}{2}$.
+\end{helper}
+\begin{proof}
+Let $S = s \times s$. Partition $S$ into $L = \{(x, y) \in S : x < y\}$, $G = \{(x, y) \in S : y < x\}$, and $D = \{(x, y) \in S : x = y\}$.
+By symmetry $|L| = |G|$, and $|D| = |s|$. Since $|S| = |s|^2$, we have $2|L| + |s| = |s|^2$, so $|L| = \frac{|s|^2 - |s|}{2} = \binom{|s|}{2}$.
+\end{proof}

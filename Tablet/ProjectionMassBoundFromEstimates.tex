@@ -1,0 +1,31 @@
+\begin{helper}
+Let \(0\le\varepsilon_2\le1\) and put \(\delta=\varepsilon_2/100\).  Suppose
+that nonnegative mass \(T\), source size \(S\), and deficit \(D\) satisfy
+\[
+(1-\delta)T\le S
+\qquad\text{and}\qquad
+(1-2\delta)S\le D.
+\]
+Then
+\[
+T\le (1+\varepsilon_2)D.
+\]
+\end{helper}
+\begin{proof}
+Multiplying the first inequality by the nonnegative factor \(1-2\delta\) and
+then using the second gives
+\[
+(1-\delta)(1-2\delta)T\le D.
+\]
+For \(0\le\varepsilon_2\le1\) and \(\delta=\varepsilon_2/100\), the elementary
+polynomial inequality
+\[
+1\le (1+\varepsilon_2)(1-\delta)(1-2\delta)
+\]
+holds.  Since \(T\ge0\), this implies
+\[
+T\le (1+\varepsilon_2)(1-\delta)(1-2\delta)T
+\le (1+\varepsilon_2)D,
+\]
+as required.
+\end{proof}

@@ -1,0 +1,32 @@
+\begin{lemma}
+For every real number \(x\ge0\),
+\[
+\noderef{RealChooseTwo}(x)\le x^2.
+\]
+If in addition \(x\ge2\), then
+\[
+\frac{x^2}{4}\le \noderef{RealChooseTwo}(x)\le\frac{x^2}{2},
+\]
+\end{lemma}
+\begin{proof}
+By definition,
+\[
+\noderef{RealChooseTwo}(x)=\frac{x(x-1)}2.
+\]
+Since \(x\ge2\), both \(x\) and \(x-2\) are nonnegative.  Hence
+\[
+0\le x(x-2)=x^2-2x.
+\]
+Dividing by \(4\) and rearranging gives
+\[
+\frac{x^2}{4}\le\frac{x(x-1)}2=\noderef{RealChooseTwo}(x).
+\]
+Also \(x\ge0\), so
+\[
+\noderef{RealChooseTwo}(x)=\frac{x^2-x}{2}\le\frac{x^2}{2}.
+\]
+Since \(x^2\ge0\), we have \(x^2/2\le x^2\).  Combining this with the previous
+inequality gives \(\noderef{RealChooseTwo}(x)\le x^2\).  The same argument
+using only \(x\ge0\) proves \(\noderef{RealChooseTwo}(x)\le x^2\) without
+assuming \(x\ge2\).
+\end{proof}

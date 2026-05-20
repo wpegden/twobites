@@ -1,0 +1,14 @@
+\begin{helper}
+Let \(I\subseteq\mathrm{Fin}(n)\).  A projection-size cell
+\(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B,\omega)\) is empty
+whenever \(\ell_R\ell_B<k\).
+\end{helper}
+\begin{proof}
+Inside the cell, \(|I|=k\), the red projection image of \(I\) has size
+\(\ell_R\), and the blue projection image has size \(\ell_B\).  The embedded
+image of \(I\) under \(\noderef{TwoBiteEmbedding}\) has cardinality \(k\),
+because the embedding is injective.  This embedded image lies inside the
+Cartesian product of the red and blue projection images, whose cardinality is
+\(\ell_R\ell_B\).  Therefore \(k\le \ell_R\ell_B\), contradicting
+\(\ell_R\ell_B<k\).
+\end{proof}

@@ -1,0 +1,17 @@
+\begin{helper}[FiberAndDegreeMixedLiftedIntersectionHypergeometricBound]
+\label{helper:FiberAndDegreeMixedLiftedIntersectionHypergeometricBound}
+Let $Y$ be a hypergeometric variable with population size $N$, marked set size $m_{marked}$, and sample size $n$.
+For any $T > 0$ and $L_{param} \ge 0$, the probability $P(Y \ge T)$ is bounded by $\exp(\mu(e^{L_{param}}-1) - L_{param} T)$ where $\mu = n m_{marked} / N$.
+\end{helper}
+
+\begin{proof}
+By the Chernoff bound, for any $L_{param} \ge 0$, we have
+\[
+P(Y \ge T) \le E[e^{L_{param} Y}] / e^{L_{param} T} = E[e^{L_{param} Y}] \exp(-L_{param} T).
+\]
+By $\noderef{HypergeometricMgfComparison}$, the MGF of the hypergeometric distribution is bounded by the MGF of the corresponding binomial distribution, which is in turn bounded by $\exp(\mu(e^{L_{param}}-1))$.
+Thus
+\[
+P(Y \ge T) \le \exp(\mu(e^{L_{param}}-1)) \exp(-L_{param} T) = \exp(\mu(e^{L_{param}}-1) - L_{param} T).
+\]
+\end{proof}

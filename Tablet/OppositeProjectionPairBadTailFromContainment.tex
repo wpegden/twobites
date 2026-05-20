@@ -1,0 +1,34 @@
+\begin{lemma}
+Let \(U,V\) be finite sets and let \(f\) be a map from the ambient vertex set to a label set.  Put \(U_0=U\setminus V\).  Suppose \(\eta:U_0\to \beta\) agrees with \(f\) on \(U_0\).  If, for a real threshold \(\tau\),
+\[
+  |f(U)\cap f(V)|>|U\cap V|+\tau,
+\]
+then
+\[
+  \left\lceil \tau\right\rceil
+  \le
+  \left|\{v\in V\setminus U: f(v)\in \eta(U_0)\}\right|.
+\]
+\end{lemma}
+\begin{proof}
+By \(\noderef{OppositeProjectionIntersectionContainment}\),
+\[
+  |f(U)\cap f(V)|
+  \le
+  |U\cap V|+
+  \left|\{v\in V\setminus U:f(v)\in f(U\setminus V)\}\right|.
+\]
+Since \(\eta\) agrees with \(f\) on \(U_0=U\setminus V\), every value in \(f(U\setminus V)\) lies in the image \(\eta(U_0)\).  Hence the displayed exceptional set is contained in
+\[
+  \{v\in V\setminus U:f(v)\in \eta(U_0)\}.
+\]
+Combining this containment with the strict lower bound
+\(|f(U)\cap f(V)|>|U\cap V|+\tau\) gives
+\[
+  \tau
+  \le
+  \left|\{v\in V\setminus U:f(v)\in \eta(U_0)\}\right|.
+\]
+The defining property of the natural ceiling then yields the claimed
+\(\lceil\tau\rceil\) bound.
+\end{proof}

@@ -1,0 +1,423 @@
+\begin{lemma}
+Fix \(n>n_0\), put
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+and assume
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\).
+For every fixed \(K\)-set \(I\), the probability that
+\(\noderef{FiberAndDegreeEvent}\) holds and the small-class closed-pair bound
+for this particular \(I\) fails is at most
+\[
+\exp\!\left(
+-\frac{\binom{K}{2}_{\mathbb R}^2}
+ {(\log n)M n^{8\varepsilon}}
+\right).
+\]
+\end{lemma}
+\begin{proof}
+Fix the \(K\)-set \(I\), and write
+\[
+L=\log n,\qquad
+C=\binom{K}{2}_{\mathbb R}.
+\]
+Let \(\mathcal D_n\) denote \(\noderef{FiberAndDegreeEvent}\).  For a sample
+\(\omega\), put
+\[
+C_I(\omega)=\noderef{TwoBiteClosedPairsInClass}
+  \bigl(\omega,I,\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I)\bigr).
+\]
+We shall also use that the hierarchy places us in the logarithm-positive
+range.  Indeed, the first line of
+\(\noderef{ParameterHierarchyEventualComparisons}\) gives \(0<M\) and
+\(1\le2pM\).  Since \(M>0\), this implies \(p>0\).  With
+\[
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right)
+ =\frac12\sqrt{L/n},
+\]
+and since \(n>n_0\ge0\), we have \(n>0\), hence \(L/n>0\) and therefore
+\[
+L=\log n>0. \tag{0}
+\]
+Unfolding \(\noderef{ClosedPairsBound}\), failure of the fixed-set small
+closed-pair bound is the inequality
+\[
+|C_I(\omega)|>\varepsilon_1K^2. \tag{1}
+\]
+
+We first decompose the closed pairs counted by \(C_I\).  Let
+\[
+P_R=\pi_R(I),\qquad P_B=\pi_B(I),\qquad P_I=P_R\cup P_B
+\]
+where \(P_I\) is viewed inside the disjoint red-blue base vertex set.  Define
+three finite sets of unordered pairs in \(I\).  First,
+\(A_{\mathrm{int}}\) is the cardinality of the union
+\[
+\bigcup_{x\in S_I\cap P_I}\binom{X_x(I)}2.
+\]
+Second, \(A_{\mathrm{sf}}\) is the number of unordered pairs
+\(\{u,w\}\subseteq I\) such that
+\[
+\pi_R(u)=\pi_R(w)\quad\hbox{or}\quad \pi_B(u)=\pi_B(w).
+\]
+Third, \(Z_I\) is the number of unordered pairs \(\{u,w\}\subseteq I\) for
+which
+\[
+\pi_R(u)\ne\pi_R(w),\qquad \pi_B(u)\ne\pi_B(w),
+\]
+and for which there exists an external small witness
+\[
+x\in S_I\setminus P_I,\qquad u,w\in X_x(I).
+\]
+Now let \(\{u,w\}\) be a pair counted by \(C_I\).  By unfolding
+\(\noderef{TwoBiteClosedPairsInClass}\), there is a witness
+\[
+x\in S_I,\qquad \{u,w\}\in\binom{X_x(I)}2.
+\]
+There are three exhaustive possibilities:
+\[
+\begin{array}{ll}
+\text{internal witness:} & x\in P_I,\\
+\text{same-fiber pair:} & x\notin P_I\text{ and }
+  \pi_R(u)=\pi_R(w)\text{ or }\pi_B(u)=\pi_B(w),\\
+\text{external pair:} & x\notin P_I\text{ and the two red and two blue
+  projections are distinct.}
+\end{array}
+\]
+In the first case the pair is counted by the union defining
+\(A_{\mathrm{int}}\).  In the second case it is counted by
+\(A_{\mathrm{sf}}\).  In the third case it is counted by \(Z_I\).  These three
+sets of pairs need not be disjoint, because a pair may have more than one
+witness, but the preceding case split gives a covering.  Hence the finite
+union bound for cardinalities gives
+\[
+|C_I|\le A_{\mathrm{int}}+A_{\mathrm{sf}}+Z_I. \tag{2}
+\]
+
+On \(\mathcal D_n\), each small witness \(x\in S_I\) satisfies
+\[
+|X_x(I)|\le\noderef{TwoBiteSmallCutoff}(\varepsilon,n)=n^{2\varepsilon}.
+\]
+There are at most \(|P_R|+|P_B|\le2K\) internal base vertices.  Therefore,
+using \(\binom{a}{2}_{\mathbb R}\le a^2/2\) for \(a\ge0\),
+\[
+A_{\mathrm{int}}
+\le 2K\binom{n^{2\varepsilon}}2_{\mathbb R}
+\le K n^{4\varepsilon}. \tag{3}
+\]
+The first small-cutoff comparison in
+\(\noderef{ParameterHierarchyEventualComparisons}\), instantiated at this
+\(n>n_0\), is
+\[
+n^{4\varepsilon}K\le\frac{\varepsilon_1}{2}K^2. \tag{4}
+\]
+Thus \(A_{\mathrm{int}}\le(\varepsilon_1/2)K^2\) on \(\mathcal D_n\).
+
+Still on \(\mathcal D_n\), the fiber-size clauses say that every red and blue
+fiber has size within relative error \(\varepsilon_2\) of \(L^2\).  The
+hierarchy gives \(0\le\varepsilon_2\le1\), so every fiber meeting \(I\) has at
+most \(2L^2\) vertices of \(I\).  For the red fibers, if the fiber sizes inside
+\(I\) are \(q_r=|I\cap F_R(r)|\), then
+\[
+\sum_r q_r=K,\qquad q_r\le2L^2,
+\]
+and hence
+\[
+\sum_r\binom{q_r}{2}_{\mathbb R}
+\le \sum_r q_r L^2=K L^2.
+\]
+The same argument for blue fibers gives another \(K L^2\).  Therefore
+\[
+A_{\mathrm{sf}}\le2K L^2. \tag{5}
+\]
+
+We now estimate \(Z_I\) after conditioning on the injection
+\(\pi=\noderef{TwoBiteEmbedding}(\omega)\).  This conditioning fixes all
+fibers, all values of \(\pi_R,\pi_B\) on \(I\), and hence the two projection
+sets \(P_R,P_B\).  By unfolding \(\noderef{TwoBiteSampleWeight}\), the sample
+weight of a sample with red graph \(G_R\), blue graph \(G_B\), and injection
+\(\pi\) is
+\[
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,M).
+\]
+After \(\pi\) is fixed, the uniform-injection factor is a constant.  If there
+are no injections, the fiber \(\{\omega:\pi_\omega=\pi\}\) has total weight
+zero and there is nothing to prove for it.  Otherwise, conditioning on this
+fiber divides by the same positive constant on every sample with injection
+\(\pi\).  The remaining conditional law is therefore exactly the product of
+the red \(G(M,p)\) edge-coordinate law and the blue \(G(M,p)\)
+edge-coordinate law.  In particular, by the product definition
+\(\noderef{GnpGraphWeight}\), every finite family of distinct red edge
+coordinates is independent with probability \(p\) for each edge required to be
+present and \(1-p\) for each edge required to be absent; the same statement
+holds in the blue graph, and the red and blue edge-coordinate families are
+independent of one another.  Edge coordinates that are not mentioned in a
+given event may be summed out, because for each such coordinate the two
+weights \(p\) and \(1-p\) add to \(1\).
+
+Fix an unordered pair \(\{u,w\}\subseteq I\) with
+\[
+\pi_R(u)\ne\pi_R(w),\qquad \pi_B(u)\ne\pi_B(w).
+\]
+For a fixed red external base vertex \(x\notin P_R\) to witness this pair,
+both red
+edges
+\[
+\{x,\pi_R(u)\},\qquad \{x,\pi_R(w)\}
+\]
+must be present in \(G_R\).  These are distinct base-edge coordinates: the two
+endpoints \(\pi_R(u)\) and \(\pi_R(w)\) are distinct, and \(x\notin P_R\), so
+neither edge is a loop.  Under the conditional \(\noderef{GnpGraphWeight}\)
+law their joint probability is \(p^2\).  Intersecting with the additional
+condition \(x\in S_I\) can only decrease the probability.  There are at most
+\(M\) choices of such red external \(x\), so the union bound gives a red
+contribution at most \(Mp^2\).  The same argument in the blue graph gives at
+most \(Mp^2\) for blue external witnesses.  A second union bound over the two
+colors gives
+\[
+\Pr(\{u,w\}\text{ contributes to }Z_I\mid\pi)\le2Mp^2. \tag{6}
+\]
+Using
+\[
+p=\frac12\sqrt{L/n}
+\]
+from \(\noderef{TwoBiteEdgeProbability}\), and the rounding comparison
+\[
+M\le\frac{n}{L^2}
+\]
+from \(\noderef{ParameterHierarchyEventualComparisons}\), we get
+\[
+2Mp^2\le 2\cdot\frac{n}{L^2}\cdot\frac{L}{4n}
+=\frac1{2L}. \tag{7}
+\]
+There are at most \(C=\binom{K}{2}_{\mathbb R}\) unordered pairs in \(I\), so
+linearity of expectation gives, uniformly in the fixed injection,
+\[
+\mu_\pi:=\mathbb E(Z_I\mid\pi)\le\frac{C}{2L}. \tag{8}
+\]
+
+Set
+\[
+t=\frac{C}{\sqrt L}.
+\]
+The expectation-absorption conjunct of
+\(\noderef{ParameterHierarchyEventualComparisons}\), instantiated at this
+\(n>n_0\) and with the rounded values \(K,M\), is exactly
+\[
+\frac{C}{2L}+2K L^2+\frac{C}{\sqrt L}
+\le \frac{2C}{\sqrt L}. \tag{9}
+\]
+The final small-pairs comparison in the same package is
+\[
+\frac{2C}{\sqrt L}\le\frac{\varepsilon_1}{2}K^2. \tag{10}
+\]
+Consequently, if \(Z_I<\mu_\pi+t\), then by (5), (8), (9), and (10),
+\[
+A_{\mathrm{sf}}+Z_I
+\le 2K L^2+\frac{C}{2L}+\frac{C}{\sqrt L}
+\le \frac{\varepsilon_1}{2}K^2. \tag{11}
+\]
+Combining (2), (3), (4), and (11), no failure of
+\(\noderef{ClosedPairsBound}\) can occur on \(\mathcal D_n\).  Therefore
+\[
+\mathcal D_n\cap\{\text{the fixed-set small bound fails}\}
+\subseteq
+\left\{Z_I\ge\mu_\pi+t\right\}. \tag{12}
+\]
+
+It remains to bound the conditional probability of the event on the right of
+(12).  Let
+\[
+R^\ast=V_R\setminus P_R,\qquad B^\ast=V_B\setminus P_B.
+\]
+For \(x\in R^\ast\), define the red external adjacency vector
+\[
+Y_x^R=N_{G_R}(x)\cap P_R,
+\]
+and for \(y\in B^\ast\), define
+\[
+Y_y^B=N_{G_B}(y)\cap P_B.
+\]
+The edge sets used by the distinct vectors \(Y_x^R\) are disjoint, because
+all endpoints in \(P_R\) are excluded from \(R^\ast\); the same holds in blue,
+and red and blue graphs are independent.  Thus these vectors are independent
+under the conditional product law.  More explicitly, if
+\[
+q_R(A)=p^{|A|}(1-p)^{|P_R|-|A|}\quad(A\subseteq P_R),
+\qquad
+q_B(B)=p^{|B|}(1-p)^{|P_B|-|B|}\quad(B\subseteq P_B),
+\]
+then, after all other red and blue edge coordinates are summed out, the
+conditional mass of a prescribed family
+\((A_x)_{x\in R^\ast}\) and \((B_y)_{y\in B^\ast}\) is
+\[
+\prod_{x\in R^\ast}q_R(A_x)\prod_{y\in B^\ast}q_B(B_y). \tag{13}
+\]
+This is precisely the marginal law of the external adjacency vectors.  The
+random variable \(Z_I\) is a deterministic function of these vectors.  Indeed,
+with \(\pi\) fixed, for \(x\in R^\ast\) one has
+\[
+X_x(I)=\{u\in I:\pi_R(u)\in Y_x^R\},
+\]
+and for \(y\in B^\ast\) one has
+\[
+X_y(I)=\{u\in I:\pi_B(u)\in Y_y^B\}.
+\]
+Thus whether such an external vertex is in \(S_I\), and which pairs with
+distinct projections from \(I\) it contributes to \(Z_I\), are determined by its
+own vector and the fixed injection.  All internal vertices and same-fiber
+pairs have already been separated off into \(A_{\mathrm{int}}\) and
+\(A_{\mathrm{sf}}\), so no other graph coordinates enter \(Z_I\).
+
+The helper \(\noderef{BoundedDifferencesProduct}\) is stated for iid
+coordinates.  To match that shape, take one common coordinate space
+\[
+\Omega=\mathcal P(P_R)\times\mathcal P(P_B)
+\]
+with product Bernoulli-\(p\) law \(q\) on the two components.  Thus
+\[
+q(A_R,A_B)=q_R(A_R)q_B(A_B).
+\]
+It is nonnegative, and
+\[
+\sum_{(A_R,A_B)\in\Omega}q(A_R,A_B)
+=\left(\sum_{A_R\subseteq P_R}q_R(A_R)\right)
+ \left(\sum_{A_B\subseteq P_B}q_B(A_B)\right)=1,
+\]
+because each factor is a finite Bernoulli product distribution.  Enumerate
+the vertices of \(R^\ast\) and \(B^\ast\).  For a red external vertex, use the
+first component of its \(\Omega\)-coordinate and ignore the second component;
+for a blue external vertex, use the second component and ignore the first.
+The real external vertices number
+\[
+|R^\ast|+|B^\ast|\le M+M=2M.
+\]
+Add dummy coordinates, ignored by \(Z_I\), so that there are exactly
+\[
+r=2M
+\]
+coordinates.  Summing over the ignored second components of red coordinates,
+the ignored first components of blue coordinates, and all components of dummy
+coordinates gives a factor \(1\) in each case.  Therefore the push-forward of
+\(q^{\otimes r}\) to the real external adjacency vectors is exactly the
+conditional marginal law (13).
+
+Define \(Z:\Omega^r\to\mathbb R\) to be \(Z_I\) computed from these real
+external adjacency vectors and to be independent of the ignored and dummy
+components.  Written as finite sums, the equality of laws just proved says
+\[
+\sum_{\eta\in\Omega^r}q^{\otimes r}(\eta)Z(\eta)
+=\sum_{\omega:\pi_\omega=\pi}
+   \Pr(\omega\mid\pi)\,Z_I(\omega)
+=\mathbb E(Z_I\mid\pi).
+\]
+Thus the expectation of \(Z\) in the product space is exactly
+\[
+\mu_\pi=\mathbb E(Z_I\mid\pi). \tag{14}
+\]
+
+Changing one red coordinate changes only the contribution of the corresponding
+external red vertex \(x\).  For a fixed value of all other coordinates, let
+\(U\) be the union of external pairs witnessed by all other external vertices.
+For a possible value \(A\subseteq P_R\) of the coordinate, let
+\[
+X_x^A(I)=\{u\in I:\pi_R(u)\in A\}.
+\]
+The contribution of \(x\) is empty if \(x\) is not small for this value of the
+coordinate; otherwise it is a subset of
+\[
+\binom{X_x^A(I)}2
+\]
+consisting only of the pairs with two distinct projections.  In the nonempty
+case, the definition of the small class
+\(\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I)\) gives
+\[
+|X_x^A(I)|\le\noderef{TwoBiteSmallCutoff}(\varepsilon,n)=n^{2\varepsilon}.
+\]
+The new value of the coordinate has the same description, with a possibly
+different set \(A'\subseteq P_R\).  Put
+\[
+c=\frac12 n^{4\varepsilon}. \tag{15}
+\]
+Because \(n>0\), real powers of \(n\) are nonnegative, and hence
+\[
+\binom{n^{2\varepsilon}}2_{\mathbb R}
+\le \frac{(n^{2\varepsilon})^2}{2}
+=c,
+\]
+both the old and new contributed sets have size at most \(c\).  If those two
+contributed sets are \(W\) and \(W'\), then the two possible values of \(Z\)
+are \(|U\cup W|\) and \(|U\cup W'|\), where \(|W|,|W'|\le c\).  Since
+\[
+|(U\cup W')\setminus(U\cup W)|\le |W'|\le c,\qquad
+|(U\cup W)\setminus(U\cup W')|\le |W|\le c,
+\]
+their cardinalities differ by at most \(c\).  The same argument applies to one
+blue coordinate, and dummy coordinates change \(Z\) by \(0\).  Thus the
+Lipschitz hypothesis of \(\noderef{BoundedDifferencesProduct}\) holds with
+the exact values
+\[
+r=2M,\qquad c=\frac12 n^{4\varepsilon},\qquad t=\frac{C}{\sqrt L}.
+\]
+Here \(c>0\) because \(n>0\) and \(n^{4\varepsilon}>0\), and
+\(t\ge0\) because \(C=\binom{K}{2}_{\mathbb R}\ge0\) and \(L>0\) by (0).
+
+Applying \(\noderef{BoundedDifferencesProduct}\) conditionally on \(\pi\)
+gives
+\[
+\Pr(Z_I\ge\mu_\pi+t\mid\pi)
+\le
+\exp\!\left(-\frac{2t^2}{r c^2}\right).
+\]
+With the displayed values of \(r,c,t\),
+\[
+\frac{2t^2}{r c^2}
+\;=\;
+\frac{2(C^2/L)}
+     {(2M)\left(\frac12 n^{4\varepsilon}\right)^2}
+\;=\;
+\frac{4C^2}{L\,M\,n^{8\varepsilon}}
+\;\ge\;
+\frac{C^2}{L\,M\,n^{8\varepsilon}}.
+\]
+Since the exponential function is increasing, replacing the stronger negative
+exponent \(-4C^2/(L M n^{8\varepsilon})\) by the weaker
+\(-C^2/(L M n^{8\varepsilon})\) gives
+\[
+\Pr(Z_I\ge\mu_\pi+t\mid\pi)
+\le
+\exp\!\left(
+-\frac{C^2}{L\,M\,n^{8\varepsilon}}
+\right). \tag{16}
+\]
+The right hand side is independent of \(\pi\).  Average (16) over the injection
+coordinate.  More explicitly, injections with zero marginal mass contribute
+nothing.  For injections with positive marginal mass, the conditional
+red-blue product probability was bounded in (16).  Unfolding
+\(\noderef{TwoBiteEventProbability}\), the probability of
+\(\{Z_I\ge\mu_{\pi_\omega}+t\}\) is the finite sum over injections \(\pi\) of
+the injection marginal mass times this conditional probability.  The injection
+marginal masses are nonnegative and sum to \(1\), because
+\(\noderef{UniformInjectionWeight}(n,M)\) is the uniform injection law.
+Therefore the unconditional probability is bounded by the same right hand
+side.  Finally, intersecting with \(\mathcal D_n\) can only decrease
+probability.  Combining this averaged bound with (12) and substituting
+\(C=\binom{K}{2}_{\mathbb R}\) proves
+\[
+\Pr\!\left(
+\mathcal D_n\text{ holds and the fixed-set small closed-pair bound fails}
+\right)
+\le
+\exp\!\left(
+-\frac{\binom{K}{2}_{\mathbb R}^2}
+ {(\log n)M n^{8\varepsilon}}
+\right),
+\]
+as required.
+\end{proof}

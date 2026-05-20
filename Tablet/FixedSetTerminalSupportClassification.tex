@@ -1,0 +1,62 @@
+\begin{helper}
+Fix a recorded set \(R\) of tagged red and blue base-edge coordinates.  There
+is a terminal candidate set \(U\) and an order \(L\) such that
+\[
+e\in U
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)
+\hbox{ and }e\notin R.
+\tag{1}
+\]
+The list \(L\) has no repetitions and lists exactly \(U\).  The order is
+chosen so that it has the following support-classification property.  If
+\[
+L=P,e,Q,
+\]
+then every one-sided coordinate that can support a \(C^+(I)\) same-color
+witness for the current coordinate \(e\) lies in \(R\cup P\).  In the red case
+\(e=\operatorname{red}(a,b)\), for every red base vertex \(r<a,b\), both
+\(\operatorname{red}(r,a)\) and \(\operatorname{red}(r,b)\) lie in
+\(R\cup P\).  In the blue case \(e=\operatorname{blue}(a,b)\), the identical
+blue-copy assertion holds.
+\end{helper}
+\begin{proof}
+Let \(U=\noderef{TwoBiteTerminalCoordinateUniverse}(m)\setminus R\).  This is
+a finite set, and (1) is its definition.  Let \(L\) be the list obtained by
+sorting the red elements of \(U\) lexicographically by their ordered endpoint
+pair, then sorting the blue elements of \(U\) by the same rule and appending
+the blue list after the red list.  Because \(L\) is a sorted listing of a
+finite set, it has no repetitions and its entries are exactly \(U\).
+
+Every \(e\in U\) is outside \(R\) by (1).  Also, since
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\) contains only increasing
+non-loop coordinates, every \(e\in U\) is represented with increasing
+endpoint order.
+
+It remains to prove the support-classification property.  Suppose
+\(L=P,e,Q\).  Consider the red case \(e=\operatorname{red}(a,b)\).  Since
+\(e\) appears in \(L\), it belongs to \(U\), hence \(a<b\).  Let \(r\) satisfy
+\(r<a\) and \(r<b\).  Then the coordinates \(\operatorname{red}(r,a)\) and
+\(\operatorname{red}(r,b)\) are both increasing non-loop red coordinates, so
+both lie in \(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\).
+
+Take either support coordinate, say \(\operatorname{red}(r,a)\).  If it lies
+in \(R\), then it is in \(R\cup P\).  If it does not lie in \(R\), then by
+(1) it lies in \(U\).  It is lexicographically earlier than
+\(\operatorname{red}(a,b)\), because its first endpoint \(r\) is smaller than
+the first endpoint \(a\).  Since the red block of \(L\) is sorted
+lexicographically and \(L\) has no repetitions, this earlier terminal
+coordinate must occur in the prefix \(P\), not at \(e\) and not in the suffix
+\(Q\).  Hence it lies in \(R\cup P\).  The same argument applies to
+\(\operatorname{red}(r,b)\): if it is unrecorded it lies in \(U\), and it is
+lexicographically earlier than \(\operatorname{red}(a,b)\) because its first
+endpoint \(r\) is smaller than \(a\).
+
+The blue case is word-for-word the same inside the blue block.  If
+\(e=\operatorname{blue}(a,b)\) and \(s<a,b\), then
+\(\operatorname{blue}(s,a)\) and \(\operatorname{blue}(s,b)\) are increasing
+blue coordinates.  Each is either recorded, and therefore in \(R\), or is an
+unrecorded terminal coordinate in \(U\).  In the latter case it is earlier
+than \(\operatorname{blue}(a,b)\) in the sorted blue block, so it appears in
+the prefix \(P\).  Thus both blue support coordinates lie in \(R\cup P\).
+\end{proof}

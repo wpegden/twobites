@@ -1,0 +1,41 @@
+\begin{helper}
+For every \(\varepsilon_2>0\), there is \(n_0\) such that for every
+\(n>n_0\), if
+\[
+L=\log n,\quad
+m=(\noderef{TwoBiteNaturalReducedVertexCount}(n):\mathbb R),\quad
+p=\frac12\sqrt{\frac Ln},\quad
+t_1=\frac{\sqrt{nL}}{\log L},
+\]
+then the hypotheses \(0<n\), \(0<L\), \(0<\log L\), and
+\[
+2pm\le\frac{\sqrt n}{L^{3/2}}
+\]
+imply
+\[
+2pm\le\frac{\varepsilon_2}{100}t_1.
+\]
+\end{helper}
+\begin{proof}
+Instantiate \(\noderef{ParameterHierarchyT9LogThreshold}\) with
+\(\varepsilon_2/5\), which is positive.  After increasing \(n_0\), for every
+\(n>n_0\) we have
+\[
+\frac{2\log L}{L^2}\le \frac{\varepsilon_2/5}{10}
+=\frac{\varepsilon_2}{50}.
+\]
+Dividing by \(2\) gives
+\[
+\frac{\log L}{L^2}\le\frac{\varepsilon_2}{100}.
+\]
+Now apply \(\noderef{ParameterHierarchyT16Algebra}\) with this threshold
+bound, together with the assumed positivity of \(n\), \(L\), and \(\log L\),
+and with the assumed mass estimate
+\[
+2pm\le\frac{\sqrt n}{L^{3/2}}.
+\]
+The conclusion is exactly
+\[
+2pm\le\frac{\varepsilon_2}{100}t_1.
+\]
+\end{proof}

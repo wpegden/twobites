@@ -1,0 +1,42 @@
+\begin{helper}[Product Mass Sums to One]
+Fix \(M\in\mathbb N\), \(0\le p_0\le1\), and
+\(P_R,P_B\subseteq\mathrm{Fin}(M)\).  For the mass function
+\[
+q=\noderef{FixedSetProductModelMassFn}(p_0,P_R,P_B)
+\]
+on pairs \(a=(A_R,A_B)\) of subsets of \(\mathrm{Fin}(M)\), every value is
+nonnegative and
+\[
+\sum_a q(a)=1.
+\]
+\end{helper}
+\begin{proof}
+If \(A_R\not\subseteq P_R\) or \(A_B\not\subseteq P_B\), the defining
+conditional in \(\noderef{FixedSetProductModelMassFn}\) gives \(q(A_R,A_B)=0\),
+so the value is nonnegative.  On the support, the value is
+\[
+p_0^{|A_R|}(1-p_0)^{|P_R|-|A_R|}
+\cdot
+p_0^{|A_B|}(1-p_0)^{|P_B|-|A_B|}.
+\]
+The assumptions \(0\le p_0\le1\) give \(0\le p_0\) and
+\(0\le1-p_0\).  Powers of nonnegative reals are nonnegative, and products of
+nonnegative reals are nonnegative.  Hence \(q(a)\ge0\) for every \(a\).
+
+For the total mass, first split the finite sum over all pairs
+\((A_R,A_B)\).  The unsupported pairs contribute \(0\), so the sum is the same
+as the sum over \(A_R\subseteq P_R\) and \(A_B\subseteq P_B\).  On this support
+the summand factors into a red factor depending only on \(A_R\) and a blue
+factor depending only on \(A_B\).  Finite distributivity gives
+\[
+\sum_a q(a)=
+\left(\sum_{A_R\subseteq P_R}
+  p_0^{|A_R|}(1-p_0)^{|P_R|-|A_R|}\right)
+\left(\sum_{A_B\subseteq P_B}
+  p_0^{|A_B|}(1-p_0)^{|P_B|-|A_B|}\right).
+\]
+The first parenthesis is the binomial expansion of
+\((p_0+(1-p_0))^{|P_R|}\), and the second is the binomial expansion of
+\((p_0+(1-p_0))^{|P_B|}\).  Since \(p_0+(1-p_0)=1\), both parentheses are
+\(1\), and therefore \(\sum_aq(a)=1\).
+\end{proof}

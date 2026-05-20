@@ -1,0 +1,92 @@
+\begin{helper}
+Let \(H\) be a history cell, \(T\) a target event, \(I\) the fixed vertex set,
+\(R\) the recorded-coordinate set, and \(U\) the terminal-coordinate set.
+Assume there is a global red exceptional package: a number \(N_R^0\) with
+\[
+N_R^0\le 3\varepsilon_1 k^2
+\]
+such that for every branch \(\beta_0\in H\) there is a red exceptional set
+\(E_R(\beta_0)\subseteq U\), with \(|E_R(\beta_0)|\le N_R^0\), which contains
+every present red staged-open coordinate of any completion \(\omega\) that
+has the same embedding as \(\beta_0\), agrees with \(\beta_0\) on recorded
+coordinates, agrees with \(\beta_0\) on all blue terminal coordinates, is
+regular, and has \(I\) independent in the final graph.
+
+Assume also \(T\subseteq H\), every \(\omega\in T\) is regular, every
+\(\omega\in T\) has \(I\) independent in its final graph, and the red
+present staged-open support
+\[
+R(\omega)=
+\{e\in \operatorname{StagedOpen}(\omega,\varepsilon,I):
+  X_e(\omega)=1\text{ and }e\text{ is a red coordinate}\}
+\]
+has cardinality \(u_R\) for every \(\omega\in T\).
+
+Then there are a natural number \(N_R\), an abstract finite label type
+\(\mathcal J\), and a branch-indexed decoding function
+\[
+\operatorname{redSupport}:H\times
+\mathcal J\to \{\hbox{finite coordinate sets}\}
+\]
+such that
+\[
+N_R\le 3\varepsilon_1 k^2,\qquad
+|\mathcal J|\le \binom{N_R}{u_R}.
+\]
+For every target sample \(\omega\in T\) and every compatible branch
+\(\beta_0\in H\), there is a label \(J\in\mathcal J\) for which
+\[
+\operatorname{redSupport}(\beta_0,J)=R(\omega).
+\]
+For this assigned label, \(\operatorname{redSupport}(\beta_0,J)\) has
+cardinality \(u_R\), is contained in \(U\), and consists only of red
+coordinates.
+\end{helper}
+\begin{proof}
+Choose \(N_R=N_R^0\).  For each branch \(\beta_0\in H\), the exceptional
+package gives a set \(E_R(\beta_0)\subseteq U\) of size at most \(N_R\).
+Pad this set by dummy slots until it has \(N_R\) slots.  The dummy slots are
+bookkeeping positions, not terminal coordinates.  Let the abstract label type
+\(\mathcal J\) be the family of \(u_R\)-subsets of the \(N_R\) padded slots.
+Thus
+\[
+|\mathcal J|\le\binom{N_R}{u_R}.
+\]
+
+For a branch \(\beta_0\), define \(\operatorname{redSupport}(\beta_0,J)\)
+by taking from the package \(E_R(\beta_0)\) the actual red terminal
+coordinates occupying the slots selected by \(J\); dummy slots decode to no
+terminal coordinate.  This definition uses the branch \(\beta_0\) itself,
+which is the datum that determines the exceptional package, not merely the
+branch's blue terminal trace.
+Thus the decoder is genuinely branch-indexed.  If two branches have the same
+blue terminal values but different embedding or recorded data, the global
+red exceptional witness may supply different exceptional sets for them; the
+same abstract label \(J\) is decoded separately through the appropriate
+set \(E_R(\beta_0)\).  This is exactly the input needed later by the
+branch-label construction: after a representative branch is chosen, \(J\) is
+interpreted through that representative's own exceptional package.
+
+Now fix a target sample \(\omega\in T\) and a branch \(\beta_0\in H\) which
+is compatible with \(\omega\) in the sense required in the conclusion: the
+two samples have the same embedding, agree on the recorded coordinates, and
+agree on all blue terminal coordinates.  By the target hypotheses,
+\(\omega\) is regular and has
+\(I\) independent in the final graph.  By compatibility, it has the same
+embedding as the branch, agrees on the recorded coordinates, and agrees on
+all blue terminal coordinates.  The exceptional package for \(\beta_0\)
+therefore contains every element of the red present staged-open support
+\(R(\omega)\) in \(E_R(\beta_0)\).  Since \(|R(\omega)|=u_R\), choose the
+label \(J\) whose padded slots are exactly the slots occupied by
+\(R(\omega)\) inside the padded list for this same branch \(\beta_0\).  The
+decoding for this \(J\) is precisely \(R(\omega)\), because each real slot
+selected by \(J\) is an element of \(R(\omega)\) and every element of
+\(R(\omega)\) has been selected; no dummy slot is needed for this assigned
+label.
+
+The final three properties are only asserted for this assigned label, exactly
+as in the Lean statement.  They follow from the fixed-count hypothesis
+\(|R(\omega)|=u_R\), from \(E_R(\beta_0)\subseteq U\), and from the definition
+of \(R(\omega)\) as the red-coordinate part of the present staged-open
+support.
+\end{proof}

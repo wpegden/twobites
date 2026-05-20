@@ -1,0 +1,59 @@
+\begin{helper}
+Let \(\alpha\) be a type with decidable equality, let
+\(r:\alpha\to\mathbb N\) be a rank function, let \(I\) be a finite set, and
+let \(P\) be a decidable predicate on ordered pairs in \(\alpha\times\alpha\).
+Assume \(P\) is symmetric, in the sense that
+\[
+P(a,b)\quad\Longrightarrow\quad P(b,a)
+\]
+for all \(a,b\).  Then
+\[
+2\left|
+  \{(a,b)\in\noderef{TwoBitePairsInSet}(r,I):P(a,b)\}
+\right|
+\le
+\left|\{(a,b)\in I\times I:P(a,b)\}\right|.
+\]
+Equivalently, the rank-oriented representatives in
+\(\noderef{TwoBitePairsInSet}(r,I)\) contribute at most one half of the
+ordered-product count once the predicate is symmetric.
+\end{helper}
+\begin{proof}
+Let
+\[
+A=\{(a,b)\in\noderef{TwoBitePairsInSet}(r,I):P(a,b)\}.
+\]
+By the definition of \(\noderef{TwoBitePairsInSet}\), every \((a,b)\in A\)
+satisfies \(a,b\in I\), \(r(a)<r(b)\), and \(P(a,b)\).  Let
+\[
+\tau(A)=\{(b,a):(a,b)\in A\}
+\]
+be the swapped copy of \(A\).
+
+First, \(A\) and \(\tau(A)\) are disjoint.  Indeed, if
+\((x,y)\in A\cap\tau(A)\), then \((x,y)=(b,a)\) for some
+\((a,b)\in A\).  Membership of \((x,y)\) in \(A\) gives \(r(x)<r(y)\), while
+membership of \((a,b)\) in \(A\) gives \(r(a)<r(b)\).  Since
+\((x,y)=(b,a)\), the latter inequality is \(r(y)<r(x)\), a contradiction.
+
+Second, \(A\cup\tau(A)\) is contained in
+\[
+\{(a,b)\in I\times I:P(a,b)\}.
+\]
+This is immediate for elements of \(A\).  If \((x,y)\in\tau(A)\), then
+\((x,y)=(b,a)\) for some \((a,b)\in A\).  Since \(a,b\in I\), also
+\((b,a)\in I\times I\), and the symmetry hypothesis turns \(P(a,b)\) into
+\(P(b,a)\).
+
+Finally, the swap map \((a,b)\mapsto(b,a)\) is injective, so
+\(|\tau(A)|=|A|\).  Therefore disjoint additivity gives
+\[
+|A\cup\tau(A)|=|A|+|\tau(A)|=2|A|.
+\]
+Because \(A\cup\tau(A)\) is a subset of the ordered-product predicate set,
+\[
+2|A|=|A\cup\tau(A)|
+\le \left|\{(a,b)\in I\times I:P(a,b)\}\right|,
+\]
+as required.
+\end{proof}

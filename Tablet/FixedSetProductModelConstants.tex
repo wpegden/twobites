@@ -1,0 +1,31 @@
+\begin{helper}[Product Model Constants]
+Fix \(n\in\mathbb N\) with \(0<n\) and fix \(\varepsilon\in\mathbb R\).  Set
+\[
+c_{\mathrm{prod}}=\frac12\,n^{4\varepsilon},\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+\[
+C=\noderef{RealChooseTwo}(K),\qquad
+L=\log n,\qquad
+t=\frac{C}{\sqrt L},
+\]
+where \(K\) is viewed as a real number in the definition of \(C\).  Then
+\[
+0<c_{\mathrm{prod}}\qquad\text{and}\qquad 0\le t.
+\]
+\end{helper}
+\begin{proof}
+Since \(0<n\), the real number \(n\) is positive.  A positive base raised to
+any real exponent is positive, so \(n^{4\varepsilon}>0\).  Multiplication by
+\(1/2>0\) gives \(0<c_{\mathrm{prod}}\).
+
+Let \(a=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)\).  This is
+a natural number.  If \(a=0\), then
+\(\noderef{RealChooseTwo}(a)=0\).  If \(a\ne0\), then \(a\ge1\), so both
+\(a\) and \(a-1\) are nonnegative after casting to \(\mathbb R\), and hence
+\[
+\noderef{RealChooseTwo}(a)=\frac{a(a-1)}2\ge0.
+\]
+Thus \(C\ge0\) in all cases.  Also \(\sqrt L\ge0\) for every real \(L\).
+Therefore \(t=C/\sqrt L\ge0\).
+\end{proof}

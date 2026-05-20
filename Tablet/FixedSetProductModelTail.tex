@@ -1,0 +1,223 @@
+\begin{helper}[Product Tail Comparison]
+Fix \(n\in\mathbb N\), \(I\subseteq\mathrm{Fin}(n)\), parameters
+\(\varepsilon,\varepsilon_1,\varepsilon_2\in\mathbb R\), and
+\(n_0\in\mathbb N\).  Assume
+\[
+\noderef{ParameterHierarchyEventualComparisons}
+  (\varepsilon,\varepsilon_1,\varepsilon_2,n_0),\qquad n_0<n.
+\]
+Let
+\[
+M=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p_0=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right).
+\]
+For an embedding
+\[
+\pi:\mathrm{Fin}(n)\hookrightarrow\mathrm{Fin}(M)\times\mathrm{Fin}(M),
+\]
+put
+\[
+P_R=\{\pi(u)_1:u\in I\},\qquad P_B=\{\pi(u)_2:u\in I\},
+\]
+\[
+q=\noderef{FixedSetProductModelMassFn}(p_0,P_R,P_B),
+\qquad
+Z_{\mathrm{prod}}=\noderef{FixedSetProductModelVar}(I,\varepsilon,p_0,\pi).
+\]
+Let \(t,\mu\in\mathbb R\).  Assume the product mean satisfies
+\[
+\mathbb E_q Z_{\mathrm{prod}}
+=\sum_v\left(\prod_i q(v_i)\right)Z_{\mathrm{prod}}(v)
+\le \mu.
+\]
+Define \(Z_I\) from a two-bite sample by the same external-small-class,
+final-pair, and distinct-projection count used in
+\(\noderef{FixedSetProductModelVar}\).  Then
+\[
+\begin{aligned}
+&\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi
+   \text{ and } Z_I(\omega)\ge \mu+t\}\bigr)\\
+&\quad\le
+\Pr_q\!\left(Z_{\mathrm{prod}}\ge
+  \mathbb E_qZ_{\mathrm{prod}}+t\right)
+\noderef{TwoBiteEventProbability}(n,M,p_0)
+ \bigl(\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\}\bigr),
+\end{aligned}
+\]
+where the product-tail probability is the finite sum of
+\(\prod_iq(v_i)\) over assignments \(v\) satisfying
+\[
+\mathbb E_qZ_{\mathrm{prod}}+t\le Z_{\mathrm{prod}}(v).
+\]
+\end{helper}
+\begin{proof}
+Let
+\[
+\mathcal C_\pi
+=\{\omega:\noderef{TwoBiteEmbedding}(\omega)=\pi\},
+\qquad
+E=\sum_v\left(\prod_iq(v_i)\right)Z_{\mathrm{prod}}(v).
+\]
+The hierarchy comparison and the identity
+\(p_0=\noderef{TwoBiteEdgeProbability}(1/2,n)\) give
+\[
+0\le p_0\le1.
+\]
+Consequently every edge factor in \(\noderef{GnpGraphWeight}(p_0,G)\) is
+nonnegative: an edge contributes \(p_0\), and a non-edge contributes
+\(1-p_0\).  The injection factor
+\(\noderef{UniformInjectionWeight}(n,M)\) is either \(0\) or the reciprocal of
+a positive finite cardinal, hence is nonnegative.  Thus every
+\(\noderef{TwoBiteSampleWeight}\) is nonnegative.  Also
+\(\noderef{FixedSetProductModelMass}\), applied to \(P_R,P_B\), gives
+\[
+q(a)\ge0\quad\text{for all }a,\qquad \sum_a q(a)=1,
+\]
+so all product weights \(\prod_iq(v_i)\) and all product-tail sums are
+nonnegative.  These nonnegativity facts justify every monotonicity step below.
+
+First consider the case
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)=0.
+\]
+The event
+\(\mathcal C_\pi\cap\{Z_I\ge\mu+t\}\) is a subset of \(\mathcal C_\pi\).
+Because all sample weights are nonnegative, its mass is at most the mass of
+\(\mathcal C_\pi\), hence is \(0\).  The right side of the claimed inequality
+is the nonnegative product-tail sum multiplied by this zero cell mass, so it
+is also \(0\).  The desired inequality follows.
+
+Assume from now on that the cell mass is positive.  On \(\mathcal C_\pi\), the
+embedding is fixed, so the red and blue projections of vertices in \(I\) are
+fixed as \(\pi(u)_1\) and \(\pi(u)_2\).  Hence the sets
+\[
+P_R=\{\pi(u)_1:u\in I\},\qquad P_B=\{\pi(u)_2:u\in I\},
+\]
+and the excluded embedded base set
+\((P_R\text{ in the red copy})\cup(P_B\text{ in the blue copy})\)
+are fixed on the cell.  Unfolding
+\(\noderef{TwoBiteEventProbability}\) and \(\noderef{TwoBiteSampleWeight}\),
+the weight of a sample \(\omega=(G_R,G_B,\pi)\in\mathcal C_\pi\) is
+\[
+\noderef{GnpGraphWeight}(p_0,G_R)\,
+\noderef{GnpGraphWeight}(p_0,G_B)\,
+\noderef{UniformInjectionWeight}(n,M).
+\]
+The injection factor is constant throughout the cell, so all conditional
+comparisons inside the cell reduce to finite sums over the red and blue graph
+edge variables.
+
+Partition the red graph edge variables into three finite classes:
+edges with both endpoints in \(P_R\), edges with both endpoints outside
+\(P_R\), and incident edges \(\{x,r\}\) with \(x\notin P_R\) and
+\(r\in P_R\).  Only the incident class can affect
+\(\noderef{TwoBiteX}(\omega,I,\operatorname{inl} x)\), because every
+vertex of \(I\) has red projection in \(P_R\).  The internal and disjoint
+red edges are ignored by \(Z_I\); summing over each ignored edge contributes
+\[
+(1-p_0)+p_0=1.
+\]
+Thus, after summing out ignored red edges, a fixed family
+\[
+A_R(x)\subseteq P_R\qquad(x\in\mathrm{Fin}(M)\setminus P_R)
+\]
+has red weight
+\[
+\prod_{x\notin P_R}
+p_0^{|A_R(x)|}(1-p_0)^{|P_R|-|A_R(x)|},
+\]
+where \(A_R(x)\) records exactly those \(r\in P_R\) adjacent to \(x\) in
+\(G_R\).  The same partition for the blue graph gives incident data
+\[
+A_B(y)\subseteq P_B\qquad(y\in\mathrm{Fin}(M)\setminus P_B)
+\]
+with blue weight
+\[
+\prod_{y\notin P_B}
+p_0^{|A_B(y)|}(1-p_0)^{|P_B|-|A_B(y)|},
+\]
+and all blue edges internal to \(P_B\) or disjoint from \(P_B\) sum out to
+\(1\).
+
+Now compare this conditional graph law with the product assignment law in
+\(\noderef{FixedSetProductModelVar}\).  A product coordinate is a pair
+\((R,B)\) of subsets.  For a red coordinate indexed by
+\(x\notin P_R\), the fake red graph uses only the first component
+\(R\), and the event data set \(A_R(x)\) is \(R\).  The second component is
+redundant, and by \(\noderef{FixedSetProductModelMass}\)
+\[
+\sum_{B\subseteq P_B}
+p_0^{|R|}(1-p_0)^{|P_R|-|R|}
+\cdot
+p_0^{|B|}(1-p_0)^{|P_B|-|B|}
+=p_0^{|R|}(1-p_0)^{|P_R|-|R|};
+\]
+terms with \(R\not\subseteq P_R\) or \(B\not\subseteq P_B\) are zero by
+\(\noderef{FixedSetProductModelMassFn}\).  If a red coordinate is indexed by
+\(x\in P_R\), then \(\noderef{FixedSetFakeGraph}\) never reads the assignment
+at \(x\), because \(x\) is itself on the embedded side and is removed from the
+external base set; summing the whole pair \((R,B)\) over \(q\) gives \(1\) by
+\(\noderef{FixedSetProductModelMass}\).
+
+For a blue coordinate indexed by \(y\notin P_B\), the fake blue graph uses
+only the second component \(B=A_B(y)\); the first component is redundant and
+sums to \(1\) by the same calculation.  If \(y\in P_B\), the entire product
+coordinate is ignored and again has total \(q\)-mass \(1\).  Therefore, after
+all redundant product coordinates and redundant pair components are summed
+out, the remaining product assignment data are in bijection with the incident
+edge data
+\[
+\bigl(A_R(x)\bigr)_{x\notin P_R},
+\qquad
+\bigl(A_B(y)\bigr)_{y\notin P_B}.
+\]
+Under this bijection, the product weight \(\prod_iq(v_i)\) pushes forward to
+exactly the conditional two-bite graph weight on the cell \(\mathcal C_\pi\).
+
+For a sample in the cell and a product assignment with the same incident data,
+the red graph used by \(\noderef{FixedSetProductModelVar}\) has precisely the
+same adjacencies from outside \(P_R\) into \(P_R\) as \(G_R\), and the blue
+fake graph has precisely the same adjacencies from outside \(P_B\) into
+\(P_B\) as \(G_B\).  Since \(Z_I\) only uses
+\(\noderef{TwoBiteSmallClass}\), \(\noderef{TwoBiteX}\),
+\(\noderef{TwoBiteFinalPairs}\), and the red and blue projections of vertices
+of \(I\), these incident adjacencies determine the value of \(Z_I\) on the
+cell.  Thus the corresponding product assignment has
+\[
+Z_{\mathrm{prod}}(v)=Z_I(\omega).
+\]
+Equivalently, for every predicate \(H\) depending only on this value, finite
+grouping by the incident data gives the pushforward identity
+\[
+\noderef{TwoBiteEventProbability}(n,M,p_0)
+  (\mathcal C_\pi\cap\{\omega:H(Z_I(\omega))\})
+=
+\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)
+  \sum_{\{v:H(Z_{\mathrm{prod}}(v))\}}\prod_iq(v_i).
+\]
+
+Apply this identity to the tail comparison.  By the assumed mean bound,
+\[
+E\le\mu.
+\]
+Therefore every assignment satisfying
+\[
+\mu+t\le Z_{\mathrm{prod}}(v)
+\]
+also satisfies
+\[
+E+t\le Z_{\mathrm{prod}}(v).
+\]
+Using \(Z_I(\omega)=Z_{\mathrm{prod}}(v)\) under the pushforward
+correspondence, the cell event \(Z_I\ge\mu+t\) is contained in the product
+tail event \(E+t\le Z_{\mathrm{prod}}\).  The product-tail probability is
+exactly the finite sum displayed in the theorem statement:
+\[
+\sum_{\{v:E+t\le Z_{\mathrm{prod}}(v)\}}\prod_iq(v_i).
+\]
+Multiplying this product-tail bound by the positive cell mass
+\(\noderef{TwoBiteEventProbability}(n,M,p_0)(\mathcal C_\pi)\) gives the
+claimed inequality for
+\(\mathcal C_\pi\cap\{Z_I\ge\mu+t\}\).
+\end{proof}

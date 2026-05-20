@@ -1,0 +1,70 @@
+\begin{helper}[GnpCodegreeBound]
+\label{helper:GnpCodegreeBound}
+Let \(m\) and \(T\) be natural numbers. Let \(0 \le p \le 1\).
+Let \(r\) and \(s\) be distinct vertices in \(\operatorname{Fin}(m)\).
+Under the \(G(m,p)\) product law, the probability that \(r\) and \(s\) have at least \(T\) common neighbors is bounded by
+\[
+\binom{m}{T} (p^2)^T.
+\]
+Explicitly,
+\[
+\sum_{G : T \le |\{t : G.Adj(r,t) \land G.Adj(s,t)\}|} \noderef{GnpGraphWeight}(p, G) \le \binom{m}{T} (p^2)^T.
+\]
+\end{helper}
+
+\begin{proof}
+Expand the graph probability using \(\noderef{GnpGraphWeight}\).  Its weight
+is a product over unordered edge coordinates: a present edge contributes
+\(p\), and an absent edge contributes \(1-p\).  Since \(0\le p\le1\), every
+factor and hence every graph weight is nonnegative.
+
+Let
+\[
+C_G=\{t\in\operatorname{Fin}(m):G.Adj(r,t)\land G.Adj(s,t)\}.
+\]
+If \(|C_G|\ge T\), then there is a \(T\)-element subset
+\(S\subseteq C_G\).  Thus the event in the statement is contained in the
+union, over all \(T\)-subsets \(S\subseteq\operatorname{Fin}(m)\), of the
+cylinder event
+\[
+E_S=\{G:\forall t\in S,\ G.Adj(r,t)\land G.Adj(s,t)\}.
+\tag{1}
+\]
+Because the graph weights are nonnegative, the finite union bound gives
+\[
+\sum_{G:|C_G|\ge T}\noderef{GnpGraphWeight}(p,G)
+\le
+\sum_{S:\ |S|=T}\ \sum_{G\in E_S}\noderef{GnpGraphWeight}(p,G).
+\tag{2}
+\]
+
+Fix such an \(S\).  If \(r\in S\), then \(G.Adj(r,r)\) would be required in
+\(E_S\), impossible by looplessness of a simple graph; similarly \(s\in S\)
+makes \(E_S\) empty.  In either case the inner sum is \(0\), hence at most
+\((p^2)^T\).
+
+Assume now that \(S\) contains neither \(r\) nor \(s\).  For every \(t\in S\),
+the cylinder \(E_S\) forces the two distinct edge coordinates
+\(\{r,t\}\) and \(\{s,t\}\) to be present.  As \(t\) varies in \(S\), these
+\(2T\) edge coordinates are all distinct because \(r\ne s\) and
+\(t\notin\{r,s\}\).  Summing \(\noderef{GnpGraphWeight}\) over \(E_S\), the
+forced coordinates contribute \(p^{2T}=(p^2)^T\).  Every unforced edge
+coordinate is summed over its two possibilities and contributes
+\[
+p+(1-p)=1.
+\]
+Therefore
+\[
+\sum_{G\in E_S}\noderef{GnpGraphWeight}(p,G)=(p^2)^T.
+\tag{3}
+\]
+Combining the empty-case estimate and (3), every \(T\)-subset contributes at
+most \((p^2)^T\).  There are \(\binom mT\) such subsets.  Applying this to
+(2) proves
+\[
+\sum_{G:|C_G|\ge T}\noderef{GnpGraphWeight}(p,G)
+\le
+\binom mT(p^2)^T,
+\]
+which is the claimed bound.
+\end{proof}

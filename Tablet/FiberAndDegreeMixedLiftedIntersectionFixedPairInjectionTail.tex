@@ -1,0 +1,83 @@
+\begin{helper}[FiberAndDegreeMixedLiftedIntersectionFixedPairInjectionTail]
+\label{helper:FiberAndDegreeMixedLiftedIntersectionFixedPairInjectionTail}
+Let \(m=\noderef{TwoBiteNaturalReducedVertexCount}(n)\) and
+\[
+p=\noderef{TwoBiteEdgeProbability}(1/2,n).
+\]
+Assume \(n\le m^2\) and \(\log n\ge1\).  Fix base graphs \(G_R,G_B\) on
+\(\operatorname{Fin}(m)\), a red vertex \(r\), and a blue vertex \(b\).  If
+\[
+|N_{G_R}(r)|\le2pm,\qquad |N_{G_B}(b)|\le2pm,
+\]
+then the number of injections
+\(\phi:\operatorname{Fin}(n)\hookrightarrow \operatorname{Fin}(m)\times
+\operatorname{Fin}(m)\) for which
+\[
+\left|
+\phi(\operatorname{Fin}(n))\cap
+\bigl(N_{G_R}(r)\times N_{G_B}(b)\bigr)
+\right|
+>100(\log n)^3
+\]
+is at most
+\[
+\exp(-2(\log n)^3)\,
+\left|\{\phi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(m)\times\operatorname{Fin}(m)\}\right|.
+\]
+\end{helper}
+
+\begin{proof}
+Write \(L=\log n\), \(T=100L^3\), and
+\[
+K=N_{G_R}(r)\times N_{G_B}(b)
+\subseteq \operatorname{Fin}(m)\times\operatorname{Fin}(m).
+\]
+The two degree assumptions give
+\[
+|K|=|N_{G_R}(r)|\,|N_{G_B}(b)|
+\le (2pm)(2pm)=4p^2m^2.
+\tag{1}
+\]
+Since \(p=\noderef{TwoBiteEdgeProbability}(1/2,n)\),
+\[
+p=\frac12\sqrt{\frac Ln}.
+\]
+The hypothesis \(L\ge1\) implies \(n>0\) and \(L/n\ge0\), so this identity
+may be squared, giving \(4p^2n=L\).  Multiplying (1) by \(n/m^2\) therefore
+shows that the hypergeometric mean
+\[
+\mu=n\frac{|K|}{m^2}
+\]
+satisfies \(\mu\le L\).
+
+By \(\noderef{UniformInjectionImage}\), counting injections whose image has
+more than \(T\) points in \(K\) is equivalent, after dividing by the total
+number of injections, to counting \(n\)-element subsets of the \(m^2\) product
+cells with more than \(T\) points in \(K\).  Choose the standard bijection
+between \(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) and
+\(\operatorname{Fin}(m^2)\).  Under this bijection the marked set is a subset
+of \(\operatorname{Fin}(m^2)\) of size \(|K|\), and the count just described
+is the hypergeometric upper-tail event for population \(m^2\), sample size
+\(n\), and marked set \(K\).
+
+Apply
+\(\noderef{FiberAndDegreeMixedLiftedIntersectionHypergeometricBound}\) with
+population \(m^2\), sample size \(n\), marked set \(K\), threshold \(T\), and
+exponential parameter \(1\).  It gives
+\[
+\Pr(Y\ge T)\le \exp(\mu(e-1)-T).
+\tag{2}
+\]
+Using \(\mu\le L\), \(e-1<2\), and \(L\ge1\), we have
+\[
+\mu(e-1)-T\le 2L-100L^3\le -2L^3.
+\tag{3}
+\]
+Since the event \(Y>T\) is contained in \(Y\ge T\), (2) and (3) give
+\[
+\Pr(Y>T)\le \exp(-2L^3).
+\]
+Multiplying by the total number of injections gives exactly the claimed
+cardinality bound.
+\end{proof}

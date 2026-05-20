@@ -1,0 +1,72 @@
+\begin{helper}
+Fix a finite branch-label type \(\mathcal T\), a finite transcript family
+\(\mathcal P\), a nonnegative common factor \(M\), and formal cell weights
+\[
+w_{\beta,\tau}
+\qquad(\beta\in\mathcal T,\ \tau\in\mathcal P).
+\]
+Let
+\[
+\mathsf{Realized}(\beta,\tau)
+\]
+be the predicate that the formal branch/transcript pair is an actual
+nonempty fixed support-pair cell.  Assume every non-realized formal pair has
+zero weight:
+\[
+\neg\mathsf{Realized}(\beta,\tau)\Longrightarrow w_{\beta,\tau}=0.
+\]
+Assume that on realized pairs there is a residual mass
+\(r_{\beta,\tau}\) satisfying the termwise domination
+\[
+w_{\beta,\tau}\le M r_{\beta,\tau}
+\]
+and the realized-domain product-mass bound
+\[
+\sum_{\beta\in\mathcal T}
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    M r_{\beta,\tau}
+\le M .
+\]
+Then the full formal branch/transcript sum also satisfies
+\[
+\sum_{\beta\in\mathcal T}\sum_{\tau\in\mathcal P}
+  w_{\beta,\tau}\le M .
+\]
+\end{helper}
+\begin{proof}
+For a fixed branch label \(\beta\), split the finite transcript sum into
+realized and non-realized transcripts.  Every non-realized transcript has
+weight \(0\) by hypothesis, so
+\[
+\sum_{\tau\in\mathcal P}w_{\beta,\tau}
+=
+\sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+  w_{\beta,\tau}.
+\]
+Summing this equality over all \(\beta\in\mathcal T\) gives an equality
+between the full formal weight sum and the realized-domain weight sum.
+
+On each realized pair the residual domination hypothesis gives
+\[
+w_{\beta,\tau}\le M r_{\beta,\tau}.
+\]
+Finite-sum monotonicity over the realized-domain index set therefore gives
+\[
+\sum_{\beta\in\mathcal T}
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    w_{\beta,\tau}
+\le
+\sum_{\beta\in\mathcal T}
+  \sum_{\tau\in\mathcal P:\mathsf{Realized}(\beta,\tau)}
+    M r_{\beta,\tau}.
+\]
+The right-hand side is at most \(M\) by the realized-domain product-mass
+certificate.  Combining the zero-extension equality with this monotone
+comparison proves
+\[
+\sum_{\beta\in\mathcal T}\sum_{\tau\in\mathcal P}w_{\beta,\tau}\le M.
+\]
+This is exactly the reindexing step needed when the geometry, transcript
+conditions, and residual domination have only been established for realized
+fixed support-pair cells.
+\end{proof}

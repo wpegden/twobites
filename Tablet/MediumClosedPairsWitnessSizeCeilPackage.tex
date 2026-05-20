@@ -1,0 +1,46 @@
+\begin{helper}
+Fix \(n,m,k\) and \(\varepsilon\), and assume \(0<n\).  Define
+\[
+S=\left\lceil
+\frac{k n^{1/4-\varepsilon}+\noderef{TwoBiteLargeCutoff}(\varepsilon,n)}
+     {\noderef{TwoBiteSmallCutoff}(\varepsilon,n)}
+\right\rceil .
+\]
+Then every finite witness family \(B\) of two-bite base vertices satisfying
+\[
+|B|\,\noderef{TwoBiteSmallCutoff}(\varepsilon,n)
+\le
+k n^{1/4-\varepsilon}+\noderef{TwoBiteLargeCutoff}(\varepsilon,n)
+\]
+has \(|B|\le S\).  Moreover
+\[
+S\le k n^{1/4-3\varepsilon}+n^{1/4-\varepsilon}+1 .
+\]
+\end{helper}
+\begin{proof}
+Since \(0<n\), the small cutoff
+\(\noderef{TwoBiteSmallCutoff}(\varepsilon,n)=n^{2\varepsilon}\) is positive.
+Dividing the displayed witness-size inequality by this positive quantity gives
+\[
+|B|\le
+\frac{k n^{1/4-\varepsilon}+\noderef{TwoBiteLargeCutoff}(\varepsilon,n)}
+     {\noderef{TwoBiteSmallCutoff}(\varepsilon,n)}.
+\]
+The definition of \(S\) as the ceiling of the right hand side therefore gives
+\(|B|\le S\).
+
+Using the cutoff definitions,
+\[
+\noderef{TwoBiteLargeCutoff}(\varepsilon,n)=n^{1/4+\varepsilon},
+\qquad
+\noderef{TwoBiteSmallCutoff}(\varepsilon,n)=n^{2\varepsilon}.
+\]
+The same positivity assumption permits the usual exponent subtraction laws, so
+\[
+\frac{k n^{1/4-\varepsilon}+n^{1/4+\varepsilon}}{n^{2\varepsilon}}
+= k n^{1/4-3\varepsilon}+n^{1/4-\varepsilon}.
+\]
+Finally, the ceiling of a nonnegative real number is less than that number plus
+one, hence at most that number plus one.  This gives the stated upper bound on
+\(S\).
+\end{proof}

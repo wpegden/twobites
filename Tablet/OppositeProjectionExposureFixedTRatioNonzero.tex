@@ -1,0 +1,49 @@
+\begin{helper}
+In the setting of \(\noderef{OppositeProjectionExposureFixedTRatio}\), assume
+in addition that \(X_{\mathrm{all},\eta}\) is nonempty.  Then
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+\le
+\left(\frac{|S|}{m}\right)^{|T|}.
+\]
+\end{helper}
+\begin{proof}
+Partition the vertices by red row:
+\[
+R_i=\{v:\rho(v)=i\},\qquad A_i=U_0\cap R_i,\qquad B_i=T\cap R_i .
+\]
+For row \(i\), let \(d_i\) count injective blue-coordinate assignments on
+\(R_i\) that agree with \(\eta\) on \(A_i\), and let \(g_i\) count those
+assignments that also send every vertex of \(B_i\) into \(S\).  The same
+finite row-factorization used in
+\(\noderef{OppositeProjectionRowInjectionCounting}\) gives
+\[
+|X_{\mathrm{all},\eta}|=\prod_i d_i,\qquad
+|X_{\mathrm{good},\eta}(T)|=\prod_i g_i.
+\]
+Since \(|X_{\mathrm{all},\eta}|\ne0\), every \(d_i\) is nonzero.
+
+For a row with \(B_i=\varnothing\), the extra good condition is vacuous in
+that row, so \(g_i=d_i\) and \(g_i/d_i=1=(|S|/m)^0\).  For a row with
+\(B_i\ne\varnothing\), choose \(v\in B_i\).  Then \(v\in T\subseteq V_0\).
+If \(u\in A_i\), then \(u\in U_0\) and \(\rho(u)=i=\rho(v)\), contradicting
+the row-disjointness hypothesis.  Hence \(A_i=\varnothing\), so the exposure
+\(\eta\) imposes no row constraint.  The row is exactly the ordinary
+row-injection situation for the target set \(B_i\), and
+\(\noderef{OppositeProjectionRowInjectionCounting}\) gives
+\[
+\frac{g_i}{d_i}\le\left(\frac{|S|}{m}\right)^{|B_i|}.
+\]
+
+Multiplying over rows is legitimate because every row denominator is
+nonzero and all factors are nonnegative.  Thus
+\[
+\frac{|X_{\mathrm{good},\eta}(T)|}{|X_{\mathrm{all},\eta}|}
+\le
+\prod_i\left(\frac{|S|}{m}\right)^{|B_i|}
+=
+\left(\frac{|S|}{m}\right)^{\sum_i |B_i|}.
+\]
+The sets \(B_i=T\cap R_i\) partition \(T\), so \(\sum_i |B_i|=|T|\), proving
+the claimed nonzero-denominator estimate.
+\end{proof}

@@ -1,0 +1,52 @@
+\begin{helper}
+Fix \(\eta\) and \(n\), and write
+\[
+L=\log n,\qquad
+k_R=(1+\eta)\sqrt{nL},\qquad
+K=\noderef{TwoBiteNaturalIndependenceScale}(1+\eta,n),\qquad
+k=(K:\mathbb R).
+\]
+Assume
+\[
+1<L,\qquad k_R\le k,\qquad 16L^2\sqrt L\le k_R.
+\]
+Then
+\[
+\frac1{2L}\noderef{RealChooseTwo}(k)+2kL^2+
+\frac1{\sqrt L}\noderef{RealChooseTwo}(k)
+\le
+\frac2{\sqrt L}\noderef{RealChooseTwo}(k).
+\]
+\end{helper}
+\begin{proof}
+Since \(K\) is a natural number, \(k\ge0\).  From \(1<L\) we have
+\(\sqrt L\ge1\) and \(L^2\ge1\), so
+\[
+2\le16L^2\sqrt L\le k_R\le k.
+\]
+Applying \(\noderef{RealChooseTwoQuadraticBounds}\) to this \(k\) gives
+\[
+\frac{k^2}{4}\le\noderef{RealChooseTwo}(k),
+\]
+and in particular \(\noderef{RealChooseTwo}(k)\ge0\).
+
+Because \(1<L\), also \(\sqrt L\le L\), hence
+\[
+\frac1{2L}\noderef{RealChooseTwo}(k)
+\le
+\frac1{2\sqrt L}\noderef{RealChooseTwo}(k).
+\]
+The threshold \(16L^2\sqrt L\le k_R\le k\), multiplied by \(k\ge0\), gives
+\[
+16kL^2\sqrt L\le k^2.
+\]
+Dividing by \(8\sqrt L>0\) gives
+\[
+2kL^2\le\frac{k^2}{8\sqrt L}
+=\frac1{2\sqrt L}\frac{k^2}{4}
+\le\frac1{2\sqrt L}\noderef{RealChooseTwo}(k).
+\]
+Adding these two estimates and the remaining
+\(\frac1{\sqrt L}\noderef{RealChooseTwo}(k)\) term yields exactly the claimed
+three-term comparison.
+\end{proof}

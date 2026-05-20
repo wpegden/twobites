@@ -1,0 +1,33 @@
+\begin{lemma}
+For any finite sets $U, V$ and any function $f$,
+\[ |f(U) \cap f(V)| \le |U \cap V| + |\{v \in V \setminus U : f(v) \in f(U \setminus V)\}|. \]
+\end{lemma}
+\begin{proof}
+Split the image intersection into the part already coming from
+\(U\cap V\) and the remaining image values.  The part \(f(U\cap V)\) has
+cardinality at most \(|U\cap V|\), because the image of a finite set cannot
+have larger cardinality than the set itself.
+
+Now take an image value
+\[
+y\in f(U)\cap f(V)
+\]
+which is not in \(f(U\cap V)\).  Choose witnesses \(u\in U\) and \(v\in V\)
+with \(f(u)=y=f(v)\).  If \(u\in V\), then \(u\in U\cap V\), so
+\(y=f(u)\in f(U\cap V)\), contrary to the choice of \(y\).  Hence
+\(u\in U\setminus V\).  Similarly, if \(v\in U\), then \(v\in U\cap V\) and
+again \(y\in f(U\cap V)\); hence \(v\in V\setminus U\).  Therefore
+\[
+v\in V\setminus U
+\quad\text{and}\quad
+f(v)=f(u)\in f(U\setminus V).
+\]
+Thus every remaining image value has a witness in the finite set
+\[
+\{v\in V\setminus U:f(v)\in f(U\setminus V)\}.
+\]
+Choose one such witness for each remaining image value.  Distinct image
+values choose distinct witnesses, since a single witness has only one image
+under \(f\).  This injects the remaining image values into the displayed set.
+Adding the two cardinality bounds gives the claimed inequality.
+\end{proof}

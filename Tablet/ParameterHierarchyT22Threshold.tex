@@ -1,0 +1,26 @@
+\begin{helper}
+For every \(\eta>0\) with \(\eta<1/16\), there is \(n_0\) such that for
+every \(n>n_0\), if \(L=\log n\), then
+\[
+\frac{2(\log L)\sqrt L}{n^{1/4-\eta}}<\frac12
+\qquad\text{and}\qquad
+\frac{\log L}{L}<\frac12.
+\]
+\end{helper}
+\begin{proof}
+Put \(r=1/4-\eta\).  Since \(\eta<1/16\), we have \(r>0\).  The standard
+fact \(\log n=o(n^{r/2})\) lets us enlarge \(n_0\) so that
+\[
+\log n\le \frac14 n^{r/2}.
+\]
+After enlarging \(n_0\) further, we may also assume \(L=\log n\ge1\) and
+\(\log L\le \frac14 L\).  Then \(\log L\le L\) and \(\sqrt L\le L\), so
+\[
+2(\log L)\sqrt L\le 2L^2
+\le 2\left(\frac14 n^{r/2}\right)^2
+=\frac18 n^r<\frac12 n^r.
+\]
+Dividing by the positive number \(n^r\) proves the first inequality.  The
+second inequality follows by dividing \(\log L\le L/4<L/2\) by the positive
+number \(L\).
+\end{proof}

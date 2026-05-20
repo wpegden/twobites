@@ -1,0 +1,88 @@
+\begin{helper}
+For every fixed \(I\), there is a finite history-cell family.  Its indices
+\(i\) carry cells \(C_i\), representatives \(\omega_i\), and recorded
+coordinate sets \(R_i\).  These cells cover exactly
+\(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B)\), are pairwise
+disjoint, contain their representatives, have the cylinder description
+\[
+\omega\in C_i
+\Longleftrightarrow
+\omega.2.2=\omega_i.2.2
+\text{ and }
+\forall e\in R_i,\ 
+\noderef{TwoBiteEdgeCoordinateValue}(\omega,e)
+\Longleftrightarrow
+\noderef{TwoBiteEdgeCoordinateValue}(\omega_i,e),
+\]
+and are contained in the projection-size event.
+\end{helper}
+\begin{proof}
+Fix deterministic orders of the finite base vertices, ordered base pairs, and
+terminal coordinates.  For a sample \(\omega\), define its pre-terminal replay
+as follows.  First record the injection.  From the injection compute projection
+containment and \(F_1\).  Then scan the ordered \(F_2\)-candidate adjacencies.
+For each same-color candidate that requires an edge value, insert the
+corresponding tagged coordinate into the current recorded set and store its
+\(\noderef{TwoBiteEdgeCoordinateValue}\).  Opposite-color candidates and loop
+candidates require no graph coordinate.  After the \(F_2\)-scan, compute the
+staged-revealed vertices, scan all incident coordinates from staged-revealed
+vertices to projection-contained endpoints, and finally scan all projected
+pairs coming from the \(X_x(I)\)-sets of staged-revealed vertices.  Each
+queried terminal coordinate is inserted into the recorded set before its truth
+value is used.
+
+The transcript is the injection, the final recorded set, and the truth table
+on that final recorded set.  There are only finitely many possible
+transcripts: the injection has finite domain and codomain, the final recorded
+set is a subset of the finite terminal-coordinate universe, and a truth table
+on a finite set has finitely many values.  Index the transcripts which are
+realized by samples in
+\(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B)\), and choose one
+representative \(\omega_i\) for each realized transcript.  Let \(R_i\) be the
+final recorded set in the transcript of \(\omega_i\).
+
+The key point is that the cylinder condition in the statement is not weaker
+than equality of transcripts.  We prove this by induction through the replay
+run.  Suppose \(\omega\) has the same injection as \(\omega_i\) and agrees
+with \(\omega_i\) on every coordinate in \(R_i\).  Projection containment and
+\(F_1\) depend only on the injection, so they agree at the start of the replay.
+During the \(F_2\)-scan, the two runs therefore consider the same ordered
+candidates.  If a candidate has opposite colors or is a loop, both runs make
+the same deterministic decision without reading a coordinate.  If it is a
+same-color candidate, the coordinate read in the representative run is
+inserted into \(R_i\) before its value is used.  This is the same class of
+\(F_2\)-scan coordinates isolated by
+\(\noderef{FixedSetPreTerminalF2QueriesRecorded}\).  Agreement on \(R_i\)
+gives the same edge value, so the candidate contributes the same way to the
+\(F_2\)-count in both runs.  Hence \(F_2\), and then the staged-revealed set,
+agree.
+
+The incident-coordinate pass is now the same in both runs, because it is
+indexed by the common projection data and the common staged-revealed set.
+Every incident coordinate read by the representative replay lies in \(R_i\),
+so the truth-table agreement gives the same incident edge values.  For the
+final \(X_x(I)\)-pair pass, fix a staged-revealed base vertex \(x\) and
+\(v\in I\).  Membership of \(v\) in \(X_x(I)\) is membership in the lifted
+neighborhood of \(x\).  In the red case this is the red graph edge from the
+red endpoint of \(x\) to the red projection of \(v\), and in the blue case it
+is the analogous blue edge.  The projection of \(v\) is the same in the two
+samples because the injections agree, and this incident edge was read in the
+previous pass because \(x\) is staged-revealed and the projected endpoint is
+projection-contained.  Thus it is in \(R_i\), so its truth value agrees.
+Therefore all \(X_x(I)\)-sets agree, all projected pair coordinates considered
+in the final pass agree, and every final queried coordinate again receives the
+same truth value.  The two replays consequently have the same final transcript.
+
+Thus the set of samples with the same transcript as \(\omega_i\) is exactly
+the cylinder described in the statement: common injection and common truth
+table on \(R_i\).  Define \(C_i\) to be this cylinder.  The cells cover the
+projection-size event because every sample in the event has a realized replay
+transcript and hence belongs to the cell of its representative.  They are
+pairwise disjoint because the deterministic replay produces a unique
+transcript, and the preceding paragraph identifies each cylinder with one
+transcript class.  Each representative lies in its own cell by reflexivity.
+Finally, \(\noderef{TwoBiteProjectionSizeEvent}\) depends only on the two
+projection images of \(I\), which are determined by the injection; therefore
+every sample in the cell of a representative chosen from the event also lies
+in the projection-size event.
+\end{proof}

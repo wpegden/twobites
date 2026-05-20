@@ -1,0 +1,144 @@
+\begin{helper}
+Work in the same single exposure-history cell setting as
+\(\noderef{FixedSetHistoryCellAdaptiveProductBound}\), with the same
+cylinder description, exact terminal product law, prefix-safety hypothesis,
+regular open-pair lower bound, and branch-indexed adaptive exceptional
+candidate package.  Fix natural numbers \(u_R,u_B\).  Then the conditional
+probability, inside the cell, of final independence and regularity together
+with exactly \(u_R\) present red staged-open terminal coordinates and exactly
+\(u_B\) present blue staged-open terminal coordinates is at most
+\[
+\exp\!\left(
+8\sqrt{\varepsilon_1}\,pk^2
+-p\bigl(f(\ell_R,\ell_B)-10\varepsilon_1k^2\bigr)\right).
+\]
+\end{helper}
+\begin{proof}
+Put \(a=f(\ell_R,\ell_B)-10\varepsilon_1k^2\).  The regular open-pair lower
+bound gives \(a\le |S(\omega)|\) for every successful regular sample, where
+\(S(\omega)\) is its staged-open terminal set.  The finite cell partition,
+per-cell fixed-cylinder charge, and total branch/transcript weight sum used
+below are packaged in
+\(\noderef{FixedSetHistoryCellFixedCountSummationBridge}\).  Let
+\[
+P_R(\omega)=\{e\in S(\omega):e\hbox{ is red and present}\},
+\qquad
+P_B(\omega)=\{e\in S(\omega):e\hbox{ is blue and present}\}.
+\]
+On the fixed-count event, \(|P_R(\omega)|=u_R\) and
+\(|P_B(\omega)|=u_B\).  Split into the two cases \(u_R\ge u_B\) and
+\(u_B\ge u_R\).
+
+Assume first that \(u_R\ge u_B\).  We expose the blue side first, but every
+probability factor is charged on a fixed finite cylinder inside the original
+terminal product cell.  Fix a possible blue present support
+\[
+B\subseteq U_{\mathrm{blue}},\qquad |B|=u_B .
+\]
+The blue staged-open coordinates are projected pairs from the \(k\)-set, so
+the ambient blue pool has size \(N_B\le k^2\), and there are at most
+\(\binom{N_B}{u_B}\) possible choices for \(B\).
+The fixed-cylinder charge
+\(\noderef{FixedSetHistoryCellFixedCylinderCharge}\), applied with present
+set \(B\) and empty absent set, gives a factor \(p^{u_B}\).  All terminal
+coordinates not mentioned by this fixed requirement are summed out in the
+same terminal product cell; no complete blue branch has been conditioned on
+yet.
+
+Now refine the fixed blue-support event into complete blue terminal traces,
+but do not normalize separately inside each trace.  We keep the calculation
+as one finite weighted sum over the disjoint complete traces and the later
+prefix transcripts; the trace cover and disjointness are supplied by
+\(\noderef{FixedSetHistoryCellAdaptiveBranchPartition}\).  Choose a
+representative \(\sigma\) for a nonempty complete blue trace.  On this fixed
+trace, the branch-indexed candidate hypothesis supplies a red exceptional set
+\(E_R(\sigma)\subseteq U\) with
+\[
+|E_R(\sigma)|\le 3\varepsilon_1 k^2
+\]
+because \(\noderef{ClosedPairsBound}( |E_R(\sigma)|,3\varepsilon_1,k)\)
+means exactly this inequality.  The set \(E_R(\sigma)\) is fixed before any
+red terminal value is charged.  Every present red staged-open coordinate in a
+regular independent completion extending the trace lies in \(E_R(\sigma)\),
+so for this trace there are at most \(\binom{N_R}{u_R}\) red supports
+\[
+R\subseteq E_R(\sigma),\qquad |R|=u_R,
+\]
+with \(N_R\le 3\varepsilon_1k^2\).
+
+Fix such a complete blue trace and red support \(R\).  For a successful
+completion with these fixed data, the lower bound \(a\le |S(\omega)|\) and
+the fixed-count identities imply that at least
+\[
+\max(0,a-u_R-u_B)
+\]
+coordinates of \(S(\omega)\setminus(R\cup B)\) are absent.  These absent
+coordinates are not charged as a branch-dependent set after the fact.  Scan
+the terminal coordinates in the fixed order.  When the scan reaches a
+coordinate \(e\), the prefix-safety hypothesis says that staged-openness,
+touchedness, same-color closedness, and recordedness of \(e\) are determined
+from the history and earlier terminal values.  Therefore the decision that
+\(e\) is a staged-open coordinate outside the already fixed supports
+\(R\cup B\) is made before the Bernoulli value of \(e\) is read.
+
+The canonical selection
+\(\noderef{FixedSetHistoryCellCanonicalAbsenceSelection}\) is implemented as
+the stopping rule that selects the first required coordinates declared by
+this prefix test.  It does not search for coordinates after observing that
+they are absent.  Partition the successful completions by triples
+\[
+(\sigma,R,\tau),
+\]
+where \(\sigma\) is the complete blue trace, \(R\) is the red support, and
+\(\tau\) is the prefix transcript up to the selected coordinates.  In a fixed
+cell \(G_{\sigma,R,\tau}\), all terminal values mentioned by the blue trace,
+all red coordinates in \(R\), all earlier transcript values, and the selected
+absent coordinates \(Z(\tau)\) are fixed.  If a selected absent coordinate is
+blue, it is the same fixed absence already appearing in the complete blue
+trace; it is not a second requirement.  Thus every coordinate contributes at
+most one Bernoulli factor in the combined fixed cylinder.
+
+Apply \(\noderef{FixedSetHistoryCellFixedCylinderCharge}\) to each fixed
+cylinder \(G_{\sigma,R,\tau}\).  The cells cover the successful event for
+the fixed blue support \(B\), and their fixed-cylinder weights are summed by
+\(\noderef{FixedSetHistoryCellBranchTranscriptSummation}\).  The weight sum
+is computed in the scan order.  For coordinates not forced by the support or
+by the selected-absence rule, the two possible terminal values are both
+included and contribute \(p+(1-p)=1\).  The support coordinates in \(B\)
+contribute \(p^{u_B}\), the support coordinates in \(R\) contribute
+\(p^{u_R}\), and every selected absent coordinate contributes one factor
+\((1-p)\), whether that absence is recorded in the blue trace or in the later
+red transcript.  Since
+\[
+|Z|\ge\max(0,a-u_R-u_B)
+\]
+on every successful transcript, and \(0\le1-p\le1\), each transcript weight
+is bounded by replacing \(|Z|\) with \(\max(0,a-u_R-u_B)\).  Therefore the
+total contribution for this fixed blue support \(B\), after summing all
+complete blue traces, all red supports, and all prefix transcripts, is at
+most
+\[
+\binom{N_R}{u_R}p^{u_R}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)}.
+\]
+There is no multiplier for the number of complete blue traces: their
+probabilities are part of the fixed-cylinder weight sum, and all terminal
+coordinates of the traces not fixed by \(B\) or by the selected absences sum
+out to \(1\).
+
+Thus the fixed-count probability in this case is bounded by
+\[
+\binom{N_R}{u_R}p^{u_R}
+\binom{N_B}{u_B}p^{u_B}
+(1-p)^{\max(0,a-u_R-u_B)}
+\]
+with \(N_R\le3\varepsilon_1k^2\) and \(N_B\le k^2\).  Applying
+\(\noderef{FixedSetHistoryCellBinomialExponentialEstimate}\) gives the
+claimed exponential bound.  In the case \(u_B\ge u_R\), interchange the
+colors: first pay for the red present support in the fixed terminal product
+cell, branch on complete red terminal traces, use the fixed set
+\(E_B(\sigma)\) to control the later blue support, and run the same
+prefix-safe transcript partition before charging any absence factor.  The
+displayed bound is identical, so the fixed-count estimate holds for every
+ordered pair \((u_R,u_B)\).
+\end{proof}

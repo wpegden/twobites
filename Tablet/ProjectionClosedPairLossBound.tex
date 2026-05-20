@@ -1,0 +1,466 @@
+\begin{lemma}
+Let \(I\subseteq[n]\), put \(k=|I|\), and write
+\[
+\ell_R=|\pi_R(I)|,\qquad \ell_B=|\pi_B(I)|.
+\]
+Assume \(\varepsilon_1\ge0\),
+\(\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0)\), \(n>n_0\),
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+the rounded sample-parameter identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+the event \(\noderef{FiberAndDegreeEvent}\), and the medium and small
+closed-pair events.  Then the number of unclosed projected pairs satisfies
+\[
+f(\ell_R,\ell_B,k,p,n)-9\varepsilon_1k^2
+\le |\noderef{TwoBiteUnclosedProjectedPairs}(\omega,I)|,
+\]
+where \(f=\noderef{ProjectionOpenPairFunction}\).
+\end{lemma}
+\begin{proof}
+Let \(P_I=\noderef{TwoBiteProjectionPairSet}(\omega,I)\) and let
+\(C_I\subseteq P_I\) be the set of projected pairs closed by some \(X_x(I)\),
+as in \(\noderef{TwoBiteProjectionPairClosed}\).  Thus
+\[
+C_I=\{e\in P_I: \noderef{TwoBiteProjectionPairClosed}(\omega,I,e)\}.
+\]
+Let
+\[
+U_I=\noderef{TwoBiteUnclosedProjectedPairs}(\omega,I).
+\]
+By the definition of \(\noderef{TwoBiteUnclosedProjectedPairs}\), \(U_I\) is
+the filter of \(P_I\) by the negation of
+\(\noderef{TwoBiteProjectionPairClosed}\).  Equivalently,
+\[
+U_I=\{e\in P_I:e\notin C_I\}=P_I\setminus C_I.
+\]
+This identity is literal: for every tagged projected pair \(e\), membership in
+\(U_I\) means \(e\in P_I\) together with the negation of the predicate defining
+\(C_I\), while membership in \(C_I\) means \(e\in P_I\) together with that
+predicate.  Hence \(U_I\cap C_I=\varnothing\), \(U_I\cup C_I=P_I\), and
+\(C_I\subseteq P_I\).  The finite set \(P_I\) is therefore the disjoint union
+\[
+P_I=U_I\,\dot\cup\, C_I.
+\]
+Consequently
+\[
+|P_I|=|U_I|+|C_I|
+\]
+as natural cardinalities.  Since \(C_I\subseteq P_I\), the natural subtraction
+\(|P_I|-|C_I|\) is the same natural number as \(|U_I|\); after casting this
+cardinality identity to real numbers we may use
+\[
+|U_I|=|P_I|-|C_I|.
+\]
+By \(\noderef{TwoBiteProjectionPairSet}\), the projected-pair set is the
+disjoint union, tagged by the two summands, of the red projected pairs and the
+blue projected pairs.  Therefore
+\[
+|P_I|=\binom{\ell_R}{2}_{\mathbb R}
+     +\binom{\ell_B}{2}_{\mathbb R}.
+\]
+Here \(\ell_R=|\pi_R(I)|\) and \(\ell_B=|\pi_B(I)|\) are cardinalities viewed
+as real numbers, and the two summands are disjoint because the red and blue
+projected pairs carry different tags.
+Define the two structured huge opposite-color quantities by
+\[
+A_R=
+\min\left\{\binom{k-\ell_R}{2}_{\mathbb R},
+  \binom{pn}{2}_{\mathbb R}+\binom{k-\ell_R-pn}{2}_{\mathbb R}\right\},
+\]
+\[
+A_B=
+\min\left\{\binom{k-\ell_B}{2}_{\mathbb R},
+  \binom{pn}{2}_{\mathbb R}+\binom{k-\ell_B-pn}{2}_{\mathbb R}\right\}.
+\]
+
+Now split the closed-pair set \(C_I\) according to both the witness class and
+the color tag of the projected pair.  Define
+\[
+S_I(x)\Longleftrightarrow
+\noderef{TwoBiteSmallClass}(\omega,\varepsilon,I,x),\quad
+M_I(x)\Longleftrightarrow
+\noderef{TwoBiteMediumClass}(\omega,\varepsilon,I,x),
+\]
+\[
+L_I(x)\Longleftrightarrow
+\noderef{TwoBiteLargeClass}(\omega,\varepsilon,I,x),\quad
+H_I(x)\Longleftrightarrow
+\noderef{TwoBiteHugeClass}(\omega,I,x).
+\]
+Take \(e\in C_I\).  By the definition of
+\(\noderef{TwoBiteProjectionPairClosed}\), \(e\) may have several witnesses;
+fix one such witness \(x\) for the following case split.  With this chosen
+witness, either \(e=\operatorname{red}(q)\) and
+\[
+q\in\noderef{TwoBiteBasePairs}(\pi_R(X_x(I))),
+\]
+or \(e=\operatorname{blue}(q)\) and
+\[
+q\in\noderef{TwoBiteBasePairs}(\pi_B(X_x(I))).
+\]
+In either case \(X_x(I)=\noderef{TwoBiteX}(\omega,I,x)\) is a filter of \(I\),
+so \(X_x(I)\subseteq I\) and \(|X_x(I)|\le |I|=k\).  Its cardinality is
+nonnegative.  Now compare the real number \(|X_x(I)|\) successively with the
+three cutoffs appearing in the definitions of \(S_I,M_I,L_I,H_I\).  If it is
+at most the small cutoff, then \(x\in S_I\).  Otherwise, if it is at most the
+large cutoff, then it is above the small cutoff and \(x\in M_I\).  Otherwise,
+if it is at most the huge cutoff, then it is above the large cutoff and
+\(x\in L_I\).  In the remaining case it is above the huge cutoff, and the
+already proved inequality \(|X_x(I)|\le k=|I|\) supplies the upper bound
+required in \(\noderef{TwoBiteHugeClass}\), so \(x\in H_I\).  Hence the chosen
+witness lies in \(S_I\), \(M_I\), \(L_I\), or \(H_I\).
+
+For the three non-huge classes set
+\[
+Q_{\mathcal A}
+=\noderef{TwoBiteProjectedPairsClosedInClass}(\omega,I,\mathcal A),
+\qquad
+\mathcal A\in\{L_I,M_I,S_I\}.
+\]
+For huge witnesses, split by the color of the witness and the tag of the
+projected pair.  Let \(H_R^{=}\) be the red-tagged projected pairs closed by
+huge red witnesses, \(H_B^{=}\) the blue-tagged projected pairs closed by huge
+blue witnesses, \(H_R^{\mathrm{opp}}\) the blue-tagged projected pairs closed
+by huge red witnesses, and \(H_B^{\mathrm{opp}}\) the red-tagged projected
+pairs closed by huge blue witnesses.  These are the four huge alternatives
+after unfolding the two `Sum` tags in
+\(\noderef{TwoBiteProjectionPairClosed}\).
+
+For huge witnesses the base vertex \(x\) is either \(x=\operatorname{inl}(r)\)
+or \(x=\operatorname{inr}(b)\).  In the first case the same-color projection is
+\(\pi_R\) and the opposite-color projection is \(\pi_B\); in the second case
+the same-color projection is \(\pi_B\) and the opposite-color projection is
+\(\pi_R\).  Equivalently, the two huge filters used below are exactly the
+Lean predicates
+\[
+\mathsf{hugeRed}(x)\Longleftrightarrow H_I(x)\land
+  \exists r,\ x=\operatorname{inl}(r),
+\qquad
+\mathsf{hugeBlue}(x)\Longleftrightarrow H_I(x)\land
+  \exists b,\ x=\operatorname{inr}(b).
+\]
+The same-color huge pieces are generated by
+\((\mathsf{hugeRed},\pi_R)\) and \((\mathsf{hugeBlue},\pi_B)\); the
+opposite-color huge pieces are generated by
+\((\mathsf{hugeRed},\pi_B)\) and \((\mathsf{hugeBlue},\pi_R)\).  Therefore
+the preceding classification gives the set inclusion
+\[
+C_I\subseteq
+Q_{L_I}\cup Q_{M_I}\cup Q_{S_I}\cup
+H_R^{=}\cup H_B^{=}\cup
+H_R^{\mathrm{opp}}\cup H_B^{\mathrm{opp}}. \tag{1}
+\]
+Indeed, the chosen witness for \(e\) is either large, medium, small, or huge.
+In the first three cases \(e\) lies in the corresponding \(Q_{\mathcal A}\).
+In the huge case, the witness is red or blue and the projected pair is
+red-tagged or blue-tagged, giving exactly one of the four displayed huge
+sets.  Since one arbitrary witness was chosen only to prove membership in the
+right-hand side, (1) is a containment and does not assert that the displayed
+sets are disjoint.  Define
+\[
+C_{\mathrm{err}}=
+Q_{L_I}\cup Q_{M_I}\cup Q_{S_I}\cup H_R^{=}\cup H_B^{=},
+\qquad
+C_R^{\mathrm{opp}}=H_R^{\mathrm{opp}},\qquad
+C_B^{\mathrm{opp}}=H_B^{\mathrm{opp}}.
+\]
+Then (1) implies
+\[
+C_I\subseteq
+C_{\mathrm{err}}\cup C_R^{\mathrm{opp}}\cup C_B^{\mathrm{opp}}.
+\]
+Taking cardinalities and applying the finite union bound, without any
+disjointness assumption, gives
+\[
+|C_I|\le |C_{\mathrm{err}}|
+       +|C_R^{\mathrm{opp}}|+|C_B^{\mathrm{opp}}|. \tag{2}
+\]
+
+We first bound \(C_{\mathrm{err}}\).  Introduce the numerical contribution
+\[
+\begin{aligned}
+D_{\mathrm{err}}
+&=|\noderef{TwoBiteClosedPairsInClass}(I,L_I)|
+  +|\noderef{TwoBiteClosedPairsInClass}(I,M_I)|
+  +|\noderef{TwoBiteClosedPairsInClass}(I,S_I)|\\
+&\quad+
+\sum_{x\in H_I\cap V_R}
+  \binom{|\pi_R(X_x(I))|}{2}_{\mathbb R}
++
+\sum_{x\in H_I\cap V_B}
+  \binom{|\pi_B(X_x(I))|}{2}_{\mathbb R}.
+\end{aligned}
+\]
+Equivalently, write
+\[
+A_L=|\noderef{TwoBiteClosedPairsInClass}(\omega,I,L_I)|,\quad
+A_M=|\noderef{TwoBiteClosedPairsInClass}(\omega,I,M_I)|,\quad
+A_S=|\noderef{TwoBiteClosedPairsInClass}(\omega,I,S_I)|
+\]
+and let \(A_H^{=}\) be the displayed same-color huge projected sum; then
+\[
+D_{\mathrm{err}}=A_L+A_M+A_S+A_H^{=}.
+\]
+Here \(A_H^{=}\) is exactly the same expression that appears in the
+same-color huge input of \(\noderef{ClosedPairsControlled}\): if
+\[
+\mathrm{hugeRed}(x)\Longleftrightarrow
+\noderef{TwoBiteHugeClass}(\omega,I,x)\land x\in V_R,
+\qquad
+\mathrm{hugeBlue}(x)\Longleftrightarrow
+\noderef{TwoBiteHugeClass}(\omega,I,x)\land x\in V_B,
+\]
+then, after unfolding \(\noderef{TwoBiteProjectedPairSum}\),
+\[
+A_H^{=}
+=\noderef{TwoBiteProjectedPairSum}(\omega,I,\mathrm{hugeRed},\pi_R)
+ +\noderef{TwoBiteProjectedPairSum}(\omega,I,\mathrm{hugeBlue},\pi_B).
+\]
+The first three summands count final-vertex pairs, not tagged projected pairs,
+so they cannot be used with multiplicity one.  For each class
+\(\mathcal A\in\{L_I,M_I,S_I\}\), the already-defined set
+\(Q_{\mathcal A}\) is the projected-pair set generated by witnesses in
+\(\mathcal A\).
+The part of \(C_{\mathrm{err}}\) with a non-huge witness is contained in
+\[
+Q_{L_I}\cup Q_{M_I}\cup Q_{S_I}.
+\]
+For each of the three classes, apply
+\(\noderef{ProjectedPairsInClassMultiplicityBound}\) with the same
+\(\omega\), the same \(I\), and the displayed class \(\mathcal A\).  It gives
+\[
+|Q_{\mathcal A}|
+\le
+2|\noderef{TwoBiteClosedPairsInClass}(\omega,I,\mathcal A)|.
+\]
+This is the required conversion from final-pair counts to projected-pair
+counts, and it is made before invoking \(\noderef{ClosedPairsControlled}\).
+The non-huge part of \(C_{\mathrm{err}}\) is contained in
+\[
+Q_{L_I}\cup Q_{M_I}\cup Q_{S_I},
+\]
+so the finite union bound gives
+\[
+\left|Q_{L_I}\cup Q_{M_I}\cup Q_{S_I}\right|
+\le |Q_{L_I}|+|Q_{M_I}|+|Q_{S_I}|.
+\]
+Substituting the three multiplicity inequalities, one for each of
+\(L_I,M_I,S_I\), gives the explicit projected-pair estimate
+\[
+\left|Q_{L_I}\cup Q_{M_I}\cup Q_{S_I}\right|
+\le 2A_L+2A_M+2A_S. \tag{3}
+\]
+The same-color huge part is already bounded by a projected-pair sum.  For a
+fixed huge red witness \(x\), the red tagged pairs it closes are exactly the
+red tags of the elements of
+\(\noderef{TwoBiteBasePairs}(\pi_R(X_x(I)))\), so their number is
+\(\binom{|\pi_R(X_x(I))|}{2}_{\mathbb R}\).  The union over all huge red
+witnesses therefore has cardinality at most the corresponding sum over
+\(H_I\cap V_R\).  The same argument for huge blue witnesses gives the sum over
+\(H_I\cap V_B\).  Thus
+\[
+|H_R^{=} \cup H_B^{=}|\le A_H^{=}. \tag{4}
+\]
+Combining (3) and (4), and taking a union bound over the five possible sources
+of \(C_{\mathrm{err}}\), with overlaps only decreasing the union cardinality,
+gives
+\[
+|C_{\mathrm{err}}|
+\le
+2A_L+2A_M+2A_S+A_H^{=}.
+\]
+Since \(A_L,A_M,A_S,A_H^{=}\) are all nonnegative, the last display is at most
+\[
+2(A_L+A_M+A_S+A_H^{=})=2D_{\mathrm{err}}.
+\]
+Hence
+\[
+|C_{\mathrm{err}}|\le 2D_{\mathrm{err}}.
+\]
+
+We now verify the inputs to \(\noderef{ClosedPairsControlled}\) with the same
+parameters used in the statement.  The set-size input is the equality
+\(|I|=k\), where
+\[
+k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n).
+\]
+The degree input is the assumed \(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\).
+The medium and small inputs are exactly the two assumed events
+\(\noderef{TwoBiteMediumClosedPairsEvent}\) and
+\(\noderef{TwoBiteSmallClosedPairsEvent}\), both at scale \(k=|I|\) and at the
+same \(\omega,\varepsilon,\varepsilon_1\).  Unfolding those two event
+definitions gives the two \(\noderef{ClosedPairsBound}\) hypotheses for
+\(A_M\) and \(A_S\) that \(\noderef{ClosedPairsControlled}\) requires.
+
+The large input required by \(\noderef{ClosedPairsControlled}\) is supplied by
+\(\noderef{LargeClosedPairsBound}\), applied to the same
+\(\omega,I,\varepsilon,\varepsilon_1,\varepsilon_2,n_0\).  Its hypotheses are
+precisely the eventual-comparisons package, \(n>n_0\), the rounded scale
+identity \(|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)\),
+and the same fiber-and-degree event.  Hence it gives
+\[
+\noderef{ClosedPairsBound}
+\left(|\noderef{TwoBiteClosedPairsInClass}(\omega,I,L_I)|,\varepsilon_1,k\right).
+\]
+The same-color huge input is the third conjunct of
+\(\noderef{HugeProjectionClosedPairsBound}\), applied to the same
+\(\omega,I,\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), using the assumed
+nonnegativity \(\varepsilon_1\ge0\), the same eventual-comparisons package,
+the same strict inequality \(n>n_0\), the rounded identity
+\[
+k=|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+the same rounded sample-parameter identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+the equality \(|I|=k\), and the same \(\noderef{FiberAndDegreeEvent}\).  It
+gives
+\[
+\noderef{ClosedPairsBound}(A_H^{=},\varepsilon_1,k).
+\]
+Thus all hypotheses of \(\noderef{ClosedPairsControlled}\) are satisfied.
+Its conclusion, with the four grouped summands in exactly the order
+\((L_I,M_I,S_I,H_I\text{ same-color})\), is
+\[
+\noderef{ClosedPairsBound}(D_{\mathrm{err}},4\varepsilon_1,k).
+\]
+By the definition of \(\noderef{ClosedPairsBound}\), this is exactly
+\[
+D_{\mathrm{err}}\le 4\varepsilon_1k^2.
+\]
+This invocation comes after the multiplicity step above: the child controls
+the final-pair and same-color huge numerical sum \(D_{\mathrm{err}}\), while
+\(\noderef{ProjectedPairsInClassMultiplicityBound}\) has already converted
+the non-huge projected-pair pieces into the factor-two contribution.  Together
+with \(|C_{\mathrm{err}}|\le 2D_{\mathrm{err}}\), this proves the
+corrected error estimate
+\[
+|C_{\mathrm{err}}|\le 8\varepsilon_1k^2.
+\]
+
+The remaining two pieces are controlled by the huge opposite-color projected
+sums.  Let
+\[
+S_R^{\mathrm{opp}}=
+\sum_{x\in H_I\cap V_R}
+  \binom{|\pi_B(X_x(I))|}{2}_{\mathbb R},
+\qquad
+S_B^{\mathrm{opp}}=
+\sum_{x\in H_I\cap V_B}
+  \binom{|\pi_R(X_x(I))|}{2}_{\mathbb R}.
+\]
+For a fixed huge red witness, the opposite-color projected pairs it closes are
+the blue tags of
+\(\noderef{TwoBiteBasePairs}(\pi_B(X_x(I)))\), so their number is
+\(\binom{|\pi_B(X_x(I))|}{2}_{\mathbb R}\).  Hence the union over all huge red
+witnesses, namely \(C_R^{\mathrm{opp}}\), has cardinality at most
+\(S_R^{\mathrm{opp}}\).  Similarly
+\(|C_B^{\mathrm{opp}}|\le S_B^{\mathrm{opp}}\).  These are union bounds over
+witnesses, not disjoint decompositions; multiple witnesses for one projected
+pair only make the sums larger.
+Apply \(\noderef{HugeProjectionClosedPairsBound}\) a second time with the same
+\(\omega,I,\varepsilon,\varepsilon_1,\varepsilon_2,n_0\), the same
+nonnegativity, eventual-comparisons package, strict inequality \(n>n_0\),
+rounded identity \(k=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n)\),
+the same rounded sample-parameter identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\noderef{TwoBiteEdgeProbability}\!\left(\frac12,n\right),
+\]
+the same equality \(|I|=k\), and the same \(\noderef{FiberAndDegreeEvent}\).
+Its fourth conjunct is the huge-red-through-blue estimate: its left side uses
+the huge-red predicate but the opposite projection \(\pi_B\), while its
+deficit parameter is the size of the same-color red projection of \(I\).  Since
+\[
+\ell_R=|\pi_R(I)|,
+\]
+this conjunct is exactly
+\[
+S_R^{\mathrm{opp}}\le(1+\varepsilon_1)A_R.
+\]
+Its fifth conjunct is the huge-blue-through-red estimate: its left side uses
+the huge-blue predicate but the opposite projection \(\pi_R\), while its
+deficit parameter is the size of the same-color blue projection of \(I\).
+Because
+\[
+\ell_B=|\pi_B(I)|,
+\]
+it is exactly
+\[
+S_B^{\mathrm{opp}}\le(1+\varepsilon_1)A_B.
+\]
+Hence
+\[
+|C_R^{\mathrm{opp}}|\le (1+\varepsilon_1)A_R,
+\qquad
+|C_B^{\mathrm{opp}}|\le (1+\varepsilon_1)A_B.
+\]
+Combining these two bounds with the union bound for \(C_I\) gives
+\[
+|C_I|
+\le
+8\varepsilon_1k^2+(1+\varepsilon_1)A_R+(1+\varepsilon_1)A_B
+=A_R+A_B+8\varepsilon_1k^2+\varepsilon_1(A_R+A_B).
+\]
+We now bound the final \(\varepsilon_1\)-multiple.  Since
+\(\pi_R(I)\) and \(\pi_B(I)\) are images of the \(k\)-set \(I\), we have
+\[
+\ell_R\le k,\qquad \ell_B\le k.
+\]
+Let \(d_R=k-|\pi_R(I)|\) and \(d_B=k-|\pi_B(I)|\) as natural-cardinality
+deficits; the displayed inequalities show \(0\le d_R,d_B\le k\), and after
+casting to real numbers \(d_R=k-\ell_R\) and \(d_B=k-\ell_B\).  Choosing
+inclusions of a \(d_R\)-element set and a \(d_B\)-element set into a fixed
+\(k\)-element set gives injections on unordered pairs, so
+\[
+\binom{d_R}{2}_{\mathbb R}\le \binom{k}{2}_{\mathbb R},
+\qquad
+\binom{d_B}{2}_{\mathbb R}\le \binom{k}{2}_{\mathbb R}.
+\]
+The structured quantities \(A_R\) and \(A_B\) are minima.  A minimum is no
+larger than its first argument, so
+\[
+A_R\le \binom{d_R}{2}_{\mathbb R},\qquad
+A_B\le \binom{d_B}{2}_{\mathbb R}.
+\]
+Combining the last two displays gives
+\[
+A_R\le \binom{k}{2}_{\mathbb R}\le \frac{k^2}{2},
+\qquad
+A_B\le \binom{k}{2}_{\mathbb R}\le \frac{k^2}{2}.
+\]
+The last inequalities use
+\(\binom{k}{2}_{\mathbb R}=k(k-1)/2\le k^2/2\) for the nonnegative
+cardinality \(k\).  Adding the two bounds gives \(A_R+A_B\le k^2\), and
+because \(\varepsilon_1\ge0\),
+\[
+\varepsilon_1(A_R+A_B)\le \varepsilon_1k^2.
+\]
+Therefore
+\[
+|C_I|\le A_R+A_B+9\varepsilon_1k^2.
+\]
+
+Finally, by the definition of \(f=\noderef{ProjectionOpenPairFunction}\),
+\[
+f(\ell_R,\ell_B,k,p,n)
+=\binom{\ell_R}{2}_{\mathbb R}+\binom{\ell_B}{2}_{\mathbb R}-A_R-A_B
+=|P_I|-A_R-A_B.
+\]
+Combining this identity with the previous bound gives
+\[
+|U_I|
+=|P_I|-|C_I|
+\ge f(\ell_R,\ell_B,k,p,n)-9\varepsilon_1k^2,
+\]
+as required.
+\end{proof}

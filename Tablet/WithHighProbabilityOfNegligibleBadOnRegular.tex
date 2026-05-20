@@ -1,0 +1,36 @@
+\begin{helper}
+For a sequence of two-bite laws, suppose \(R_n\) holds with high probability,
+the event \(\neg G_n\cap R_n\) has negligible probability, and eventually all
+sample weights are nonnegative.  Then \(G_n\) holds with high probability.
+\end{helper}
+\begin{proof}
+Let
+\[
+r_n=\Pr(R_n),\qquad b_n=\Pr(\neg G_n\cap R_n),\qquad g_n=\Pr(G_n).
+\]
+The hypotheses give \(r_n\to1\) and \(b_n\to0\), hence
+\[
+r_n-b_n\to1.
+\]
+For every sufficiently large \(n\), all sample weights are nonnegative.  For
+each sample point \(\omega\), the pointwise inequality
+\[
+1_{R_n}(\omega)w(\omega)-1_{\neg G_n\cap R_n}(\omega)w(\omega)
+\le 1_{G_n}(\omega)w(\omega)
+\]
+holds: if \(G_n(\omega)\) holds it is immediate, and if \(G_n(\omega)\) fails
+then the two terms on the left cancel whenever \(R_n(\omega)\) holds and are
+both zero otherwise.  Summing over the finite sample space gives
+\[
+r_n-b_n\le g_n.
+\]
+The same nonnegativity gives monotonicity of the finite weighted sum, so
+\[
+g_n\le \Pr(\Omega_n)\le 1,
+\]
+where the final inequality is
+\(\noderef{TwoBiteEventProbabilityTotalMassBound}\).  Therefore \(g_n\) is
+squeezed between a sequence converging to \(1\) and the constant sequence
+\(1\), so \(g_n\to1\).  This is exactly the asserted
+\(\noderef{WithHighProbability}\) conclusion.
+\end{proof}

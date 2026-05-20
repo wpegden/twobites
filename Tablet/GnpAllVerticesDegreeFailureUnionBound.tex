@@ -1,0 +1,35 @@
+\begin{helper}[GnpAllVerticesDegreeFailureUnionBound]
+Let \(m\in\mathbb N\), \(0\le p\le1\), \(\epsilon,t\in\mathbb R\), and
+\(0\le t\).  Under the \(\noderef{GnpGraphWeight}\) product graph weight,
+the mass of the event that some vertex has degree outside
+\(\noderef{WithinRelativeError}(\epsilon,pm,\cdot)\) is at most
+\[
+m\left[
+\exp\!\bigl(-t(1+\epsilon)pm\bigr)
+\bigl(1-p+p\exp(t)\bigr)^{m-1}
++
+\exp\!\bigl(t(1-\epsilon)pm\bigr)
+\bigl(1-p+p\exp(-t)\bigr)^{m-1}
+\right].
+\]
+\end{helper}
+\begin{proof}
+For a fixed vertex \(v\), failure of
+\(\noderef{WithinRelativeError}(\epsilon,pm,\noderef{GraphDegreeCount}(G,v))\)
+means
+\[
+|\noderef{GraphDegreeCount}(G,v)-pm|>\epsilon pm.
+\]
+Therefore either
+\(\noderef{GraphDegreeCount}(G,v)\ge (1+\epsilon)pm\) or
+\(\noderef{GraphDegreeCount}(G,v)\le (1-\epsilon)pm\).  The graph weights are
+nonnegative because \(0\le p\le1\), so the finite union bound over
+\(v\in\operatorname{Fin}(m)\) bounds the all-vertices failure mass by the sum
+over vertices of these two fixed-vertex tail masses.
+
+For each \(v\), the number of incident edge coordinates is \(m-1\): it is in
+bijection with the vertices other than \(v\).  Applying
+\(\noderef{GnpVertexDegreeUpperTailUnionBound}\) to the upper and lower tails
+at this vertex therefore gives the displayed two-tail bound.  Summing the
+same bound over all \(m\) vertices gives the stated factor of \(m\).
+\end{proof}

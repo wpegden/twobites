@@ -1,0 +1,67 @@
+\begin{helper}
+For every fixed set \(I\), there is a finite family of canonical
+pre-terminal history cells \(C_i\), with representatives \(\omega_i\) and
+recorded coordinate sets \(R_i\), such that the cells cover exactly the
+\(\noderef{TwoBiteProjectionSizeEvent}(I,k,\ell_R,\ell_B)\), are pairwise
+disjoint, contain their representatives, have the cylinder description
+\[
+\omega\in C_i
+\quad\Longleftrightarrow\quad
+\omega.2.2=\omega_i.2.2
+\text{ and }\omega\text{ agrees with }\omega_i\text{ on }R_i,
+\]
+have \(R_i\) equal to
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)\) throughout
+the cell, are contained in the projection-size event, and replay
+\(\noderef{TwoBiteStageRevealedVertex}\) and
+\(\noderef{TwoBiteProjectionPairTouched}\) under any second sample with the
+same injection and the same recorded truth table.
+\end{helper}
+\begin{proof}
+Use the refined transcript family supplied by
+\noderef{FixedSetPreTerminalRecordedPairsReplayEquality}, whose construction
+component is the pre-terminal replay transcript family of
+\noderef{FixedSetPreTerminalReplayTranscriptConstruction}.  Thus we have a
+finite index type, cells \(C_i\), recorded sets \(R_i\), and representatives
+\(\omega_i\).  The cited construction gives the covering equivalence for the
+projection-size event, pairwise disjointness, representative membership, the
+cylinder description by common injection and agreement on \(R_i\), and the
+fact that every cell lies in the projection-size event.  These are exactly the
+first, second, third, fourth, and sixth conclusions required here.
+
+It remains to justify the exact-recorded and replay-preservation conclusions
+for these cells.  Fix \(i\) and \(\omega\in C_i\).  By the cylinder
+description, \(\omega\) has the same injection as \(\omega_i\) and agrees with
+\(\omega_i\) on \(R_i\).  The construction of \(R_i\) is the replay output for
+\(\omega_i\).  During the \(F_2\)-pass, every queried same-color coordinate is
+already a pre-terminal recorded coordinate by
+\noderef{FixedSetPreTerminalF2QueriesRecorded}; incident queries after the
+staged-revealed set is known are recorded by the incident branch of
+\(\noderef{TwoBitePreTerminalRecordedPairs}\); and the later \(X_x(I)\)-pair
+queries are recorded by the second branch of the same definition.  Therefore
+the replay output has precisely the two-branch characterization of
+\(\noderef{TwoBitePreTerminalRecordedPairs}\).  This is exactly the
+representative recorded-set conclusion of
+\(\noderef{FixedSetPreTerminalRecordedPairsReplayEquality}\), so it identifies
+\(R_i\) with
+\(\noderef{TwoBitePreTerminalRecordedPairs}(\omega_i,\varepsilon,I)\).
+
+Now apply \noderef{FixedSetPreTerminalReplayUniqueness} to the pair
+\((\omega_i,\omega)\).  The common-injection and recorded-truth-table
+hypotheses are exactly the cylinder conditions.  Hence the pre-terminal
+recorded set for \(\omega\) is the same set \(R_i\).  This proves
+\[
+e\in\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)
+\Longleftrightarrow e\in R_i
+\]
+for every coordinate \(e\), which is the fifth conclusion.
+
+Finally let \(\omega'\) be any second sample with the same injection as
+\(\omega\) and the same truth table on \(R_i\).  Since the previous paragraph
+identified \(R_i\) with the pre-terminal recorded set of \(\omega\), the
+hypotheses of \noderef{FixedSetPreTerminalStageTouchPreservation} apply.
+That helper gives equality of
+\(\noderef{TwoBiteStageRevealedVertex}\) for every base vertex and equality
+of \(\noderef{TwoBiteProjectionPairTouched}\) for every tagged coordinate,
+which is the final replay-preservation conclusion.
+\end{proof}

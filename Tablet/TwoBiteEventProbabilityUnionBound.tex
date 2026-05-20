@@ -1,0 +1,12 @@
+\begin{helper}[Union bound for event probability]
+For any sample parameters \(n, m\in\mathbb N\), \(p\in[0,1]\), any finite index set \(\iota\), and any family of sample predicates \(E\), we have the union bound:
+\[
+\noderef{TwoBiteEventProbability}(n, m, p, \omega \mapsto \exists i\in\iota, E_i(\omega)) \le \sum_{i \in \iota} \noderef{TwoBiteEventProbability}(n, m, p, E_i).
+\]
+\end{helper}
+\begin{proof}
+By expanding the definition of \(\noderef{TwoBiteEventProbability}\), the probability of the union is the sum of \(\noderef{TwoBiteSampleWeight}(\omega)\) over all \(\omega\) satisfying \(\exists i, E_i(\omega)\).
+Because \(p \in [0, 1]\), \(\noderef{TwoBiteSampleWeightNonnegative}\) shows that the sample weights are non-negative.
+By exchanging the order of summation, the sum of the individual event probabilities is the sum over all \(\omega\) of the sample weight multiplied by the number of indices \(i\) for which \(E_i(\omega)\) holds.
+For any \(\omega\) in the union event, the number of such indices is at least \(1\). Since the weights are non-negative, the single sum is bounded by the double sum, completing the proof.
+\end{proof}

@@ -1,0 +1,161 @@
+\begin{helper}
+Fix a sample \(\omega\), a finite set \(I\), and parameters satisfying
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+\[
+\noderef{ParameterHierarchyEventualComparisons}
+(\varepsilon,\varepsilon_1,\varepsilon_2,n_0),\qquad n>n_0,
+\]
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\frac12\sqrt{\frac{\log n}{n}},
+\]
+\[
+\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2).
+\]
+A huge opposite-color witness records the corresponding projected coordinate
+before the terminal scan.  Concretely, if \(q\) is a red base pair and there
+is a blue base vertex \(b\in H_I\) such that
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}(\omega,I,\operatorname{blue}(b)))\bigr),
+\]
+then
+\[
+\operatorname{red}(q)\in
+\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I)
+\quad\text{and}\quad
+\operatorname{red}(q)\notin
+\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I).
+\]
+The blue statement is the color-swapped assertion: a blue projected coordinate
+closed through a huge red witness is pre-terminal recorded and therefore is
+not staged-open.
+\end{helper}
+\begin{proof}
+We prove the two components separately.
+
+First fix a red base pair \(q\) and assume the red hypothesis.  Unpack the
+existential in that hypothesis: there is a blue base vertex \(b\) such that
+\[
+\noderef{TwoBiteHugeClass}(\omega,I,\operatorname{blue}(b))
+\tag{1}
+\]
+and
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteX}
+(\omega,I,\operatorname{blue}(b)))\bigr). \tag{2}
+\]
+Apply \(\noderef{FixedSetHugeWitnessStageRevealed}\) with
+\[
+x=\operatorname{blue}(b).
+\]
+Every hypothesis required by that helper is one of the active hypotheses: the
+same \(\noderef{ParameterHierarchyEventualComparisons}\) package, the same
+\(n>n_0\), the same rounded identities
+\[
+m=\noderef{TwoBiteNaturalReducedVertexCount}(n),\qquad
+p=\frac12\sqrt{\frac{\log n}{n}},
+\]
+the same scale identity
+\[
+|I|=\noderef{TwoBiteNaturalIndependenceScale}(1+\varepsilon,n),
+\]
+the same \(\noderef{FiberAndDegreeEvent}(\omega,\varepsilon_2)\), and the
+hugeness assumption (1).  Therefore
+\[
+\noderef{TwoBiteStageRevealedVertex}
+(\omega,\varepsilon,I,\operatorname{blue}(b)).
+\tag{3}
+\]
+
+We now prove that \(\operatorname{red}(q)\) is pre-terminal recorded.  Unfold
+\(\noderef{TwoBitePreTerminalRecordedPairs}\).  It is a filter of
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\).  From (2) and the
+definition of \(\noderef{TwoBiteBasePairs}\), the pair \(q\) is an increasing
+red base coordinate, hence
+\[
+\operatorname{red}(q)\in
+\noderef{TwoBiteTerminalCoordinateUniverse}(m). \tag{4}
+\]
+For the filter predicate in the red branch, choose the second, \(X\)-pair,
+recording alternative.  In that alternative take the witnessing base vertex to
+be \(x=\operatorname{blue}(b)\).  The staged-revealed conjunct is exactly (3),
+and the projected-pair conjunct is exactly (2).  Thus the filter predicate
+holds, and together with (4) this gives
+\[
+\operatorname{red}(q)\in
+\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\tag{5}
+\]
+
+It remains to exclude \(\operatorname{red}(q)\) from the staged-open set.
+Unfold \(\noderef{TwoBiteStagedOpenPairs}\).  Membership in this finite set is
+membership in \(\noderef{TwoBiteProjectionPairSet}(\omega,I)\) together with
+three terminal filter conjuncts:
+\[
+\neg\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,\operatorname{red}(q)),
+\qquad
+\neg\noderef{TwoBiteProjectionPairTouched}(\omega,\varepsilon,I,\operatorname{red}(q)),
+\qquad
+\operatorname{red}(q)\notin
+\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\]
+If \(\operatorname{red}(q)\) were staged-open, the last conjunct would
+contradict (5).  Therefore
+\[
+\operatorname{red}(q)\notin
+\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I).
+\tag{6}
+\]
+Equations (5) and (6) are the desired red conclusion.
+
+The blue component is the same argument with the two color copies interchanged.
+Fix a blue base pair \(q\) and unpack the blue hypothesis as a huge red witness
+\(r\) with
+\[
+\noderef{TwoBiteHugeClass}(\omega,I,\operatorname{red}(r))
+\tag{7}
+\]
+and
+\[
+q\in\noderef{TwoBiteBasePairs}
+\bigl(\pi_B^\omega(\noderef{TwoBiteX}
+(\omega,I,\operatorname{red}(r)))\bigr). \tag{8}
+\]
+Apply \(\noderef{FixedSetHugeWitnessStageRevealed}\) with
+\(x=\operatorname{red}(r)\), using the same hierarchy package, \(n>n_0\),
+rounded \(m\), rounded \(p\), scale identity, and
+\(\noderef{FiberAndDegreeEvent}\), together with the hugeness assumption (7).
+This gives
+\[
+\noderef{TwoBiteStageRevealedVertex}
+(\omega,\varepsilon,I,\operatorname{red}(r)).
+\tag{9}
+\]
+Unfolding \(\noderef{TwoBitePreTerminalRecordedPairs}\) in the blue branch,
+the membership (8) puts \(\operatorname{blue}(q)\) in
+\(\noderef{TwoBiteTerminalCoordinateUniverse}(m)\), and the \(X\)-pair
+recording alternative holds with witness \(x=\operatorname{red}(r)\), using
+(9) and (8).  Hence
+\[
+\operatorname{blue}(q)\in
+\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I).
+\tag{10}
+\]
+Finally, unfolding \(\noderef{TwoBiteStagedOpenPairs}\), any staged-open
+membership of \(\operatorname{blue}(q)\) would include the conjunct
+\[
+\operatorname{blue}(q)\notin
+\noderef{TwoBitePreTerminalRecordedPairs}(\omega,\varepsilon,I),
+\]
+contradicting (10).  Therefore
+\[
+\operatorname{blue}(q)\notin
+\noderef{TwoBiteStagedOpenPairs}(\omega,\varepsilon,I).
+\tag{11}
+\]
+Equations (10) and (11) are the desired blue conclusion.
+\end{proof}

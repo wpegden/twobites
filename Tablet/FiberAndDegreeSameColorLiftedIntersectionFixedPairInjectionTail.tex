@@ -1,0 +1,86 @@
+\begin{helper}[FiberAndDegreeSameColorLiftedIntersectionFixedPairInjectionTail]
+\label{helper:FiberAndDegreeSameColorLiftedIntersectionFixedPairInjectionTail}
+Let \(m=\noderef{TwoBiteNaturalReducedVertexCount}(n)\), let
+\[
+p=\noderef{TwoBiteEdgeProbability}(1/2,n),
+\qquad L=\log n,
+\]
+and assume
+\[
+n\le m^2,\qquad 1\le L,\qquad
+n\le 2L^2m .
+\]
+Fix a red base graph \(G_R\) on \(\operatorname{Fin}(m)\) and distinct
+vertices \(r,s\).  If the same-color base common neighborhood satisfies
+\[
+\left|\{t\in\operatorname{Fin}(m):G_R.Adj(r,t)\ \text{and}\ G_R.Adj(s,t)\}\right|
+\le L,
+\]
+then the number of injections
+\[
+\phi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(m)\times\operatorname{Fin}(m)
+\]
+for which
+\[
+\left|
+\phi(\operatorname{Fin}(n))\cap
+\bigl((N_{G_R}(r)\cap N_{G_R}(s))\times\operatorname{Fin}(m)\bigr)
+\right|
+>100L^3
+\]
+is at most
+\[
+\exp(-2L^3)\,
+\left|\{\phi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(m)\times\operatorname{Fin}(m)\}\right|.
+\end{helper}
+
+\begin{proof}
+Put
+\[
+K=(N_{G_R}(r)\cap N_{G_R}(s))\times\operatorname{Fin}(m)
+\subseteq \operatorname{Fin}(m)\times\operatorname{Fin}(m).
+\]
+The common-neighborhood hypothesis gives
+\[
+|K|=|N_{G_R}(r)\cap N_{G_R}(s)|\,m\le Lm.
+\tag{1}
+\]
+Thus, for a uniformly chosen image set of size \(n\) in the \(m^2\) product
+cells, the number of selected points lying in \(K\) is a hypergeometric
+variable with population \(m^2\), marked-set size \(|K|\), and sample size
+\(n\).  Its mean is
+\[
+\mu=n\frac{|K|}{m^2}
+\le n\frac{Lm}{m^2}
+=L\frac nm
+\le 2L^3,
+\tag{2}
+\]
+where the last inequality is the displayed ratio hypothesis.
+
+The injections themselves are ordered samples without replacement.  By
+\(\noderef{UniformInjectionImage}\), after quotienting by the number of
+orders of a fixed image, counting injections with more than \(100L^3\) marked
+image points is equivalent to counting \(n\)-element image subsets with the
+same marked-point condition.  Using the standard equivalence between
+\(\operatorname{Fin}(m)\times\operatorname{Fin}(m)\) and
+\(\operatorname{Fin}(m^2)\), \(\noderef{FinProductTailCountEquiv}\) identifies
+this subset count with the hypergeometric tail for the marked subset \(K\).
+
+Apply \(\noderef{HypergeometricCountingTailBound}\) with
+\[
+N=m^2,\qquad T=100L^3 .
+\]
+Since \(L\ge1\), \(T>0\).  From (2),
+\[
+\left(\frac{e\mu}{T}\right)^T
+\le
+\left(\frac{2eL^3}{100L^3}\right)^{100L^3}
+=\left(\frac e{50}\right)^{100L^3}.
+\]
+Because \(e<3\), the base is at most \(3/50<e^{-1/50}\), and hence the last
+quantity is at most \(\exp(-2L^3)\).  Multiplying the resulting probability
+bound by the total number of injections gives the claimed cardinality bound.
+\end{proof}

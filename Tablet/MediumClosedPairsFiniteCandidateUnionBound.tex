@@ -1,0 +1,55 @@
+\begin{helper}
+Let \(n,m\in\mathbb N\), let \(p\in[0,1]\), and let \(\iota\) be a finite
+candidate index type.  Suppose a bad event \(B(\omega)\) is covered by a
+family of candidate events \(C_i(\omega)\), in the sense that every
+\(\omega\) satisfying \(B\) satisfies \(C_i\) for at least one \(i\in\iota\).
+If each candidate event has
+\[
+\noderef{TwoBiteEventProbability}(n,m,p,C_i)\le q
+\]
+then
+\[
+\noderef{TwoBiteEventProbability}(n,m,p,B)
+\le |\iota|\,q .
+\]
+\end{helper}
+\begin{proof}
+First compare \(B\) with the union of the candidate events.  By the covering
+hypothesis,
+\[
+B(\omega)\Rightarrow \exists i\in\iota,\ C_i(\omega).
+\]
+Expanding \(\noderef{TwoBiteEventProbability}\) as the finite sum of
+\(\noderef{TwoBiteSampleWeight}\) over the satisfying samples, this event
+inclusion implies
+\[
+\noderef{TwoBiteEventProbability}(n,m,p,B)
+\le
+\noderef{TwoBiteEventProbability}
+  (n,m,p,\omega\mapsto \exists i\in\iota,\ C_i(\omega)).
+\]
+The only point needed for this monotonicity is nonnegativity of the sample
+weights, which follows from \(\noderef{TwoBiteSampleWeightNonnegative}\)
+because \(0\le p\le1\).
+
+Apply \(\noderef{TwoBiteEventProbabilityUnionBound}\) to the finite family
+\((C_i)_{i\in\iota}\).  This gives
+\[
+\noderef{TwoBiteEventProbability}
+  (n,m,p,\omega\mapsto \exists i\in\iota,\ C_i(\omega))
+\le
+\sum_{i\in\iota}
+  \noderef{TwoBiteEventProbability}(n,m,p,C_i).
+\]
+By the assumed fixed-candidate bound, every summand is at most \(q\).  Summing
+these inequalities over the finite index type yields
+\[
+\sum_{i\in\iota}
+  \noderef{TwoBiteEventProbability}(n,m,p,C_i)
+\le
+\sum_{i\in\iota} q
+=|\iota|\,q.
+\]
+Combining the three displayed inequalities proves the claimed finite
+candidate union bound.
+\end{proof}

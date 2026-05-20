@@ -1,0 +1,161 @@
+\begin{helper}[FiberAndDegreeSameColorLiftedIntersectionSharpBaseNegligible]
+\label{helper:FiberAndDegreeSameColorLiftedIntersectionSharpBaseNegligible}
+Let \(\beta=1/2\), let
+\[
+m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n),
+\qquad
+p(n)=\noderef{TwoBiteEdgeProbability}(\beta,n),
+\]
+and take probabilities with respect to
+\(\noderef{TwoBiteEventProbability}(n,m(n),p(n))\).  The event that a
+same-color lifted-neighborhood intersection is larger than
+\(100(\log n)^3\) while every same-color base codegree is at most \(\log n\)
+has \(\noderef{NegligibleProbability}\).  That is, the negligible event is
+\[
+\begin{aligned}
+&\Bigl[
+\exists r\ne s,\,
+|\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(r))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inl}(s))|
+>100(\log n)^3\\
+&\quad\text{or}\quad
+\exists b\ne c,\,
+|\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(b))
+\cap
+\noderef{TwoBiteLiftedNeighborhood}(\omega,\operatorname{inr}(c))|
+>100(\log n)^3
+\Bigr]\\
+&\quad\cap
+\Bigl[
+\forall r\ne s,\,
+|\{t:\noderef{TwoBiteRedGraph}(\omega).Adj(r,t)\land
+\noderef{TwoBiteRedGraph}(\omega).Adj(s,t)\}|\le\log n,\\
+&\qquad\quad
+\forall b\ne c,\,
+|\{t:\noderef{TwoBiteBlueGraph}(\omega).Adj(b,t)\land
+\noderef{TwoBiteBlueGraph}(\omega).Adj(c,t)\}|\le\log n
+\Bigr].
+\end{aligned}
+\]
+\end{helper}
+
+\begin{proof}
+Write \(M=m(n)\), \(p=p(n)\), and \(L=\log n\).  We discard finitely many
+\(n\) so that \(L\ge1\), \(M=\lfloor n/L^2\rfloor\), \(n\le M^2\),
+\(n\le 2L^2M\), and \(0\le p\le1\).  These eventual parameter facts follow
+from \(\noderef{TwoBiteNaturalReducedVertexCount}\),
+\(\noderef{TwoBiteReducedVertexCount}\), \(\noderef{TwoBiteStretch}\),
+\(\noderef{TwoBiteNaturalTotalMassOneEventually}\), and
+\(\noderef{OppositeProjectionEdgeProbBounds}\).
+
+Fix base graphs \(G_R,G_B\) on \(\operatorname{Fin}(M)\).  A sample with
+these base graphs is determined by its injection
+\[
+\pi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(M)\times\operatorname{Fin}(M)
+\]
+from \(\noderef{TwoBiteSample}\).  Expanding
+\(\noderef{TwoBiteEventProbability}\) and
+\(\noderef{TwoBiteSampleWeight}\), the contribution of an injection event
+\(F\) inside this base-graph cell is
+\[
+\sum_{\pi\in F}
+\noderef{GnpGraphWeight}(p,G_R)\,
+\noderef{GnpGraphWeight}(p,G_B)\,
+\noderef{UniformInjectionWeight}(n,M).
+\tag{1}
+\]
+The denominator for the whole base-graph cell is the same expression with
+\(F\) equal to all injections.  If this denominator is \(0\), then the cell
+has zero mass and contributes nothing to the unconditional probability.  If it
+is nonzero, the two graph-weight factors are constant and cancel in the
+quotient.  Since \(n\le M^2\), \(\noderef{UniformInjectionWeight}(n,M)\) is
+the reciprocal of the number of injections, so the conditional probability
+inside the cell is exactly
+\[
+\frac{|F|}
+{|\{\pi:\operatorname{Fin}(n)\hookrightarrow
+\operatorname{Fin}(M)\times\operatorname{Fin}(M)\}|}.
+\tag{2}
+\]
+
+Assume now that the fixed base graphs satisfy the sharp same-color base
+codegree event.  Suppose first that \(r,s\) are distinct red vertices and let
+\[
+A_{r,s}=\{t:\noderef{TwoBiteRedGraph}(\omega).Adj(r,t)\land
+\noderef{TwoBiteRedGraph}(\omega).Adj(s,t)\}
+\]
+be their red base common-neighbor set.  In the fixed cell this is the same set
+computed in \(G_R\), and the sharp event gives \(|A_{r,s}|\le L\).  By the
+definitions of
+\(\noderef{TwoBiteLiftedNeighborhood}\), \(\noderef{TwoBiteRedProjection}\),
+and \(\noderef{TwoBiteEmbedding}\), a lifted vertex belongs to both lifted
+red neighborhoods exactly when its injected product cell lies in
+\[
+A_{r,s}\times \operatorname{Fin}(M).
+\]
+Thus the number of marked product cells is at most \(LM\).  The hypotheses
+of \(\noderef{FiberAndDegreeSameColorLiftedIntersectionFixedPairInjectionTail}\)
+therefore apply to this fixed pair.  Combined with the uniform-injection
+identity (2), the conditional probability that this red pair has lifted
+intersection exceeding \(100L^3\) is at most \(\exp(-2L^3)\).
+
+For distinct blue vertices \(b,c\), the marked cells are
+\[
+\operatorname{Fin}(M)\times
+\{t:\noderef{TwoBiteBlueGraph}(\omega).Adj(b,t)\land
+\noderef{TwoBiteBlueGraph}(\omega).Adj(c,t)\},
+\]
+using \(\noderef{TwoBiteBlueProjection}\), and the sharp base-codegree event
+again gives at most \(LM\) marked cells.  This set is in the second coordinate
+rather than the first, but the coordinate-swap bijection
+\[
+\sigma(x,y)=(y,x)
+\]
+of \(\operatorname{Fin}(M)\times\operatorname{Fin}(M)\) sends injections whose
+images meet \(\operatorname{Fin}(M)\times A_{b,c}\) in more than \(100L^3\)
+points bijectively to injections whose swapped images meet
+\(A_{b,c}\times\operatorname{Fin}(M)\) in more than \(100L^3\) points.  Hence
+the count of bad blue injections is the same as the first-coordinate count
+controlled by
+\(\noderef{FiberAndDegreeSameColorLiftedIntersectionFixedPairInjectionTail}\).
+The same conditional bound \(\exp(-2L^3)\) follows for each fixed blue pair.
+
+There are fewer than \(M^2\) ordered red pairs and fewer than \(M^2\) ordered
+blue pairs.  Summing the fixed-pair conditional bounds gives, for every
+base-graph cell satisfying the sharp event, the conditional bound
+\[
+2M^2\exp(-2L^3)
+\]
+for the lifted-intersection bad event.  If the fixed base graphs do not
+satisfy the sharp event, then the event in the statement is false in that
+cell, because the statement includes the sharp base-codegree assumptions.
+
+It remains to remove the conditioning.  By
+\(\noderef{OppositeProjectionEdgeProbBounds}\) and
+\(\noderef{TwoBiteSampleWeightNonnegative}\), all two-bite sample weights are
+nonnegative eventually.  Summing the cellwise bound over all \(G_R,G_B\) gives
+\[
+\Pr(\text{event in the statement})
+\le
+2M^2\exp(-2L^3)
+\sum_{G_R,G_B}
+\noderef{GnpGraphWeight}(p,G_R)\noderef{GnpGraphWeight}(p,G_B).
+\tag{3}
+\]
+The double graph sum factors into the product of the red and blue graph sums,
+and each factor is \(1\) by \(\noderef{GnpGraphWeightSumOne}\).  Therefore
+\[
+\Pr(\text{event in the statement})\le 2M^2\exp(-2L^3).
+\tag{4}
+\]
+
+Finally, \(\noderef{OppositeProjectionAsymptoticBound}\), with \(c=2\) and
+\(m(n)=\noderef{TwoBiteNaturalReducedVertexCount}(n)\), gives
+\[
+M(n)^2\exp(-2(\log n)^3)\to0.
+\]
+The preceding probability bound is a constant multiple of this sequence, so
+the event has negligible probability.
+\end{proof}

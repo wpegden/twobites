@@ -1,0 +1,160 @@
+\begin{helper}
+Fix a history cell \(H\), terminal coordinate set \(U\), nodup terminal
+order \(o\), blue support label \(B\subseteq U\), and red label \(J\).  Let
+\(\beta\) range over the complete terminal blue-trace labels supplied by
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\), and let
+\(\tau=(P_\tau,A_\tau,Z_\tau)\) range over its finite transcript family.
+Assume the terminal product law for \(H\), \(0\le p\le1/2\), the
+fixed-\((B,J)\) realized-cell geometry exported by
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\), forward
+compatibility with complete terminal assignments, and functional scan
+disjointness.  Assume moreover explicit fixed-\((B,J)\) released-block data:
+for every realized \((\beta,\tau)\) there is a finite block
+\(\mathcal R_{\beta,\tau}\) of residual assignments \(A_{\rm res}\subseteq
+U\).  For a residual assignment define its reconstructed full terminal
+assignment by
+\[
+\operatorname{rec}_{\beta,\tau}(A_{\rm res})
+  =(A_{\rm res}\setminus Z_\tau)\cup B\cup R_{\beta,J}.
+\]
+The released-block hypotheses say exactly the following.  Block assignments
+are complete residual assignments on \(U\), membership in the block makes the
+reconstructed full assignment compatible with \((\beta,\tau)\), reconstructed
+compatibility puts the residual assignment back in the block, distinct
+realized pairs have disjoint residual blocks, and
+\(\mathcal R_{\beta,\tau}\) contains the whole residual cylinder obtained
+from \(P_\tau,A_\tau\) after releasing the fixed supports
+\(B\cup R_{\beta,J}\) and the selected absences \(Z_\tau\).  Thus this node
+does not claim that the current RedBranch interface exports owner fibers; it
+packages such block data when it is supplied as a separate fixed-\((B,J)\)
+input.
+
+Then the fixed terminal scan supplies explicit residual partition data.
+There is a residual assignment mass \(\mu(A_{\rm res})\) on residual
+terminal assignments \(A_{\rm res}\subseteq U\), released residual blocks
+\(\mathcal R_{\beta,\tau}\), and released block masses
+\(\rho_{\beta,\tau}\) such that:
+\[
+0\le \mu(A)\quad(A\subseteq U),\qquad
+\sum_{A\subseteq U}\mu(A)\le1,
+\]
+for every realized pair,
+\[
+\mathcal R_{\beta,\tau}\subseteq\{A:A\subseteq U\},\qquad
+\rho_{\beta,\tau}
+  =\sum_{A\in\mathcal R_{\beta,\tau}}\mu(A),
+\]
+released blocks for distinct realized pairs are disjoint, and
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  \le \rho_{\beta,\tau}.
+\]
+\end{helper}
+\begin{proof}
+Use the released blocks supplied as explicit hypotheses for this fixed
+\((B,J)\).  Those hypotheses are the deterministic scan-partition interface
+needed here: each realized block consists of residual assignments on \(U\),
+block membership implies compatibility of the reconstructed full assignment,
+reconstructed compatibility implies block membership, and a residual
+assignment cannot lie in two distinct realized blocks.  Thus the subset and
+disjointness assertions for \(\mathcal R_{\beta,\tau}\) are part of the
+input data of this helper, while the realized-cell geometry used below comes
+from \(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\).
+
+Define the mass on residual terminal assignments by the terminal Bernoulli
+product weight
+\[
+\mu(A)=p^{|A|}(1-p)^{|U|-|A|}
+\qquad(A\subseteq U),
+\]
+and put \(\mu(A)=0\) outside \(2^U\).  Since \(0\le p\le1/2\), both
+\(p\) and \(1-p\) are nonnegative; hence \(\mu(A)\ge0\) for every
+\(A\subseteq U\).  Applying
+\(\noderef{FinsetPowersetCylinderMass}\) with empty present and absent
+sets gives
+\[
+\sum_{A\subseteq U} p^{|A|}(1-p)^{|U|-|A|}
+  =p^0(1-p)^0=1.
+\]
+Therefore \(\sum_{A\subseteq U}\mu(A)\le1\).  This is the complete terminal
+product law written as a finite assignment mass; the conditional product law
+hypothesis identifies the same weights with the conditional masses of the
+complete terminal cylinders over \(H\).
+
+For every formal pair set
+\[
+\rho_{\beta,\tau}
+  =\sum_{A\in\mathcal R_{\beta,\tau}}\mu(A).
+\]
+This is exactly the required block-mass identity.  The block disjointness for
+distinct realized pairs is one of the released-block hypotheses.  In the
+intended deterministic scan application, that hypothesis is justified as
+follows: if one residual assignment belonged to two realized blocks, then its
+two reconstructed full assignments would be compatible with the two scan
+certificates, and functional scan disjointness would force the two branch
+labels and two transcripts to be equal.
+
+It remains to prove the lower bound for a realized pair
+\((\beta,\tau)\).  Let
+\[
+R=R_{\beta,J},\qquad
+P^\circ=P_\tau\setminus(B\cup R),\qquad
+A^\circ=A_\tau\setminus Z_\tau .
+\]
+The realized geometry from
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\) gives
+\[
+|R|=u_R,\qquad |B|=u_B,\qquad B\cup R\subseteq P_\tau,
+\]
+\[
+Z_\tau\subseteq A_\tau,\qquad P_\tau\cap A_\tau=\emptyset,
+\]
+with \(B\) blue-only and \(R\) red-only.  Hence \(B\cap R=\emptyset\), so
+\[
+|P^\circ|=|P_\tau|-u_R-u_B.
+\]
+Also \(Z_\tau\subseteq A_\tau\), so
+\[
+|A^\circ|=|A_\tau|-|Z_\tau|.
+\]
+The disjointness \(P_\tau\cap A_\tau=\emptyset\) implies
+\[
+P^\circ\cap A^\circ=\emptyset .
+\]
+
+Consider the residual cylinder
+\[
+\mathcal C_{\beta,\tau}
+  =\{A\subseteq U: P^\circ\subseteq A,\ A\cap A^\circ=\emptyset\}.
+\]
+The explicit released-block completeness hypothesis of this fixed
+\((B,J)\) helper says precisely that
+\(\mathcal C_{\beta,\tau}\subseteq\mathcal R_{\beta,\tau}\): after the
+mandatory present supports \(B\cup R\) and the selected absences \(Z_\tau\)
+are released, every residual assignment satisfying the remaining residual
+present and absent constraints reconstructs to a full assignment accepted by
+the same fixed \((B,J,\beta,\tau)\) scan block.
+
+By \(\noderef{FinsetPowersetCylinderMass}\), applied to the disjoint
+present set \(P^\circ\) and absent set \(A^\circ\), the \(\mu\)-mass of
+\(\mathcal C_{\beta,\tau}\) is
+\[
+p^{|P^\circ|}(1-p)^{|A^\circ|}
+ =
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}.
+\]
+The same absent-factor accounting is the selected-absence split recorded in
+\(\noderef{FixedSetHistoryCellSelectedAbsencePowSplit}\): the coordinates
+of \(Z_\tau\) have been released once, so the residual absent exponent is
+\(|A_\tau|-|Z_\tau|\).  Since
+\(\mathcal C_{\beta,\tau}\subseteq\mathcal R_{\beta,\tau}\) and all
+\(\mu\)-masses are nonnegative,
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+  =\sum_{A\in\mathcal C_{\beta,\tau}}\mu(A)
+  \le \sum_{A\in\mathcal R_{\beta,\tau}}\mu(A)
+  = \rho_{\beta,\tau}.
+\]
+This proves the required residual domination and completes the construction
+of the fixed-\((B,J)\) residual partition data.
+\end{proof}

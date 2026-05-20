@@ -1,0 +1,23 @@
+\begin{definition}
+For a sample \(\omega\), vertex set \(I\), and tagged projected coordinate
+\(e\), the predicate
+\(\noderef{TwoBiteProjectionPairSameColorClosed}(\omega,I,e)\) is defined by
+cases on the tag.  If \(e=\operatorname{red}(q)\), it means that there exists a
+red base vertex \(r\) such that
+\[
+q\in
+\noderef{TwoBiteBasePairs}
+\bigl(\pi_R^\omega(\noderef{TwoBiteXPlus}(\omega,I,\operatorname{red}(r)))\bigr).
+\]
+If \(e=\operatorname{blue}(q)\), it means that there exists a blue base vertex
+\(b\) such that
+\[
+q\in
+\noderef{TwoBiteBasePairs}
+\bigl(\pi_B^\omega(\noderef{TwoBiteXPlus}(\omega,I,\operatorname{blue}(b)))\bigr).
+\]
+There is no additional requirement in this predicate that \(e\) already belong
+to \(\noderef{TwoBiteProjectionPairSet}(\omega,I)\).  It is the \(C^+(I)\)
+part of the paper's closed-pair notation, recording same-color witnesses in
+which the current projected pair is charged as the latest same-color edge.
+\end{definition}

@@ -1,0 +1,60 @@
+\begin{helper}
+Fix a terminal coordinate set \(U\).  Let
+\(\mathsf{Realized}(\beta,\tau)\) mean that the branch/transcript cell
+\((\beta,\tau)\) is nonempty, and let
+\(\mathsf{Comp}(A,\beta,\tau)\) mean that a complete terminal assignment
+\(A\subseteq U\) is compatible with that realized cell.  Suppose also that
+\(\mathsf{Sibling}(A,\beta,\tau,e)\) denotes the selected-present sibling
+created by changing a selected absence \(e\).
+
+Assume the selected-sibling pruning rule: if
+\(\mathsf{Sibling}(A,\beta,\tau,e)\) occurs for a realized cell, then the
+same assignment \(A\) is compatible with no realized cell at all.  Assume
+also the functional scan rule: whenever \(A\subseteq U\) is compatible with
+a realized cell \((\beta,\tau)\), the branch label is the value selected
+from \(A\)'s complete terminal blue trace and the deterministic prefix scan
+on \(A\) returns \(\tau\).
+
+Then one terminal assignment is compatible with at most one realized
+branch/transcript cell.  More precisely, if \(A\subseteq U\) is compatible
+with realized cells \((\beta,\tau)\) and \((\beta',\tau')\), then no
+selected-present sibling of either cell is active at \(A\), and
+\[
+\beta=\beta',
+\qquad
+\tau=\tau'.
+\]
+\end{helper}
+\begin{proof}
+Fix \(A\subseteq U\) and suppose that \(A\) is compatible with the two
+realized cells \((\beta,\tau)\) and \((\beta',\tau')\).  First check the
+selected-sibling cases.  If
+\(\mathsf{Sibling}(A,\beta,\tau,e)\) held for some selected coordinate
+\(e\), the pruning hypothesis for the realized cell \((\beta,\tau)\) would
+say that \(A\) is compatible with no realized cell.  This contradicts the
+assumed compatibility of \(A\) with \((\beta,\tau)\).  Therefore no
+selected-present sibling is active for the first cell.  The same argument,
+with \((\beta',\tau')\) in place of \((\beta,\tau)\), shows that no
+selected-present sibling is active for the second cell.
+
+The hypotheses of
+\(\noderef{FixedSetHistoryCellRedFunctionalScanDisjointness}\) are now
+available for the two compatible realized cells: \(A\subseteq U\), both
+cells are realized, both compatibility relations hold, and the branch and
+scan outputs are functional from \(A\).  Applying that node to the first
+cell gives
+\[
+\beta=\operatorname{branchOfAssignment}(A),
+\qquad
+\operatorname{scanTranscript}(A)=\tau.
+\]
+Applying it to the second cell gives
+\[
+\beta'=\operatorname{branchOfAssignment}(A),
+\qquad
+\operatorname{scanTranscript}(A)=\tau'.
+\]
+The two branch labels are therefore equal to the same selected branch, and
+the two transcripts are the same deterministic scan output.  Hence
+\(\beta=\beta'\) and \(\tau=\tau'\).
+\end{proof}

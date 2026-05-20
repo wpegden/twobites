@@ -1,0 +1,29 @@
+\begin{lemma}
+For the two-bite value \(\beta=1/2\), the untruncated edge probability
+\[
+p(n)=\noderef{TwoBiteEdgeProbability}(1/2,n)
+=\frac12\sqrt{\frac{\log n}{n}}
+\]
+eventually lies in the interval \([0,1]\).
+\end{lemma}
+\begin{proof}
+For all \(n\ge1\), the real number \(n\) is positive.  For all sufficiently
+large \(n\), say \(n\ge3\), we also have \(\log n\ge0\).  Hence
+\(\log n/n\ge0\), its square root is nonnegative, and therefore
+\[
+0\le \frac12\sqrt{\frac{\log n}{n}}.
+\]
+
+It remains to prove the upper bound eventually.  The standard logarithmic
+comparison \(\log n/n\to0\) gives, for all sufficiently large \(n\),
+\[
+\frac{\log n}{n}\le4.
+\]
+Taking square roots preserves the inequality because both sides are
+nonnegative, so
+\[
+\sqrt{\frac{\log n}{n}}\le2.
+\]
+Multiplying by \(1/2\) gives \(p(n)\le1\).  Combining the eventual lower and
+upper bounds proves the stated eventual membership in \([0,1]\).
+\end{proof}

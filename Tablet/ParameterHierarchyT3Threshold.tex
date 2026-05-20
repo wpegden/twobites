@@ -1,0 +1,35 @@
+\begin{helper}
+For every \(\eta>0\) there is \(n_0\) such that, for every \(n>n_0\), if
+\[
+L=\log n,\qquad k_R=(1+\eta)\sqrt{nL},
+\]
+then
+\[
+1<L
+\qquad\text{and}\qquad
+16L^2\sqrt L\le k_R.
+\]
+\end{helper}
+\begin{proof}
+Since \(L=\log n\to\infty\), we may first enlarge the threshold so that
+\(1<L\).  Put \(\delta=1/8\).  The standard logarithm-power comparison
+\(\log n=o(n^{1/5})\) lets us further enlarge the threshold so that
+\[
+L\le \delta n^{1/5}.
+\]
+All quantities are then nonnegative, so raising both sides to the power
+\(5/2\) gives
+\[
+L^{5/2}\le \delta^{5/2}n^{1/2}=\delta^{5/2}\sqrt n.
+\]
+Because \(\delta\le1\), we have \(\delta^{5/2}\le\delta^2=1/64\), and hence
+\[
+16L^{5/2}\le \sqrt n.
+\]
+The condition \(L>1\) implies \(n\le nL\), so \(\sqrt n\le\sqrt{nL}\).  Since
+\(1+\eta\ge1\), this yields
+\[
+16L^2\sqrt L=16L^{5/2}
+\le (1+\eta)\sqrt{nL}=k_R.
+\]
+\end{proof}
