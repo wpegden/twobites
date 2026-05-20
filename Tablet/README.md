@@ -89,12 +89,22 @@
 | FixedSetHistoryCellAdaptiveBranchPartition | proof | - | closed |
 | FixedSetHistoryCellAdaptiveProductBound | proof | - | closed |
 | FixedSetHistoryCellBinomialExponentialEstimate | proof | - | closed |
+| FixedSetHistoryCellBlueBranchTranscriptCells | proof | - | closed |
+| FixedSetHistoryCellBlueExceptionalSupportLabels | proof | - | closed |
+| FixedSetHistoryCellBlueFixedBJResidualDecisionTreeSupport | proof | - | closed |
+| FixedSetHistoryCellBlueFixedBJResidualPartitionData | proof | - | closed |
+| FixedSetHistoryCellBlueFixedBJResidualProductTreeOwnerPackage | proof | - | closed |
+| FixedSetHistoryCellBlueFixedBJResidualReleasedBlockData | proof | - | closed |
+| FixedSetHistoryCellBlueFixedCountCellSummation | proof | - | closed |
+| FixedSetHistoryCellBlueMixedBranchTranscriptWeightPackage | proof | - | closed |
+| FixedSetHistoryCellBlueReleasedCylinderPacking | proof | - | closed |
 | FixedSetHistoryCellBlueSupportLabels | proof | - | closed |
 | FixedSetHistoryCellBranchAveraging | proof | - | closed |
 | FixedSetHistoryCellBranchTranscriptSummation | proof | - | closed |
 | FixedSetHistoryCellCanonicalAbsenceSelection | proof | - | closed |
 | FixedSetHistoryCellCountPairSummation | proof | - | closed |
 | FixedSetHistoryCellFixedBJResidualCertificateConstruction | proof | - | closed |
+| FixedSetHistoryCellFixedBJResidualCompatibilityFromScanData | proof | - | closed |
 | FixedSetHistoryCellFixedBJResidualDecisionTreeSupport | proof | - | closed |
 | FixedSetHistoryCellFixedBJResidualLeafCertificate | proof | - | closed |
 | FixedSetHistoryCellFixedBJResidualOverlapConsistency | proof | - | closed |
@@ -106,9 +116,9 @@
 | FixedSetHistoryCellFixedBJResidualScanData | proof | - | closed |
 | FixedSetHistoryCellFixedBJResidualScanInterface | proof | - | closed |
 | FixedSetHistoryCellFixedBJResidualSingleScanStability | proof | - | closed |
-| FixedSetHistoryCellFixedCountBlueWeightSum | proof | - | open |
+| FixedSetHistoryCellFixedCountBlueWeightSum | proof | - | closed |
 | FixedSetHistoryCellFixedCountProductBound | proof | - | closed |
-| FixedSetHistoryCellFixedCountRedWeightSum | proof | - | open |
+| FixedSetHistoryCellFixedCountRedWeightSum | proof | - | closed |
 | FixedSetHistoryCellFixedCountSummationBridge | proof | - | closed |
 | FixedSetHistoryCellFixedCylinderCharge | proof | - | closed |
 | FixedSetHistoryCellGlobalBlueExceptionalWitness | proof | - | closed |
@@ -127,6 +137,7 @@
 | FixedSetHistoryCellRedFixedCountCellSummation | proof | - | closed |
 | FixedSetHistoryCellRedFunctionalScanDisjointness | proof | - | closed |
 | FixedSetHistoryCellRedPrefixScanInvariant | proof | - | closed |
+| FixedSetHistoryCellRedProjectionSupportLabels | proof | - | closed |
 | FixedSetHistoryCellRedReleasedCylinderLeafExpansion | proof | - | closed |
 | FixedSetHistoryCellRedReleasedCylinderNormalization | proof | - | closed |
 | FixedSetHistoryCellRedReleasedCylinderPacking | proof | - | closed |
@@ -187,6 +198,7 @@
 | FixedSetStagedOpenOppositeWitnessLMS | proof | - | closed |
 | FixedSetTailExponentInequality | proof | - | closed |
 | FixedSetTerminalSupportClassification | proof | - | closed |
+| FixedSetTerminalSupportClassificationRedBeforeBlue | proof | - | closed |
 | GnpAllVerticesDegreeFailureUnionBound | proof | GnpAllVerticesDegreeFailureUnionBound | closed |
 | GnpGraphWeight | definition | - | closed |
 | GnpGraphWeightNaturalDegreeConcentration | proof | GnpGraphWeightNaturalDegreeConcentration | closed |
@@ -492,4 +504,4 @@
 | WithHighProbabilityThreeIntersection | proof | - | closed |
 | WithinRelativeError | definition | - | closed |
 
-**Summary:** 480/482 closed
+**Summary:** 518/518 closed

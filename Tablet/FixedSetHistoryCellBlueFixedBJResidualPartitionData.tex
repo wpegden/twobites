@@ -1,0 +1,31 @@
+\begin{helper}
+Fix a history cell, terminal coordinate set \(U\), a red support label \(B\),
+a blue label \(J\), and the branch/transcript interface supplied by
+\(\noderef{FixedSetHistoryCellBlueBranchTranscriptCells}\).  Assume explicit
+released-block data for this fixed pair of labels.  Then there is a residual
+assignment mass \(\mu\), released residual blocks
+\(\mathcal R_{\beta,\tau}\), and released block masses \(\rho_{\beta,\tau}\)
+such that
+\[
+0\le \mu(A),\qquad \sum_{A\subseteq U}\mu(A)\le1,
+\]
+each \(\rho_{\beta,\tau}\) is the \(\mu\)-mass of the corresponding released
+block, the blocks for distinct realized pairs are disjoint, and the released
+cylinder lower bound
+\[
+p^{|P_\tau|-u_R-u_B}(1-p)^{|A_\tau|-|Z_\tau|}
+\le \rho_{\beta,\tau}
+\]
+holds for every realized pair.
+\end{helper}
+\begin{proof}
+SKETCH:
+Use the supplied released-block data exactly as in the red residual partition
+node.  Define \(\mu(A)=p^{|A|}(1-p)^{|U|-|A|}\) on assignments
+\(A\subseteq U\) and \(0\) outside \(2^U\).  The finite product identity
+\(\noderef{FinsetPowersetCylinderMass}\) gives total mass at most \(1\), and
+the block hypotheses give the exact formulas for \(\rho_{\beta,\tau}\),
+disjointness, and cylinder containment.  The realized-cell geometry from
+\(\noderef{FixedSetHistoryCellBlueBranchTranscriptCells}\) rewrites the
+contained cylinder mass into the displayed lower bound.
+\end{proof}

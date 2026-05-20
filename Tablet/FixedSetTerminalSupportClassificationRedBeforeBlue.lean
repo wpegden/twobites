@@ -1,23 +1,17 @@
 import Tablet.TwoBiteTerminalCoordinateUniverse
 
--- [TABLET NODE: FixedSetTerminalSupportClassification]
+-- [TABLET NODE: FixedSetTerminalSupportClassificationRedBeforeBlue]
 
-theorem FixedSetTerminalSupportClassification :
+theorem FixedSetTerminalSupportClassificationRedBeforeBlue :
     ∀ {m : ℕ}
-      (recorded : Finset (Sum (Fin m × Fin m) (Fin m × Fin m))),
-      ∃ terminal :
-        Finset (Sum (Fin m × Fin m) (Fin m × Fin m)),
+      (recorded terminal :
+        Finset (Sum (Fin m × Fin m) (Fin m × Fin m))),
+      (∀ e, e ∈ terminal ↔
+        e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded) →
       ∃ order : List (Sum (Fin m × Fin m) (Fin m × Fin m)),
-        (∀ e, e ∈ terminal ↔
-          e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded) ∧
         order.Nodup ∧
         order.toFinset = terminal ∧
-        (∀ e, e ∈ terminal → e ∉ recorded) ∧
-        (∀ e, e ∈ terminal →
-          match e with
-          | Sum.inl q => q.1.val < q.2.val
-          | Sum.inr q => q.1.val < q.2.val) ∧
-        TwoBiteTerminalOrderBlueBeforeRed terminal order ∧
+        TwoBiteTerminalOrderRedBeforeBlue terminal order ∧
         (∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
           (e : Sum (Fin m × Fin m) (Fin m × Fin m))
           (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
@@ -37,14 +31,12 @@ theorem FixedSetTerminalSupportClassification :
                       Sum.inr (b, q.2) ∈ recorded ∪ pre.toFinset) := by
 -- BODY
   classical
-  intro m recorded
+  intro m recorded terminal hterminal
   let α := Sum (Fin m × Fin m) (Fin m × Fin m)
-  let terminal : Finset α :=
-    (TwoBiteTerminalCoordinateUniverse m).filter (fun e => e ∉ recorded)
   let rank : α → ℕ := fun e =>
     match e with
-    | Sum.inl q => m + q.1.val
-    | Sum.inr q => q.1.val
+    | Sum.inl q => q.1.val
+    | Sum.inr q => m + q.1.val
   let cmp : α → α → Bool := fun e f => decide (rank e ≤ rank f)
   let order : List α := terminal.toList.mergeSort cmp
   have htrans :
@@ -89,37 +81,27 @@ theorem FixedSetTerminalSupportClassification :
         (List.pairwise_cons.mp htail).1 c hcsuf
       have hle : rank e ≤ rank c := by simpa [cmp] using hcmp
       exact (not_lt_of_ge hle hlt).elim
-  refine ⟨terminal, order, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · intro e
-    simp [terminal]
+  refine ⟨order, ?_, ?_, ?_, ?_⟩
   · have hnodup : terminal.toList.Nodup := Finset.nodup_toList terminal
     exact hnodup.mergeSort
   · ext e
     simp [order, List.mem_mergeSort]
-  · intro e he
-    have he' : e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded := by
-      simpa [terminal] using he
-    exact he'.2
-  · intro e he
-    have he' : e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded := by
-      simpa [terminal] using he
-    cases e <;> simpa [TwoBiteTerminalCoordinateUniverse] using he'.1
-  · intro pre e suffix horder hred c hcTerm hblue
+  · intro pre e suffix horder hblue c hcTerm hred
     cases e with
     | inl q =>
+        simp [TwoBiteCoordinateIsBlue] at hblue
+    | inr q =>
         cases c with
         | inl s =>
-            simp [TwoBiteCoordinateIsBlue] at hblue
-        | inr s =>
-            have hlt : rank (Sum.inr s) < rank (Sum.inl q) := by
+            have hlt : rank (Sum.inl s) < rank (Sum.inr q) := by
               have hslt : s.1.val < m := s.1.isLt
               have hle : m ≤ m + q.1.val := Nat.le_add_right m q.1.val
               exact Nat.lt_of_lt_of_le hslt hle
-            have hcPre := prefix_of_rank_lt pre (Sum.inl q) suffix horder
-              (c := Sum.inr s) hcTerm hlt
+            have hcPre := prefix_of_rank_lt pre (Sum.inr q) suffix horder
+              (c := Sum.inl s) hcTerm hlt
             simpa using hcPre
-    | inr q =>
-        simp [TwoBiteCoordinateIsRed] at hred
+        | inr s =>
+            simp [TwoBiteCoordinateIsRed] at hred
   · intro pre e suffix horder
     have heOrder : e ∈ order := by
       rw [horder]
@@ -127,9 +109,7 @@ theorem FixedSetTerminalSupportClassification :
     have heTerm : e ∈ terminal := by
       simpa [order, List.mem_mergeSort] using heOrder
     have heUniverse : e ∈ TwoBiteTerminalCoordinateUniverse m := by
-      have he' : e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded := by
-        simpa [terminal] using heTerm
-      exact he'.1
+      exact ((hterminal e).mp heTerm).1
     have support_mem
         (c : α)
         (hcUniverse : c ∈ TwoBiteTerminalCoordinateUniverse m)
@@ -138,7 +118,7 @@ theorem FixedSetTerminalSupportClassification :
         by_cases hcRecorded : c ∈ recorded
         · exact Finset.mem_union.mpr (Or.inl hcRecorded)
         · have hcTerm : c ∈ terminal := by
-            simp [terminal, hcUniverse, hcRecorded]
+            exact (hterminal c).mpr ⟨hcUniverse, hcRecorded⟩
           have hcPre : c ∈ pre := prefix_of_rank_lt pre e suffix horder hcTerm hlt
           exact Finset.mem_union.mpr (Or.inr (by simpa using hcPre))
     cases e with
@@ -152,14 +132,14 @@ theorem FixedSetTerminalSupportClassification :
             simp [TwoBiteTerminalCoordinateUniverse]
             exact hr1
           have hlt : rank (Sum.inl (r, q.1)) < rank (Sum.inl q) := by
-            simpa [rank] using Nat.add_lt_add_left hr1 m
+            simpa [rank] using hr1
           exact support_mem (Sum.inl (r, q.1)) hcUniverse hlt
         · have hcUniverse :
               Sum.inl (r, q.2) ∈ TwoBiteTerminalCoordinateUniverse m := by
             simp [TwoBiteTerminalCoordinateUniverse]
             exact hr2
           have hlt : rank (Sum.inl (r, q.2)) < rank (Sum.inl q) := by
-            simpa [rank] using Nat.add_lt_add_left hr1 m
+            simpa [rank] using hr1
           exact support_mem (Sum.inl (r, q.2)) hcUniverse hlt
     | inr q =>
         have hqInc : q.1.val < q.2.val := by
@@ -171,12 +151,12 @@ theorem FixedSetTerminalSupportClassification :
             simp [TwoBiteTerminalCoordinateUniverse]
             exact hb1
           have hlt : rank (Sum.inr (b, q.1)) < rank (Sum.inr q) := by
-            simpa [rank] using hb1
+            simpa [rank] using Nat.add_lt_add_left hb1 m
           exact support_mem (Sum.inr (b, q.1)) hcUniverse hlt
         · have hcUniverse :
               Sum.inr (b, q.2) ∈ TwoBiteTerminalCoordinateUniverse m := by
             simp [TwoBiteTerminalCoordinateUniverse]
             exact hb2
           have hlt : rank (Sum.inr (b, q.2)) < rank (Sum.inr q) := by
-            simpa [rank] using hb1
+            simpa [rank] using Nat.add_lt_add_left hb1 m
           exact support_mem (Sum.inr (b, q.2)) hcUniverse hlt

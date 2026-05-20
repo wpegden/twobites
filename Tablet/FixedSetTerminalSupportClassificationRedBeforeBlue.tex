@@ -1,0 +1,26 @@
+\begin{helper}
+Fix a recorded set \(R\) of tagged red and blue base-edge coordinates and a
+terminal set \(U\) satisfying
+\[
+e\in U
+\quad\Longleftrightarrow\quad
+e\in\noderef{TwoBiteTerminalCoordinateUniverse}(m)
+\hbox{ and } e\notin R.
+\]
+There is a nodup list \(L\) whose entries are exactly \(U\), ordered so that
+all red terminal coordinates precede all blue terminal coordinates.  Moreover,
+if \(L=P,e,Q\), then every same-color support coordinate required for \(e\)
+lies in \(R\cup P\): for red \(e=(a,b)\), both red coordinates
+\((r,a)\) and \((r,b)\) with \(r<a,b\) lie in \(R\cup P\), and the analogous
+blue assertion holds for blue \(e\).
+\end{helper}
+\begin{proof}
+SKETCH:
+Sort \(U\) by the first endpoint, putting red coordinates before blue
+coordinates by the chosen rank.  The sorted list is nodup and lists exactly
+\(U\).  Any same-color support coordinate for \(e=(a,b)\) with first endpoint
+smaller than \(a\) has strictly smaller rank than \(e\).  If it is recorded,
+it lies in \(R\); otherwise, by the defining equivalence for \(U\), it is a
+terminal coordinate and strict rank comparison places it in the prefix
+\(P\).  This proves the red and blue support-classification clauses.
+\end{proof}

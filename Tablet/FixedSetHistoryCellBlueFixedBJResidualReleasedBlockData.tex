@@ -1,0 +1,21 @@
+\begin{helper}
+Fix \(B,J\) in the blue-branch interface.  Suppose the realized-cell
+geometry, complete-assignment compatibility, residual scan stability, and
+first-mismatch uniqueness hypotheses are available.  Then for every realized
+branch/transcript pair \((\beta,\tau)\) there is a released residual block
+\(\mathcal R_{\beta,\tau}\subseteq 2^U\).  Membership in the block is
+equivalent to compatibility of the reconstructed complete terminal
+assignment, the full released cylinder for \((\beta,\tau)\) is contained in
+the block, and blocks for distinct realized pairs are disjoint.
+\end{helper}
+\begin{proof}
+SKETCH:
+Define \(\mathcal R_{\beta,\tau}\) to be the set of residual assignments
+whose reconstruction after restoring the fixed supports and selected
+absences is accepted by the deterministic scan as compatible with
+\((\beta,\tau)\).  The forward and converse compatibility hypotheses give the
+membership equivalence.  Residual scan stability puts every assignment in the
+displayed released cylinder into the block.  First-mismatch uniqueness says
+that one residual assignment cannot reconstruct compatibly for two different
+realized branch/transcript pairs, which proves disjointness.
+\end{proof}

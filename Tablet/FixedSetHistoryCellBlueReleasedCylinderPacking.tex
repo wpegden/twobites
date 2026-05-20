@@ -1,0 +1,16 @@
+\begin{helper}
+Let \(m(A)\) be a nonnegative mass on complete terminal assignments
+\(A\subseteq U\) with total mass at most \(1\).  Suppose a finite family of
+released residual blocks is indexed by realized branch/transcript leaves,
+each block is contained in \(2^U\), each released mass is the sum of \(m\)
+over its block, and blocks for distinct realized leaves are disjoint.  Then
+the sum of the released masses over all realized leaves is at most \(1\).
+\end{helper}
+\begin{proof}
+SKETCH:
+Sum the exact block-mass identities over the finite realized leaf set.
+Pairwise disjointness turns the double sum over blocks into the mass of their
+union.  Since every block assignment lies in \(2^U\) and all masses are
+nonnegative, the mass of the union is bounded by the total mass over
+\(2^U\), which is at most \(1\).
+\end{proof}

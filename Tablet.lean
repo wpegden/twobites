@@ -1,2 +1,3 @@
--- Auto-generated import root. Do not edit.
-import Tablet.Preamble
+-- Root imports for the paper target theorems.
+import Tablet.MainIndependence
+import Tablet.MainRamseyLowerBound

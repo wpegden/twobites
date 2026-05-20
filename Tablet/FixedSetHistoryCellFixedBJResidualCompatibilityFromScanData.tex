@@ -1,0 +1,32 @@
+\begin{helper}
+Fix support labels \(B,J\), a terminal coordinate set, a branch trace
+function, decoded red supports, transcript labels, a realized-cell predicate,
+and an assignment-compatibility predicate.  Assume branch labels are
+functional from their terminal blue trace; realized cells export their
+present, absent, selected-absence, and blue-trace geometry; compatibility is
+sound for complete assignments; the residual scan reconstructs the same
+transcript after fixed supports and selected absences are restored; the full
+scan recognizes compatible complete assignments; and first-mismatch
+uniqueness holds.
+
+Then the residual scan data is compatible with the fixed-\((B,J)\) block
+construction: every assignment in the residual cylinder reconstructs to a
+compatible complete assignment, and if one residual assignment reconstructs
+compatibly for two realized pairs, then the two branch labels and the two
+transcripts are equal.
+\end{helper}
+\begin{proof}
+SKETCH:
+For a residual assignment \(A\), reconstruct the full terminal assignment
+\[
+(A\setminus Z_\tau)\cup B\cup R_{\beta,J}.
+\]
+The realized-cell geometry shows that this reconstruction is terminal,
+contains the required present coordinates, avoids the unreleased absent
+coordinates, and has the same blue terminal truth table as the branch trace.
+Residual scan stability gives that the reconstructed assignment scans to the
+same transcript, and the converse compatibility hypothesis then gives
+assignment compatibility.  The uniqueness conclusion is exactly the
+deterministic residual-scan output supplied by
+\(\noderef{FixedSetHistoryCellRedResidualDeterministicScanOutputs}\).
+\end{proof}

@@ -1,0 +1,30 @@
+\begin{helper}
+Fix a history cell, a terminal coordinate set \(U\), a fixed red support
+label \(B\), and a fixed blue label \(J\).  Suppose the terminal order reveals
+red coordinates before blue coordinates and the residual scan interface is
+available with the red trace playing the determining role.  Then there is a
+finite family of branch labels \(\beta\) and transcript labels
+\(\tau=(P_\tau,A_\tau,Z_\tau)\) such that the corresponding cells cover the
+target samples with fixed red support and blue support label.
+
+For every realized cell, \(P_\tau\) and \(A_\tau\) are terminal present and
+absent sets, \(P_\tau\cap A_\tau=\emptyset\), the fixed red support and the
+decoded blue support are contained in \(P_\tau\), and the red terminal trace
+recorded by \(\beta\) agrees with \(P_\tau\) and \(A_\tau\) on all red
+terminal coordinates.  The selected absence set satisfies
+\(Z_\tau\subseteq A_\tau\).  Agreement of two branch labels on all red
+terminal coordinates forces the branch labels to be equal, and with the
+branch fixed the scan transcript is deterministic.
+\end{helper}
+\begin{proof}
+SKETCH:
+This is the color-swapped version of
+\(\noderef{FixedSetHistoryCellRedBranchTranscriptCells}\).  The branch label
+records the complete red terminal trace.  The fixed blue support is decoded
+from the blue label after that branch is fixed.  The same prefix scan used in
+the red-branch interface is run with red and blue interchanged, producing the
+sets \(P_\tau,A_\tau,Z_\tau\).  Prefix measurability gives the realized-cell
+geometry, the residual scan interface gives compatibility and completeness,
+and functional determinism of the red terminal trace gives disjointness and
+uniqueness of the branch/transcript cells.
+\end{proof}

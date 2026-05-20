@@ -33,6 +33,8 @@ theorem FixedSetExposureCellProductLaw :
             Finset (Sum (Fin m × Fin m) (Fin m × Fin m)),
           ∃ order :
             List (Sum (Fin m × Fin m) (Fin m × Fin m)),
+          ∃ redOrder :
+            List (Sum (Fin m × Fin m) (Fin m × Fin m)),
           ∃ rep : TwoBiteSample n m p,
             hist i rep ∧
             (∀ ω : TwoBiteSample n m p,
@@ -53,6 +55,10 @@ theorem FixedSetExposureCellProductLaw :
               | Sum.inr q => q.1.val < q.2.val) ∧
             order.Nodup ∧
             order.toFinset = terminal ∧
+            TwoBiteTerminalOrderBlueBeforeRed terminal order ∧
+            redOrder.Nodup ∧
+            redOrder.toFinset = terminal ∧
+            TwoBiteTerminalOrderRedBeforeBlue terminal redOrder ∧
             (∀ e, e ∈ terminal ↔
               e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded) ∧
             (∀ e, e ∈ terminal → e ∉ recorded) ∧
@@ -98,6 +104,30 @@ theorem FixedSetExposureCellProductLaw :
                         (TwoBiteProjectionPairSameColorClosed ω I e ↔
                           TwoBiteProjectionPairSameColorClosed ω' I e) ∧
                         (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
+                          e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) ∧
+            (∀ ω : TwoBiteSample n m p,
+              hist i ω →
+                ∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+                  (e : Sum (Fin m × Fin m) (Fin m × Fin m))
+                  (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
+                  redOrder = pre ++ e :: suffix →
+                    ∀ ω' : TwoBiteSample n m p,
+                      (∀ x : Fin n, ω.2.2 x = ω'.2.2 x) →
+                      (∀ c,
+                        c ∈ recorded →
+                          (TwoBiteEdgeCoordinateValue ω c ↔
+                            TwoBiteEdgeCoordinateValue ω' c)) →
+                      (∀ c,
+                        c ∈ pre.toFinset →
+                          (TwoBiteEdgeCoordinateValue ω c ↔
+                            TwoBiteEdgeCoordinateValue ω' c)) →
+                        (e ∈ TwoBiteStagedOpenPairs ω ε I ↔
+                          e ∈ TwoBiteStagedOpenPairs ω' ε I) ∧
+                        (TwoBiteProjectionPairTouched ω ε I e ↔
+                          TwoBiteProjectionPairTouched ω' ε I e) ∧
+                        (TwoBiteProjectionPairSameColorClosed ω I e ↔
+                          TwoBiteProjectionPairSameColorClosed ω' I e) ∧
+                        (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
                           e ∈ TwoBitePreTerminalRecordedPairs ω' ε I))) ∧
         (∀ B : ℝ,
           0 ≤ B →
@@ -121,19 +151,20 @@ theorem FixedSetExposureCellProductLaw :
       FixedSetExposureHistoryCylinder
         (n := n) (m := m) (k := k) (ℓR := ℓR) (ℓB := ℓB)
         (p := p) (ε := ε) I with
-    ⟨ι, instι, hist, recorded, terminal, order, rep,
+    ⟨ι, instι, hist, recorded, terminal, order, redOrder, rep,
       hCover, hDisjoint, hRepHist, hHistCylinder, hRecordedIdentity,
-      hRecordedOriented, hCellProjection, hOrderFacts, hTerminalIff,
-      hTerminalUnrecorded, hTerminalOriented, hStagedContainment,
-      hPrefixSafe⟩
+      hRecordedOriented, hCellProjection, hOrderFacts, hBlueBeforeRed,
+      hRedOrderFacts, hRedBeforeBlue, hTerminalIff, hTerminalUnrecorded,
+      hTerminalOriented, hStagedContainment, hPrefixSafe, hRedPrefixSafe⟩
   refine ⟨ι, instι, hist, hCover, hDisjoint, ?_, ?_⟩
   · intro i
     refine
-      ⟨recorded i, terminal i, order i, rep i,
+      ⟨recorded i, terminal i, order i, redOrder i, rep i,
         hRepHist i, hHistCylinder i, ?_, hRecordedOriented i,
-        (hOrderFacts i).1, (hOrderFacts i).2, hTerminalIff i,
-        hTerminalUnrecorded i, hTerminalOriented i,
-        hStagedContainment i, ?_, hPrefixSafe i⟩
+        (hOrderFacts i).1, (hOrderFacts i).2, hBlueBeforeRed i,
+        (hRedOrderFacts i).1, (hRedOrderFacts i).2, hRedBeforeBlue i,
+        hTerminalIff i, hTerminalUnrecorded i, hTerminalOriented i,
+        hStagedContainment i, ?_, hPrefixSafe i, hRedPrefixSafe i⟩
     · intro ω hω e
       exact hRecordedIdentity i ω hω e
     · exact

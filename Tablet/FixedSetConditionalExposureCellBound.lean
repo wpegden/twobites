@@ -127,10 +127,11 @@ theorem FixedSetConditionalExposureCellBound :
           TwoBiteConditionalProbability n m p event (hist i) ≤ B := by
       intro i
       rcases hCellData i with
-        ⟨recorded, terminal, order, rep, hRepHist, hHistCylinder,
+        ⟨recorded, terminal, order, redOrder, rep, hRepHist, hHistCylinder,
           hRecorded, hRecordedOriented, hOrderNodup, hOrderFinset,
+          hBlueBeforeRed, hRedOrderNodup, hRedOrderFinset, hRedBeforeBlue,
           hTerminal, hTerminalUnrecorded, hTerminalOriented,
-          hStagedTerminal, hProductLaw, hPrefixSafe⟩
+          hStagedTerminal, hProductLaw, hPrefixSafe, hRedPrefixSafe⟩
       have hBranchCandidates :
           ∀ branch : TwoBiteSample n m p,
             hist i branch →
@@ -221,11 +222,12 @@ theorem FixedSetConditionalExposureCellBound :
         FixedSetHistoryCellAdaptiveProductBound
           (n := n) (m := m) (k := k) (ℓR := ℓR) (ℓB := ℓB)
           (p := p) (ε := ε) (ε1 := ε1) (ε2 := ε2)
-          I (hist i) recorded terminal order rep
-          hε1_nonneg hε1_le_one hp_nonneg hp_le_half hIcard
-          hRepHist hHistProjection hHistCylinder hRecorded hTerminal
-          hOrderNodup hOrderFinset hTerminalUnrecorded hStagedTerminal
-          hProductLaw hPrefixSafe hOpenLower hBranchCandidates
+          I (hist i) recorded terminal order redOrder rep
+            hε1_nonneg hε1_le_one hp_nonneg hp_le_half hIcard
+            hRepHist hHistProjection hHistCylinder hRecorded hTerminal
+            hOrderNodup hOrderFinset hBlueBeforeRed hRedOrderNodup
+            hRedOrderFinset hRedBeforeBlue hTerminalUnrecorded hStagedTerminal
+            hProductLaw hPrefixSafe hRedPrefixSafe hOpenLower hBranchCandidates
       have hAnalytic :
           max (1 : ℝ) ((k : ℝ) ^ 4) *
               Real.exp

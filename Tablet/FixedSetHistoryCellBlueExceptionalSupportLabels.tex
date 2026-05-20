@@ -1,0 +1,31 @@
+\begin{helper}
+Assume a global blue exceptional package for a history cell: there is a
+number \(N_B^0\le 3\varepsilon_1 k^2\) and, for every branch, a blue
+exceptional set \(E_B(\beta)\subseteq U\) of size at most \(N_B^0\) which
+contains every present blue staged-open coordinate of any regular independent
+completion compatible with that branch on the embedding, recorded
+coordinates, and all red terminal coordinates.
+
+If the target event is contained in the history cell, every target sample is
+regular and has \(I\) independent, and every target sample has blue present
+staged-open support of size \(u_B\), then there are a natural number
+\(N_B\le 3\varepsilon_1k^2\), a finite blue-label type of size at most
+\(\binom{N_B}{u_B}\), and a branch-indexed decoder
+\[
+\operatorname{blueSupport}(\beta,J)
+\]
+such that every compatible target sample has its blue support decoded by some
+label \(J\).  For that label the decoded support has size \(u_B\), lies in
+\(U\), and consists only of blue coordinates.
+\end{helper}
+\begin{proof}
+SKETCH:
+Take \(N_B=N_B^0\).  For each branch, pad the exceptional set
+\(E_B(\beta)\) to \(N_B\) slots and let labels be \(u_B\)-subsets of these
+slots.  Decoding a label for a branch returns the actual terminal coordinates
+occupying the chosen slots, ignoring padding slots.  The number of labels is
+at most \(\binom{N_B}{u_B}\).  For a target sample compatible with a branch,
+the global blue exceptional package contains its whole blue present
+staged-open support in \(E_B(\beta)\), so choosing the slots occupied by that
+support gives the required label and the stated support properties.
+\end{proof}

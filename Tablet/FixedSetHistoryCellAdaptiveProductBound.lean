@@ -21,10 +21,11 @@ theorem FixedSetHistoryCellAdaptiveProductBound :
     ∀ {n m k ℓR ℓB : ℕ} {p ε ε1 ε2 : ℝ}
       (I : Finset (Fin n))
       (hist : TwoBiteSample n m p → Prop)
-      (recorded terminal :
-        Finset (Sum (Fin m × Fin m) (Fin m × Fin m)))
-      (order : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
-      (rep : TwoBiteSample n m p),
+        (recorded terminal :
+          Finset (Sum (Fin m × Fin m) (Fin m × Fin m)))
+        (order : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+        (redOrder : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+        (rep : TwoBiteSample n m p),
       0 ≤ ε1 →
       ε1 ≤ 1 →
       0 ≤ p →
@@ -50,9 +51,13 @@ theorem FixedSetHistoryCellAdaptiveProductBound :
       (∀ e,
         e ∈ terminal ↔
           e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded) →
-      order.Nodup →
-      order.toFinset = terminal →
-      (∀ e, e ∈ terminal → e ∉ recorded) →
+        order.Nodup →
+        order.toFinset = terminal →
+        TwoBiteTerminalOrderBlueBeforeRed terminal order →
+        redOrder.Nodup →
+        redOrder.toFinset = terminal →
+        TwoBiteTerminalOrderRedBeforeBlue terminal redOrder →
+        (∀ e, e ∈ terminal → e ∉ recorded) →
       (∀ ω : TwoBiteSample n m p,
         hist ω →
           ∀ e,
@@ -89,8 +94,32 @@ theorem FixedSetHistoryCellAdaptiveProductBound :
                     TwoBiteProjectionPairTouched ω' ε I e) ∧
                   (TwoBiteProjectionPairSameColorClosed ω I e ↔
                     TwoBiteProjectionPairSameColorClosed ω' I e) ∧
-                  (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
-                    e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) →
+                    (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
+                      e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) →
+        (∀ ω : TwoBiteSample n m p,
+          hist ω →
+            ∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+              (e : Sum (Fin m × Fin m) (Fin m × Fin m))
+              (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
+              redOrder = pre ++ e :: suffix →
+                ∀ ω' : TwoBiteSample n m p,
+                  (∀ x : Fin n, ω.2.2 x = ω'.2.2 x) →
+                  (∀ c,
+                    c ∈ recorded →
+                      (TwoBiteEdgeCoordinateValue ω c ↔
+                        TwoBiteEdgeCoordinateValue ω' c)) →
+                  (∀ c,
+                    c ∈ pre.toFinset →
+                      (TwoBiteEdgeCoordinateValue ω c ↔
+                        TwoBiteEdgeCoordinateValue ω' c)) →
+                    (e ∈ TwoBiteStagedOpenPairs ω ε I ↔
+                      e ∈ TwoBiteStagedOpenPairs ω' ε I) ∧
+                    (TwoBiteProjectionPairTouched ω ε I e ↔
+                      TwoBiteProjectionPairTouched ω' ε I e) ∧
+                    (TwoBiteProjectionPairSameColorClosed ω I e ↔
+                      TwoBiteProjectionPairSameColorClosed ω' I e) ∧
+                    (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
+                      e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) →
       (∀ ω : TwoBiteSample n m p,
         TwoBiteRegularityEvent (k := k) ε ε1 ε2 ω →
         TwoBiteProjectionSizeEvent (k := k) (ℓR := ℓR)
@@ -167,10 +196,11 @@ theorem FixedSetHistoryCellAdaptiveProductBound :
                   (k : ℝ) p (n : ℝ) -
                   10 * ε1 * (k : ℝ) ^ 2)) := by
 -- BODY
-  intro n m k ℓR ℓB p ε ε1 ε2 I hist recorded terminal order rep
+  intro n m k ℓR ℓB p ε ε1 ε2 I hist recorded terminal order redOrder rep
     hε1_nonneg hε1_le_one hp_nonneg hp_le_half hI_card hhist_rep hprojSize
-    hhist_desc hrecorded hterminal horder_nodup horder_finset hterminal_not_recorded
-    hstaged_terminal hproductLaw hprefix_safe hopen_lower hbranch_pkg
+    hhist_desc hrecorded hterminal horder_nodup horder_finset hblue_before_red
+    hredOrder_nodup hredOrder_finset hred_before_blue hterminal_not_recorded
+    hstaged_terminal hproductLaw hprefix_safe hred_prefix_safe hopen_lower hbranch_pkg
   classical
   let target : TwoBiteSample n m p → Prop := fun ω =>
     (TwoBiteFinalGraph ω).2.2.IsIndepSet (↑I : Set (Fin n)) ∧
@@ -277,11 +307,12 @@ theorem FixedSetHistoryCellAdaptiveProductBound :
       FixedSetHistoryCellFixedCountProductBound
         (n := n) (m := m) (k := k) (ℓR := ℓR) (ℓB := ℓB)
         (p := p) (ε := ε) (ε1 := ε1) (ε2 := ε2)
-        I hist recorded terminal order rep uR uB
-        hε1_nonneg hε1_le_one hp_nonneg hp_le_half hI_card
-        hhist_rep hprojSize hhist_desc hrecorded hterminal horder_nodup
-        horder_finset hterminal_not_recorded hstaged_terminal hproductLaw
-        hprefix_safe hopen_lower hbranch_pkg
+          I hist recorded terminal order redOrder rep uR uB
+          hε1_nonneg hε1_le_one hp_nonneg hp_le_half hI_card
+          hhist_rep hprojSize hhist_desc hrecorded hterminal horder_nodup
+          horder_finset hblue_before_red hredOrder_nodup hredOrder_finset
+          hred_before_blue hterminal_not_recorded hstaged_terminal hproductLaw
+          hprefix_safe hred_prefix_safe hopen_lower hbranch_pkg
   have hcount_pair_sum :
       TwoBiteConditionalProbability n m p target hist
         ≤

@@ -56,6 +56,7 @@ theorem FixedSetHistoryCellCanonicalAbsenceSelection :
           TwoBiteEdgeCoordinateValue ω e →
             e ∈ R ∨ e ∈ B) →
       ∃ Z : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)),
+        Z = (TwoBiteStagedOpenPairs ω ε I).filter (fun e => e ∉ R ∪ B) ∧
         Z ⊆ terminal ∧
           Disjoint Z (R ∪ B) ∧
           (∀ e,
@@ -93,7 +94,8 @@ theorem FixedSetHistoryCellCanonicalAbsenceSelection :
   let U : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) := R ∪ B
   let Z : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) :=
     S.filter (fun e => e ∉ U)
-  refine ⟨Z, ?_, ?_, ?_, ?_⟩
+  refine ⟨Z, ?_, ?_, ?_, ?_, ?_⟩
+  · rfl
   · intro e heZ
     have heS : e ∈ S := (Finset.mem_filter.mp heZ).1
     exact hterminal e (by simpa [S] using heS)

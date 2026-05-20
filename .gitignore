@@ -1,9 +1,6 @@
 # Build artifacts
 .lake/
 
-# Local checker/runtime artifacts
-.trellis/
-
 # Editor / OS
 .DS_Store
 *.swp

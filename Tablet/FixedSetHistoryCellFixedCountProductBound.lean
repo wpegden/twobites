@@ -24,10 +24,11 @@ theorem FixedSetHistoryCellFixedCountProductBound :
     ∀ {n m k ℓR ℓB : ℕ} {p ε ε1 ε2 : ℝ}
       (I : Finset (Fin n))
       (hist : TwoBiteSample n m p → Prop)
-        (recorded terminal :
-          Finset (Sum (Fin m × Fin m) (Fin m × Fin m)))
-        (order : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
-        (rep : TwoBiteSample n m p)
+          (recorded terminal :
+            Finset (Sum (Fin m × Fin m) (Fin m × Fin m)))
+          (order : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+          (redOrder : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+          (rep : TwoBiteSample n m p)
         (uR uB : ℕ)
         [∀ (ω : TwoBiteSample n m p)
           (e : Sum (Fin m × Fin m) (Fin m × Fin m)),
@@ -71,9 +72,13 @@ theorem FixedSetHistoryCellFixedCountProductBound :
       (∀ e,
         e ∈ terminal ↔
           e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded) →
-      order.Nodup →
-      order.toFinset = terminal →
-      (∀ e, e ∈ terminal → e ∉ recorded) →
+        order.Nodup →
+        order.toFinset = terminal →
+        TwoBiteTerminalOrderBlueBeforeRed terminal order →
+        redOrder.Nodup →
+        redOrder.toFinset = terminal →
+        TwoBiteTerminalOrderRedBeforeBlue terminal redOrder →
+        (∀ e, e ∈ terminal → e ∉ recorded) →
       (∀ ω : TwoBiteSample n m p,
         hist ω →
           ∀ e,
@@ -110,8 +115,32 @@ theorem FixedSetHistoryCellFixedCountProductBound :
                     TwoBiteProjectionPairTouched ω' ε I e) ∧
                   (TwoBiteProjectionPairSameColorClosed ω I e ↔
                     TwoBiteProjectionPairSameColorClosed ω' I e) ∧
-                  (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
-                    e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) →
+                    (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
+                      e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) →
+        (∀ ω : TwoBiteSample n m p,
+          hist ω →
+            ∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+              (e : Sum (Fin m × Fin m) (Fin m × Fin m))
+              (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
+              redOrder = pre ++ e :: suffix →
+                ∀ ω' : TwoBiteSample n m p,
+                  (∀ x : Fin n, ω.2.2 x = ω'.2.2 x) →
+                  (∀ c,
+                    c ∈ recorded →
+                      (TwoBiteEdgeCoordinateValue ω c ↔
+                        TwoBiteEdgeCoordinateValue ω' c)) →
+                  (∀ c,
+                    c ∈ pre.toFinset →
+                      (TwoBiteEdgeCoordinateValue ω c ↔
+                        TwoBiteEdgeCoordinateValue ω' c)) →
+                    (e ∈ TwoBiteStagedOpenPairs ω ε I ↔
+                      e ∈ TwoBiteStagedOpenPairs ω' ε I) ∧
+                    (TwoBiteProjectionPairTouched ω ε I e ↔
+                      TwoBiteProjectionPairTouched ω' ε I e) ∧
+                    (TwoBiteProjectionPairSameColorClosed ω I e ↔
+                      TwoBiteProjectionPairSameColorClosed ω' I e) ∧
+                    (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
+                      e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) →
       (∀ ω : TwoBiteSample n m p,
         TwoBiteRegularityEvent (k := k) ε ε1 ε2 ω →
         TwoBiteProjectionSizeEvent (k := k) (ℓR := ℓR)
@@ -199,11 +228,12 @@ theorem FixedSetHistoryCellFixedCountProductBound :
                 (k : ℝ) p (n : ℝ) -
                 10 * ε1 * (k : ℝ) ^ 2)) := by
 -- BODY
-  intro n m k ℓR ℓB p ε ε1 ε2 I hist recorded terminal order rep uR uB
+  intro n m k ℓR ℓB p ε ε1 ε2 I hist recorded terminal order redOrder rep uR uB
     _hEdgeDec _hRedDec _hBlueDec hε1_nonneg hε1_le_one hp_nonneg
     hp_le_half hI_card hhist_rep hprojSize hhist_desc hrecorded
-    hterminal horder_nodup horder_finset hterminal_not_recorded
-    hstaged_terminal hproductLaw hprefix_safe hopen_lower hbranch_pkg
+    hterminal horder_nodup horder_finset hblue_before_red hredOrder_nodup
+    hredOrder_finset hred_before_blue hterminal_not_recorded
+    hstaged_terminal hproductLaw hprefix_safe hred_prefix_safe hopen_lower hbranch_pkg
   classical
   letI := _hEdgeDec
   letI := _hRedDec
@@ -213,14 +243,15 @@ theorem FixedSetHistoryCellFixedCountProductBound :
       (k : ℝ) p (n : ℝ) - 10 * ε1 * (k : ℝ) ^ 2
   change _ ≤ Real.exp (8 * Real.sqrt ε1 * p * (k : ℝ) ^ 2 - p * a)
   have hbridge :=
-    @FixedSetHistoryCellFixedCountSummationBridge
-      n m k ℓR ℓB p ε ε1 ε2
-      I hist recorded terminal order rep uR uB
-      _hEdgeDec _hRedDec _hBlueDec
-      hε1_nonneg hε1_le_one hp_nonneg hp_le_half hI_card hhist_rep
-      hprojSize hhist_desc hrecorded hterminal horder_nodup horder_finset
-      hterminal_not_recorded hstaged_terminal hproductLaw hprefix_safe
-      hopen_lower hbranch_pkg
+      @FixedSetHistoryCellFixedCountSummationBridge
+          n m k ℓR ℓB p ε ε1 ε2
+          I hist recorded terminal order redOrder rep uR uB
+          _hEdgeDec _hRedDec _hBlueDec
+          hε1_nonneg hε1_le_one hp_nonneg hp_le_half hI_card hhist_rep
+          hprojSize hhist_desc hrecorded hterminal horder_nodup horder_finset
+          hblue_before_red hredOrder_nodup hredOrder_finset hred_before_blue
+          hterminal_not_recorded hstaged_terminal hproductLaw hprefix_safe
+          hred_prefix_safe hopen_lower hbranch_pkg
   dsimp only at hbridge
   by_cases horder_counts : uB ≤ uR
   · rcases hbridge.1 horder_counts with ⟨NR, NB, hNR, hNB, hprob⟩

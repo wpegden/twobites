@@ -1,5 +1,6 @@
 import Tablet.FixedSetPreTerminalHistoryPartition
 import Tablet.FixedSetTerminalSupportClassification
+import Tablet.FixedSetTerminalSupportClassificationRedBeforeBlue
 import Tablet.FixedSetSameColorClosedWitnessCylinder
 import Tablet.TwoBiteProjectionSizeEvent
 import Tablet.TwoBiteStagedOpenPairs
@@ -22,6 +23,8 @@ theorem FixedSetExposureHistoryCylinder :
             ∃ terminal :
               ι → Finset (Sum (Fin m × Fin m) (Fin m × Fin m)),
             ∃ order :
+              ι → List (Sum (Fin m × Fin m) (Fin m × Fin m)),
+            ∃ redOrder :
               ι → List (Sum (Fin m × Fin m) (Fin m × Fin m)),
             ∃ rep : ι → TwoBiteSample n m p,
             (∀ ω : TwoBiteSample n m p,
@@ -53,6 +56,12 @@ theorem FixedSetExposureHistoryCylinder :
                   (ℓB := ℓB) ω I) ∧
             (∀ i : ι,
               (order i).Nodup ∧ (order i).toFinset = terminal i) ∧
+            (∀ i : ι,
+              TwoBiteTerminalOrderBlueBeforeRed (terminal i) (order i)) ∧
+            (∀ i : ι,
+              (redOrder i).Nodup ∧ (redOrder i).toFinset = terminal i) ∧
+            (∀ i : ι,
+              TwoBiteTerminalOrderRedBeforeBlue (terminal i) (redOrder i)) ∧
             (∀ i : ι, ∀ e,
               e ∈ terminal i ↔
                 e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded i) ∧
@@ -74,6 +83,30 @@ theorem FixedSetExposureHistoryCylinder :
                   (e : Sum (Fin m × Fin m) (Fin m × Fin m))
                   (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
                   order i = pre ++ e :: suffix →
+                    ∀ ω' : TwoBiteSample n m p,
+                      (∀ x : Fin n, ω.2.2 x = ω'.2.2 x) →
+                      (∀ c,
+                        c ∈ recorded i →
+                          (TwoBiteEdgeCoordinateValue ω c ↔
+                            TwoBiteEdgeCoordinateValue ω' c)) →
+                      (∀ c,
+                        c ∈ pre.toFinset →
+                          (TwoBiteEdgeCoordinateValue ω c ↔
+                            TwoBiteEdgeCoordinateValue ω' c)) →
+                        (e ∈ TwoBiteStagedOpenPairs ω ε I ↔
+                          e ∈ TwoBiteStagedOpenPairs ω' ε I) ∧
+                        (TwoBiteProjectionPairTouched ω ε I e ↔
+                          TwoBiteProjectionPairTouched ω' ε I e) ∧
+                        (TwoBiteProjectionPairSameColorClosed ω I e ↔
+                          TwoBiteProjectionPairSameColorClosed ω' I e) ∧
+                        (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
+                          e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) ∧
+            (∀ i : ι, ∀ ω : TwoBiteSample n m p,
+              hist i ω →
+                ∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+                  (e : Sum (Fin m × Fin m) (Fin m × Fin m))
+                  (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
+                  redOrder i = pre ++ e :: suffix →
                     ∀ ω' : TwoBiteSample n m p,
                       (∀ x : Fin n, ω.2.2 x = ω'.2.2 x) →
                       (∀ c,
@@ -118,6 +151,7 @@ theorem FixedSetExposureHistoryCylinder :
           match e with
           | Sum.inl q => q.1.val < q.2.val
           | Sum.inr q => q.1.val < q.2.val) ∧
+        TwoBiteTerminalOrderBlueBeforeRed (terminal i) (order i) ∧
         (∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
           (e : Sum (Fin m × Fin m) (Fin m × Fin m))
           (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
@@ -146,6 +180,37 @@ theorem FixedSetExposureHistoryCylinder :
           e ∈ TwoBiteTerminalCoordinateUniverse m ∧ e ∉ recorded i := by
     intro i
     exact (hterminalData i).1
+  let redOrder : ι → List (Sum (Fin m × Fin m) (Fin m × Fin m)) := fun i =>
+    Classical.choose
+      (FixedSetTerminalSupportClassificationRedBeforeBlue
+        (recorded i) (terminal i) (hterminalIff i))
+  have hredOrderData :
+      ∀ i,
+        (redOrder i).Nodup ∧
+        (redOrder i).toFinset = terminal i ∧
+        TwoBiteTerminalOrderRedBeforeBlue (terminal i) (redOrder i) ∧
+        (∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+          (e : Sum (Fin m × Fin m) (Fin m × Fin m))
+          (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
+          redOrder i = pre ++ e :: suffix →
+            match e with
+            | Sum.inl q =>
+                ∀ r : Fin m,
+                  r.val < q.1.val →
+                  r.val < q.2.val →
+                    Sum.inl (r, q.1) ∈ recorded i ∪ pre.toFinset ∧
+                      Sum.inl (r, q.2) ∈ recorded i ∪ pre.toFinset
+            | Sum.inr q =>
+                ∀ b : Fin m,
+                  b.val < q.1.val →
+                  b.val < q.2.val →
+                    Sum.inr (b, q.1) ∈ recorded i ∪ pre.toFinset ∧
+                      Sum.inr (b, q.2) ∈ recorded i ∪ pre.toFinset) := by
+    intro i
+    exact
+      Classical.choose_spec
+        (FixedSetTerminalSupportClassificationRedBeforeBlue
+          (recorded i) (terminal i) (hterminalIff i))
   have horderFacts :
       ∀ i, (order i).Nodup ∧ (order i).toFinset = terminal i := by
     intro i
@@ -162,6 +227,18 @@ theorem FixedSetExposureHistoryCylinder :
           | Sum.inr q => q.1.val < q.2.val := by
     intro i
     exact (hterminalData i).2.2.2.2.1
+  have hBlueBeforeRed :
+      ∀ i, TwoBiteTerminalOrderBlueBeforeRed (terminal i) (order i) := by
+    intro i
+    exact (hterminalData i).2.2.2.2.2.1
+  have hredOrderFacts :
+      ∀ i, (redOrder i).Nodup ∧ (redOrder i).toFinset = terminal i := by
+    intro i
+    exact ⟨(hredOrderData i).1, (hredOrderData i).2.1⟩
+  have hRedBeforeBlue :
+      ∀ i, TwoBiteTerminalOrderRedBeforeBlue (terminal i) (redOrder i) := by
+    intro i
+    exact (hredOrderData i).2.2.1
   have hsupport :
       ∀ i,
         ∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
@@ -182,24 +259,74 @@ theorem FixedSetExposureHistoryCylinder :
                     Sum.inr (b, q.1) ∈ recorded i ∪ pre.toFinset ∧
                       Sum.inr (b, q.2) ∈ recorded i ∪ pre.toFinset := by
     intro i
-    exact (hterminalData i).2.2.2.2.2
-  refine
-    ⟨ι, instι, hist, recorded, terminal, order, rep, hcover, hdisjoint,
-      hrep, hcylinder, hrecorded, ?_, hevent, horderFacts, hterminalIff,
-      hterminalUnrecorded, hterminalOriented, ?_, ?_⟩
-  · intro i e he
-    have hpre :
-        e ∈ TwoBitePreTerminalRecordedPairs (rep i) ε I :=
-      (hrecorded i (rep i) (hrep i) e).2 he
-    have hterminalUniverse :
-        e ∈ TwoBiteTerminalCoordinateUniverse m := by
-      unfold TwoBitePreTerminalRecordedPairs at hpre
-      exact (Finset.mem_filter.mp hpre).1
-    cases e <;> simpa [TwoBiteTerminalCoordinateUniverse] using hterminalUniverse
-  · intro i ω hhist e hopen
-    exact (hterminalIff i e).2 (hstaged i ω hhist e hopen)
-  · intro i ω hhist pre e suffix horder ω' hEmbedding hAgreeRecorded
-      hAgreePrefix
+    exact (hterminalData i).2.2.2.2.2.2
+  have hredsupport :
+      ∀ i,
+        ∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+          (e : Sum (Fin m × Fin m) (Fin m × Fin m))
+          (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
+          redOrder i = pre ++ e :: suffix →
+            match e with
+            | Sum.inl q =>
+                ∀ r : Fin m,
+                  r.val < q.1.val →
+                  r.val < q.2.val →
+                    Sum.inl (r, q.1) ∈ recorded i ∪ pre.toFinset ∧
+                      Sum.inl (r, q.2) ∈ recorded i ∪ pre.toFinset
+            | Sum.inr q =>
+                ∀ b : Fin m,
+                  b.val < q.1.val →
+                  b.val < q.2.val →
+                    Sum.inr (b, q.1) ∈ recorded i ∪ pre.toFinset ∧
+                      Sum.inr (b, q.2) ∈ recorded i ∪ pre.toFinset := by
+    intro i
+    exact (hredOrderData i).2.2.2
+  have hPrefixSafeFromSupport :
+      ∀ (ord : ι → List (Sum (Fin m × Fin m) (Fin m × Fin m))),
+        (∀ i,
+          ∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+            (e : Sum (Fin m × Fin m) (Fin m × Fin m))
+            (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
+            ord i = pre ++ e :: suffix →
+              match e with
+              | Sum.inl q =>
+                  ∀ r : Fin m,
+                    r.val < q.1.val →
+                    r.val < q.2.val →
+                      Sum.inl (r, q.1) ∈ recorded i ∪ pre.toFinset ∧
+                        Sum.inl (r, q.2) ∈ recorded i ∪ pre.toFinset
+              | Sum.inr q =>
+                  ∀ b : Fin m,
+                    b.val < q.1.val →
+                    b.val < q.2.val →
+                      Sum.inr (b, q.1) ∈ recorded i ∪ pre.toFinset ∧
+                        Sum.inr (b, q.2) ∈ recorded i ∪ pre.toFinset) →
+        ∀ i : ι, ∀ ω : TwoBiteSample n m p,
+          hist i ω →
+            ∀ (pre : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
+              (e : Sum (Fin m × Fin m) (Fin m × Fin m))
+              (suffix : List (Sum (Fin m × Fin m) (Fin m × Fin m))),
+              ord i = pre ++ e :: suffix →
+                ∀ ω' : TwoBiteSample n m p,
+                  (∀ x : Fin n, ω.2.2 x = ω'.2.2 x) →
+                  (∀ c,
+                    c ∈ recorded i →
+                      (TwoBiteEdgeCoordinateValue ω c ↔
+                        TwoBiteEdgeCoordinateValue ω' c)) →
+                  (∀ c,
+                    c ∈ pre.toFinset →
+                      (TwoBiteEdgeCoordinateValue ω c ↔
+                        TwoBiteEdgeCoordinateValue ω' c)) →
+                    (e ∈ TwoBiteStagedOpenPairs ω ε I ↔
+                      e ∈ TwoBiteStagedOpenPairs ω' ε I) ∧
+                    (TwoBiteProjectionPairTouched ω ε I e ↔
+                      TwoBiteProjectionPairTouched ω' ε I e) ∧
+                    (TwoBiteProjectionPairSameColorClosed ω I e ↔
+                      TwoBiteProjectionPairSameColorClosed ω' I e) ∧
+                    (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
+                      e ∈ TwoBitePreTerminalRecordedPairs ω' ε I) := by
+    intro ord hsupportOrd i ω hhist pre e suffix horder ω' hEmbedding
+      hAgreeRecorded hAgreePrefix
     have hreplayData := hreplay i ω hhist ω' hEmbedding hAgreeRecorded
     have hstage :
         ∀ x,
@@ -244,7 +371,7 @@ theorem FixedSetExposureHistoryCylinder :
           TwoBiteProjectionPairSameColorClosed ω' I e :=
       FixedSetSameColorClosedWitnessCylinder ω ω' I e
         (recorded i ∪ pre.toFinset) hEmbedding hagreeSupport
-        (hsupport i pre e suffix horder)
+        (hsupportOrd i pre e suffix horder)
     have hpairset :
         e ∈ TwoBiteProjectionPairSet ω I ↔
           e ∈ TwoBiteProjectionPairSet ω' I := by
@@ -257,3 +384,20 @@ theorem FixedSetExposureHistoryCylinder :
       unfold TwoBiteStagedOpenPairs
       simp [hpairset, hsame, htouched e, hpreterminal]
     exact ⟨hstagedOpen, htouched e, hsame, hpreterminal⟩
+  refine
+    ⟨ι, instι, hist, recorded, terminal, order, redOrder, rep, hcover, hdisjoint,
+      hrep, hcylinder, hrecorded, ?_, hevent, horderFacts, hBlueBeforeRed,
+      hredOrderFacts, hRedBeforeBlue, hterminalIff, hterminalUnrecorded,
+      hterminalOriented, ?_, hPrefixSafeFromSupport order hsupport,
+      hPrefixSafeFromSupport redOrder hredsupport⟩
+  · intro i e he
+    have hpre :
+        e ∈ TwoBitePreTerminalRecordedPairs (rep i) ε I :=
+      (hrecorded i (rep i) (hrep i) e).2 he
+    have hterminalUniverse :
+        e ∈ TwoBiteTerminalCoordinateUniverse m := by
+      unfold TwoBitePreTerminalRecordedPairs at hpre
+      exact (Finset.mem_filter.mp hpre).1
+    cases e <;> simpa [TwoBiteTerminalCoordinateUniverse] using hterminalUniverse
+  · intro i ω hhist e hopen
+    exact (hterminalIff i e).2 (hstaged i ω hhist e hopen)

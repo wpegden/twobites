@@ -19,36 +19,36 @@ import Tablet.TwoBiteTerminalCoordinateUniverse
 
 open Classical
 
--- [TABLET NODE: FixedSetHistoryCellRedBranchTranscriptCells]
+-- [TABLET NODE: FixedSetHistoryCellBlueBranchTranscriptCells]
 
-theorem FixedSetHistoryCellRedBranchTranscriptCells :
+theorem FixedSetHistoryCellBlueBranchTranscriptCells :
     ∀ {n m uR uB : ℕ} {p ε a : ℝ}
       (I : Finset (Fin n))
       (hist target : TwoBiteSample n m p → Prop)
       (recorded terminal :
         Finset (Sum (Fin m × Fin m) (Fin m × Fin m)))
       (order : List (Sum (Fin m × Fin m) (Fin m × Fin m)))
-      (blueSupportLabels :
+      (redSupportLabels :
         Finset (Finset (Sum (Fin m × Fin m) (Fin m × Fin m))))
-      {RedLabel : Type} [Fintype RedLabel]
-      (branchRedSupport :
+      {BlueLabel : Type} [Fintype BlueLabel]
+      (branchBlueSupport :
         TwoBiteSample n m p →
-          RedLabel →
+          BlueLabel →
             Finset (Sum (Fin m × Fin m) (Fin m × Fin m)))
       [∀ (ω : TwoBiteSample n m p),
         DecidablePred
           (fun e =>
             TwoBiteEdgeCoordinateValue ω e ∧
               match e with
-              | Sum.inl _ => True
-              | Sum.inr _ => False)]
+              | Sum.inl _ => False
+              | Sum.inr _ => True)]
       [∀ (ω : TwoBiteSample n m p),
         DecidablePred
           (fun e =>
             TwoBiteEdgeCoordinateValue ω e ∧
               match e with
-              | Sum.inl _ => False
-              | Sum.inr _ => True)],
+              | Sum.inl _ => True
+              | Sum.inr _ => False)],
       0 ≤ p →
       p ≤ (1 / 2 : ℝ) →
       order.Nodup →
@@ -102,62 +102,62 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                   (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
                     e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) →
       (∀ B,
-        B ∈ blueSupportLabels →
-          B.card = uB ∧
+        B ∈ redSupportLabels →
+          B.card = uR ∧
           B ⊆ terminal ∧
           ∀ e,
             e ∈ B →
               match e with
-              | Sum.inl _ => False
-              | Sum.inr _ => True) →
+              | Sum.inl _ => True
+              | Sum.inr _ => False) →
       (∀ ω : TwoBiteSample n m p,
         target ω →
           a ≤ ((TwoBiteStagedOpenPairs ω ε I).card : ℝ)) →
       (∀ ω : TwoBiteSample n m p,
         target ω →
           ∃ B,
-            B ∈ blueSupportLabels ∧
+            B ∈ redSupportLabels ∧
             B =
-              (TwoBiteStagedOpenPairs ω ε I).filter
-                (fun e =>
-                  TwoBiteEdgeCoordinateValue ω e ∧
-                    match e with
-                    | Sum.inl _ => False
-                    | Sum.inr _ => True)) →
-      (∀ branch ω : TwoBiteSample n m p,
-        target ω →
-        hist branch →
-        (∀ e,
-          e ∈ terminal →
-            match e with
-            | Sum.inl _ => True
-            | Sum.inr _ =>
-                (TwoBiteEdgeCoordinateValue ω e ↔
-                  TwoBiteEdgeCoordinateValue branch e)) →
-          ∃ J : RedLabel,
-            branchRedSupport branch J =
               (TwoBiteStagedOpenPairs ω ε I).filter
                 (fun e =>
                   TwoBiteEdgeCoordinateValue ω e ∧
                     match e with
                     | Sum.inl _ => True
                     | Sum.inr _ => False)) →
+      (∀ branch ω : TwoBiteSample n m p,
+        target ω →
+        hist branch →
+          (∀ e,
+            e ∈ terminal →
+              match e with
+              | Sum.inl _ =>
+                  (TwoBiteEdgeCoordinateValue ω e ↔
+                    TwoBiteEdgeCoordinateValue branch e)
+              | Sum.inr _ => True) →
+          ∃ J : BlueLabel,
+            branchBlueSupport branch J =
+              (TwoBiteStagedOpenPairs ω ε I).filter
+                (fun e =>
+                  TwoBiteEdgeCoordinateValue ω e ∧
+                    match e with
+                    | Sum.inl _ => False
+                    | Sum.inr _ => True)) →
       (∀ ω : TwoBiteSample n m p,
         target ω →
           (((TwoBiteStagedOpenPairs ω ε I).filter
             (fun e =>
               TwoBiteEdgeCoordinateValue ω e ∧
                 match e with
-                | Sum.inl _ => True
-                | Sum.inr _ => False)).card = uR)) →
+                | Sum.inl _ => False
+                | Sum.inr _ => True)).card = uB)) →
       ∃ (BranchLabel : Type),
         ∃ _ : Fintype BranchLabel,
-          ∃ blueTrace :
+          ∃ redTrace :
             BranchLabel →
               Finset (Sum (Fin m × Fin m) (Fin m × Fin m)),
-            ∃ redSupport :
+            ∃ blueSupport :
               BranchLabel →
-                RedLabel →
+                BlueLabel →
                   Finset (Sum (Fin m × Fin m) (Fin m × Fin m)),
               ∃ branchOfLabel :
                 BranchLabel →
@@ -169,95 +169,95 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                       Finset (Sum (Fin m × Fin m) (Fin m × Fin m))),
                   ∃ cellEvent :
                     Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) →
-                      RedLabel →
+                      BlueLabel →
                       BranchLabel →
                       (Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
                         Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
                         Finset (Sum (Fin m × Fin m) (Fin m × Fin m))) →
                       TwoBiteSample n m p → Prop,
             (∀ β : BranchLabel, hist (branchOfLabel β)) ∧
-            (∀ (β : BranchLabel) (J : RedLabel),
-              redSupport β J =
-                branchRedSupport (branchOfLabel β) J) ∧
+            (∀ (β : BranchLabel) (J : BlueLabel),
+              blueSupport β J =
+                branchBlueSupport (branchOfLabel β) J) ∧
             (∀ β : BranchLabel,
-              blueTrace β ⊆ terminal ∧
+              redTrace β ⊆ terminal ∧
                 (∀ e,
-                  e ∈ blueTrace β →
+                  e ∈ redTrace β →
                     match e with
-                    | Sum.inl _ => False
-                    | Sum.inr _ => True) ∧
+                    | Sum.inl _ => True
+                    | Sum.inr _ => False) ∧
                 (∀ e,
                   e ∈ terminal →
                     (match e with
-                    | Sum.inl _ => False
-                    | Sum.inr _ => True) →
+                    | Sum.inl _ => True
+                    | Sum.inr _ => False) →
                       (TwoBiteEdgeCoordinateValue (branchOfLabel β) e ↔
-                        e ∈ blueTrace β))) ∧
+                        e ∈ redTrace β))) ∧
             (∀ β β' : BranchLabel,
               (∀ e,
                 e ∈ terminal →
                   (match e with
-                  | Sum.inl _ => False
-                  | Sum.inr _ => True) →
-                    (e ∈ blueTrace β ↔ e ∈ blueTrace β')) →
+                  | Sum.inl _ => True
+                  | Sum.inr _ => False) →
+                    (e ∈ redTrace β ↔ e ∈ redTrace β')) →
                 β = β') ∧
             (∀ ω : TwoBiteSample n m p,
               target ω →
                 hist ω →
                   ∃ B,
-                    B ∈ blueSupportLabels ∧
-                      ∃ J : RedLabel,
+                    B ∈ redSupportLabels ∧
+                      ∃ J : BlueLabel,
                         ∃ β,
                           ∃ τ,
                             τ ∈ transcriptLabels ∧
                               cellEvent B J β τ ω) ∧
             (∀ B,
-              B ∈ blueSupportLabels →
-                ∀ J : RedLabel,
+              B ∈ redSupportLabels →
+                ∀ J : BlueLabel,
                   ∀ β,
                     ∀ τ,
                       τ ∈ transcriptLabels →
                         ∀ ω : TwoBiteSample n m p,
                           cellEvent B J β τ ω →
                             hist (branchOfLabel β) ∧
-                            redSupport β J =
-                              branchRedSupport (branchOfLabel β) J ∧
+                            blueSupport β J =
+                              branchBlueSupport (branchOfLabel β) J ∧
                             (∀ e,
                               e ∈ terminal →
                                 (match e with
-                                | Sum.inl _ => False
-                                | Sum.inr _ => True) →
+                                | Sum.inl _ => True
+                                | Sum.inr _ => False) →
                                   (TwoBiteEdgeCoordinateValue
                                     (branchOfLabel β) e ↔
-                                      e ∈ blueTrace β)) ∧
-                            (redSupport β J).card = uR ∧
-                            redSupport β J ⊆ terminal ∧
+                                      e ∈ redTrace β)) ∧
+                            (blueSupport β J).card = uB ∧
+                            blueSupport β J ⊆ terminal ∧
                             (∀ e,
-                              e ∈ redSupport β J →
+                              e ∈ blueSupport β J →
                                 match e with
-                                | Sum.inl _ => True
-                                | Sum.inr _ => False) ∧
+                                | Sum.inl _ => False
+                                | Sum.inr _ => True) ∧
                             τ.1 ⊆ terminal ∧
                             τ.2.1 ⊆ terminal ∧
                             Disjoint τ.1 τ.2.1 ∧
-                            B ∪ redSupport β J ⊆ τ.1 ∧
+                            B ∪ blueSupport β J ⊆ τ.1 ∧
                             (∀ e,
                               e ∈ terminal →
                                 (match e with
-                                | Sum.inl _ => False
-                                | Sum.inr _ => True) →
-                                  (e ∈ blueTrace β ↔ e ∈ τ.1) ∧
-                                  (e ∉ blueTrace β ↔ e ∈ τ.2.1)) ∧
+                                | Sum.inl _ => True
+                                | Sum.inr _ => False) →
+                                  (e ∈ redTrace β ↔ e ∈ τ.1) ∧
+                                  (e ∉ redTrace β ↔ e ∈ τ.2.1)) ∧
                             τ.2.2 ⊆ τ.2.1 ∧
-                            max 0 (a - (uR : ℝ) - (uB : ℝ))
+                            max 0 (a - (uB : ℝ) - (uR : ℝ))
                               ≤ ((τ.2.2).card : ℝ) ∧
                             (∀ e,
                               e ∈ terminal →
                                 (match e with
-                                | Sum.inl _ => False
-                                | Sum.inr _ => True) →
+                                | Sum.inl _ => True
+                                | Sum.inr _ => False) →
                                   (TwoBiteEdgeCoordinateValue ω e ↔
-                                    e ∈ blueTrace β)) ∧
+                                    e ∈ redTrace β)) ∧
                             (∀ e,
                               e ∈ τ.1 →
                                 TwoBiteEdgeCoordinateValue ω e) ∧
@@ -265,8 +265,8 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                               e ∈ τ.2.1 →
                                 ¬ TwoBiteEdgeCoordinateValue ω e)) ∧
             (∀ B,
-              B ∈ blueSupportLabels →
-                ∀ J : RedLabel,
+              B ∈ redSupportLabels →
+                ∀ J : BlueLabel,
                   ∀ β,
                     ∀ τ,
                       τ ∈ transcriptLabels →
@@ -279,15 +279,15 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                 (fun e =>
                                   TwoBiteEdgeCoordinateValue ω e ∧
                                     match e with
-                                    | Sum.inl _ => False
-                                    | Sum.inr _ => True) ∧
-                            redSupport β J =
+                                    | Sum.inl _ => True
+                                    | Sum.inr _ => False) ∧
+                            blueSupport β J =
                               (TwoBiteStagedOpenPairs ω ε I).filter
                                 (fun e =>
                                   TwoBiteEdgeCoordinateValue ω e ∧
                                     match e with
-                                    | Sum.inl _ => True
-                                    | Sum.inr _ => False) ∧
+                                    | Sum.inl _ => False
+                                    | Sum.inr _ => True) ∧
                             τ.1 =
                               terminal.filter
                                 (fun e => TwoBiteEdgeCoordinateValue ω e) ∧
@@ -296,7 +296,7 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                 (fun e => ¬ TwoBiteEdgeCoordinateValue ω e) ∧
                             τ.2.2 =
                               (TwoBiteStagedOpenPairs ω ε I).filter
-                                (fun e => e ∉ redSupport β J ∪ B) ∧
+                                (fun e => e ∉ blueSupport β J ∪ B) ∧
                             (∀ e,
                               e ∈ τ.2.2 →
                                 e ∈ TwoBiteStagedOpenPairs ω ε I ∧
@@ -332,7 +332,7 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                             ω' ε I))) ∧
             ∃ cellRealized :
               Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) →
-                RedLabel →
+                BlueLabel →
                 BranchLabel →
                 (Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
                   Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
@@ -341,15 +341,15 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
               ∃ assignmentCompatible :
                 Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) →
                   Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) →
-                  RedLabel →
+                  BlueLabel →
                   BranchLabel →
                   (Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
                     Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
                     Finset (Sum (Fin m × Fin m) (Fin m × Fin m))) →
                   Prop,
                 (∀ B,
-                  B ∈ blueSupportLabels →
-                    ∀ J : RedLabel,
+                  B ∈ redSupportLabels →
+                    ∀ J : BlueLabel,
                       ∀ β,
                         ∀ τ,
                           τ ∈ transcriptLabels →
@@ -363,15 +363,15 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                     (fun e =>
                                       TwoBiteEdgeCoordinateValue ω e ∧
                                         match e with
-                                        | Sum.inl _ => False
-                                        | Sum.inr _ => True) ∧
-                                redSupport β J =
+                                        | Sum.inl _ => True
+                                        | Sum.inr _ => False) ∧
+                                blueSupport β J =
                                   (TwoBiteStagedOpenPairs ω ε I).filter
                                     (fun e =>
                                       TwoBiteEdgeCoordinateValue ω e ∧
                                         match e with
-                                        | Sum.inl _ => True
-                                        | Sum.inr _ => False) ∧
+                                        | Sum.inl _ => False
+                                        | Sum.inr _ => True) ∧
                                 τ.1 =
                                   terminal.filter
                                     (fun e => TwoBiteEdgeCoordinateValue ω e) ∧
@@ -380,7 +380,7 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                     (fun e => ¬ TwoBiteEdgeCoordinateValue ω e) ∧
                                 τ.2.2 =
                                   (TwoBiteStagedOpenPairs ω ε I).filter
-                                    (fun e => e ∉ redSupport β J ∪ B) ∧
+                                    (fun e => e ∉ blueSupport β J ∪ B) ∧
                                 (∀ e,
                                   e ∈ τ.2.2 →
                                     e ∈ TwoBiteStagedOpenPairs ω ε I ∧
@@ -422,36 +422,36 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                               TwoBitePreTerminalRecordedPairs
                                                 ω' ε I))) ∧
                 (∀ B,
-                  B ∈ blueSupportLabels →
-                    ∀ J : RedLabel,
+                  B ∈ redSupportLabels →
+                    ∀ J : BlueLabel,
                       ∀ β,
                         ∀ τ,
                           τ ∈ transcriptLabels →
                             cellRealized B J β τ →
-                              (redSupport β J).card = uR ∧
-                              redSupport β J ⊆ terminal ∧
+                              (blueSupport β J).card = uB ∧
+                              blueSupport β J ⊆ terminal ∧
                               (∀ e,
-                                e ∈ redSupport β J →
+                                e ∈ blueSupport β J →
                                   match e with
-                                  | Sum.inl _ => True
-                                  | Sum.inr _ => False) ∧
+                                  | Sum.inl _ => False
+                                  | Sum.inr _ => True) ∧
                               τ.1 ⊆ terminal ∧
                               τ.2.1 ⊆ terminal ∧
                               Disjoint τ.1 τ.2.1 ∧
-                              B ∪ redSupport β J ⊆ τ.1 ∧
+                              B ∪ blueSupport β J ⊆ τ.1 ∧
                               (∀ e,
                                 e ∈ terminal →
                                   (match e with
-                                  | Sum.inl _ => False
-                                  | Sum.inr _ => True) →
-                                    (e ∈ blueTrace β ↔ e ∈ τ.1) ∧
-                                    (e ∉ blueTrace β ↔ e ∈ τ.2.1)) ∧
+                                  | Sum.inl _ => True
+                                  | Sum.inr _ => False) →
+                                    (e ∈ redTrace β ↔ e ∈ τ.1) ∧
+                                    (e ∉ redTrace β ↔ e ∈ τ.2.1)) ∧
                               τ.2.2 ⊆ τ.2.1 ∧
-                              max 0 (a - (uR : ℝ) - (uB : ℝ))
+                              max 0 (a - (uB : ℝ) - (uR : ℝ))
                                 ≤ ((τ.2.2).card : ℝ)) ∧
                 (∀ B,
-                  B ∈ blueSupportLabels →
-                    ∀ J : RedLabel,
+                  B ∈ redSupportLabels →
+                    ∀ J : BlueLabel,
                       ∀ A β τ,
                         A ⊆ terminal →
                           τ ∈ transcriptLabels →
@@ -463,12 +463,12 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                   e ∈ terminal →
                                     e ∉ τ.2.2 →
                                       (match e with
-                                      | Sum.inl _ => False
-                                      | Sum.inr _ => True) →
-                                        (e ∈ blueTrace β ↔ e ∈ A)) ∧
+                                      | Sum.inl _ => True
+                                      | Sum.inr _ => False) →
+                                        (e ∈ redTrace β ↔ e ∈ A)) ∧
                 (∀ B,
-                  B ∈ blueSupportLabels →
-                    ∀ J : RedLabel,
+                  B ∈ redSupportLabels →
+                    ∀ J : BlueLabel,
                       ∀ A β τ,
                         A ⊆ terminal →
                           τ ∈ transcriptLabels →
@@ -477,12 +477,12 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                 ∀ e,
                                   e ∈ terminal →
                                     (match e with
-                                    | Sum.inl _ => False
-                                    | Sum.inr _ => True) →
-                                      (e ∈ blueTrace β ↔ e ∈ A)) ∧
+                                    | Sum.inl _ => True
+                                    | Sum.inr _ => False) →
+                                      (e ∈ redTrace β ↔ e ∈ A)) ∧
                 (∀ B,
-                  B ∈ blueSupportLabels →
-                    ∀ J : RedLabel,
+                  B ∈ redSupportLabels →
+                    ∀ J : BlueLabel,
                       ∀ A β τ,
                         A ⊆ terminal →
                           τ ∈ transcriptLabels →
@@ -492,13 +492,13 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                   (∀ e,
                                     e ∈ terminal →
                                       (match e with
-                                      | Sum.inl _ => False
-                                      | Sum.inr _ => True) →
-                                        (e ∈ blueTrace β ↔ e ∈ A)) →
+                                      | Sum.inl _ => True
+                                      | Sum.inr _ => False) →
+                                        (e ∈ redTrace β ↔ e ∈ A)) →
                                     assignmentCompatible A B J β τ) ∧
                 (∀ B,
-                  B ∈ blueSupportLabels →
-                    ∀ J : RedLabel,
+                  B ∈ redSupportLabels →
+                    ∀ J : BlueLabel,
                       ∀ A β β' τ τ',
                         A ⊆ terminal →
                           τ ∈ transcriptLabels →
@@ -509,8 +509,8 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                                               assignmentCompatible A B J β' τ' →
                                                 β = β' ∧ τ = τ') ∧
                         (∀ B,
-                          B ∈ blueSupportLabels →
-                            ∀ J : RedLabel,
+                          B ∈ redSupportLabels →
+                            ∀ J : BlueLabel,
                               ∀ β,
                         ∀ τ,
                           τ ∈ transcriptLabels →
@@ -518,20 +518,20 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                               ∀ ω : TwoBiteSample n m p,
                                 ¬ cellEvent B J β τ ω) := by
 -- BODY
-  intros n m uR uB p ε a I hist target recorded terminal order blueSupportLabels RedLabel _ branchRedSupport
-  intros _ _ _hp_nonneg _hp_half horder_nodup horder_term hterminal_not_recorded hrecorded_universe hterminal_universe htarget_hist hhist_agree hhist_term hhist_pre hB_prop htarget_card htarget_B htarget_branch htarget_uR
+  intros n m uR uB p ε a I hist target recorded terminal order redSupportLabels BlueLabel _ branchBlueSupport
+  intros _ _ _hp_nonneg _hp_half horder_nodup horder_term hterminal_not_recorded hrecorded_universe hterminal_universe htarget_hist hhist_agree hhist_term hhist_pre hB_prop htarget_card htarget_B htarget_branch htarget_uB
 
   let firstColor (e : Sum (Fin m × Fin m) (Fin m × Fin m)) : Prop :=
-    match e with | Sum.inl _ => False | Sum.inr _ => True
-  let redColor (e : Sum (Fin m × Fin m) (Fin m × Fin m)) : Prop :=
     match e with | Sum.inl _ => True | Sum.inr _ => False
+  let blueColor (e : Sum (Fin m × Fin m) (Fin m × Fin m)) : Prop :=
+    match e with | Sum.inl _ => False | Sum.inr _ => True
   
   let BranchLabel := { A : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) //
     A ⊆ terminal.filter firstColor ∧ ∃ ω, target ω ∧ ∀ e ∈ terminal, firstColor e → (TwoBiteEdgeCoordinateValue ω e ↔ e ∈ A) }
   
   have instBranchLabel : Fintype BranchLabel := Fintype.ofFinite BranchLabel
   
-  let blueTrace (β : BranchLabel) : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) := β.val
+  let redTrace (β : BranchLabel) : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) := β.val
   
   let branchOfLabel (β : BranchLabel) : TwoBiteSample n m p :=
     Classical.choose β.property.2
@@ -545,13 +545,13 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
   have h_branch_trace (β : BranchLabel) : ∀ e ∈ terminal, firstColor e → (TwoBiteEdgeCoordinateValue (branchOfLabel β) e ↔ e ∈ β.val) :=
     (Classical.choose_spec β.property.2).2
 
-  let redSupport (β : BranchLabel) (J : RedLabel) : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) :=
-    branchRedSupport (branchOfLabel β) J
+  let blueSupport (β : BranchLabel) (J : BlueLabel) : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) :=
+    branchBlueSupport (branchOfLabel β) J
 
   let transcriptLabels : Finset (Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) × Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) × Finset (Sum (Fin m × Fin m) (Fin m × Fin m))) :=
     (Finset.powerset terminal) ×ˢ (Finset.powerset terminal) ×ˢ (Finset.powerset terminal)
 
-  let cellEvent (B : Finset (Sum (Fin m × Fin m) (Fin m × Fin m))) (J : RedLabel) (β : BranchLabel) 
+  let cellEvent (B : Finset (Sum (Fin m × Fin m) (Fin m × Fin m))) (J : BlueLabel) (β : BranchLabel) 
       (τ : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) × Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) × Finset (Sum (Fin m × Fin m) (Fin m × Fin m))) 
       (ω : TwoBiteSample n m p) : Prop :=
     target ω ∧
@@ -559,14 +559,14 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
     B =
       (TwoBiteStagedOpenPairs ω ε I).filter
         (fun e => TwoBiteEdgeCoordinateValue ω e ∧ firstColor e) ∧
-    redSupport β J =
+    blueSupport β J =
       (TwoBiteStagedOpenPairs ω ε I).filter
-        (fun e => TwoBiteEdgeCoordinateValue ω e ∧ redColor e) ∧
+        (fun e => TwoBiteEdgeCoordinateValue ω e ∧ blueColor e) ∧
     τ.1 = terminal.filter (fun e => TwoBiteEdgeCoordinateValue ω e) ∧
     τ.2.1 = terminal.filter (fun e => ¬ TwoBiteEdgeCoordinateValue ω e) ∧
     τ.2.2 =
       (TwoBiteStagedOpenPairs ω ε I).filter
-        (fun e => e ∉ redSupport β J ∪ B) ∧
+        (fun e => e ∉ blueSupport β J ∪ B) ∧
     (∀ e,
       e ∈ τ.2.2 →
         e ∈ TwoBiteStagedOpenPairs ω ε I ∧
@@ -593,25 +593,25 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
               (e ∈ TwoBitePreTerminalRecordedPairs ω ε I ↔
                 e ∈ TwoBitePreTerminalRecordedPairs ω' ε I)) ∧
     hist (branchOfLabel β) ∧
-    redSupport β J = branchRedSupport (branchOfLabel β) J ∧
-    (∀ e ∈ terminal, firstColor e → (TwoBiteEdgeCoordinateValue (branchOfLabel β) e ↔ e ∈ blueTrace β)) ∧
-    (redSupport β J).card = uR ∧
-    redSupport β J ⊆ terminal ∧
-    (∀ e ∈ redSupport β J, redColor e) ∧
+    blueSupport β J = branchBlueSupport (branchOfLabel β) J ∧
+    (∀ e ∈ terminal, firstColor e → (TwoBiteEdgeCoordinateValue (branchOfLabel β) e ↔ e ∈ redTrace β)) ∧
+    (blueSupport β J).card = uB ∧
+    blueSupport β J ⊆ terminal ∧
+    (∀ e ∈ blueSupport β J, blueColor e) ∧
     τ.1 ⊆ terminal ∧
     τ.2.1 ⊆ terminal ∧
     Disjoint τ.1 τ.2.1 ∧
-    B ∪ redSupport β J ⊆ τ.1 ∧
+    B ∪ blueSupport β J ⊆ τ.1 ∧
     (∀ e ∈ terminal, firstColor e →
-      (e ∈ blueTrace β ↔ e ∈ τ.1) ∧
-      (e ∉ blueTrace β ↔ e ∈ τ.2.1)) ∧
+      (e ∈ redTrace β ↔ e ∈ τ.1) ∧
+      (e ∉ redTrace β ↔ e ∈ τ.2.1)) ∧
     τ.2.2 ⊆ τ.2.1 ∧
-    max 0 (a - (uR : ℝ) - (uB : ℝ)) ≤ ((τ.2.2).card : ℝ) ∧
-    (∀ e ∈ terminal, firstColor e → (TwoBiteEdgeCoordinateValue ω e ↔ e ∈ blueTrace β)) ∧
+    max 0 (a - (uB : ℝ) - (uR : ℝ)) ≤ ((τ.2.2).card : ℝ) ∧
+    (∀ e ∈ terminal, firstColor e → (TwoBiteEdgeCoordinateValue ω e ↔ e ∈ redTrace β)) ∧
     (∀ e ∈ τ.1, TwoBiteEdgeCoordinateValue ω e) ∧
     (∀ e ∈ τ.2.1, ¬ TwoBiteEdgeCoordinateValue ω e)
 
-  refine ⟨BranchLabel, instBranchLabel, blueTrace, redSupport, branchOfLabel, transcriptLabels, cellEvent, 
+  refine ⟨BranchLabel, instBranchLabel, redTrace, blueSupport, branchOfLabel, transcriptLabels, cellEvent, 
           h_branch_hist, ?_, ?_, ?_, ?_, ?_⟩
   · intro β J
     rfl
@@ -638,7 +638,7 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
       exact (h_eq e h_term h_first).mpr he
   · intro ω h_target h_hist
     rcases htarget_B ω h_target with ⟨B, h_B_supp, h_B_eq⟩
-    have h_uB : B.card = uB := (hB_prop B h_B_supp).1
+    have h_uR : B.card = uR := (hB_prop B h_B_supp).1
     let A : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) := (terminal.filter firstColor).filter (fun e => TwoBiteEdgeCoordinateValue ω e)
     have hA_sub : A ⊆ terminal.filter firstColor := Finset.filter_subset _ _
     have hA_prop : ∃ ω', target ω' ∧ ∀ e ∈ terminal, firstColor e → (TwoBiteEdgeCoordinateValue ω' e ↔ e ∈ A) := by
@@ -649,31 +649,31 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
     
     have h_trace_match : ∀ e ∈ terminal, firstColor e → (TwoBiteEdgeCoordinateValue ω e ↔ TwoBiteEdgeCoordinateValue (branchOfLabel β_ω) e) := by
       intro e h_term h_first
-      have h1 : TwoBiteEdgeCoordinateValue ω e ↔ e ∈ blueTrace β_ω := by
-        simp [blueTrace, β_ω, A, h_term, h_first]
-      have h2 : TwoBiteEdgeCoordinateValue (branchOfLabel β_ω) e ↔ e ∈ blueTrace β_ω := h_branch_trace β_ω e h_term h_first
+      have h1 : TwoBiteEdgeCoordinateValue ω e ↔ e ∈ redTrace β_ω := by
+        simp [redTrace, β_ω, A, h_term, h_first]
+      have h2 : TwoBiteEdgeCoordinateValue (branchOfLabel β_ω) e ↔ e ∈ redTrace β_ω := h_branch_trace β_ω e h_term h_first
       rw [h1, h2]
 
     rcases htarget_branch (branchOfLabel β_ω) ω h_target (h_branch_hist β_ω) (by
       intro e h_term
       rcases e with ⟨_⟩ | ⟨_⟩
-      · trivial
-      · change TwoBiteEdgeCoordinateValue ω (Sum.inr _) ↔ TwoBiteEdgeCoordinateValue (branchOfLabel β_ω) (Sum.inr _)
-        exact h_trace_match (Sum.inr _) h_term trivial) with ⟨J, h_J_eq⟩
+      · change TwoBiteEdgeCoordinateValue ω (Sum.inl _) ↔ TwoBiteEdgeCoordinateValue (branchOfLabel β_ω) (Sum.inl _)
+        exact h_trace_match (Sum.inl _) h_term trivial
+      · trivial) with ⟨J, h_J_eq⟩
     
-    have h_redSupport : redSupport β_ω J = (TwoBiteStagedOpenPairs ω ε I).filter (fun e => TwoBiteEdgeCoordinateValue ω e ∧ redColor e) := by
+    have h_blueSupport : blueSupport β_ω J = (TwoBiteStagedOpenPairs ω ε I).filter (fun e => TwoBiteEdgeCoordinateValue ω e ∧ blueColor e) := by
       exact h_J_eq
 
-    let R := redSupport β_ω J
-    have hR_uR : R.card = uR := by
-      change (redSupport β_ω J).card = uR
-      rw [h_redSupport]
-      exact htarget_uR ω h_target
+    let R := blueSupport β_ω J
+    have hR_uB : R.card = uB := by
+      change (blueSupport β_ω J).card = uB
+      rw [h_blueSupport]
+      exact htarget_uB ω h_target
 
     have h_canonical := FixedSetHistoryCellCanonicalAbsenceSelection I hist recorded terminal order R B ω h_hist horder_nodup horder_term (hhist_term ω h_hist) (hhist_pre ω h_hist) (htarget_card ω h_target) (by
       intro e heR
-      change e ∈ redSupport β_ω J at heR
-      rw [h_redSupport] at heR
+      change e ∈ blueSupport β_ω J at heR
+      rw [h_blueSupport] at heR
       have heR_filter := Finset.mem_filter.mp heR
       exact ⟨heR_filter.1, heR_filter.2.1⟩) (by
       intro e heB
@@ -686,14 +686,14 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
         rw [h_B_eq, Finset.mem_filter]
         exact ⟨heS, heV, h_first⟩
       · left
-        change e ∈ redSupport β_ω J
-        rw [h_redSupport, Finset.mem_filter]
-        have h_red : redColor e := by
+        change e ∈ blueSupport β_ω J
+        rw [h_blueSupport, Finset.mem_filter]
+        have h_blue : blueColor e := by
           rcases e with ⟨_⟩ | ⟨_⟩
-          · trivial
           · unfold firstColor at h_first
             simp at h_first
-        exact ⟨heS, heV, h_red⟩)
+          · trivial
+        exact ⟨heS, heV, h_blue⟩)
 
     rcases h_canonical with ⟨Z, hZ_eq, hZ_sub, hZ_disj, hZ_prop, hZ_size⟩
     let blueTerminal : Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) :=
@@ -710,20 +710,20 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
 
     refine ⟨B, h_B_supp, J, β_ω, τ, hτ_labels, ?_⟩
     refine
-      ⟨h_target, h_hist, h_B_eq, h_redSupport, rfl, rfl,
+      ⟨h_target, h_hist, h_B_eq, h_blueSupport, rfl, rfl,
         ?_, ?_,
-        h_branch_hist β_ω, rfl, h_branch_trace β_ω, hR_uR, ?_, ?_, ?_,
+        h_branch_hist β_ω, rfl, h_branch_trace β_ω, hR_uB, ?_, ?_, ?_,
         ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
     · simpa [R] using hZ_eq
     · intro e he
       exact hZ_prop e he
     · intro e heR
-      change e ∈ redSupport β_ω J at heR
-      have heR_filter := Finset.mem_filter.mp (by rw [h_redSupport] at heR; exact heR)
+      change e ∈ blueSupport β_ω J at heR
+      have heR_filter := Finset.mem_filter.mp (by rw [h_blueSupport] at heR; exact heR)
       exact hhist_term ω h_hist e heR_filter.1
     · intro e heR
-      change e ∈ redSupport β_ω J at heR
-      have heR_filter := Finset.mem_filter.mp (by rw [h_redSupport] at heR; exact heR)
+      change e ∈ blueSupport β_ω J at heR
+      have heR_filter := Finset.mem_filter.mp (by rw [h_blueSupport] at heR; exact heR)
       exact heR_filter.2.2
     · intro e he
       exact (Finset.mem_filter.mp he).1
@@ -737,20 +737,20 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
       constructor
       · rcases Finset.mem_union.mp he with heB | heR
         · exact (hB_prop B h_B_supp).2.1 heB
-        · change e ∈ redSupport β_ω J at heR
+        · change e ∈ blueSupport β_ω J at heR
           have heR_filter :=
-            Finset.mem_filter.mp (by rw [h_redSupport] at heR; exact heR)
+            Finset.mem_filter.mp (by rw [h_blueSupport] at heR; exact heR)
           exact hhist_term ω h_hist e heR_filter.1
       · rcases Finset.mem_union.mp he with heB | heR
         · rw [h_B_eq] at heB
           exact (Finset.mem_filter.mp heB).2.1
-        · change e ∈ redSupport β_ω J at heR
+        · change e ∈ blueSupport β_ω J at heR
           have heR_filter :=
-            Finset.mem_filter.mp (by rw [h_redSupport] at heR; exact heR)
+            Finset.mem_filter.mp (by rw [h_blueSupport] at heR; exact heR)
           exact heR_filter.2.1
     · intro e hterm hfirst
-      have h1 : TwoBiteEdgeCoordinateValue ω e ↔ e ∈ blueTrace β_ω := by
-        simp [blueTrace, β_ω, A, hterm, hfirst]
+      have h1 : TwoBiteEdgeCoordinateValue ω e ↔ e ∈ redTrace β_ω := by
+        simp [redTrace, β_ω, A, hterm, hfirst]
       constructor
       · constructor
         · intro heBlue
@@ -770,12 +770,12 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
         Finset.mem_filter.mpr
           ⟨hZ_sub he, (hZ_prop e he).2.1⟩
     · have h_size : max 0 (a - (R.card : ℝ) - (B.card : ℝ)) ≤ (Z.card : ℝ) := by exact_mod_cast hZ_size
-      rw [hR_uR] at h_size
-      rw [h_uB] at h_size
+      rw [hR_uB] at h_size
+      rw [h_uR] at h_size
       exact h_size
     · intro e h_term h_first
-      have h1 : TwoBiteEdgeCoordinateValue ω e ↔ e ∈ blueTrace β_ω := by
-        simp [blueTrace, β_ω, A, h_term, h_first]
+      have h1 : TwoBiteEdgeCoordinateValue ω e ↔ e ∈ redTrace β_ω := by
+        simp [redTrace, β_ω, A, h_term, h_first]
       exact h1
     · intro e he
       exact (Finset.mem_filter.mp he).2
@@ -806,7 +806,7 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
             hAbsentShape, hSelectedShape, hSelectedPrefix⟩
       · let cellRealized :
           Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) →
-            RedLabel →
+            BlueLabel →
             BranchLabel →
             (Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
               Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
@@ -816,7 +816,7 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
         let assignmentCompatible :
           Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) →
             Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) →
-            RedLabel →
+            BlueLabel →
             BranchLabel →
             (Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
               Finset (Sum (Fin m × Fin m) (Fin m × Fin m)) ×
@@ -829,11 +829,11 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
                 e ∈ terminal →
                   e ∉ τ.2.2 →
                     firstColor e →
-                      (e ∈ blueTrace β ↔ e ∈ A)) ∧
+                      (e ∈ redTrace β ↔ e ∈ A)) ∧
               (∀ e,
                 e ∈ terminal →
                   firstColor e →
-                    (e ∈ blueTrace β ↔ e ∈ A))
+                    (e ∈ redTrace β ↔ e ∈ A))
         refine ⟨cellRealized, assignmentCompatible, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
         · intro B hB J β τ hτ hreal
           rcases hreal with ⟨ω, hcell⟩
@@ -892,7 +892,7 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
           have hblue : ∀ e,
               e ∈ terminal →
                 firstColor e →
-                  (e ∈ blueTrace β ↔ e ∈ blueTrace β') := by
+                  (e ∈ redTrace β ↔ e ∈ redTrace β') := by
             intro e he hfirst
             exact (hcompat.2.2.2 e he hfirst).trans
               (hcompat'.2.2.2 e he hfirst).symm
@@ -1012,7 +1012,7 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
               hstable ω' hhist_same.1 hhist_same.2 hpast
             have heStaged' : e ∈ TwoBiteStagedOpenPairs ω' ε I :=
               htests.1.mp heStaged
-            have hnotFixed' : e ∉ redSupport β J ∪ B := by
+            have hnotFixed' : e ∉ blueSupport β J ∪ B := by
               intro hfixed
               have hvalue' : TwoBiteEdgeCoordinateValue ω' e := by
                 rcases Finset.mem_union.mp hfixed with heR | heB
@@ -1048,7 +1048,7 @@ theorem FixedSetHistoryCellRedBranchTranscriptCells :
               hstable ω hhist_same'.1 hhist_same'.2 hpast
             have heStaged' : e ∈ TwoBiteStagedOpenPairs ω ε I :=
               htests.1.mp heStaged
-            have hnotFixed' : e ∉ redSupport β J ∪ B := by
+            have hnotFixed' : e ∉ blueSupport β J ∪ B := by
               intro hfixed
               have hvalue' : TwoBiteEdgeCoordinateValue ω e := by
                 rcases Finset.mem_union.mp hfixed with heR | heB
